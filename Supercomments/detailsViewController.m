@@ -45,7 +45,7 @@ NSMutableArray * ymDataArray;
     self.navigationItem.leftBarButtonItem.tintColor = [UIColor wjColorFloat:@"333333"];
     
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor wjColorFloat:@"333333"]}];
-
+    
     self.title = @"详情";
     self.navigationController.interactivePopGestureRecognizer.delegate = (id)self;
     [self.navigationController.navigationBar setShadowImage:[UIImage new]];
@@ -54,13 +54,13 @@ NSMutableArray * ymDataArray;
     
     self.cellcontarr = [NSMutableArray array];
     self.detalisarr = [NSMutableArray array];
-
+    
     //self.cellcontarr = [NSMutableArray arrayWithObjects:@"2", nil];
     
     [self loadhead];
-
+    
     [self.view addSubview:self.maintable];
-
+    
     
 }
 
@@ -72,7 +72,7 @@ NSMutableArray * ymDataArray;
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
+    
 }
 
 
@@ -112,30 +112,30 @@ NSMutableArray * ymDataArray;
         
         NSLog(@"usermanearr========%@",usernamearr);
         
-            NSArray *goodArray = usernamearr;
-            NSString *goodTotalString = [goodArray componentsJoinedByString:@", "];
-            NSMutableAttributedString *newGoodString = [[NSMutableAttributedString alloc] initWithString:goodTotalString];
-            [newGoodString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:14] range:NSMakeRange(0, goodTotalString.length)];
-            //设置行距 实际开发中间距为0太丑了，根据项目需求自己把握
-            NSMutableParagraphStyle *paragraphstyle = [[NSMutableParagraphStyle alloc] init];
-            paragraphstyle.lineSpacing = 3;
-            [newGoodString addAttribute:NSParagraphStyleAttributeName value:paragraphstyle range:NSMakeRange(0, goodTotalString.length)];
-            // 添加图片
-            NSTextAttachment *attch = [[NSTextAttachment alloc] init];
-            // 图片
-            attch.image = [UIImage imageNamed:@"详情页点赞-提示"];
-            // 设置图片大小
-            attch.bounds = CGRectMake(0, 0, 14*WIDTH_SCALE, 14*WIDTH_SCALE);
-            // 创建带有图片的富文本
-            NSAttributedString *string = [NSAttributedString attributedStringWithAttachment:attch];
-            [newGoodString insertAttributedString:string atIndex:0];
-            self.headview.thumlabel.attributedText = newGoodString;
-            self.headview.thumlabel.numberOfLines = 0;
-            //设置UILable自适
-            self.headview.thumlabel.lineBreakMode = NSLineBreakByCharWrapping;
-            [self.headview.thumlabel sizeToFit];
+        NSArray *goodArray = usernamearr;
+        NSString *goodTotalString = [goodArray componentsJoinedByString:@", "];
+        NSMutableAttributedString *newGoodString = [[NSMutableAttributedString alloc] initWithString:goodTotalString];
+        [newGoodString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:14] range:NSMakeRange(0, goodTotalString.length)];
+        //设置行距 实际开发中间距为0太丑了，根据项目需求自己把握
+        NSMutableParagraphStyle *paragraphstyle = [[NSMutableParagraphStyle alloc] init];
+        paragraphstyle.lineSpacing = 3;
+        [newGoodString addAttribute:NSParagraphStyleAttributeName value:paragraphstyle range:NSMakeRange(0, goodTotalString.length)];
+        // 添加图片
+        NSTextAttachment *attch = [[NSTextAttachment alloc] init];
+        // 图片
+        attch.image = [UIImage imageNamed:@"详情页点赞-提示"];
+        // 设置图片大小
+        attch.bounds = CGRectMake(0, 0, 14*WIDTH_SCALE, 14*WIDTH_SCALE);
+        // 创建带有图片的富文本
+        NSAttributedString *string = [NSAttributedString attributedStringWithAttachment:attch];
+        [newGoodString insertAttributedString:string atIndex:0];
+        self.headview.thumlabel.attributedText = newGoodString;
+        self.headview.thumlabel.numberOfLines = 0;
+        //设置UILable自适
+        self.headview.thumlabel.lineBreakMode = NSLineBreakByCharWrapping;
+        [self.headview.thumlabel sizeToFit];
         
-
+        
         
         if (self.headm.contactstr.length!=0&&self.headm.imgurlstr.length!=0) {
             CGSize textSize = [self.headview.contentlab setText:self.headview.contentlab.text lines:QSTextDefaultLines andLineSpacing:QSTextLineSpacing constrainedToSize:CGSizeMake(DEVICE_WIDTH - 28*WIDTH_SCALE,MAXFLOAT)];
@@ -238,7 +238,7 @@ NSMutableArray * ymDataArray;
             self.detailsmodel.contstr = [dicarr objectForKey:@"content"];
             self.detailsmodel.pingarr = [dicarr objectForKey:@"sonComment"];
             
-          
+            
             NSDictionary *sonCommentdic = [NSDictionary dictionary];
             NSMutableArray *commarr = [NSMutableArray array];
             commarr = [dicarr objectForKey:@"sonComment"];
@@ -266,11 +266,11 @@ NSMutableArray * ymDataArray;
         
         
         
-    [self.maintable reloadData];
+        [self.maintable reloadData];
     } errorblock:^(NSError *error) {
         
     }];
-
+    
 }
 
 #pragma mark - getters
@@ -306,70 +306,29 @@ NSMutableArray * ymDataArray;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (tableView==self.maintable) {
-        return self.detalisarr.count;
-    }
-
-    return 0;
+    return self.detalisarr.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (tableView==self.maintable) {
-        detaolsCell *cell = [tableView dequeueReusableCellWithIdentifier:detailsidentfid];
-        if (!cell) {
-            cell = [[detaolsCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:detailsidentfid];
-        }
-//        cell.pingluntable.dataSource = self;
-//        cell.pingluntable.delegate = self;
-        
-        [cell setcelldata:self.detalisarr[indexPath.row]];
-        _height01 = cell.hei;
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        return cell;
-    }else
-    {
-//        pinglunCell *cell = [tableView dequeueReusableCellWithIdentifier:pinglunidentfid];
-//        if (!cell) {
-//            cell = [[pinglunCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:pinglunidentfid];
-//        }
-//        cell.backgroundColor = [UIColor wjColorFloat:@"F4F5F6"];
-//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//        
-//        cell.textLabel.text = @"赵客缦胡缨⑵，吴钩霜雪明⑶。银鞍照白马，飒沓如流星⑷。赵客缦胡缨⑵，吴钩霜雪明⑶。银鞍照白马，飒沓如流星⑷赵客缦胡缨⑵，吴钩霜雪明⑶。银鞍照白马，飒沓如流星⑷赵客缦胡缨⑵，吴钩霜雪明⑶。银鞍照白马，飒沓如流星⑷";
-//        
-//       // cell.textLabel.text = self.detailsmodel.pingarr[indexPath.row];
-//        cell.textLabel.numberOfLines = 0;
-//        cell.textLabel.font = [UIFont systemFontOfSize:14*FX];
-//        CGSize textSize = [cell.textLabel setText:cell.textLabel.text lines:QSTextDefaultLines andLineSpacing:QSTextLineSpacing constrainedToSize:CGSizeMake(DEVICE_WIDTH-64,MAXFLOAT)];
-//        cell.textLabel.frame = CGRectMake(0, 0, textSize.width, textSize.height);
-//        _pinglunhei = textSize.height;
-//        return cell;
+    detaolsCell *cell = [tableView dequeueReusableCellWithIdentifier:detailsidentfid];
+    if (!cell) {
+        cell = [[detaolsCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:detailsidentfid];
     }
-    return nil;
+    [cell setcelldata:self.detalisarr[indexPath.row]];
+    _height01 = cell.hei;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    [cell setCellClickBlock:^(NSString *a) {
+        
+        NSLog(@"qweqwe%@",a);
+    }];
+    return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (tableView==self.maintable) {
-        
-        return 400;
-    }
-//    else
-//    {
-//        return _pinglunhei;
-//    }
-    return 0;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (tableView==self.maintable) {
-        
-    }else
-    {
-        NSLog(@"跳转评论");
-    }
+    return 400;
 }
 
 #pragma mark - 实现方法

@@ -21,5 +21,9 @@
 
 @property (nonatomic,strong) UITableView *pingluntable;
 
+
+@property (nonatomic, copy) void(^cellClickBlock)(NSString *str);
+
+
 -(void)setcelldata:(detailcellmodel*)model;
 @end

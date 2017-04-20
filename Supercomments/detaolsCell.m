@@ -105,7 +105,7 @@ static NSString *pinglunidentfid = @"pinglunidentfid";
         _contentlab.numberOfLines = 0;
         _contentlab.textColor = [UIColor wjColorFloat:@"333333"];
         _contentlab.font = [UIFont systemFontOfSize:17*FX];
-       
+        
     }
     return _contentlab;
 }
@@ -125,6 +125,7 @@ static NSString *pinglunidentfid = @"pinglunidentfid";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    
     return 2;
 }
 
@@ -146,11 +147,17 @@ static NSString *pinglunidentfid = @"pinglunidentfid";
     cell.textLabel.frame = CGRectMake(0, 0, textSize.width, textSize.height);
     //_pinglunhei = textSize.height;
     return cell;
-
+    
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 20;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    self.cellClickBlock(@"aaaa");
+    NSLog(@"dianji");
 }
 @end
