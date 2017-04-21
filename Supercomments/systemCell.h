@@ -8,12 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "SWTableViewCell.h"
-
+@class xitongModel;
 @interface systemCell : SWTableViewCell
 - (void)layoutSubviewsWithText:(NSString *)text;
 
 + (CGFloat)cellHeightWithText:(NSString *)text;
-
+-(void)setcelldata:(xitongModel *)model;
 @property (nonatomic,strong)UILabel *contentLabel;
 @property (nonatomic,strong)UILabel *timelabel;
+
 @end

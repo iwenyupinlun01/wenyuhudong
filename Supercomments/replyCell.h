@@ -23,6 +23,7 @@
 @property (nonatomic,strong) UIImageView *rightimage;
 @property (nonatomic,strong) UILabel *textlab;
 @property (nonatomic,strong) UILabel *timelab;
+@property (nonatomic,strong) UILabel *rightlab;
 @property (nonatomic,strong) setbtn *btn;
 @property(assign,nonatomic)id<myTabVdelegate>delegate;
 

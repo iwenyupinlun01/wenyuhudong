@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface zanBtn : UIButton
-
+@property (nonatomic,strong) UIImageView *zanimg;
 @property (nonatomic,strong) UILabel *zanlab;
+
 @end

@@ -29,4 +29,23 @@
 #define xiangqin @"http://np.iwenyu.cn/forum/index/detail.html?id=%@&page=%@&token=%@"
 
 #define denglu @"http://np.iwenyu.cn/ucenter/member/login.html"
+//点赞或者取消点赞
+#define dianzan @"http://np.iwenyu.cn/forum/index/addSupport.html"
+//通知消息数量
+#define tongzhixianxishuliang @"http://np.iwenyu.cn/forum/index/getInformNum.html?token=%@"
+//回复消息
+#define huifuxiaoxi @"http://np.iwenyu.cn/forum/user/messageInform.html?token=%@&page=%@"
+//系统通知
+#define xitongtongzhi @"http://np.iwenyu.cn/forum/user/systemInform.html?token=%@&page=%@"
+//看完消息后返回
+#define kanwanxiaoxi @"http://np.iwenyu.cn/forum/user/returnMsg.html?token=%@&id=%@"
+//删除消息通知
+#define shanchuxiaoxi @"http://np.iwenyu.cn/forum/user/removeInform.html?token=%@&type=%@&id=%@"
+//意见反馈
+#define yijianfankui @"http://np.iwenyu.cn/forum/user/opinionFeedback.html"
+//关于界面
+#define guanyujiemian @"http://np.iwenyu.cn/forum/user/about.html"
+//消息通知
+#define xiaoxitongzhijk @"http://np.iwenyu.cn/forum/user/messageInform.html?token=%@&page=%@"
+
 #endif /* wangHeader_h */

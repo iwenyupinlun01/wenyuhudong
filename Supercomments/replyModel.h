@@ -14,4 +14,8 @@
 @property (nonatomic,strong) NSString *replytext;
 @property (nonatomic,strong) NSString *replyrighturl;
 @property (nonatomic,strong) NSString *replytimestr;
+@property (nonatomic,strong) NSString *replyidstr;
+@property (nonatomic,strong) NSString *replyissetstr;
+@property (nonatomic,strong) NSString *replyrightlabstr;
+
 @end

@@ -121,6 +121,9 @@ static NSString *nickcellidentfid = @"nickidentfid";
     NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
     [userdefat setObject:text.text forKey:@"namestr"];
     [userdefat synchronize];
+    
+    [self.navigationController popViewControllerAnimated:YES];
+    
 }
 
 -(void)keyboardHide

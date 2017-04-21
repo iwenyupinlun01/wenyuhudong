@@ -17,6 +17,7 @@
     {
         [self.contentView addSubview:self.leftimg];
         [self.contentView addSubview:self.textlab];
+        
     }
     return self;
 }
@@ -26,7 +27,7 @@
     [super layoutSubviews];
     self.leftimg.frame = CGRectMake(14*WIDTH_SCALE, 20*HEIGHT_SCALE, 20*WIDTH_SCALE, 20*WIDTH_SCALE);
     self.textlab.frame = CGRectMake(60*WIDTH_SCALE, 20*HEIGHT_SCALE, 100*WIDTH_SCALE, 20*HEIGHT_SCALE);
-    
+    self.numlab.frame = CGRectMake(DEVICE_WIDTH-60, 20, 20, 20);
 }
 
 #pragma mark - getters
@@ -51,5 +52,22 @@
     }
     return _textlab;
 }
+
+-(UILabel *)numlab
+{
+    if(!_numlab)
+    {
+        _numlab = [[UILabel alloc] init];
+        _numlab.backgroundColor = [UIColor redColor];
+        _numlab.layer.masksToBounds = YES;
+        _numlab.layer.cornerRadius = 10;
+        _numlab.textColor = [UIColor whiteColor];
+        _numlab.text = @"2";
+        _numlab.textAlignment = NSTextAlignmentCenter;
+    }
+    return _numlab;
+}
+
+
 
 @end

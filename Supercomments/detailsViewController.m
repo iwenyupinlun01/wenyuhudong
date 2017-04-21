@@ -21,6 +21,10 @@
 #import "sectionView.h"
 
 @interface detailsViewController ()<UITableViewDataSource,UITableViewDelegate>
+{
+    int pn;
+}
+
 @property (nonatomic,assign) CGFloat height01;
 @property (nonatomic,assign) CGFloat pinglunhei;
 @property (nonatomic,strong) NSIndexPath *selectedIndexPath;
@@ -57,12 +61,17 @@ NSMutableArray * ymDataArray;
     [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
     self.navigationController.navigationBar.barTintColor = [UIColor wjColorFloat:@"F5F5F5"];
     
+
+    
+    
+    
+    pn=1;
     self.cellcontarr = [NSMutableArray array];
     self.detalisarr = [NSMutableArray array];
-    
-    //self.cellcontarr = [NSMutableArray arrayWithObjects:@"2", nil];
-    
-    [self loadhead];
+    // 3.1.下拉刷新
+    [self addHeader];
+    // 3.2.上拉加载更多
+    [self addFooter];
     
     [self.view addSubview:self.maintable];
     
@@ -74,17 +83,64 @@ NSMutableArray * ymDataArray;
     // Dispose of any resources that can be recreated.
 }
 
--(void)viewWillAppear:(BOOL)animated
+-(void)viewWillAppear:(BOOL)animated{
+    
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+
 {
-    [super viewWillAppear:animated];
+    
+    [super viewWillDisappear:animated];
+    
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
     
 }
 
 
--(void)loadhead
+- (void)addHeader
 {
     
-    NSString *strurl = [NSString stringWithFormat:xiangqin,self.detalisidstr,@"1",@""];
+    // 头部刷新控件
+    self.maintable.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(refreshAction)];
+    
+    [self.maintable.mj_header beginRefreshing];
+    
+}
+
+- (void)addFooter
+{
+    self.maintable.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(refreshLoadMore)];
+}
+- (void)refreshAction {
+    
+    [self headerRefreshEndAction];
+    
+}
+- (void)refreshLoadMore {
+    
+    [self footerRefreshEndAction];
+    
+}
+
+
+-(void)headerRefreshEndAction
+{
+    NSString *tokenstr = [[NSString alloc] init];
+    NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
+    NSString *token = [userdefat objectForKey:@"tokenuser"];
+    if (token.length==0) {
+        tokenstr = @"";
+    }
+    else
+    {
+        tokenstr = token;
+    }
+    NSLog(@"token--------%@",token);
+    
+    NSString *strurl = [NSString stringWithFormat:xiangqin,self.detalisidstr,@"1",tokenstr];
     
     [AFManager getReqURL:strurl block:^(id infor) {
         self.headm = [[headModel alloc] init];
@@ -254,18 +310,210 @@ NSMutableArray * ymDataArray;
 
         }
         
+         NSLog(@"pinglunarr==========%@",self.cellcontarr);
         
-        
-        NSLog(@"pinglunarr==========%@",self.cellcontarr);
-        
-        
-        
+         [self.maintable.mj_header endRefreshing];
         
         [self.maintable reloadData];
     } errorblock:^(NSError *error) {
-        
+         [self.maintable.mj_header endRefreshing];
     }];
     
+}
+
+-(void)footerRefreshEndAction
+{
+    pn ++;
+    NSString *tokenstr = [[NSString alloc] init];
+    NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
+    NSString *token = [userdefat objectForKey:@"tokenuser"];
+    if (token.length==0) {
+        tokenstr = @"";
+    }
+    else
+    {
+        tokenstr = token;
+    }
+    NSLog(@"token--------%@",token);
+    
+    NSString *pnstr = [NSString stringWithFormat:@"%d",pn];
+    NSString *strurl = [NSString stringWithFormat:xiangqin,self.detalisidstr,pnstr,tokenstr];
+    [AFManager getReqURL:strurl block:^(id infor) {
+        self.headm = [[headModel alloc] init];
+        NSLog(@"info=---------------------%@",infor);
+        NSDictionary *dic =  [infor objectForKey:@"info"];
+        
+        self.headm.namestr = [dic objectForKey:@"name"];
+        self.headm.contactstr = [dic objectForKey:@"content"];
+        self.headm.timestr = [dic objectForKey:@"create_time"];
+        self.headm.fromstr = [NSString stringWithFormat:@"%@%@%@",@"网易老司机已赞",[dic objectForKey:@"support_count"],@"次"];
+        self.headm.imgurlstr = [dic objectForKey:@"images"];
+        //self.headm.imgurlstr = @"111";
+        
+        self.headview.namelab.text = self.headm.namestr;
+        self.headview.timelab.text = self.headm.timestr;
+        self.headview.fromlab.text = self.headm.fromstr;
+        self.headview.contentlab.text = [dic objectForKey:@"content"];
+        self.headview.title.titlelab.text =[dic objectForKey:@"title"];
+        
+        
+        NSMutableArray *usernamearr = [NSMutableArray array];
+        NSMutableArray *bookarr = [NSMutableArray array];
+        
+        bookarr = [dic objectForKey:@"bookmark_user"];
+        for (int i = 0; i<bookarr.count; i++) {
+            NSDictionary *bookdic = [NSDictionary dictionary];
+            bookdic = [bookarr objectAtIndex:i];
+            NSString *usernamestr = [bookdic objectForKey:@"user_nickname"];
+            [usernamearr addObject:usernamestr];
+        }
+        
+        NSLog(@"usermanearr========%@",usernamearr);
+        
+        NSArray *goodArray = usernamearr;
+        NSString *goodTotalString = [goodArray componentsJoinedByString:@", "];
+        NSMutableAttributedString *newGoodString = [[NSMutableAttributedString alloc] initWithString:goodTotalString];
+        [newGoodString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:14] range:NSMakeRange(0, goodTotalString.length)];
+        //设置行距 实际开发中间距为0太丑了，根据项目需求自己把握
+        NSMutableParagraphStyle *paragraphstyle = [[NSMutableParagraphStyle alloc] init];
+        paragraphstyle.lineSpacing = 3;
+        [newGoodString addAttribute:NSParagraphStyleAttributeName value:paragraphstyle range:NSMakeRange(0, goodTotalString.length)];
+        // 添加图片
+        NSTextAttachment *attch = [[NSTextAttachment alloc] init];
+        // 图片
+        attch.image = [UIImage imageNamed:@"详情页点赞-提示"];
+        // 设置图片大小
+        attch.bounds = CGRectMake(0, 0, 14*WIDTH_SCALE, 14*WIDTH_SCALE);
+        // 创建带有图片的富文本
+        NSAttributedString *string = [NSAttributedString attributedStringWithAttachment:attch];
+        [newGoodString insertAttributedString:string atIndex:0];
+        self.headview.thumlabel.attributedText = newGoodString;
+        self.headview.thumlabel.numberOfLines = 0;
+        //设置UILable自适
+        self.headview.thumlabel.lineBreakMode = NSLineBreakByCharWrapping;
+        [self.headview.thumlabel sizeToFit];
+        
+        
+        
+        if (self.headm.contactstr.length!=0&&self.headm.imgurlstr.length!=0) {
+            CGSize textSize = [self.headview.contentlab setText:self.headview.contentlab.text lines:QSTextDefaultLines andLineSpacing:QSTextLineSpacing constrainedToSize:CGSizeMake(DEVICE_WIDTH - 28*WIDTH_SCALE,MAXFLOAT)];
+            self.headview.contentlab.frame = CGRectMake(14*WIDTH_SCALE,  30*HEIGHT_SCALE+14*HEIGHT_SCALE, textSize.width, textSize.height);
+            [self.headview.headimg sd_setImageWithURL:[NSURL URLWithString:self.headm.imgurlstr]];
+            self.headview.headimg.frame =CGRectMake(14*WIDTH_SCALE, 30*HEIGHT_SCALE+textSize.height*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 200*HEIGHT_SCALE);
+            self.headview.title.frame = CGRectMake(14*WIDTH_SCALE,  30*HEIGHT_SCALE+textSize.height*HEIGHT_SCALE+14*HEIGHT_SCALE+200*HEIGHT_SCALE+4*HEIGHT_SCALE+14*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 20*HEIGHT_SCALE);
+            self.headview.timelab.frame = CGRectMake(14*WIDTH_SCALE, 30*HEIGHT_SCALE+textSize.height*HEIGHT_SCALE+14*HEIGHT_SCALE+200*HEIGHT_SCALE+4*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE, 100*WIDTH_SCALE, 12*HEIGHT_SCALE);
+            [self.headview.combtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.right.equalTo(self.headview).with.offset(-70*WIDTH_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
+            }];
+            [self.headview.dianzanbtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.right.equalTo(self.headview).with.offset(-140*WIDTH_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
+            }];
+            
+            
+            [self.headview.thumlabel mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(self.headview).with.offset(14*WIDTH_SCALE);
+                make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
+                make.top.equalTo(self.headview.timelab).with.offset(33*HEIGHT_SCALE);
+                
+            }];
+            [self.headview.sharebtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
+            }];
+            _headview.frame = CGRectMake(0, 0, DEVICE_WIDTH, textSize.height+420*HEIGHT_SCALE);
+        }
+        else if (self.headm.contactstr.length==0&&self.headm.imgurlstr.length!=0)
+        {
+            
+            [self.headview.headimg sd_setImageWithURL:[NSURL URLWithString:self.headm.imgurlstr]];
+            self.headview.headimg.frame =CGRectMake(14*WIDTH_SCALE, 30*HEIGHT_SCALE+14*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 200*HEIGHT_SCALE);
+            self.headview.title.frame = CGRectMake(14*WIDTH_SCALE,  30*HEIGHT_SCALE+200*HEIGHT_SCALE+4*HEIGHT_SCALE+14*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 20*HEIGHT_SCALE);
+            self.headview.timelab.frame = CGRectMake(14*WIDTH_SCALE, 30*HEIGHT_SCALE+200*HEIGHT_SCALE+4*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE, 100*WIDTH_SCALE, 12*HEIGHT_SCALE);
+            [self.headview.combtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.right.equalTo(self.headview).with.offset(-70*WIDTH_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
+            }];
+            [self.headview.dianzanbtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.right.equalTo(self.headview).with.offset(-140*WIDTH_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
+            }];
+            
+            
+            [self.headview.thumlabel mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(self.headview).with.offset(14*WIDTH_SCALE);
+                make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
+                make.top.equalTo(self.headview.timelab).with.offset(33*HEIGHT_SCALE);
+                
+            }];
+            [self.headview.sharebtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
+            }];
+            _headview.frame = CGRectMake(0, 0, DEVICE_WIDTH, 410*HEIGHT_SCALE);
+        }else
+        {
+            CGSize textSize = [self.headview.contentlab setText:self.headview.contentlab.text lines:QSTextDefaultLines andLineSpacing:QSTextLineSpacing constrainedToSize:CGSizeMake(DEVICE_WIDTH - 28*WIDTH_SCALE,MAXFLOAT)];
+            self.headview.contentlab.frame = CGRectMake(14*WIDTH_SCALE,  30*HEIGHT_SCALE+14*HEIGHT_SCALE, textSize.width, textSize.height);
+            self.headview.title.frame = CGRectMake(14*WIDTH_SCALE,  30*HEIGHT_SCALE+textSize.height*HEIGHT_SCALE+4*HEIGHT_SCALE+14*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 20*HEIGHT_SCALE);
+            self.headview.timelab.frame = CGRectMake(14*WIDTH_SCALE, 30*HEIGHT_SCALE+textSize.height*HEIGHT_SCALE+4*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE, 100*WIDTH_SCALE, 12*HEIGHT_SCALE);
+            [self.headview.combtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.right.equalTo(self.headview).with.offset(-70*WIDTH_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
+            }];
+            [self.headview.dianzanbtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.right.equalTo(self.headview).with.offset(-140*WIDTH_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
+            }];
+            
+            
+            [self.headview.thumlabel mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(self.headview).with.offset(14*WIDTH_SCALE);
+                make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
+                make.top.equalTo(self.headview.timelab).with.offset(33*HEIGHT_SCALE);
+                
+            }];
+            [self.headview.sharebtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
+            }];
+            _headview.frame = CGRectMake(0, 0, DEVICE_WIDTH, textSize.height+200*HEIGHT_SCALE);
+        }
+        
+        //cell部分
+        
+        NSMutableArray *dtrarr = [NSMutableArray array];
+        dtrarr = [dic objectForKey:@"all_comment"];
+        self.sonCommentarr = [NSMutableArray array];
+        NSLog(@"all_comment=========%@",dtrarr);
+        for (int i = 0; i<dtrarr.count; i++) {
+            NSDictionary *dicarr = [dtrarr objectAtIndex:i];
+            self.detailsmodel = [[detailcellmodel alloc] init];
+            self.detailsmodel.namestr = [dicarr objectForKey:@"p_nickname"];
+            self.detailsmodel.timestr = [dicarr objectForKey:@"ctime"];
+            self.detailsmodel.contstr = [dicarr objectForKey:@"content"];
+            self.detailsmodel.pingarr = [dicarr objectForKey:@"sonComment"];
+            
+            NSMutableArray *commarr = [NSMutableArray array];
+            commarr = [dicarr objectForKey:@"sonComment"];
+            [self.cellcontarr addObject:[NSString stringWithFormat:@"%lu",(unsigned long)commarr.count]];
+            
+            [self.sonCommentarr addObject:self.detailsmodel.pingarr];
+            
+            [self.detalisarr addObject:self.detailsmodel];
+            
+            
+        }
+        
+        NSLog(@"pinglunarr==========%@",self.cellcontarr);
+        
+        [self.maintable.mj_footer endRefreshing];
+        
+        [self.maintable reloadData];
+    } errorblock:^(NSError *error) {
+        [self.maintable.mj_footer endRefreshing];
+    }];
 }
 
 #pragma mark - getters

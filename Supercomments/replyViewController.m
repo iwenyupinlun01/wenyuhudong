@@ -64,20 +64,57 @@ static NSString *replyidentfid = @"replyidentfid";
 -(void)datafromweb
 {
     
-    for (int i = 0; i<10; i++) {
-        self.rmodel = [[replyModel alloc] init];
-        self.rmodel.replyurl = @"";
-        self.rmodel.replyname = @"今日牛评";
-        self.rmodel.replytext = @"赵客曼胡樱，吴钩霜雪明，银鞍照白马，飒沓如流星";
-        self.rmodel.replyrighturl = @"";
-        self.rmodel.replytimestr = @"12:30";
-        
-        [self.replyarr addObject:self.rmodel];
+    NSString *tokenstr = [[NSString alloc] init];
+    NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
+    NSString *token = [userdefat objectForKey:@"tokenuser"];
+    if (token.length==0) {
+        tokenstr = @"";
     }
+    else
+    {
+        tokenstr = token;
+    }
+    NSLog(@"token--------%@",tokenstr);
     
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.replytable reloadData];
-    });
+    [AFManager getReqURL:[NSString stringWithFormat:xiaoxitongzhijk,@"d277155062b89da9c09c53f4975d9f6d",@"1"] block:^(id infor) {
+        NSLog(@"infor------------%@",infor);
+        if ([[infor objectForKey:@"code"] intValue]==1) {
+            NSArray *ditarr = [infor objectForKey:@"info"];
+            for (int i = 0; i<ditarr.count; i++) {
+                NSDictionary *dit = [ditarr objectAtIndex:i];
+                self.rmodel = [[replyModel alloc] init];
+                self.rmodel.replyurl = dit[@"user_icon"];
+                self.rmodel.replyname = dit[@"publisher_nickname"];
+                self.rmodel.replytext = dit[@"comment_content"];
+                self.rmodel.replyrighturl = dit[@""];
+                [self.replyarr addObject:self.rmodel];
+            }
+        }
+        else if ([[infor objectForKey:@"code"] intValue]==2)
+        {
+            NSLog(@"没有查询到任何数据");
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.replytable reloadData];
+        });
+    } errorblock:^(NSError *error) {
+        
+    }];
+    
+//    for (int i = 0; i<10; i++) {
+//        self.rmodel = [[replyModel alloc] init];
+//        self.rmodel.replyurl = @"";
+//        self.rmodel.replyname = @"今日牛评";
+//        self.rmodel.replytext = @"赵客曼胡樱，吴钩霜雪明，银鞍照白马，飒沓如流星";
+//        self.rmodel.replyrighturl = @"";
+//        self.rmodel.replytimestr = @"12:30";
+//        
+//        [self.replyarr addObject:self.rmodel];
+//    }
+//    
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//        [self.replytable reloadData];
+//    });
 }
 
 #pragma mark - getters

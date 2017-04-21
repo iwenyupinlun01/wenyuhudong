@@ -10,9 +10,9 @@
 
 #import "systemCell.h"
 #import "UILabel+MultipleLines.h"
+#import "xitongModel.h"
 @interface systemCell()
-
-
+@property (nonatomic,strong) xitongModel *xitongmodel;
 @end
 
 @implementation systemCell
@@ -25,6 +25,7 @@
         //[self.contentView addSubview:self.titleLabel];
         [self.contentView addSubview:self.contentLabel];
         [self.contentView addSubview:self.timelabel];
+
     }
     return self;
 }
@@ -58,6 +59,13 @@
     }
     return _timelabel;
 }
+
+-(void)setcelldata:(xitongModel *)model
+{
+    self.xitongmodel = model;
+    self.timelabel.text = model.puttimestr;
+}
+
 
 - (void)layoutSubviewsWithText:(NSString *)text{
     CGSize textSize = [_contentLabel setText:text lines:QSTextDefaultLines andLineSpacing:QSTextLineSpacing constrainedToSize:CGSizeMake(DEVICE_WIDTH - 30,MAXFLOAT)];

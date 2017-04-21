@@ -12,6 +12,9 @@
 @interface messageViewController ()<UITableViewDataSource,UITableViewDelegate>
 @property (nonatomic,strong) UITableView *messagetable;
 @property (nonatomic,strong) NSArray *messagearr;
+
+@property (nonatomic,strong) NSString *num01;
+@property (nonatomic,strong) NSString *num02;
 @end
 
 static NSString *messageidentfid = @"messageidentfid";
@@ -29,8 +32,11 @@ static NSString *messageidentfid = @"messageidentfid";
     self.title = @"消息通知";
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor wjColorFloat:@"333333"]}];
     self.messagetable.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    
+    [self loaddatafromweb];
     [self.view addSubview:self.messagetable];
     self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -53,6 +59,41 @@ static NSString *messageidentfid = @"messageidentfid";
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
     
 }
+
+#pragma mark - 实现方法
+
+-(void)loaddatafromweb
+{
+    NSString *tokenstr = [[NSString alloc] init];
+    NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
+    NSString *token = [userdefat objectForKey:@"tokenuser"];
+    if (token.length==0) {
+        tokenstr = @"";
+    }
+    else
+    {
+        tokenstr = token;
+    }
+    NSLog(@"token--------%@",tokenstr);
+    
+    [AFManager getReqURL:[NSString stringWithFormat:tongzhixianxishuliang,tokenstr] block:^(id infor) {
+        NSLog(@"info---------%@",infor);
+        if ([[infor objectForKey:@"code"] intValue]==1) {
+            NSDictionary *dic = [infor objectForKey:@"info"];
+            NSString *infor = [dic objectForKey:@"inform"];
+            NSString *system_inform = [dic objectForKey:@"system_inform"];
+            _num01 = infor;
+            _num02 = system_inform;
+        }
+        
+        NSLog(@"num01-------%@",_num02);
+        [self.messagetable reloadData];
+    } errorblock:^(NSError *error) {
+        
+    }];
+}
+
+
 #pragma mark - getters
 
 
@@ -93,6 +134,32 @@ static NSString *messageidentfid = @"messageidentfid";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:messageidentfid];
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:messageidentfid];
+    }
+    UILabel *numlab = [[UILabel alloc] init];
+    numlab.frame = CGRectMake(DEVICE_WIDTH-60, 20, 20, 20);
+    numlab.backgroundColor = [UIColor redColor];
+    numlab.textAlignment = NSTextAlignmentCenter;
+    numlab.layer.masksToBounds = YES;
+    numlab.layer.cornerRadius = 10;
+    numlab.textColor = [UIColor whiteColor];
+    
+    if (indexPath.row==0) {
+        numlab.text = _num01;
+        if ([_num01 isEqualToString:@"0"]) {
+            
+        }else
+        {
+            [cell.contentView addSubview:numlab];
+        }
+    }
+    if (indexPath.row==1) {
+        numlab.text = _num02;
+        if ([_num02 isEqualToString:@"0"]) {
+            
+        }else
+        {
+           [cell.contentView addSubview:numlab];
+        }
     }
     
     cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;

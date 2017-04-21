@@ -70,7 +70,7 @@ static NSString *infocellidentfid = @"infocellidentfid";
         _infotableview.dataSource = self;
         _infotableview.delegate = self;
         _infotableview.tableHeaderView = self.headview;
-        _infotableview.scrollEnabled = NO;
+        //_infotableview.scrollEnabled = NO;
     }
     return _infotableview;
 }
@@ -80,7 +80,7 @@ static NSString *infocellidentfid = @"infocellidentfid";
     if(!_imgarr)
     {
         _imgarr = [[NSArray alloc] init];
-        _imgarr = @[@"矩形-39",@"帮助与反馈",@"矩形-39"];
+        _imgarr = @[@"矩形-39",@"帮助与反馈",@"设置"];
     }
     return _imgarr;
 }
@@ -127,6 +127,10 @@ static NSString *infocellidentfid = @"infocellidentfid";
     infoCell *cell = [tableView dequeueReusableCellWithIdentifier:infocellidentfid];
     if (!cell) {
         cell = [[infoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:infocellidentfid];
+    }
+    if (indexPath.row==0) {
+        
+        [cell.contentView addSubview:cell.numlab];
     }
     cell.leftimg.image = [UIImage imageNamed:self.imgarr[indexPath.row]];
     cell.textlab.text = self.textarr[indexPath.row];

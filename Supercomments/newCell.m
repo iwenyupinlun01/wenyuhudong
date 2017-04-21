@@ -58,8 +58,6 @@
         _namelab = [[UILabel alloc] init];
         _namelab.textColor = [UIColor wjColorFloat:@"C7C7CD"];
         _namelab.font = [UIFont systemFontOfSize:14*FX];
-        _namelab.text = @"姓名";
-        
     }
     return _namelab;
 }
@@ -71,7 +69,6 @@
         _fromlab = [[UILabel alloc] init];
         _fromlab.textColor = [UIColor wjColorFloat:@"C7C7CD"];
         _fromlab.font = [UIFont systemFontOfSize:12*FX];
-        _fromlab.text = @"来自网易老司机的评论";
         _fromlab.textAlignment = NSTextAlignmentRight;
     }
     return _fromlab;
@@ -188,6 +185,14 @@
     self.commbtn.textlab.text = model.pinglunstr;
     self.zbtn.zanlab.text = model.dianzanstr;
    
+    if (model.isdianzan==NO) {
+        self.zbtn.zanimg.image = [UIImage imageNamed:@"点赞-"];
+    }
+    else
+    {
+        self.zbtn.zanimg.image = [UIImage imageNamed:@"点赞-拷贝"];
+    }
+    
     NSString *str=model.timestr;//时间戳
     [self datetime:str];
     

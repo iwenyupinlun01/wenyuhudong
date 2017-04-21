@@ -9,7 +9,7 @@
 #import "zanBtn.h"
 
 @interface zanBtn()
-@property (nonatomic,strong) UIImageView *zanimg;
+
 @end
 
 @implementation zanBtn
@@ -38,7 +38,7 @@
     if(!_zanimg)
     {
         _zanimg = [[UIImageView alloc]init];
-        _zanimg.image = [UIImage imageNamed:@"点赞-"];
+        //_zanimg.image = [UIImage imageNamed:@"点赞-"];
     }
     return _zanimg;
 }

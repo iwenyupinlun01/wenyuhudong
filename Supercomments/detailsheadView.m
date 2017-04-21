@@ -8,6 +8,8 @@
 
 #import "detailsheadView.h"
 #import "headModel.h"
+#import "YYPhotoGroupView.h"
+
 @interface detailsheadView()
 @property (nonatomic,strong) headModel *hmodel;
 @end
@@ -159,9 +161,25 @@
     if(!_headimg)
     {
         _headimg = [[UIImageView alloc] init];
-        _headimg.backgroundColor = [UIColor greenColor];
+        //_headimg.backgroundColor = [UIColor greenColor];
+        _headimg.userInteractionEnabled = YES;
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAction2)];
+        [_headimg addGestureRecognizer:tap];
+        
     }
     return _headimg;
 }
 
+- (void)tapAction2{
+    YYPhotoGroupItem *item = [YYPhotoGroupItem new];
+    item.thumbView         = _headimg;
+    item.largeImageURL     = [NSURL URLWithString:self.hmodel.imgurlstr];
+    YYPhotoGroupView *view = [[YYPhotoGroupView alloc] initWithGroupItems:@[item]];
+    UIView *toView         = [UIApplication sharedApplication].keyWindow.rootViewController.view;
+    [view presentFromImageView:_headimg
+                   toContainer:toView
+                      animated:YES completion:nil];
+    NSLog(@"233333333");
+    
+}
 @end

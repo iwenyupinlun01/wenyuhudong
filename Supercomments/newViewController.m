@@ -81,7 +81,20 @@ static NSString *newidentfid = @"newidentfid";
     
     [self.dataSource removeAllObjects];
     [self.dataarr removeAllObjects];
-    NSString *strurl = [NSString stringWithFormat:newVCload,@"1",@"1",@""];
+    NSString *tokenstr = [[NSString alloc] init];
+    NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
+    NSString *token = [userdefat objectForKey:@"tokenuser"];
+    if (token.length==0) {
+        tokenstr = @"";
+    }
+    else
+    {
+        tokenstr = token;
+    }
+    NSLog(@"token--------%@",token);
+    
+    
+    NSString *strurl = [NSString stringWithFormat:newVCload,@"1",@"1",tokenstr];
     [AFManager getReqURL:strurl block:^(id infor) {
         NSLog(@"infor=====%@",infor);
         NSLog(@"str====%@",strurl);
@@ -108,7 +121,7 @@ static NSString *newidentfid = @"newidentfid";
         [self.newtable reloadData];
        
     } errorblock:^(NSError *error) {
-        
+         [self.newtable.mj_header endRefreshing];
     }];
 
 //    for (int i = 0; i<10; i++) {
@@ -131,8 +144,21 @@ static NSString *newidentfid = @"newidentfid";
     pn ++;
     
     
+    NSString *tokenstr = [[NSString alloc] init];
+    NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
+    NSString *token = [userdefat objectForKey:@"tokenuser"];
+    if (token.length==0) {
+        tokenstr = @"";
+    }
+    else
+    {
+        tokenstr = token;
+    }
+    NSLog(@"token--------%@",token);
+    
     NSString *pnstr = [NSString stringWithFormat:@"%d",pn];
-    NSString *strurl = [NSString stringWithFormat:newVCload,pnstr,@"1",@""];
+    NSString *strurl = [NSString stringWithFormat:newVCload,pnstr,@"1",tokenstr];
+    
     [AFManager getReqURL:strurl block:^(id infor) {
         NSLog(@"infor=====%@",infor);
         NSLog(@"str====%@",strurl);
@@ -255,6 +281,10 @@ static NSString *newidentfid = @"newidentfid";
 {
     NSIndexPath *index = [self.newtable indexPathForCell:cell];
     NSLog(@"333===%ld   点赞",index.row);
+    
+    self.nmodel.isdianzan = YES;
+    
+    
 }
 
 //回复

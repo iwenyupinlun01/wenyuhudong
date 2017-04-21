@@ -19,4 +19,7 @@
 @property (nonatomic,strong) NSString *pinglunstr;
 @property (nonatomic,strong) NSString *newidstr;
 
+
+@property (nonatomic,assign) BOOL isdianzan;
+
 @end

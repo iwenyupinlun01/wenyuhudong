@@ -83,6 +83,7 @@
 		53E294471E9F49CA0034D4E7 /* YMTapGestureRecongnizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 53E294281E9F49CA0034D4E7 /* YMTapGestureRecongnizer.m */; };
 		53E294481E9F49CA0034D4E7 /* YMTextData.m in Sources */ = {isa = PBXBuildFile; fileRef = 53E2942A1E9F49CA0034D4E7 /* YMTextData.m */; };
 		53E2944C1E9F72930034D4E7 /* XWScanImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 53E2944B1E9F72930034D4E7 /* XWScanImage.m */; };
+		53E412F01EAA1C8E00EBC0CE /* xitongModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 53E412EF1EAA1C8E00EBC0CE /* xitongModel.m */; };
 		53E587841EA7651D004CB302 /* detailcellmodel.m in Sources */ = {isa = PBXBuildFile; fileRef = 53E587831EA7651D004CB302 /* detailcellmodel.m */; };
 		53E587871EA7672A004CB302 /* pinglunCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 53E587861EA7672A004CB302 /* pinglunCell.m */; };
 		53EC944A1E9DC1C400E03E07 /* hDisplayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 53EC94491E9DC1C400E03E07 /* hDisplayView.m */; };
@@ -275,6 +276,8 @@
 		53E2942A1E9F49CA0034D4E7 /* YMTextData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YMTextData.m; sourceTree = "<group>"; };
 		53E2944A1E9F72930034D4E7 /* XWScanImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XWScanImage.h; sourceTree = "<group>"; };
 		53E2944B1E9F72930034D4E7 /* XWScanImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XWScanImage.m; sourceTree = "<group>"; };
+		53E412EE1EAA1C8E00EBC0CE /* xitongModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xitongModel.h; sourceTree = "<group>"; };
+		53E412EF1EAA1C8E00EBC0CE /* xitongModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = xitongModel.m; sourceTree = "<group>"; };
 		53E587821EA7651D004CB302 /* detailcellmodel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = detailcellmodel.h; sourceTree = "<group>"; };
 		53E587831EA7651D004CB302 /* detailcellmodel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = detailcellmodel.m; sourceTree = "<group>"; };
 		53E587851EA7672A004CB302 /* pinglunCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pinglunCell.h; sourceTree = "<group>"; };
@@ -489,6 +492,8 @@
 				53619EBF1E976EBB007CC7AC /* UILabel+MultipleLines.m */,
 				53619EB91E9765D3007CC7AC /* replyModel.h */,
 				53619EBA1E9765D3007CC7AC /* replyModel.m */,
+				53E412EE1EAA1C8E00EBC0CE /* xitongModel.h */,
+				53E412EF1EAA1C8E00EBC0CE /* xitongModel.m */,
 			);
 			name = model;
 			sourceTree = "<group>";
@@ -1246,6 +1251,7 @@
 			files = (
 				53E2942C1E9F49CA0034D4E7 /* DDRichTextViewController.m in Sources */,
 				53E294441E9F49CA0034D4E7 /* YMReplyInputView.m in Sources */,
+				53E412F01EAA1C8E00EBC0CE /* xitongModel.m in Sources */,
 				53619EE41E98E0C7007CC7AC /* detailsheadView.m in Sources */,
 				53D48A831EA4D52F00E5ADA3 /* headModel.m in Sources */,
 				53E587871EA7672A004CB302 /* pinglunCell.m in Sources */,

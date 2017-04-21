@@ -9,9 +9,11 @@
 #import "systemViewController.h"
 #import "systemCell.h"
 #import "UIColor+BgColor.h"
+#import "xitongModel.h"
 @interface systemViewController ()<UITableViewDataSource,UITableViewDelegate,SWTableViewCellDelegate>
 @property (nonatomic,strong) UITableView *systemtableview;
-@property (nonatomic,strong)NSMutableArray *dataSource;
+@property (nonatomic,strong) NSMutableArray *dataSource;
+@property (nonatomic,strong) xitongModel *ximodel;
 @end
 static NSString * const kShowTextCellReuseIdentifier = @"QSShowTextCell";
 @implementation systemViewController
@@ -32,12 +34,8 @@ static NSString * const kShowTextCellReuseIdentifier = @"QSShowTextCell";
 
     self.navigationController.navigationBar.barTintColor = [UIColor wjColorFloat:@"F5F5F5"];
     
-    self.dataSource = [[NSMutableArray alloc]initWithObjects:
-                       @"1)我是一只小小小鸟,2)我是一只小小小鸟",
-                       @"1)我是一只小小小鸟,2)我是一只小小小鸟,3)我是一只小小小鸟,4)我是一只小小小鸟,5)我是一只小小小鸟,6)我是一只小小小鸟。",
-                       @"1)我是一只小小小鸟,2)我是一只小小小鸟,3)我是一只小小小鸟,4)我是一只小小小鸟,5)我是一只小小小鸟,6)我是一只小小小鸟,7)我是一只小小小鸟,8)我是一只小小小鸟,9)我是一只小小小鸟。",
-                       @"1)我是一只小小小鸟,2)我是一只小小小鸟,3)我是一只小小小鸟,4)我是一只小小小鸟,5)我是一只小小小鸟,6)我是一只小小小鸟,7)我是一只小小小鸟,8)我是一只小小小鸟,9)我是一只小小小鸟。10)我是一只小小小鸟,11)我是一只小小小鸟,12)我是一只小小小鸟。",nil];
-    
+    self.dataSource = [NSMutableArray array];
+    [self loaddatafromweb];
     [self.view addSubview:self.systemtableview];
 }
 
@@ -46,6 +44,42 @@ static NSString * const kShowTextCellReuseIdentifier = @"QSShowTextCell";
     // Dispose of any resources that can be recreated.
 }
 
+
+-(void)loaddatafromweb
+{
+    NSString *tokenstr = [[NSString alloc] init];
+    NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
+    NSString *token = [userdefat objectForKey:@"tokenuser"];
+    if (token.length==0) {
+        tokenstr = @"";
+    }
+    else
+    {
+        tokenstr = token;
+    }
+    NSLog(@"token--------%@",tokenstr);
+    [AFManager getReqURL:[NSString stringWithFormat:xitongtongzhi,tokenstr,@"1"] block:^(id infor) {
+        NSLog(@"info-------%@",infor);
+        if ([[infor objectForKey:@"code"] intValue]==1)
+        {
+            NSArray *dit = [infor objectForKey:@"info"];
+            for (int i = 0; i<dit.count; i++)
+            {
+                NSDictionary *dicarr = [dit objectAtIndex:i];
+                self.ximodel = [[xitongModel alloc] init];
+                self.ximodel.puttimestr = dicarr[@"pubtime"];
+                
+                NSString *concent = dicarr[@"inform_content"];
+                [self.dataSource addObject:concent];
+                
+            }
+        }
+        
+        [self.systemtableview reloadData];
+    } errorblock:^(NSError *error) {
+        
+    }];
+}
 
 -(void)viewWillAppear:(BOOL)animated{
     

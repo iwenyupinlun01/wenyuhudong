@@ -11,4 +11,5 @@
 @interface infoCell : UITableViewCell
 @property (nonatomic,strong) UIImageView *leftimg;
 @property (nonatomic,strong) UILabel *textlab;
+@property (nonatomic,strong) UILabel *numlab;
 @end
