@@ -17,6 +17,9 @@
 #import "headModel.h"
 #import "pinglunCell.h"
 #import "detailcellmodel.h"
+
+#import "sectionView.h"
+
 @interface detailsViewController ()<UITableViewDataSource,UITableViewDelegate>
 @property (nonatomic,assign) CGFloat height01;
 @property (nonatomic,assign) CGFloat pinglunhei;
@@ -28,6 +31,8 @@
 @property (nonatomic,strong) NSMutableArray *detalisarr;
 @property (nonatomic,strong) detailcellmodel *detailsmodel;
 @property (nonatomic,strong) NSMutableArray *cellcontarr;
+@property (nonatomic,strong) NSMutableArray *sonCommentarr;
+@property (nonatomic,strong) sectionView *secview;
 
 @end
 static NSString *detailsidentfid = @"detailsidentfid";
@@ -80,6 +85,7 @@ NSMutableArray * ymDataArray;
 {
     
     NSString *strurl = [NSString stringWithFormat:xiangqin,self.detalisidstr,@"1",@""];
+    
     [AFManager getReqURL:strurl block:^(id infor) {
         self.headm = [[headModel alloc] init];
         NSLog(@"info=---------------------%@",infor);
@@ -224,11 +230,10 @@ NSMutableArray * ymDataArray;
         }
         
         //cell部分
-        NSMutableArray *sonCommentarr = [NSMutableArray array];
         
         NSMutableArray *dtrarr = [NSMutableArray array];
         dtrarr = [dic objectForKey:@"all_comment"];
-        
+        self.sonCommentarr = [NSMutableArray array];
         NSLog(@"all_comment=========%@",dtrarr);
         for (int i = 0; i<dtrarr.count; i++) {
             NSDictionary *dicarr = [dtrarr objectAtIndex:i];
@@ -238,30 +243,20 @@ NSMutableArray * ymDataArray;
             self.detailsmodel.contstr = [dicarr objectForKey:@"content"];
             self.detailsmodel.pingarr = [dicarr objectForKey:@"sonComment"];
             
-            
-            NSDictionary *sonCommentdic = [NSDictionary dictionary];
             NSMutableArray *commarr = [NSMutableArray array];
             commarr = [dicarr objectForKey:@"sonComment"];
-            for (int j = 0; j<commarr.count; j++) {
-                sonCommentdic = [commarr objectAtIndex:j];
-                NSString *content = [sonCommentdic objectForKey:@"content"];
-                NSString *s_nickname = [sonCommentdic objectForKey:@"s_nickname"];
-                NSString *s_to_nickname = [sonCommentdic objectForKey:@"s_to_nickname"];
-                
-                [sonCommentarr addObject:content];
-                
-            }
             [self.cellcontarr addObject:[NSString stringWithFormat:@"%lu",(unsigned long)commarr.count]];
-            self.detailsmodel.pingluncontarr = self.cellcontarr;
             
-            
+            [self.sonCommentarr addObject:self.detailsmodel.pingarr];
+
             [self.detalisarr addObject:self.detailsmodel];
             
+
         }
         
         
         
-        NSLog(@"pinglunarr==========%@",self.detailsmodel.pingluncontarr);
+        NSLog(@"pinglunarr==========%@",self.cellcontarr);
         
         
         
@@ -290,12 +285,11 @@ NSMutableArray * ymDataArray;
     return _headview;
 }
 
-
 -(UITableView *)maintable
 {
     if(!_maintable)
     {
-        _maintable = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT-64)];
+        _maintable = [[UITableView alloc] initWithFrame:CGRectMake(0, -40, DEVICE_WIDTH, DEVICE_HEIGHT-24) style:UITableViewStyleGrouped];
         _maintable.dataSource = self;
         _maintable.delegate = self;
         _maintable.tableHeaderView = self.headview;
@@ -306,31 +300,79 @@ NSMutableArray * ymDataArray;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.detalisarr.count;
+    self.detailsmodel = self.detalisarr[section];
+    return self.detailsmodel.pingarr.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    detaolsCell *cell = [tableView dequeueReusableCellWithIdentifier:detailsidentfid];
+    pinglunCell *cell = [tableView dequeueReusableCellWithIdentifier:detailsidentfid];
     if (!cell) {
-        cell = [[detaolsCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:detailsidentfid];
+        cell = [[pinglunCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:detailsidentfid];
     }
-    [cell setcelldata:self.detalisarr[indexPath.row]];
-    _height01 = cell.hei;
+    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
-    [cell setCellClickBlock:^(NSString *a) {
-        
-        NSLog(@"qweqwe%@",a);
-    }];
+    _detailsmodel  = self.detalisarr[indexPath.section];
+    // 取车第indexPath.row这行对应的品牌名称
+    NSString *car = [_detailsmodel.pingarr[indexPath.row] objectForKey:@"content"];
+    // 设置cell显示的文字
+    cell.pinglunlab.text = car;
+    CGSize textSize = [cell.pinglunlab setText:car lines:QSTextDefaultLines2 andLineSpacing:QSTextLineSpacing constrainedToSize:CGSizeMake(DEVICE_WIDTH,MAXFLOAT)];
+    cell.pinglunlab.frame = CGRectMake(128/2*WIDTH_SCALE,  8*HEIGHT_SCALE, DEVICE_WIDTH -64*WIDTH_SCALE-14*WIDTH_SCALE, textSize.height);
+    cell.pinglunlab.font = [UIFont systemFontOfSize:14*FX];
     return cell;
+    
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return self.detalisarr.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 400;
+    _detailsmodel  = self.detalisarr[indexPath.section];
+    // 取车第indexPath.row这行对应的品牌名称
+    NSString *car = [_detailsmodel.pingarr[indexPath.row] objectForKey:@"content"];
+    return [pinglunCell cellHeightWithText:car] + 16*HEIGHT_SCALE;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    self.detailsmodel = self.detalisarr[section];
+    return  [sectionView cellHeightWithText:self.detailsmodel.contstr]+70;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 14;
+}
+
+- (nullable UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    self.secview = [[sectionView alloc] init];
+    self.secview.backgroundColor = [UIColor whiteColor];
+    [self.secview setcelldata:self.detalisarr[section]];
+    self.secview.layer.masksToBounds = YES;
+    //self.secview.layer.borderWidth = 1;
+    return _secview;
+    
+}
+
+- (nullable UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    UIView *view=[[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, 14)];
+    view.backgroundColor = [UIColor whiteColor];
+    UIView *lineview = [[UIView alloc] initWithFrame:CGRectMake(0, 14, DEVICE_WIDTH, 0.3)];
+    lineview.backgroundColor = [UIColor wjColorFloat:@"C7C7CD"];
+    [view addSubview:lineview];
+    return view;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSLog(@"点击cell");
+}
 #pragma mark - 实现方法
 
 -(void)backAction

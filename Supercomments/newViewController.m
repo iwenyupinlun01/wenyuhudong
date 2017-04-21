@@ -62,6 +62,7 @@ static NSString *newidentfid = @"newidentfid";
     [self.newtable.mj_header beginRefreshing];
     
 }
+
 - (void)addFooter
 {
     self.newtable.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(refreshLoadMore)];

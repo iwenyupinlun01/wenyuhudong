@@ -15,5 +15,5 @@
 
 @property (nonatomic,strong) NSMutableArray *pingarr;
 
-@property (nonatomic,strong) NSMutableArray *pingluncontarr;
+@property (nonatomic,assign) CGFloat sectionhei;
 @end

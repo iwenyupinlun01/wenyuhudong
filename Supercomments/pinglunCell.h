@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@class detailcellmodel;
 @interface pinglunCell : UITableViewCell
-
+@property (nonatomic,strong) UILabel *pinglunlab;
+-(void)setcelldata:(detailcellmodel *)model;
++ (CGFloat)cellHeightWithText:(NSString *)text;
 @end

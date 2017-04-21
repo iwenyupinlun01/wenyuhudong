@@ -28,7 +28,7 @@ static NSString *pinglunidentfid = @"pinglunidentfid";
         [self.contentView addSubview:self.namelab];
         [self.contentView addSubview:self.timelab];
         [self.contentView addSubview:self.contentlab];
-        [self.contentView addSubview:self.pingluntable];
+        //[self.contentView addSubview:self.pingluntable];
         
     }
     return self;
@@ -56,7 +56,6 @@ static NSString *pinglunidentfid = @"pinglunidentfid";
     self.contentlab.frame = CGRectMake(14*WIDTH_SCALE+32*WIDTH_SCALE+14*WIDTH_SCALE,  60*HEIGHT_SCALE, textSize.width, textSize.height);
     _hei = textSize.height;
     
-    self.pinglunindexarr = model.pingluncontarr;
 }
 
 #pragma mark - getters
