@@ -26,6 +26,7 @@
 @property (nonatomic,strong) NSMutableArray *dataarr;
 @property (nonatomic,strong) newModel *nmodel;
 
+@property (nonatomic,strong) NSMutableArray *imgarr;
 
 @property (strong, nonatomic) NSMutableArray<newModel *> * menus;
 
@@ -43,6 +44,7 @@ static NSString *newidentfid = @"newidentfid";
     pn=1;
     self.dataSource = [NSMutableArray array];
     self.dataarr = [NSMutableArray array];
+    self.imgarr = [NSMutableArray array];
     // 3.1.下拉刷新
     [self addHeader];
     // 3.2.上拉加载更多
@@ -81,6 +83,7 @@ static NSString *newidentfid = @"newidentfid";
     
     [self.dataSource removeAllObjects];
     [self.dataarr removeAllObjects];
+    [self.imgarr removeAllObjects];
     NSString *tokenstr = [[NSString alloc] init];
     NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
     NSString *token = [userdefat objectForKey:@"tokenuser"];
@@ -112,9 +115,12 @@ static NSString *newidentfid = @"newidentfid";
             self.nmodel.pinglunstr = dicarr[@"reply_num"];
             self.nmodel.newidstr = dicarr[@"id"];
             self.nmodel.titlestr = dicarr[@"title"];
-            self.nmodel.fromstr = [NSString stringWithFormat:@"%@%@",@"被点赞",dicarr[@"support_count"]];
+            self.nmodel.fromstr =dicarr[@"support_count"];
+            self.nmodel.typestr = dicarr[@"type"];
+            self.nmodel.sifoudianzanstr = dicarr[@"is_support"];
             [self.dataSource addObject:self.nmodel.contentstr];
             [self.dataarr addObject:self.nmodel];
+            [self.imgarr addObject:self.nmodel.imgurlstr];
         }
         [self.newtable.mj_header endRefreshing];
         
@@ -176,9 +182,12 @@ static NSString *newidentfid = @"newidentfid";
             self.nmodel.pinglunstr = dicarr[@"reply_num"];
             self.nmodel.newidstr = dicarr[@"id"];
             self.nmodel.titlestr = dicarr[@"title"];
-            self.nmodel.fromstr = [NSString stringWithFormat:@"%@%@",@"被点赞",dicarr[@"support_count"]];
+            self.nmodel.fromstr =dicarr[@"support_count"];
+            self.nmodel.typestr = dicarr[@"type"];
+            self.nmodel.sifoudianzanstr = dicarr[@"is_support"];
             [self.dataSource addObject:self.nmodel.contentstr];
             [self.dataarr addObject:self.nmodel];
+            [self.imgarr addObject:self.nmodel.imgurlstr];
         }
         [self.newtable.mj_footer endRefreshing];
         
@@ -227,10 +236,13 @@ static NSString *newidentfid = @"newidentfid";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    if (self.nmodel.imgurlstr.length==0) {
+    NSString *imgstr = [NSString stringWithFormat:@"%@",self.imgarr[indexPath.row]];
+    NSString *contaststr = [NSString stringWithFormat:@"%@",self.dataSource[indexPath.row]];
+    
+    if (imgstr.length==0) {
         return [newCell cellHeightWithText:self.dataSource[indexPath.row]]+(16+14+16+4+20+16+16)*HEIGHT_SCALE;
     }
-    else if(self.nmodel.contentstr.length==0&&self.nmodel.imgurlstr.length!=0)
+    else if(contaststr.length==0&&imgstr.length!=0)
     {
         return (16+14+16+4+20+16+16+196)*HEIGHT_SCALE;
     }
@@ -269,10 +281,9 @@ static NSString *newidentfid = @"newidentfid";
     self.nmodel = self.dataarr[indexPath.row];
     NSString *str = self.nmodel.newidstr;
     NSLog(@"str======%@",str);
-
     detailsViewController *detailsvc = [[detailsViewController alloc] init];
     detailsvc.detalisidstr = str;
-    //[self.navigationController pushViewController:detailsvc animated:YES];
+    [self.navigationController pushViewController:detailsvc animated:YES];
     
 }
 
@@ -281,10 +292,7 @@ static NSString *newidentfid = @"newidentfid";
 {
     NSIndexPath *index = [self.newtable indexPathForCell:cell];
     NSLog(@"333===%ld   点赞",index.row);
-    
     self.nmodel.isdianzan = YES;
-    
-    
 }
 
 //回复

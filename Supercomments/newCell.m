@@ -93,7 +93,7 @@
     if(!_timelab)
     {
         _timelab = [[UILabel alloc] init];
-        _timelab.text = @"十分钟前";
+        //_timelab.text = @"十分钟前";
         _timelab.textColor = [UIColor wjColorFloat:@"C7C7CD"];
         _timelab.font = [UIFont systemFontOfSize:12*FX];
         
@@ -139,7 +139,7 @@
     {
         _tiview = [[titleView alloc] init];
        // _titlelab.titlelab.backgroundColor = [UIColor redColor];
-        _tiview.titlelab.text = @"这是标题";
+       // _tiview.titlelab.text = @"这是标题";
     }
     return _tiview;
 }
@@ -179,18 +179,31 @@
 {
     self.nmodel = model;
     self.namelab.text = model.namestr;
-    self.fromlab.text = model.fromstr;
+    //self.fromlab.text = model.fromstr;
     self.contentlab.text = model.contentstr;
     self.tiview.titlelab.text = model.titlestr;
     self.commbtn.textlab.text = model.pinglunstr;
     self.zbtn.zanlab.text = model.dianzanstr;
    
-    if (model.isdianzan==NO) {
+    
+    if ([model.sifoudianzanstr isEqualToString:@"0"]) {
         self.zbtn.zanimg.image = [UIImage imageNamed:@"点赞-"];
     }
     else
     {
         self.zbtn.zanimg.image = [UIImage imageNamed:@"点赞-拷贝"];
+    }
+    
+    if ([model.typestr isEqualToString:@"1"]) {
+        self.fromlab.text = [NSString stringWithFormat:@"%@%@%@",@"腾讯老司机已赞",model.fromstr,@"次"];
+    }else if ([model.typestr isEqualToString:@"2"])
+    {
+        self.fromlab.text = [NSString stringWithFormat:@"%@%@%@",@"网易老司机已赞",model.fromstr,@"次"];
+
+    }else
+    {
+        self.fromlab.text = [NSString stringWithFormat:@"%@%@%@",@"今日牛评老司机已赞",model.fromstr,@"次"];
+        
     }
     
     NSString *str=model.timestr;//时间戳
@@ -202,7 +215,21 @@
     CGFloat hei = textSize.height;
     
     
-   
+    
+//    if (model.imgurlstr.length==0) {
+//        [self.infoimg setHidden:YES];
+//        
+//    }
+//    else if(model.imgurlstr.length!=0&&model.contentstr.length==0)
+//    {
+//        [self.infoimg sd_setImageWithURL:[NSURL URLWithString:model.imgurlstr]];
+//        
+//        [self.infoimg setHidden:NO];
+//        
+//    }else
+//    {
+//        
+//    }
     
     [[SDWebImageDownloader sharedDownloader]downloadImageWithURL:[NSURL URLWithString:model.imgurlstr] options:SDWebImageDownloaderUseNSURLCache progress:^(NSInteger receivedSize, NSInteger expectedSize) {
             

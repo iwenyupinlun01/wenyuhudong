@@ -108,7 +108,6 @@
     if(!_timelab)
     {
         _timelab = [[UILabel alloc] init];
-        //_timelab.text = @"三分钟前";
         _timelab.textColor = [UIColor wjColorFloat:@"C7C7CD"];
         _timelab.font = [UIFont systemFontOfSize:13*FX];
     }
@@ -119,11 +118,11 @@
 {
     if(!_dianzanbtn)
     {
-        _dianzanbtn =  [zanBtn buttonWithType:UIButtonTypeCustom];;
+        _dianzanbtn =  [[zanBtn alloc] init];
+        _dianzanbtn.zanimg.image = [UIImage imageNamed:@"点赞-"];
     }
     return _dianzanbtn;
 }
-
 
 -(commentsBtn *)combtn
 {

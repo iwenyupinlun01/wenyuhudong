@@ -186,7 +186,7 @@
 {
     if(!_infobtn)
     {
-        _infobtn = [[UIButton alloc] initWithFrame:CGRectMake(15, 25, 30, 30)];
+        _infobtn = [[UIButton alloc] initWithFrame:CGRectMake(15, 20, 36, 36)];
         //_infobtn.backgroundColor = [UIColor greenColor];
         _infobtn.layer.masksToBounds = YES;
         _infobtn.layer.cornerRadius = 15;

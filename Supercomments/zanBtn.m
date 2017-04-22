@@ -27,7 +27,7 @@
 -(void)layoutSubviews
 {
     [super layoutSubviews];
-    self.zanimg.frame = CGRectMake(5*WIDTH_SCALE, 2*HEIGHT_SCALE, 18*WIDTH_SCALE, 18*WIDTH_SCALE);
+    self.zanimg.frame = CGRectMake(5*WIDTH_SCALE, 2*HEIGHT_SCALE, 16*WIDTH_SCALE, 16*WIDTH_SCALE);
     self.zanlab.frame = CGRectMake(25*WIDTH_SCALE, 2*HEIGHT_SCALE, 20*WIDTH_SCALE, 20*HEIGHT_SCALE);
 }
 
@@ -38,7 +38,7 @@
     if(!_zanimg)
     {
         _zanimg = [[UIImageView alloc]init];
-        //_zanimg.image = [UIImage imageNamed:@"点赞-"];
+//        _zanimg.image = [UIImage imageNamed:@"点赞-"];
     }
     return _zanimg;
 }
