@@ -14,6 +14,7 @@
 #import "newModel.h"
 #import "YYPhotoGroupView.h"
 #import "SureWebViewController.h"
+#import "loginViewController.h"
 @interface newViewController ()<UITableViewDataSource,UITableViewDelegate,mycellVdelegate>
 /** 用于加载下一页的参数(页码) */
 {
@@ -299,6 +300,18 @@ static NSString *newidentfid = @"newidentfid";
         NSLog(@"token--------%@",tokenstr);
         
         if (tokenstr.length==0) {
+            
+            UIAlertController *aletcontrol = [UIAlertController alertControllerWithTitle:@"提示" message:@"请登陆" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *action0 = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                
+            }];
+            UIAlertAction *action1 = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                loginViewController *loginvc = [[loginViewController alloc] init];
+                [self presentViewController:loginvc animated:YES completion:nil];
+            }];
+            [aletcontrol addAction:action0];
+            [aletcontrol addAction:action1];
+            [self presentViewController:aletcontrol animated:YES completion:nil];
             NSLog(@"请登陆");
         }
         else
@@ -309,23 +322,29 @@ static NSString *newidentfid = @"newidentfid";
                 NSLog(@"infor-------%@",infor);
                 NSString *code = [infor objectForKey:@"code"];
                 if ([code intValue]==1) {
+                    [MBProgressHUD showSuccess:@"成功"];
                     NSLog(@"成功");
                 }
                 else if ([code intValue]==0)
                 {
+                    [MBProgressHUD showSuccess:@"token错误"];
                     NSLog(@"token错误");
                 }
                 else if ([code intValue]==4)
                 {
+                    [MBProgressHUD showSuccess:@"抱歉您的账户被暂时限制了，无法进行此操作"];
                     NSLog(@"抱歉您的账户被暂时限制了，无法进行此操作");
                 }else if ([code intValue]==2100)
                 {
+                    [MBProgressHUD showSuccess:@"该牛评不存在或者被冻结"];
                     NSLog(@"该牛评不存在或者被冻结");
                 }
                 else
                 {
+                    [MBProgressHUD showSuccess:@"系统繁忙，请稍后再试"];
                     NSLog(@"系统繁忙，请稍后再试");
                 }
+
             }];
             self.nmodel.sifoudianzanstr = @"1";
             [self.newtable reloadData];
@@ -348,6 +367,18 @@ static NSString *newidentfid = @"newidentfid";
         
         if (tokenstr.length==0) {
             NSLog(@"请登陆");
+            UIAlertController *aletcontrol = [UIAlertController alertControllerWithTitle:@"提示" message:@"请登陆" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *action0 = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                
+            }];
+            UIAlertAction *action1 = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                loginViewController *loginvc = [[loginViewController alloc] init];
+                [self presentViewController:loginvc animated:YES completion:nil];
+            }];
+            [aletcontrol addAction:action0];
+            [aletcontrol addAction:action1];
+            [self presentViewController:aletcontrol animated:YES completion:nil];
+            
         }
         else
         {
@@ -356,21 +387,26 @@ static NSString *newidentfid = @"newidentfid";
                 NSLog(@"infor-------%@",infor);
                 NSString *code = [infor objectForKey:@"code"];
                 if ([code intValue]==1) {
+                    [MBProgressHUD showSuccess:@"成功"];
                     NSLog(@"成功");
                 }
                 else if ([code intValue]==0)
                 {
+                    [MBProgressHUD showSuccess:@"token错误"];
                     NSLog(@"token错误");
                 }
                 else if ([code intValue]==4)
                 {
+                    [MBProgressHUD showSuccess:@"抱歉您的账户被暂时限制了，无法进行此操作"];
                     NSLog(@"抱歉您的账户被暂时限制了，无法进行此操作");
                 }else if ([code intValue]==2100)
                 {
+                    [MBProgressHUD showSuccess:@"该牛评不存在或者被冻结"];
                     NSLog(@"该牛评不存在或者被冻结");
                 }
                 else
                 {
+                    [MBProgressHUD showSuccess:@"系统繁忙，请稍后再试"];
                     NSLog(@"系统繁忙，请稍后再试");
                 }
             }];

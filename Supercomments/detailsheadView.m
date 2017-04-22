@@ -119,7 +119,7 @@
     if(!_dianzanbtn)
     {
         _dianzanbtn =  [[zanBtn alloc] init];
-        _dianzanbtn.zanimg.image = [UIImage imageNamed:@"点赞-"];
+//        _dianzanbtn.zanimg.image = [UIImage imageNamed:@"点赞-"];
     }
     return _dianzanbtn;
 }

@@ -46,6 +46,7 @@
 		53619EE11E98D8DA007CC7AC /* detaolsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 53619EE01E98D8DA007CC7AC /* detaolsCell.m */; };
 		53619EE41E98E0C7007CC7AC /* detailsheadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 53619EE31E98E0C7007CC7AC /* detailsheadView.m */; };
 		5387A7B71EAB4F720057B518 /* SureWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5387A7B61EAB4F720057B518 /* SureWebViewController.m */; };
+		5387A7BA1EAB68900057B518 /* MBProgressHUD+XMG.m in Sources */ = {isa = PBXBuildFile; fileRef = 5387A7B91EAB68900057B518 /* MBProgressHUD+XMG.m */; };
 		539550E01EA0B508001A268C /* newModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 539550DF1EA0B508001A268C /* newModel.m */; };
 		539550E61EA0C638001A268C /* navViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 539550E51EA0C638001A268C /* navViewController.m */; };
 		539550EA1EA0D9A1001A268C /* AFManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 539550E91EA0D9A1001A268C /* AFManager.m */; };
@@ -200,6 +201,8 @@
 		53619EE31E98E0C7007CC7AC /* detailsheadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = detailsheadView.m; sourceTree = "<group>"; };
 		5387A7B51EAB4F720057B518 /* SureWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SureWebViewController.h; sourceTree = "<group>"; };
 		5387A7B61EAB4F720057B518 /* SureWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SureWebViewController.m; sourceTree = "<group>"; };
+		5387A7B81EAB68900057B518 /* MBProgressHUD+XMG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD+XMG.h"; sourceTree = "<group>"; };
+		5387A7B91EAB68900057B518 /* MBProgressHUD+XMG.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MBProgressHUD+XMG.m"; sourceTree = "<group>"; };
 		539550DE1EA0B508001A268C /* newModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = newModel.h; sourceTree = "<group>"; };
 		539550DF1EA0B508001A268C /* newModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = newModel.m; sourceTree = "<group>"; };
 		539550E11EA0C386001A268C /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
@@ -663,6 +666,8 @@
 		539550E31EA0C623001A268C /* utlis */ = {
 			isa = PBXGroup;
 			children = (
+				5387A7B81EAB68900057B518 /* MBProgressHUD+XMG.h */,
+				5387A7B91EAB68900057B518 /* MBProgressHUD+XMG.m */,
 				539550E71EA0D9A1001A268C /* AFManager */,
 				539550E41EA0C638001A268C /* navViewController.h */,
 				539550E51EA0C638001A268C /* navViewController.m */,
@@ -1326,6 +1331,7 @@
 				5387A7B71EAB4F720057B518 /* SureWebViewController.m in Sources */,
 				53619E6E1E962670007CC7AC /* aboutViewController.m in Sources */,
 				53E2942E1E9F49CA0034D4E7 /* NSArray+NSArray_ILExtension.m in Sources */,
+				5387A7BA1EAB68900057B518 /* MBProgressHUD+XMG.m in Sources */,
 				53E294471E9F49CA0034D4E7 /* YMTapGestureRecongnizer.m in Sources */,
 				53619E621E9611F4007CC7AC /* myinfoCell0.m in Sources */,
 				53E294451E9F49CA0034D4E7 /* YMShowImageView.m in Sources */,

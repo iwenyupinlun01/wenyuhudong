@@ -51,5 +51,8 @@
 #import "UILabel+MultipleLines.h"
 #import "AFManager.h"
 #import "MJRefresh.h"
+#import "MBProgressHUD+XMG.h"
+
+
 #ifdef __OBJC__
 #endif

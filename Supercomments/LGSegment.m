@@ -114,10 +114,11 @@
 -(void)creatBanner:(CGFloat)firstX{
     //初始化
     CALayer *LGLayer = [[CALayer alloc]init];
-    LGLayer.backgroundColor = LG_BannerColor.CGColor;
-    LGLayer.frame = CGRectMake(firstX, self.frame.size.height - 6, 60, 5);
+    //LGLayer.backgroundColor = LG_BannerColor.CGColor;
+    LGLayer.backgroundColor = [UIColor wjColorFloat:@"FFFFFF"].CGColor;
+    LGLayer.frame = CGRectMake(firstX, self.frame.size.height - 9, 7, 7);
     // 设定它的frame
-    LGLayer.cornerRadius = 4;// 圆角处理
+    LGLayer.cornerRadius = 3.5;// 圆角处理
     [self.layer addSublayer:LGLayer]; // 增加到UIView的layer上面
     self.LGLayer = LGLayer;
     
@@ -215,18 +216,27 @@
     switch (btn.tag) {
         case 1:
             [bt1 setTitleColor:[UIColor wjColorFloat:@"FFFFFF"] forState:UIControlStateNormal];
-            [bt2 setTitleColor:[UIColor wjColorFloat:@"E8E8E8"] forState:UIControlStateNormal];
-            [bt3 setTitleColor:[UIColor wjColorFloat:@"E8E8E8"] forState:UIControlStateNormal];
+            bt1.titleLabel.font = [UIFont systemFontOfSize:18];
+            [bt2 setTitleColor:[UIColor wjColorFloat:@"F5F5F5"] forState:UIControlStateNormal];
+             bt2.titleLabel.font = [UIFont systemFontOfSize:16];
+            [bt3 setTitleColor:[UIColor wjColorFloat:@"F5F5F5"] forState:UIControlStateNormal];
+             bt3.titleLabel.font = [UIFont systemFontOfSize:16];
             break;
         case 2:
-            [bt1 setTitleColor:[UIColor wjColorFloat:@"E8E8E8"] forState:UIControlStateNormal];
+            [bt1 setTitleColor:[UIColor wjColorFloat:@"F5F5F5"] forState:UIControlStateNormal];
+             bt1.titleLabel.font = [UIFont systemFontOfSize:16];
             [bt2 setTitleColor:[UIColor wjColorFloat:@"FFFFFF"] forState:UIControlStateNormal];
-            [bt3 setTitleColor:[UIColor wjColorFloat:@"E8E8E8"] forState:UIControlStateNormal];
+             bt2.titleLabel.font = [UIFont systemFontOfSize:18];
+            [bt3 setTitleColor:[UIColor wjColorFloat:@"F5F5F5"] forState:UIControlStateNormal];
+             bt3.titleLabel.font = [UIFont systemFontOfSize:18];
             break;
         case 3:
-            [bt1 setTitleColor:[UIColor wjColorFloat:@"E8E8E8"] forState:UIControlStateNormal];
-            [bt2 setTitleColor:[UIColor wjColorFloat:@"E8E8E8"] forState:UIControlStateNormal];
+            [bt1 setTitleColor:[UIColor wjColorFloat:@"F5F5F5"] forState:UIControlStateNormal];
+             bt1.titleLabel.font = [UIFont systemFontOfSize:16];
+            [bt2 setTitleColor:[UIColor wjColorFloat:@"F5F5F5"] forState:UIControlStateNormal];
+             bt2.titleLabel.font = [UIFont systemFontOfSize:16];
             [bt3 setTitleColor:[UIColor wjColorFloat:@"FFFFFF"] forState:UIControlStateNormal];
+             bt3.titleLabel.font = [UIFont systemFontOfSize:18];
             break;
             
         default:
