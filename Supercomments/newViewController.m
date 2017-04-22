@@ -272,7 +272,7 @@ static NSString *newidentfid = @"newidentfid";
 
     detailsViewController *detailsvc = [[detailsViewController alloc] init];
     detailsvc.detalisidstr = str;
-    [self.navigationController pushViewController:detailsvc animated:YES];
+    //[self.navigationController pushViewController:detailsvc animated:YES];
     
 }
 
