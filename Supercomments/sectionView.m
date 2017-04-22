@@ -43,6 +43,7 @@
     self.timelab.text = model.timestr;
     self.contentlab.text = model.contstr;
     
+    [self.picimg sd_setImageWithURL:[NSURL URLWithString:model.imgurlstr] placeholderImage:[UIImage imageNamed:@"头像默认图"]];
     CGSize textSize = [_contentlab setText:_contentlab.text lines:QSTextDefaultLines andLineSpacing:QSTextLineSpacing constrainedToSize:CGSizeMake(DEVICE_WIDTH - 94*WIDTH_SCALE-14*WIDTH_SCALE,MAXFLOAT)];
     self.contentlab.frame = CGRectMake(14*WIDTH_SCALE+32*WIDTH_SCALE+14*WIDTH_SCALE,  60*HEIGHT_SCALE, textSize.width, textSize.height);
     _hei = textSize.height;
@@ -58,7 +59,7 @@
     if(!_picimg)
     {
         _picimg = [[UIImageView alloc] init];
-        _picimg.backgroundColor = [UIColor orangeColor];
+       // _picimg.backgroundColor = [UIColor orangeColor];
         _picimg.layer.masksToBounds = YES;
         _picimg.layer.cornerRadius = 16*WIDTH_SCALE;
     }

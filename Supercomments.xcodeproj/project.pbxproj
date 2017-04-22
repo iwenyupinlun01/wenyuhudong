@@ -45,6 +45,7 @@
 		53619EDE1E98D283007CC7AC /* detailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 53619EDD1E98D283007CC7AC /* detailsViewController.m */; };
 		53619EE11E98D8DA007CC7AC /* detaolsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 53619EE01E98D8DA007CC7AC /* detaolsCell.m */; };
 		53619EE41E98E0C7007CC7AC /* detailsheadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 53619EE31E98E0C7007CC7AC /* detailsheadView.m */; };
+		5387A7B71EAB4F720057B518 /* SureWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5387A7B61EAB4F720057B518 /* SureWebViewController.m */; };
 		539550E01EA0B508001A268C /* newModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 539550DF1EA0B508001A268C /* newModel.m */; };
 		539550E61EA0C638001A268C /* navViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 539550E51EA0C638001A268C /* navViewController.m */; };
 		539550EA1EA0D9A1001A268C /* AFManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 539550E91EA0D9A1001A268C /* AFManager.m */; };
@@ -197,6 +198,8 @@
 		53619EE01E98D8DA007CC7AC /* detaolsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = detaolsCell.m; sourceTree = "<group>"; };
 		53619EE21E98E0C7007CC7AC /* detailsheadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = detailsheadView.h; sourceTree = "<group>"; };
 		53619EE31E98E0C7007CC7AC /* detailsheadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = detailsheadView.m; sourceTree = "<group>"; };
+		5387A7B51EAB4F720057B518 /* SureWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SureWebViewController.h; sourceTree = "<group>"; };
+		5387A7B61EAB4F720057B518 /* SureWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SureWebViewController.m; sourceTree = "<group>"; };
 		539550DE1EA0B508001A268C /* newModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = newModel.h; sourceTree = "<group>"; };
 		539550DF1EA0B508001A268C /* newModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = newModel.m; sourceTree = "<group>"; };
 		539550E11EA0C386001A268C /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
@@ -648,6 +651,15 @@
 			name = model;
 			sourceTree = "<group>";
 		};
+		5387A7B41EAB4F590057B518 /* webview */ = {
+			isa = PBXGroup;
+			children = (
+				5387A7B51EAB4F720057B518 /* SureWebViewController.h */,
+				5387A7B61EAB4F720057B518 /* SureWebViewController.m */,
+			);
+			name = webview;
+			sourceTree = "<group>";
+		};
 		539550E31EA0C623001A268C /* utlis */ = {
 			isa = PBXGroup;
 			children = (
@@ -702,6 +714,7 @@
 			isa = PBXGroup;
 			children = (
 				539550E31EA0C623001A268C /* utlis */,
+				5387A7B41EAB4F590057B518 /* webview */,
 				53AEBE4B1E9496A700280F70 /* home首页 */,
 				53AEBE5D1E94D1F300280F70 /* 最新 */,
 				53AEBE5E1E94D68500280F70 /* 最热 */,
@@ -1310,6 +1323,7 @@
 				53EC944A1E9DC1C400E03E07 /* hDisplayView.m in Sources */,
 				53619EB51E964A52007CC7AC /* replyCell.m in Sources */,
 				53619ED41E988B6C007CC7AC /* commentsBtn.m in Sources */,
+				5387A7B71EAB4F720057B518 /* SureWebViewController.m in Sources */,
 				53619E6E1E962670007CC7AC /* aboutViewController.m in Sources */,
 				53E2942E1E9F49CA0034D4E7 /* NSArray+NSArray_ILExtension.m in Sources */,
 				53E294471E9F49CA0034D4E7 /* YMTapGestureRecongnizer.m in Sources */,

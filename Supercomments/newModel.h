@@ -20,8 +20,8 @@
 @property (nonatomic,strong) NSString *newidstr;
 @property (nonatomic,strong) NSString *typestr;
 @property (nonatomic,strong) NSString *sifoudianzanstr;
-
-
+@property (nonatomic,strong) NSString *objidstr;
+@property (nonatomic,strong) NSString *weburlstr;
 
 @property (nonatomic,assign) BOOL isdianzan;
 

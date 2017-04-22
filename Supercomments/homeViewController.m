@@ -75,7 +75,7 @@
             NSDictionary *dic = [infor objectForKey:@"info"];
             //NSString *urlstr = [dic objectForKey:@"headPath"];
             NSString *urlstr = @"http://www.qqbody.com/uploads/allimg/201401/09-045302_580.jpg";
-
+            
             [self.infobtn sd_setImageWithURL:[NSURL URLWithString:urlstr] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"未登录"]];
             //[self.infobtn sd_setImageWithURL:[NSURL URLWithString:urlstr] forState:normal];
         }

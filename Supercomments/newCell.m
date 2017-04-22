@@ -140,6 +140,12 @@
         _tiview = [[titleView alloc] init];
        // _titlelab.titlelab.backgroundColor = [UIColor redColor];
        // _tiview.titlelab.text = @"这是标题";
+        
+//        UITapGestureRecognizer*tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:selfaction:@selector(Actiondo:)];
+        
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(Actiondo)];
+        
+        [_tiview addGestureRecognizer:tapGesture];
     }
     return _tiview;
 }
@@ -179,9 +185,8 @@
 {
     self.nmodel = model;
     self.namelab.text = model.namestr;
-    //self.fromlab.text = model.fromstr;
     self.contentlab.text = model.contentstr;
-    self.tiview.titlelab.text = model.titlestr;
+    self.tiview.titlelab.text = [NSString stringWithFormat:@"%@%@",@"标题: ",model.titlestr];
     self.commbtn.textlab.text = model.pinglunstr;
     self.zbtn.zanlab.text = model.dianzanstr;
    
@@ -215,22 +220,6 @@
     CGFloat hei = textSize.height;
     
     
-    
-//    if (model.imgurlstr.length==0) {
-//        [self.infoimg setHidden:YES];
-//        
-//    }
-//    else if(model.imgurlstr.length!=0&&model.contentstr.length==0)
-//    {
-//        [self.infoimg sd_setImageWithURL:[NSURL URLWithString:model.imgurlstr]];
-//        
-//        [self.infoimg setHidden:NO];
-//        
-//    }else
-//    {
-//        
-//    }
-    
     [[SDWebImageDownloader sharedDownloader]downloadImageWithURL:[NSURL URLWithString:model.imgurlstr] options:SDWebImageDownloaderUseNSURLCache progress:^(NSInteger receivedSize, NSInteger expectedSize) {
             
         } completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished) {
@@ -246,7 +235,9 @@
                 CGRect rect = CGRectMake(14*WIDTH_SCALE, (16+14+textSize.height+16)*HEIGHT_SCALE, width, 196*HEIGHT_SCALE);//创建矩形框
                 
                 _infoimg.image = [UIImage imageWithCGImage:CGImageCreateWithImageInRect([image CGImage] ,rect)];
-                self.infoimg.image = image;
+                
+                //self.infoimg.image = image;
+                [self.infoimg sd_setImageWithURL:[NSURL URLWithString:self.nmodel.imgurlstr] placeholderImage:[UIImage imageNamed:@"默认图"]];
                 
                 self.infoimg.frame =CGRectMake(14*WIDTH_SCALE, (16+14)*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 196*HEIGHT_SCALE);
                 
@@ -258,8 +249,8 @@
                 CGRect rect = CGRectMake(14*WIDTH_SCALE, (16+14+textSize.height+16)*HEIGHT_SCALE, width, 196*HEIGHT_SCALE);//创建矩形框
                 
                 _infoimg.image = [UIImage imageWithCGImage:CGImageCreateWithImageInRect([image CGImage] ,rect)];
-                self.infoimg.image = image;
-                
+               // self.infoimg.image = image;
+                [self.infoimg sd_setImageWithURL:[NSURL URLWithString:self.nmodel.imgurlstr] placeholderImage:[UIImage imageNamed:@"默认图"]];
                 self.infoimg.frame =CGRectMake(14*WIDTH_SCALE, (16+14+hei+14)*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 196*HEIGHT_SCALE);
                 
                 [self.infoimg setHidden:NO];
@@ -297,6 +288,12 @@
 
     [self.delegate myTabVClick2:self];
 }
+
+-(void)Actiondo
+{
+    [self.delegate myTabVClick3:self];
+}
+
 
 -(void)datetime:(NSString *)datestr
 {

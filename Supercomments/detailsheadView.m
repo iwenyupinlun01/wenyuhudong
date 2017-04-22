@@ -160,7 +160,6 @@
     if(!_headimg)
     {
         _headimg = [[UIImageView alloc] init];
-        //_headimg.backgroundColor = [UIColor greenColor];
         _headimg.userInteractionEnabled = YES;
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAction2)];
         [_headimg addGestureRecognizer:tap];

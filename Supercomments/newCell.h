@@ -18,7 +18,7 @@
 
 -(void)myTabVClick1:(UITableViewCell *)cell;
 -(void)myTabVClick2:(UITableViewCell *)cell;
-
+-(void)myTabVClick3:(UITableViewCell *)cell;
 @end
 
 

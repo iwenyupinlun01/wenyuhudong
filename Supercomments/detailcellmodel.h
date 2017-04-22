@@ -12,8 +12,15 @@
 @property (nonatomic,strong) NSString *namestr;
 @property (nonatomic,strong) NSString *timestr;
 @property (nonatomic,strong) NSString *contstr;
+@property (nonatomic,strong) NSString *imgurlstr;
+
 
 @property (nonatomic,strong) NSMutableArray *pingarr;
+
+@property (nonatomic,strong) NSMutableArray *name01arr;
+@property (nonatomic,strong) NSMutableArray *name02arr;
+@property (nonatomic,strong) NSMutableArray *idarr01;
+@property (nonatomic,strong) NSMutableArray *idarr02;
 
 @property (nonatomic,assign) CGFloat sectionhei;
 @end

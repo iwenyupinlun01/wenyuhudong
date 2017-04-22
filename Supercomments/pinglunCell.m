@@ -57,7 +57,6 @@
     if(!_pinglunlab)
     {
         _pinglunlab = [[UILabel alloc] init];
-        //_pinglunlab.backgroundColor = [UIColor wjColorFloat:@"F4F5F6"];
     }
     return _pinglunlab;
 }

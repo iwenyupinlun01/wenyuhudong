@@ -13,13 +13,13 @@
 #import "XWScanImage.h"
 #import "newModel.h"
 #import "YYPhotoGroupView.h"
-
+#import "SureWebViewController.h"
 @interface newViewController ()<UITableViewDataSource,UITableViewDelegate,mycellVdelegate>
 /** 用于加载下一页的参数(页码) */
 {
     int pn;
 }
-
+ 
 @property (nonatomic,strong) UITableView *newtable;
 @property (nonatomic,strong) UIImageView *demoimg;
 @property (nonatomic,strong) NSMutableArray *dataSource;
@@ -38,8 +38,6 @@ static NSString *newidentfid = @"newidentfid";
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor whiteColor];
-    
-
     
     pn=1;
     self.dataSource = [NSMutableArray array];
@@ -109,7 +107,7 @@ static NSString *newidentfid = @"newidentfid";
             self.nmodel.contentstr = dicarr[@"content"];
             self.nmodel.timestr = dicarr[@"create_time"];
             self.nmodel.imgurlstr = dicarr[@"images"];
-            //self.nmodel.imgurlstr = @"http://pic17.nipic.com/20111018/4132236_105939280314_2.jpg";
+            //self.nmodel.imgurlstr = @"http://dl.bizhi.sogou.com/images/2012/03/14/124196.jpg";
             self.nmodel.namestr = dicarr[@"name"];
             self.nmodel.dianzanstr = dicarr[@"support_num"];
             self.nmodel.pinglunstr = dicarr[@"reply_num"];
@@ -118,6 +116,7 @@ static NSString *newidentfid = @"newidentfid";
             self.nmodel.fromstr =dicarr[@"support_count"];
             self.nmodel.typestr = dicarr[@"type"];
             self.nmodel.sifoudianzanstr = dicarr[@"is_support"];
+            self.nmodel.weburlstr = dicarr[@"url"];
             [self.dataSource addObject:self.nmodel.contentstr];
             [self.dataarr addObject:self.nmodel];
             [self.imgarr addObject:self.nmodel.imgurlstr];
@@ -129,21 +128,6 @@ static NSString *newidentfid = @"newidentfid";
     } errorblock:^(NSError *error) {
          [self.newtable.mj_header endRefreshing];
     }];
-
-//    for (int i = 0; i<10; i++) {
-//        self.nmodel = [[newModel alloc] init];
-//        self.nmodel.contentstr = @"对空射击诶积极的司法解释";
-//        
-//        self.nmodel.timestr = @"12999291992";
-//        self.nmodel.imgurlstr = @"http://pic17.nipic.com/20111018/4132236_105939280314_2.jpg";
-//        self.nmodel.namestr = @"name";
-//        self.nmodel.titlestr = @"title";
-//        [self.dataSource addObject:self.nmodel.contentstr];
-//        [self.dataarr addObject:self.nmodel];
-//    }
-//    [self.newtable.mj_header endRefreshing];
-//    
-//    [self.newtable reloadData];
     
 }
 - (void)footerRefreshEndAction {
@@ -185,6 +169,7 @@ static NSString *newidentfid = @"newidentfid";
             self.nmodel.fromstr =dicarr[@"support_count"];
             self.nmodel.typestr = dicarr[@"type"];
             self.nmodel.sifoudianzanstr = dicarr[@"is_support"];
+            self.nmodel.weburlstr = dicarr[@"url"];
             [self.dataSource addObject:self.nmodel.contentstr];
             [self.dataarr addObject:self.nmodel];
             [self.imgarr addObject:self.nmodel.imgurlstr];
@@ -292,7 +277,108 @@ static NSString *newidentfid = @"newidentfid";
 {
     NSIndexPath *index = [self.newtable indexPathForCell:cell];
     NSLog(@"333===%ld   点赞",index.row);
-    self.nmodel.isdianzan = YES;
+    
+    
+    self.nmodel = [[newModel alloc] init];
+    self.nmodel = self.dataarr[index.row];
+    
+    NSString *dianzanstr = self.nmodel.sifoudianzanstr;
+    NSLog(@"dianzanstr--------%@",dianzanstr);
+    if ([dianzanstr isEqualToString:@"0"]) {
+
+        NSString *tokenstr = [[NSString alloc] init];
+        NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
+        NSString *token = [userdefat objectForKey:@"tokenuser"];
+        if (token.length==0) {
+            tokenstr = @"";
+        }
+        else
+        {
+            tokenstr = token;
+        }
+        NSLog(@"token--------%@",tokenstr);
+        
+        if (tokenstr.length==0) {
+            NSLog(@"请登陆");
+        }
+        else
+        {
+            
+            NSDictionary *reqdic = @{@"token":tokenstr,@"object_id":self.nmodel.newidstr,@"status":dianzanstr,@"type":@"1"};
+            [AFManager postReqURL:dianzanstr reqBody:reqdic block:^(id infor) {
+                NSLog(@"infor-------%@",infor);
+                NSString *code = [infor objectForKey:@"code"];
+                if ([code intValue]==1) {
+                    NSLog(@"成功");
+                }
+                else if ([code intValue]==0)
+                {
+                    NSLog(@"token错误");
+                }
+                else if ([code intValue]==4)
+                {
+                    NSLog(@"抱歉您的账户被暂时限制了，无法进行此操作");
+                }else if ([code intValue]==2100)
+                {
+                    NSLog(@"该牛评不存在或者被冻结");
+                }
+                else
+                {
+                    NSLog(@"系统繁忙，请稍后再试");
+                }
+            }];
+            self.nmodel.sifoudianzanstr = @"1";
+            [self.newtable reloadData];
+        }
+        
+    }
+    else
+    {
+        NSString *tokenstr = [[NSString alloc] init];
+        NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
+        NSString *token = [userdefat objectForKey:@"tokenuser"];
+        if (token.length==0) {
+            tokenstr = @"";
+        }
+        else
+        {
+            tokenstr = token;
+        }
+        NSLog(@"token--------%@",tokenstr);
+        
+        if (tokenstr.length==0) {
+            NSLog(@"请登陆");
+        }
+        else
+        {
+            NSDictionary *reqdic = @{@"token":tokenstr,@"object_id":self.nmodel.newidstr,@"status":dianzanstr,@"type":@"1"};
+            [AFManager postReqURL:dianzanstr reqBody:reqdic block:^(id infor) {
+                NSLog(@"infor-------%@",infor);
+                NSString *code = [infor objectForKey:@"code"];
+                if ([code intValue]==1) {
+                    NSLog(@"成功");
+                }
+                else if ([code intValue]==0)
+                {
+                    NSLog(@"token错误");
+                }
+                else if ([code intValue]==4)
+                {
+                    NSLog(@"抱歉您的账户被暂时限制了，无法进行此操作");
+                }else if ([code intValue]==2100)
+                {
+                    NSLog(@"该牛评不存在或者被冻结");
+                }
+                else
+                {
+                    NSLog(@"系统繁忙，请稍后再试");
+                }
+            }];
+            self.nmodel.sifoudianzanstr = @"0";
+            [self.newtable reloadData];
+        }
+        
+    }
 }
 
 //回复
@@ -301,7 +387,20 @@ static NSString *newidentfid = @"newidentfid";
     NSIndexPath *index = [self.newtable indexPathForCell:cell];
     NSLog(@"333===%ld   回复",index.row);
 }
-
-
+//跳转网页
+-(void)myTabVClick3:(UITableViewCell *)cell
+{
+    NSIndexPath *index = [self.newtable indexPathForCell:cell];
+    NSLog(@"333===%ld   跳转网页",index.row);
+    self.nmodel = [[newModel alloc] init];
+    self.nmodel = self.dataarr[index.row];
+    NSString *urlstr = self.nmodel.weburlstr;
+    NSLog(@"urlstr------%@",urlstr);
+    SureWebViewController *surevc = [[SureWebViewController alloc]init];
+    surevc.url = urlstr;
+    surevc.canDownRefresh = YES;
+    [self.navigationController pushViewController:surevc animated:YES];
+    
+}
 
 @end
