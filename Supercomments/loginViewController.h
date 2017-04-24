@@ -11,4 +11,6 @@
 @interface loginViewController : UIViewController
 /** 通过block去执行AppDelegate中的weixinLoginByRequestForUserInfo方法 */
 @property (copy, nonatomic) void (^weixinLoginByRequestForUserInfo)();
+
+@property (nonatomic,strong) NSString *jinru;
 @end

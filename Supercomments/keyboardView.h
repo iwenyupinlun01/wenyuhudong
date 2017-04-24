@@ -10,4 +10,11 @@
 
 @interface keyboardView : UIView
 @property (nonatomic,strong) UITextView *textview;
+
+@property (nonatomic,assign) NSInteger index;
+@property (nonatomic,strong) NSString *nickname;
+@property (nonatomic,strong) NSString *tonickname;
+
+
+@property (nonatomic,assign) NSInteger secindex;
 @end

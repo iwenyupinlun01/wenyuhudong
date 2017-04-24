@@ -10,6 +10,7 @@
 #import "UILabel+MultipleLines.h"
 #import "newModel.h"
 #import "YYPhotoGroupView.h"
+#import "Timestr.h"
 @interface newCell()
 @property (nonatomic,strong) UIImageView *reimg;
 @property (nonatomic,strong) newModel *nmodel;
@@ -182,7 +183,8 @@
     self.tiview.titlelab.text = [NSString stringWithFormat:@"%@%@",@"  标题: ",model.titlestr];
     self.commbtn.textlab.text = model.pinglunstr;
     self.zbtn.zanlab.text = model.dianzanstr;
-    self.timelab.text = [self datetime:model.timestr];
+    
+    self.timelab.text = [Timestr datetime:model.timestr];
     
     if ([model.sifoudianzanstr isEqualToString:@"0"]) {
         self.zbtn.zanimg.image = [UIImage imageNamed:@"点赞-"];

@@ -33,7 +33,7 @@ static NSString *messageidentfid = @"messageidentfid";
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor wjColorFloat:@"333333"]}];
     self.messagetable.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
-    [self loaddatafromweb];
+  
     [self.view addSubview:self.messagetable];
     self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
     
@@ -45,19 +45,15 @@ static NSString *messageidentfid = @"messageidentfid";
 }
 
 -(void)viewWillAppear:(BOOL)animated{
-    
+    [super viewWillAppear:animated];
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
-    
+    [self loaddatafromweb];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
-
 {
-    
     [super viewWillDisappear:animated];
-    
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
-    
 }
 
 #pragma mark - 实现方法
@@ -87,7 +83,34 @@ static NSString *messageidentfid = @"messageidentfid";
         }
         
         NSLog(@"num01-------%@",_num02);
+        UILabel *lab = [self.messagetable viewWithTag:201];
+        UILabel *lab2 = [self.messagetable viewWithTag:202];
+        if ([_num01 isEqualToString:@"0"]&&[_num02 isEqualToString:@"0"]) {
+            lab.alpha = 0;
+            lab2.alpha = 0;
+            //两个都为0
+        }
+        else if ([_num01 isEqualToString:@"0"]&&![_num02 isEqualToString:@"0"])
+        {
+            lab.alpha = 0;
+            lab2.alpha = 1;
+            lab2.text = _num02;
+        }
+        else if (![_num01 isEqualToString:@"0"]&&[_num02 isEqualToString:@"0"])
+        {
+            lab.alpha = 1;
+            lab2.alpha = 0;
+            lab.text = _num01;
+        }
+        else
+        {
+            lab.alpha = 1;
+            lab2.alpha = 1;
+            lab.text = _num01;
+            lab2.text = _num02;
+        }
         [self.messagetable reloadData];
+        
     } errorblock:^(NSError *error) {
         
     }];
@@ -142,25 +165,16 @@ static NSString *messageidentfid = @"messageidentfid";
     numlab.layer.masksToBounds = YES;
     numlab.layer.cornerRadius = 10;
     numlab.textColor = [UIColor whiteColor];
-    
+    numlab.alpha = 0;
+    [cell.contentView addSubview:numlab];
+   
     if (indexPath.row==0) {
-        numlab.text = _num01;
-        if ([_num01 isEqualToString:@"0"]) {
-            
-        }else
-        {
-            [cell.contentView addSubview:numlab];
-        }
+         numlab.tag = 201;
     }
     if (indexPath.row==1) {
-        numlab.text = _num02;
-        if ([_num02 isEqualToString:@"0"]) {
-            
-        }else
-        {
-           [cell.contentView addSubview:numlab];
-        }
+         numlab.tag = 202;
     }
+
     
     cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;

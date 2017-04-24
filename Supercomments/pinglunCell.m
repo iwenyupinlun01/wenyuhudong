@@ -57,6 +57,7 @@
     if(!_pinglunlab)
     {
         _pinglunlab = [[UILabel alloc] init];
+        
     }
     return _pinglunlab;
 }

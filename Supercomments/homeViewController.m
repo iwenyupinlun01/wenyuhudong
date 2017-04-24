@@ -14,18 +14,19 @@
 #import "hotViewController.h"
 #import "loginViewController.h"
 #import <SDWebImage/UIButton+WebCache.h>
+
 //Segment高度
 
 #define LG_segmentH 44
 
 @interface homeViewController ()<UIScrollViewDelegate,SegmentDelegate>
 @property (nonatomic, strong) UIScrollView *contentScrollView;
-@property(nonatomic,strong)NSMutableArray *buttonList;
+@property (nonatomic,strong)NSMutableArray *buttonList;
 @property (nonatomic, weak) LGSegment *segment;
-@property(nonatomic,weak)CALayer *LGLayer;
+@property (nonatomic,weak)CALayer *LGLayer;
 @property (nonatomic,strong) UIButton *infobtn;
 @property (nonatomic,strong) UIButton *searchbtn;
-
+@property (nonatomic,strong) UIView *xiaohongdianview;
 @property (nonatomic,strong) UIImageView *bgimg;
 
 @property (nonatomic,strong) NSString *denglustr;
@@ -44,7 +45,7 @@
 {
     [super viewWillAppear:animated];
     [self.navigationController.navigationBar setHidden:YES];
-    
+    [self loaddatafromweb];
     [self islogin];
 }
 
@@ -83,6 +84,59 @@
     } errorblock:^(NSError *error) {
         
     }];
+}
+
+
+-(void)loaddatafromweb
+{
+    NSString *tokenstr = [[NSString alloc] init];
+    NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
+    NSString *token = [userdefat objectForKey:@"tokenuser"];
+    if (token.length==0) {
+        tokenstr = @"";
+    }
+    else
+    {
+        tokenstr = token;
+    }
+    NSLog(@"token--------%@",tokenstr);
+    
+    [AFManager getReqURL:[NSString stringWithFormat:tongzhixianxishuliang,tokenstr] block:^(id infor) {
+        NSLog(@"info---------%@",infor);
+        NSString *inforstr = [[NSString alloc] init];
+        NSString *system_inform = [[NSString alloc] init];
+        if ([[infor objectForKey:@"code"] intValue]==1) {
+            NSDictionary *dic = [infor objectForKey:@"info"];
+            inforstr = [dic objectForKey:@"inform"];
+            system_inform = [dic objectForKey:@"system_inform"];
+        }
+        if ([inforstr isEqualToString:@"0"]&&[system_inform isEqualToString:@"0"]) {
+            
+        }
+        else
+        {
+            [self.view addSubview:self.xiaohongdianview];
+        }
+        
+    } errorblock:^(NSError *error) {
+        
+    }];
+}
+
+
+#pragma mark - getteres
+
+
+-(UIView *)xiaohongdianview
+{
+    if(!_xiaohongdianview)
+    {
+        _xiaohongdianview = [[UIView alloc] initWithFrame:CGRectMake(42, 24, 8, 8)];
+        _xiaohongdianview.backgroundColor = [UIColor  redColor];
+        _xiaohongdianview.layer.masksToBounds = YES;
+        _xiaohongdianview.layer.cornerRadius = 4;
+    }
+    return _xiaohongdianview;
 }
 
 - (NSMutableArray *)buttonList
@@ -189,7 +243,7 @@
         _infobtn = [[UIButton alloc] initWithFrame:CGRectMake(14, 24, 36, 36)];
         //_infobtn.backgroundColor = [UIColor greenColor];
         _infobtn.layer.masksToBounds = YES;
-        _infobtn.layer.cornerRadius = 15;
+        _infobtn.layer.cornerRadius = 18;
         
         [_infobtn addTarget:self action:@selector(infoclick) forControlEvents:UIControlEventTouchUpInside];
     }

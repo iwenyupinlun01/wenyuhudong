@@ -31,10 +31,13 @@
     self.view.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.logoimg];
     [self.view addSubview:self.namelab];
-    [self.view addSubview:self.gobackbtn];
     [self.view addSubview:self.loginbtn];
     [self.view addSubview:self.zhijiebtn];
     [self.view addSubview:self.aggrentlab];
+    
+    if ([self.jinru isEqualToString:@"jinru"]) {
+        [self.view addSubview:self.gobackbtn];
+    }
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(WXLogin:) name:WXLoginSuccess object:nil];
     

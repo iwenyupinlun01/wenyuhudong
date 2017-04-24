@@ -12,4 +12,5 @@
 @property (nonatomic,strong) NSString *idstr;
 @property (nonatomic,strong) NSString *contentstr;
 @property (nonatomic,strong) NSString *puttimestr;
+
 @end

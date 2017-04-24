@@ -19,6 +19,8 @@
 @property (nonatomic,strong) NSArray *imgarr;
 @property (nonatomic,strong) NSArray *textarr;
 @property (nonatomic,strong) headView *headview;
+
+@property (nonatomic,strong) infoCell *cell;
 @end
 static NSString *infocellidentfid = @"infocellidentfid";
 
@@ -43,6 +45,7 @@ static NSString *infocellidentfid = @"infocellidentfid";
     
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
     self.navigationController.navigationBar.barTintColor = [UIColor wjColorFloat:@"F5F5F5"];
+    [self loaddatafromweb];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -59,7 +62,59 @@ static NSString *infocellidentfid = @"infocellidentfid";
     // Dispose of any resources that can be recreated.
 }
 
+-(void)loaddatafromweb
+{
+    NSString *tokenstr = [[NSString alloc] init];
+    NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
+    NSString *token = [userdefat objectForKey:@"tokenuser"];
+    if (token.length==0) {
+        tokenstr = @"";
+    }
+    else
+    {
+        tokenstr = token;
+    }
+    NSLog(@"token--------%@",tokenstr);
+    
+    [AFManager getReqURL:[NSString stringWithFormat:tongzhixianxishuliang,tokenstr] block:^(id infor) {
+        NSLog(@"info---------%@",infor);
+        NSString *inforstr = [[NSString alloc] init];
+        NSString *system_inform = [[NSString alloc] init];
+        if ([[infor objectForKey:@"code"] intValue]==1) {
+            NSDictionary *dic = [infor objectForKey:@"info"];
+            inforstr = [dic objectForKey:@"inform"];
+            system_inform = [dic objectForKey:@"system_inform"];
+        }
+        inforstr = @"3";
+        system_inform = @"0";
+        
+        
+        UILabel *namelab = [self.infotableview viewWithTag:100];
+        if ([inforstr isEqualToString:@"0"]&&[system_inform isEqualToString:@"0"]) {
 
+            namelab.alpha = 0;
+            NSString *textstr = [NSString stringWithFormat:@"%d",[inforstr intValue]+[system_inform intValue]];
+            namelab.text = textstr;
+            
+            [self.infotableview reloadData];
+        }
+        else
+        {
+            NSLog(@"提示操作");
+
+            namelab.alpha = 1;
+            NSString *textstr = [NSString stringWithFormat:@"%d",[inforstr intValue]+[system_inform intValue]];
+            namelab.text = textstr;
+            _cell.numlab.text = textstr;
+            
+            //[_cell addSubview:namelab];
+            [self.infotableview reloadData];
+        }
+        
+    } errorblock:^(NSError *error) {
+        
+    }];
+}
 #pragma mark - getters
 
 -(UITableView *)infotableview
@@ -124,19 +179,21 @@ static NSString *infocellidentfid = @"infocellidentfid";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    infoCell *cell = [tableView dequeueReusableCellWithIdentifier:infocellidentfid];
-    if (!cell) {
-        cell = [[infoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:infocellidentfid];
+     _cell = [tableView dequeueReusableCellWithIdentifier:infocellidentfid];
+    if (!_cell) {
+        _cell = [[infoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:infocellidentfid];
     }
     if (indexPath.row==0) {
-        
-        [cell.contentView addSubview:cell.numlab];
+        [_cell.contentView addSubview:_cell.numlab];
+        _cell.numlab.tag = 100;
+       
     }
-    cell.leftimg.image = [UIImage imageNamed:self.imgarr[indexPath.row]];
-    cell.textlab.text = self.textarr[indexPath.row];
-    cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    return cell;
+    //_cell.numlab.alpha = 0;
+    _cell.leftimg.image = [UIImage imageNamed:self.imgarr[indexPath.row]];
+    _cell.textlab.text = self.textarr[indexPath.row];
+    _cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
+    _cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    return _cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

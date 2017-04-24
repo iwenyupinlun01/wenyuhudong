@@ -43,6 +43,8 @@
 @property (nonatomic,strong) sectionView *secview;
 
 @property (nonatomic,strong) keyboardView *keyView;
+
+@property (nonatomic,strong) NSString *fromkeyboard;
 @end
 static NSString *detailsidentfid = @"detailsidentfid";
 
@@ -147,7 +149,6 @@ NSMutableArray * ymDataArray;
         self.headm.imgurlstr = [dic objectForKey:@"images"];
         self.headm.weburlstr = [dic objectForKey:@"url"];
         self.headm.timestr = [self datetime:[dic objectForKey:@"create_time"]];
-        //self.headm.imgurlstr = @"111";
         self.headm.shifoudianzanstr = [dic objectForKey:@"is_support"];
         self.headview.namelab.text = self.headm.namestr;
         self.headview.timelab.text = self.headm.timestr;
@@ -175,8 +176,7 @@ NSMutableArray * ymDataArray;
             NSString *usernamestr = [bookdic objectForKey:@"user_nickname"];
             [usernamearr addObject:usernamestr];
         }
-        
-        NSLog(@"usermanearr========%@",usernamearr);
+
         
         NSArray *goodArray = usernamearr;
         NSString *goodTotalString = [goodArray componentsJoinedByString:@", "];
@@ -390,7 +390,7 @@ NSMutableArray * ymDataArray;
     {
         _headview = [[detailsheadView alloc] init];
         _headview.layer.masksToBounds = YES;
-        _headview.layer.borderWidth = 1;
+        _headview.layer.borderWidth = 0.3;
         [_headview.sharebtn addTarget:self action:@selector(shareclick) forControlEvents:UIControlEventTouchUpInside];
         [_headview.dianzanbtn addTarget:self action:@selector(dianzanclick) forControlEvents:UIControlEventTouchUpInside];
         [_headview.combtn addTarget:self action:@selector(pinglunclick) forControlEvents:UIControlEventTouchUpInside];
@@ -412,11 +412,10 @@ NSMutableArray * ymDataArray;
         _maintable.dataSource = self;
         _maintable.delegate = self;
         _maintable.tableHeaderView = self.headview;
-        
+        _maintable.backgroundColor = [UIColor whiteColor];
     }
     return _maintable;
 }
-
 
 -(keyboardView *)keyView
 {
@@ -501,6 +500,7 @@ NSMutableArray * ymDataArray;
     }
     
     cell.pinglunlab.numberOfLines = 0;
+    [cell.pinglunlab sizeToFit];
     return cell;
 }
 
@@ -512,14 +512,41 @@ NSMutableArray * ymDataArray;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     _detailsmodel  = self.detalisarr[indexPath.section];
-    // 取车第indexPath.row这行对应的品牌名称
-    NSString *car = [_detailsmodel.pingarr[indexPath.row] objectForKey:@"content"];
-    return [pinglunCell cellHeightWithText:car] + 16*HEIGHT_SCALE;
+    // 取车第indexPath.row这行对应的名称
+    
+    NSString *str4 = [_detailsmodel.pingarr[indexPath.row] objectForKey:@"content"];
+    NSString *str1 = [_detailsmodel.pingarr[indexPath.row]objectForKey:@"s_nickname"];
+    NSString *str3 = [_detailsmodel.pingarr[indexPath.row]objectForKey:@"s_to_nickname"];
+    NSString *str2 = @"回复: ";
+    
+    if ([self isNullToString:str3]) {
+        
+        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@%@",str1,str2,str4]];
+        [str addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"CDCDC7"] range:NSMakeRange(0,str1.length)];
+        [str addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"333333"] range:NSMakeRange(str1.length,str2.length)];
+        [str addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"333333"] range:NSMakeRange(str1.length+str2.length, str4.length)];
+        CGSize size = [str boundingRectWithSize:CGSizeMake(DEVICE_WIDTH -64*WIDTH_SCALE-14*WIDTH_SCALE, 0) options:NSStringDrawingUsesLineFragmentOrigin context:nil].size;
+        return size.height + 16*HEIGHT_SCALE;
+
+        
+    }
+    else
+    {
+        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@%@%@",str1,str2,str3,str4]];
+        [str addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"CDCDC7"] range:NSMakeRange(0,str1.length)];
+        [str addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"333333"] range:NSMakeRange(str1.length,str2.length)];
+        [str addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"CDCDC7"] range:NSMakeRange(str1.length+str2.length,str3.length)];
+        [str addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"333333"] range:NSMakeRange(str1.length+str2.length+str3.length,str4.length)];
+        CGSize size = [str boundingRectWithSize:CGSizeMake(DEVICE_WIDTH -64*WIDTH_SCALE-14*WIDTH_SCALE, 0) options:NSStringDrawingUsesLineFragmentOrigin context:nil].size;
+        return size.height + 16*HEIGHT_SCALE;
+    }
+    return 0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     self.detailsmodel = self.detalisarr[section];
+    
     return  [sectionView cellHeightWithText:self.detailsmodel.contstr]+70;
 }
 
@@ -537,15 +564,35 @@ NSMutableArray * ymDataArray;
     //self.secview.layer.borderWidth = 1;
     
     
-    _secview.userInteractionEnabled = YES;//打开用户交互
+   // self.secview.userInteractionEnabled = YES;//打开用户交互
     //初始化一个手势
-    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tableviewaction:)];
-    //为图片添加手势
-    [_secview addGestureRecognizer:singleTap];
-
+//    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tableviewaction:andheadsection:)];
+//    //为图片添加手势
+//    [self.secview addGestureRecognizer:singleTap];
+    
+    
+    
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button setFrame:CGRectMake(0, 0, self.view.frame.size.width, 54)];
+    [button setTag:section+1];
+    button.backgroundColor = [UIColor whiteColor];
+    // 设置Image
+    button.alpha = 0.1;
+    
+    // 设置偏移量
+    CGFloat imageOriginX = button.imageView.frame.origin.x;
+    CGFloat imageWidth = button.imageView.frame.size.width;
+    CGFloat titleOriginX = button.titleLabel.frame.origin.x;
+    [button setTitleEdgeInsets:UIEdgeInsetsMake(0, -titleOriginX+imageWidth + 20, 0, titleOriginX-imageWidth-20)];
+    button.imageEdgeInsets = UIEdgeInsetsMake(0, -imageOriginX + 10, 0, imageOriginX -  10);
+    // 添加点击事件
+    [button addTarget:self action:@selector(buttonPress:) forControlEvents:UIControlEventTouchUpInside];
+    [_secview addSubview:button];
     
     return _secview;
 }
+
+
 
 - (nullable UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
@@ -558,23 +605,6 @@ NSMutableArray * ymDataArray;
 }
 
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-
-    
-    [self.keyView.textview becomeFirstResponder];
-
-    //    self.detailsmodel  = self.detalisarr[indexPath.section];
-    //    NSMutableArray *mutaArray = [[NSMutableArray alloc] init];
-    //    [mutaArray addObjectsFromArray:self.detailsmodel.pingarr];
-    //    NSDictionary *dit = @{@"content":@"11111",@"id":@"33"};
-    //
-    //    [mutaArray addObject:dit];
-    //    self.detailsmodel.pingarr = mutaArray;
-    //
-    //    [self.maintable reloadData];
-    NSLog(@"点击cell");
-}
 
 #pragma mark - 实现方法
 
@@ -606,17 +636,9 @@ NSMutableArray * ymDataArray;
         NSLog(@"token--------%@",tokenstr);
         if (tokenstr.length==0) {
             NSLog(@"请登陆");
-            UIAlertController *aletcontrol = [UIAlertController alertControllerWithTitle:@"提示" message:@"请登陆" preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *action0 = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-                
-            }];
-            UIAlertAction *action1 = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                loginViewController *loginvc = [[loginViewController alloc] init];
-                [self presentViewController:loginvc animated:YES completion:nil];
-            }];
-            [aletcontrol addAction:action0];
-            [aletcontrol addAction:action1];
-            [self presentViewController:aletcontrol animated:YES completion:nil];
+            loginViewController *loginvc = [[loginViewController alloc] init];
+            loginvc.jinru = @"jinru";
+            [self presentViewController:loginvc animated:YES completion:nil];
         }else
         {
       
@@ -670,17 +692,9 @@ NSMutableArray * ymDataArray;
         NSLog(@"token--------%@",tokenstr);
         if (tokenstr.length==0) {
             NSLog(@"请登陆");
-            UIAlertController *aletcontrol = [UIAlertController alertControllerWithTitle:@"提示" message:@"请登陆" preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *action0 = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-                
-            }];
-            UIAlertAction *action1 = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                loginViewController *loginvc = [[loginViewController alloc] init];
-                [self presentViewController:loginvc animated:YES completion:nil];
-            }];
-            [aletcontrol addAction:action0];
-            [aletcontrol addAction:action1];
-            [self presentViewController:aletcontrol animated:YES completion:nil];
+            loginViewController *loginvc = [[loginViewController alloc] init];
+            loginvc.jinru = @"jinru";
+            [self presentViewController:loginvc animated:YES completion:nil];
         }else
         {
             
@@ -725,11 +739,102 @@ NSMutableArray * ymDataArray;
     }
 }
 
+#pragma mark - 评论方法
+//一级评论
 -(void)pinglunclick
 {
     NSLog(@"评论");
     
-    [self.keyView.textview becomeFirstResponder];
+    NSString *tokenstr = [[NSString alloc] init];
+    NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
+    NSString *token = [userdefat objectForKey:@"tokenuser"];
+    if (token.length==0) {
+        tokenstr = @"";
+    }
+    else
+    {
+        tokenstr = token;
+    }
+    NSLog(@"token--------%@",tokenstr);
+    if (tokenstr.length==0) {
+        NSLog(@"请登陆");
+        loginViewController *logvc = [[loginViewController alloc] init];
+        logvc.jinru = @"jinru";
+        [self presentViewController:logvc animated:YES completion:^{
+            
+        }];
+    }
+    else
+    {
+        self.fromkeyboard = @"zhupinglun";
+        [self.keyView.textview becomeFirstResponder];
+    }
+
+}
+//二级评论
+- (void)buttonPress:(UIButton *)sender {
+    
+    NSString *tokenstr = [[NSString alloc] init];
+    NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
+    NSString *token = [userdefat objectForKey:@"tokenuser"];
+    if (token.length==0) {
+        tokenstr = @"";
+    }
+    else
+    {
+        tokenstr = token;
+    }
+    NSLog(@"token--------%@",tokenstr);
+    if (tokenstr.length==0) {
+        NSLog(@"请登陆");
+        loginViewController *logvc = [[loginViewController alloc] init];
+        logvc.jinru = @"jinru";
+        [self presentViewController:logvc animated:YES completion:^{
+            
+        }];
+    }
+    else
+    {
+        // 重新加载section
+        NSLog(@"index==%ld",(long)sender.tag);
+        [self.keyView.textview becomeFirstResponder];
+        self.fromkeyboard = @"section";
+        self.keyView.secindex = (long)sender.tag-1;
+    }
+}
+//三级评论
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    NSString *tokenstr = [[NSString alloc] init];
+    NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
+    NSString *token = [userdefat objectForKey:@"tokenuser"];
+    if (token.length==0) {
+        tokenstr = @"";
+    }
+    else
+    {
+        tokenstr = token;
+    }
+    NSLog(@"token--------%@",tokenstr);
+    if (tokenstr.length==0) {
+        NSLog(@"请登陆");
+        loginViewController *logvc = [[loginViewController alloc] init];
+        logvc.jinru = @"jinru";
+        [self presentViewController:logvc animated:YES completion:^{
+            
+        }];
+    }
+    else
+    {
+        self.fromkeyboard = @"cellpinglun";
+        [self.keyView.textview becomeFirstResponder];
+        self.keyView.index = indexPath.section;
+        self.detailsmodel  = self.detalisarr[indexPath.section];
+        self.keyView.nickname = [_detailsmodel.pingarr[indexPath.row]objectForKey:@"s_nickname"];
+        self.keyView.tonickname = [_detailsmodel.pingarr[indexPath.row]objectForKey:@"s_to_nickname"];
+    }
+    NSLog(@"点击cell");
 }
 
 #pragma mark - 输入框方法
@@ -764,7 +869,6 @@ NSMutableArray * ymDataArray;
 }
 
 
-
 #pragma mark - UITextViewDelegate
 
 //将要结束/退出编辑模式
@@ -775,25 +879,67 @@ NSMutableArray * ymDataArray;
 }
 
 //响应return
+
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
     if ([text isEqualToString:@"\n"]){ //判断输入的字是否是回车，即按下return
         //在这里做你响应return键的代码
         NSLog(@"return");
         [textView resignFirstResponder];
+        
+        if ([self isNullToString:textView.text]) {
+            [textView resignFirstResponder];
+        }
+        else
+        {
+            if ([_fromkeyboard isEqualToString:@"cellpinglun"]) {
+                self.detailsmodel  = self.detalisarr[self.keyView.index];
+                NSMutableArray *mutaArray = [[NSMutableArray alloc] init];
+                [mutaArray addObjectsFromArray:self.detailsmodel.pingarr];
+                NSDictionary *dit = @{@"content":self.keyView.textview.text,@"s_nickname":@"me",@"s_to_nickname":self.keyView.nickname};
+                [mutaArray addObject:dit];
+                self.detailsmodel.pingarr = mutaArray;
+                [self.maintable reloadData];
+            }else if([_fromkeyboard isEqualToString:@"zhupinglun"])
+            {
+                self.detailsmodel = [[detailcellmodel alloc] init];
+                NSMutableArray *mutaArray = [[NSMutableArray alloc] init];
+                [mutaArray addObjectsFromArray:self.detalisarr];
+                
+                NSString *name = @"me";
+                NSDate* dat = [NSDate dateWithTimeIntervalSinceNow:0];
+                NSTimeInterval a=[dat timeIntervalSince1970];
+                NSString *timeString = [NSString stringWithFormat:@"%f", a];
+                NSString *time = [self datetime:timeString];
+                NSString *content = self.keyView.textview.text;
+                NSString *imageurl = @"";
+                self.detailsmodel.namestr = name;
+                self.detailsmodel.timestr = time;
+                self.detailsmodel.contstr = content;
+                self.detailsmodel.imgurlstr = imageurl;
+                [mutaArray addObject:self.detailsmodel];
+                self.detalisarr = mutaArray;
+                [self.maintable reloadData];
+                
+            }else
+            {
+                self.detailsmodel  = self.detalisarr[self.keyView.secindex];
+                NSMutableArray *mutaArray = [[NSMutableArray alloc] init];
+                [mutaArray addObjectsFromArray:self.detailsmodel.pingarr];
+                NSString *tonickname = self.detailsmodel.namestr;
+                NSDictionary *dit = @{@"content":self.keyView.textview.text,@"s_nickname":@"me",@"s_to_nickname":tonickname};
+                [mutaArray addObject:dit];
+                self.detailsmodel.pingarr = mutaArray;
+                [self.maintable reloadData];
+            }
+        }
         return NO; //这里返回NO，就代表return键值失效，即页面上按下return，不会出现换行，如果为yes，则输入页面会换行
     }
     return YES;
 }
 
-//键盘回收
 
--(void)tableviewaction:(UIGestureRecognizer *)gerkeyboard
-{
-    //NSLog(@"键盘回收");
-    [self.keyView.textview resignFirstResponder];
+#pragma mark - 图片放大方法
 
-}
-//图片放大
 -(void)webimagego
 {
     NSString *urlstr = self.headm.weburlstr;
@@ -805,7 +951,7 @@ NSMutableArray * ymDataArray;
     
 }
 
-//时间计算
+#pragma mark - 时间计算方法
 
 -(NSString *)datetime:(NSString *)datestr
 {
@@ -888,6 +1034,9 @@ NSMutableArray * ymDataArray;
     
     return fanhuistr;
 }
+
+#pragma mark - 判断字符串为空
+
 - (BOOL )isNullToString:(id)string
 {
     if ([string isEqual:@"NULL"] || [string isKindOfClass:[NSNull class]] || [string isEqual:[NSNull null]] || [string isEqual:NULL] || [[string class] isSubclassOfClass:[NSNull class]] || string == nil || string == NULL || [string isKindOfClass:[NSNull class]] || [[string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length]==0 || [string isEqualToString:@"<null>"] || [string isEqualToString:@"(null)"])

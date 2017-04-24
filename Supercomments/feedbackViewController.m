@@ -24,6 +24,7 @@
     self.title = @"意见反馈";
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor wjColorFloat:@"333333"]}];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"提交" style:UIBarButtonItemStylePlain target:self action:@selector(rightaction)];
+    self.navigationItem.rightBarButtonItem.tintColor = [UIColor wjColorFloat:@"333333"];
     
     UITapGestureRecognizer *TapGestureTecognizer=[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(keyboardHide)];
     TapGestureTecognizer.cancelsTouchesInView=NO;
@@ -77,6 +78,29 @@
 -(void)rightaction
 {
     NSLog(@"提交");
+    NSString *tokenstr = [[NSString alloc] init];
+    NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
+    NSString *token = [userdefat objectForKey:@"tokenuser"];
+    if (token.length==0) {
+        tokenstr = @"";
+    }
+    else
+    {
+        tokenstr = token;
+    }
+    NSLog(@"token--------%@",tokenstr);
+    NSString *text = _feedtext.text;
+    NSDictionary *para = @{@"token":tokenstr,@"content":text};
+    [AFManager postReqURL:yijianfankui reqBody:para block:^(id infor) {
+        NSLog(@"infor--------%@",infor);
+        if ([[infor objectForKey:@"code"] intValue]==1) {
+            [MBProgressHUD showSuccess:@"反馈成功"];
+        }else
+        {
+            [MBProgressHUD showSuccess:@"反馈的内容最少要8个字"];
+        }
+        
+    }];
 }
 
 -(void)keyboardHide

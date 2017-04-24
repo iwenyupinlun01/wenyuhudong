@@ -8,7 +8,7 @@
 
 #import "replyCell.h"
 #import "replyModel.h"
-
+#import "Timestr.h"
 @interface replyCell()
 @property (nonatomic,strong) replyModel *model;
 @end
@@ -22,10 +22,11 @@
     {
         [self.contentView addSubview:self.picimage];
         [self.contentView addSubview:self.namelab];
-        [self.contentView addSubview:self.rightimage];
+       // [self.contentView addSubview:self.rightimage];
         [self.contentView addSubview:self.textlab];
         [self.contentView addSubview:self.timelab];
         [self.contentView addSubview:self.btn];
+        [self.contentView addSubview:self.rightlab];
     }
     return self;
 }
@@ -39,8 +40,7 @@
     self.textlab.frame = CGRectMake(128/2*WIDTH_SCALE, 94/2*HEIGHT_SCALE, DEVICE_WIDTH-128/2*WIDTH_SCALE-148/2*WIDTH_SCALE, (248/2-94/2-44)*HEIGHT_SCALE);
     self.timelab.frame = CGRectMake(130/2*WIDTH_SCALE, (self.frame.size.height-16-15)*HEIGHT_SCALE, 80*WIDTH_SCALE, 15*HEIGHT_SCALE);
     self.btn.frame = CGRectMake(DEVICE_WIDTH-12*WIDTH_SCALE-40*WIDTH_SCALE, self.frame.size.height-16*HEIGHT_SCALE-40/3*HEIGHT_SCALE, 40*WIDTH_SCALE, 40/3*HEIGHT_SCALE);
-    
-    
+    self.rightlab.frame = CGRectMake(DEVICE_WIDTH-14*WIDTH_SCALE-50*WIDTH_SCALE, 16*HEIGHT_SCALE, 50*WIDTH_SCALE, 50*WIDTH_SCALE);
 }
 
 -(void)setdata:(replyModel *)repmodel
@@ -49,8 +49,28 @@
     [self.picimage sd_setImageWithURL:[NSURL URLWithString:repmodel.replyurl]];
     self.namelab.text = repmodel.replyname;
     self.textlab.text = repmodel.replytext;
-    self.timelab.text = repmodel.replytimestr;
-    [self.rightimage sd_setImageWithURL:[NSURL URLWithString:repmodel.replyrighturl]];
+    //self.timelab.text = repmodel.replytimestr;
+    self.timelab.text = [Timestr datetime:repmodel.replytimestr];
+    if ([repmodel.comment_img_type isEqualToString:@"word"]) {
+        [self.contentView addSubview:self.rightlab];
+        self.rightlab.text = repmodel.comment_imgstr;
+    }else
+    {
+        [self.contentView addSubview:self.rightimage];
+        [self.rightimage sd_setImageWithURL:[NSURL URLWithString:repmodel.comment_imgstr]];
+    }
+    
+    if ([repmodel.is_checkstr isEqualToString:@"0"]) {
+        //未读
+        self.backgroundColor = [UIColor wjColorFloat:@"F1FFFC"];
+    }else
+    {
+        //已读
+        self.backgroundColor = [UIColor whiteColor];
+    }
+    
+    
+    
     [self layoutIfNeeded];
 }
 
@@ -73,7 +93,7 @@
     if(!_namelab)
     {
         _namelab = [[UILabel alloc] init];
-        _namelab.text = @"大米饭饭";
+        //_namelab.text = @"大米饭饭";
         _namelab.font = [UIFont systemFontOfSize:13];
         _namelab.textColor = [UIColor wjColorFloat:@"455F8E"];
     }
@@ -85,7 +105,7 @@
     if(!_rightimage)
     {
         _rightimage = [[UIImageView alloc]init];
-        _rightimage.backgroundColor = [UIColor orangeColor];
+       // _rightimage.backgroundColor = [UIColor orangeColor];
     }
     return _rightimage;
 }
@@ -95,11 +115,11 @@
     if(!_textlab)
     {
         _textlab = [[UILabel alloc] init];
-        NSString *str = @"无尽火域，炎帝执掌，无尽火域，炎帝执掌，无尽火域，炎帝执掌，无尽火域，炎帝执掌，无尽火域，炎帝执掌，";
+        //NSString *str = @"无尽火域，炎帝执掌，无尽火域，炎帝执掌，无尽火域，炎帝执掌，无尽火域，炎帝执掌，无尽火域，炎帝执掌，";
         //_textlab.backgroundColor = [UIColor redColor];
         _textlab.font = [UIFont systemFontOfSize:13];
         _textlab.numberOfLines = 0;//多行显示，计算高度
-        _textlab.text = str;
+        //_textlab.text = str;
         [_textlab sizeToFit];
     }
     return _textlab;
@@ -110,11 +130,24 @@
     if(!_timelab)
     {
         _timelab = [[UILabel alloc] init];
-        _timelab.text = @"13:40";
+        //_timelab.text = @"13:40";
         _timelab.textColor = [UIColor wjColorFloat:@"999999"];
         _timelab.font = [UIFont systemFontOfSize:11];
     }
     return _timelab;
+}
+
+-(UILabel *)rightlab
+{
+    if(!_rightlab)
+    {
+        _rightlab = [[UILabel alloc] init];
+        _rightlab.numberOfLines = 0;
+        _rightlab.font = [UIFont systemFontOfSize:12];
+        _rightlab.textColor = [UIColor wjColorFloat:@"333333"];
+        [_rightlab sizeToFit];
+    }
+    return _rightlab;
 }
 
 -(setbtn *)btn
@@ -139,7 +172,6 @@
     [self.delegate myTabVClick:self];
     
 }
-
 
 
 @end

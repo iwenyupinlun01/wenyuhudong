@@ -31,6 +31,7 @@ static NSString *setidentfid1 = @"setidentfid1";
     self.settableview.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.view addSubview:self.settableview];
     [self.view addSubview:self.gobackbtn];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -102,7 +103,8 @@ static NSString *setidentfid1 = @"setidentfid1";
         [cell setSeparatorInset:UIEdgeInsetsZero];
         cell.textLabel.text = @"清理缓存";
         cell.textLabel.textColor = [UIColor wjColorFloat:@"333333"];
-        cell.rightlab.text = @"200k";
+        NSString *str = [NSString stringWithFormat:@"%.2fm",[SZKCleanCache folderSizeAtPath]];
+        cell.rightlab.text = str;
         return cell;
     }
     else
@@ -141,6 +143,7 @@ static NSString *setidentfid1 = @"setidentfid1";
         //清楚缓存
         [SZKCleanCache cleanCache:^{
             NSLog(@"清除成功");
+            [self.settableview reloadData];
         }];
     }
     if (indexPath.row==1) {

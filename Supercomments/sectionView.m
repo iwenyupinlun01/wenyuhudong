@@ -19,10 +19,14 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+       
         [self addSubview:self.picimg];
         [self addSubview:self.namelab];
         [self addSubview:self.timelab];
         [self addSubview:self.contentlab];
+        
+    
+        
     }
     return self;
 }
@@ -35,6 +39,13 @@
     self.timelab.frame = CGRectMake(14*WIDTH_SCALE+32*WIDTH_SCALE+14*WIDTH_SCALE, 14*HEIGHT_SCALE+20*HEIGHT_SCALE, 80*WIDTH_SCALE, 11*HEIGHT_SCALE);
     
 }
+
+
+//-(void)setFrame:(CGRect)frame{
+//    CGRect sectionRect = [self.tableView rectForSection:self.section];
+//    CGRect newFrame = CGRectMake(CGRectGetMinX(frame), CGRectGetMinY(sectionRect), CGRectGetWidth(frame), CGRectGetHeight(frame));
+//    [super setFrame:newFrame];
+//}
 
 -(void)setcelldata:(detailcellmodel*)model
 {
@@ -98,7 +109,6 @@
         _contentlab.numberOfLines = 0;
         _contentlab.textColor = [UIColor wjColorFloat:@"333333"];
         _contentlab.font = [UIFont systemFontOfSize:16*FX];
-        _contentlab.text = @"赵客缦胡缨，吴钩霜雪明。银鞍照白马，飒沓如流星。十步杀一人，千里不留行。事了拂衣去，深藏身与名。";
         CGSize textSize = [_contentlab setText:_contentlab.text lines:QSTextDefaultLines andLineSpacing:QSTextLineSpacing constrainedToSize:CGSizeMake(DEVICE_WIDTH - 94*WIDTH_SCALE-14*WIDTH_SCALE,MAXFLOAT)];
         
         self.contentlab.frame = CGRectMake(14*WIDTH_SCALE+32*WIDTH_SCALE+14*WIDTH_SCALE,  60*HEIGHT_SCALE, textSize.width, textSize.height);
@@ -119,5 +129,6 @@
     return textSize.height;
     
 }
+
 
 @end

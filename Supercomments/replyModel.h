@@ -18,4 +18,10 @@
 @property (nonatomic,strong) NSString *replyissetstr;
 @property (nonatomic,strong) NSString *replyrightlabstr;
 
+@property (nonatomic,strong) NSString *comment_img_type;
+@property (nonatomic,strong) NSString *comment_imgstr;
+//牛评的id
+@property (nonatomic,strong) NSString *obj_id;
+//是否已读
+@property (nonatomic,strong) NSString *is_checkstr;
 @end

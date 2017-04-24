@@ -298,17 +298,9 @@ static NSString *newidentfid = @"newidentfid";
         
         if (tokenstr.length==0) {
             
-            UIAlertController *aletcontrol = [UIAlertController alertControllerWithTitle:@"提示" message:@"请登陆" preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *action0 = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-                
-            }];
-            UIAlertAction *action1 = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                loginViewController *loginvc = [[loginViewController alloc] init];
-                [self presentViewController:loginvc animated:YES completion:nil];
-            }];
-            [aletcontrol addAction:action0];
-            [aletcontrol addAction:action1];
-            [self presentViewController:aletcontrol animated:YES completion:nil];
+            loginViewController *loginvc = [[loginViewController alloc] init];
+            loginvc.jinru = @"jinru";
+            [self presentViewController:loginvc animated:YES completion:nil];
             NSLog(@"请登陆");
         }
         else
@@ -364,17 +356,9 @@ static NSString *newidentfid = @"newidentfid";
         
         if (tokenstr.length==0) {
             NSLog(@"请登陆");
-            UIAlertController *aletcontrol = [UIAlertController alertControllerWithTitle:@"提示" message:@"请登陆" preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *action0 = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-                
-            }];
-            UIAlertAction *action1 = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                loginViewController *loginvc = [[loginViewController alloc] init];
-                [self presentViewController:loginvc animated:YES completion:nil];
-            }];
-            [aletcontrol addAction:action0];
-            [aletcontrol addAction:action1];
-            [self presentViewController:aletcontrol animated:YES completion:nil];
+            loginViewController *loginvc = [[loginViewController alloc] init];
+            loginvc.jinru = @"jinru";
+            [self presentViewController:loginvc animated:YES completion:nil];
             
         }
         else

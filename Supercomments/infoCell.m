@@ -62,7 +62,8 @@
         _numlab.layer.masksToBounds = YES;
         _numlab.layer.cornerRadius = 10;
         _numlab.textColor = [UIColor whiteColor];
-        _numlab.text = @"2";
+        //_numlab.text = @"2";
+        _numlab.alpha = 0;
         _numlab.textAlignment = NSTextAlignmentCenter;
     }
     return _numlab;

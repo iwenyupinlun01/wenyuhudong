@@ -33,6 +33,7 @@
     [self.view addSubview:self.versionlab];
     [self.view addSubview:self.companylab];
     [self.view addSubview:self.urllab];
+    [self loaddatafromweb];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -55,6 +56,25 @@
 {
     [super viewWillDisappear:animated];
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+}
+
+-(void)loaddatafromweb
+{
+    [AFManager getReqURL:guanyujiemian block:^(id infor) {
+        NSLog(@"infor------%@",infor);
+        NSDictionary *dit = [infor objectForKey:@"info"];
+        NSString *infro = [dit objectForKey:@"intro"];
+        NSString *logo = [dit objectForKey:@"logo"];
+        NSString *version = [dit objectForKey:@"version"];
+        NSString *web = [dit objectForKey:@"web"];
+        self.namelab.text = infro;
+        [self.logoimg sd_setImageWithURL:[NSURL URLWithString:logo]];
+        self.versionlab.text = version;
+        self.urllab.text = [NSString stringWithFormat:@"%@%@",@"官网: ",web];
+    } errorblock:^(NSError *error) {
+        [MBProgressHUD showSuccess:@"请检查网络"];
+        
+    }];
 }
 
 #pragma mark - getters

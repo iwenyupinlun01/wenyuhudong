@@ -17,6 +17,7 @@
 }
 
 @end
+
 @implementation hDisplayView
 
 -(instancetype)initWithFrame:(CGRect)frame

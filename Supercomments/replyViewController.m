@@ -33,7 +33,7 @@ static NSString *replyidentfid = @"replyidentfid";
     self.replyarr = [NSMutableArray array];
     
     [self datafromweb];
-//    self.messagetable.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    self.replytable.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 //    [self.view addSubview:self.messagetable];
     self.navigationController.navigationBar.barTintColor = [UIColor wjColorFloat:@"F5F5F5"];
     [self.view addSubview:self.replytable];
@@ -48,13 +48,9 @@ static NSString *replyidentfid = @"replyidentfid";
 }
 
 -(void)viewWillDisappear:(BOOL)animated
-
 {
-    
     [super viewWillDisappear:animated];
-    
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
-    
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -86,7 +82,11 @@ static NSString *replyidentfid = @"replyidentfid";
                 self.rmodel.replyurl = dit[@"user_icon"];
                 self.rmodel.replyname = dit[@"publisher_nickname"];
                 self.rmodel.replytext = dit[@"comment_content"];
-                self.rmodel.replyrighturl = dit[@""];
+                self.rmodel.comment_img_type = dit[@"comment_img_type"];
+                self.rmodel.comment_imgstr = dit[@"comment_img"];
+                self.rmodel.replytimestr = dit[@"pubtime"];
+                self.rmodel.obj_id = dit[@"object_id"];
+                self.rmodel.is_checkstr = dit[@"is_check"];
                 [self.replyarr addObject:self.rmodel];
             }
         }
@@ -101,20 +101,6 @@ static NSString *replyidentfid = @"replyidentfid";
         
     }];
     
-//    for (int i = 0; i<10; i++) {
-//        self.rmodel = [[replyModel alloc] init];
-//        self.rmodel.replyurl = @"";
-//        self.rmodel.replyname = @"今日牛评";
-//        self.rmodel.replytext = @"赵客曼胡樱，吴钩霜雪明，银鞍照白马，飒沓如流星";
-//        self.rmodel.replyrighturl = @"";
-//        self.rmodel.replytimestr = @"12:30";
-//        
-//        [self.replyarr addObject:self.rmodel];
-//    }
-//    
-//    dispatch_async(dispatch_get_main_queue(), ^{
-//        [self.replytable reloadData];
-//    });
 }
 
 #pragma mark - getters
@@ -162,6 +148,23 @@ static NSString *replyidentfid = @"replyidentfid";
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     return 0;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        
+        // 删除数据源的数据,self.cellData是你自己的数据
+        [self.replyarr removeObjectAtIndex:indexPath.row];
+         //删除列表中数据
+        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    }
+    
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return @"删除";//默认文字为 Delete
 }
 
 #pragma mark - 实现方法

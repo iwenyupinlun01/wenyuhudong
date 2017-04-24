@@ -14,6 +14,8 @@
 @property (nonatomic,strong) UITableView *systemtableview;
 @property (nonatomic,strong) NSMutableArray *dataSource;
 @property (nonatomic,strong) xitongModel *ximodel;
+@property (nonatomic,strong) NSMutableArray *xitongarr;
+
 @end
 static NSString * const kShowTextCellReuseIdentifier = @"QSShowTextCell";
 @implementation systemViewController
@@ -35,6 +37,7 @@ static NSString * const kShowTextCellReuseIdentifier = @"QSShowTextCell";
     self.navigationController.navigationBar.barTintColor = [UIColor wjColorFloat:@"F5F5F5"];
     
     self.dataSource = [NSMutableArray array];
+    self.xitongarr = [NSMutableArray array];
     [self loaddatafromweb];
     [self.view addSubview:self.systemtableview];
 }
@@ -43,7 +46,6 @@ static NSString * const kShowTextCellReuseIdentifier = @"QSShowTextCell";
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
 
 -(void)loaddatafromweb
 {
@@ -68,10 +70,13 @@ static NSString * const kShowTextCellReuseIdentifier = @"QSShowTextCell";
                 NSDictionary *dicarr = [dit objectAtIndex:i];
                 self.ximodel = [[xitongModel alloc] init];
                 self.ximodel.puttimestr = dicarr[@"pubtime"];
+                self.ximodel.idstr = dicarr[@"id"];
                 
                 NSString *concent = dicarr[@"inform_content"];
                 [self.dataSource addObject:concent];
                 
+                [self.xitongarr addObject:self.ximodel];
+             
             }
         }
         
@@ -90,14 +95,11 @@ static NSString * const kShowTextCellReuseIdentifier = @"QSShowTextCell";
 }
 
 -(void)viewWillDisappear:(BOOL)animated
-
 {
-    
     [super viewWillDisappear:animated];
-    
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
-    
 }
+
 #pragma mark - getters
 
 -(UITableView *)systemtableview
@@ -148,6 +150,7 @@ static NSString * const kShowTextCellReuseIdentifier = @"QSShowTextCell";
         
         cell = [[systemCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kShowTextCellReuseIdentifier];
         cell.rightUtilityButtons = [self rightButtons];
+        [cell setcelldata:self.xitongarr[indexPath.row]];
         cell.delegate = self;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
@@ -158,9 +161,6 @@ static NSString * const kShowTextCellReuseIdentifier = @"QSShowTextCell";
 - (NSArray *)rightButtons
 {
     NSMutableArray *rightUtilityButtons = [NSMutableArray new];
-    [rightUtilityButtons sw_addUtilityButtonWithColor:
-     [UIColor colorWithRed:0.78f green:0.78f blue:0.8f alpha:1.0]
-                                                title:@"More"];
     [rightUtilityButtons sw_addUtilityButtonWithColor:
      [UIColor colorWithRed:1.0f green:0.231f blue:0.188 alpha:1.0f]
                                                 title:@"Delete"];
@@ -209,24 +209,44 @@ static NSString * const kShowTextCellReuseIdentifier = @"QSShowTextCell";
 - (void)swipeableTableViewCell:(SWTableViewCell *)cell didTriggerRightUtilityButtonWithIndex:(NSInteger)index {
     switch (index) {
         case 0:{
-            NSLog(@"More button was pressed");
-            UIAlertView *alertTest = [[UIAlertView alloc] initWithTitle:@"Hello" message:@"More more more" delegate:nil cancelButtonTitle:@"cancel" otherButtonTitles: nil];
-            [alertTest show];
-            
-            [cell hideUtilityButtonsAnimated:YES];
-        }
-            break;
-        case 1:
-        {
-            // Delete button was pressed
             NSIndexPath *cellIndexPath = [self.systemtableview indexPathForCell:cell];
+            NSInteger row = cellIndexPath.row;
+            self.ximodel = [self.xitongarr objectAtIndex:row];
+            
+            NSString *idstr = self.ximodel.idstr;
+            NSLog(@"idstr========%@",idstr);
+            
+            
             [self p_removeTextAtIndexPath:cellIndexPath];
+            [self.xitongarr removeObject:cellIndexPath];
             [self.systemtableview deleteRowsAtIndexPaths:@[cellIndexPath]
-                                  withRowAnimation:UITableViewRowAnimationAutomatic];
+                                        withRowAnimation:UITableViewRowAnimationAutomatic];
             
+            [self.systemtableview reloadData];
             
-            break;
+            NSString *tokenstr = [[NSString alloc] init];
+            NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
+            NSString *token = [userdefat objectForKey:@"tokenuser"];
+            if (token.length==0) {
+                tokenstr = @"";
+            }
+            else
+            {
+                tokenstr = token;
+            }
+            NSLog(@"token--------%@",tokenstr);
+            
+            [AFManager getReqURL:[NSString stringWithFormat:shanchuxiaoxi,tokenstr,@"2",idstr] block:^(id infor) {
+                NSLog(@"infor-----%@",infor);
+                if ([[infor objectForKey:@"code"]intValue]==1) {
+                    [MBProgressHUD showSuccess:@"删除成功"];
+                }
+            } errorblock:^(NSError *error) {
+                [MBProgressHUD showSuccess:@"网络繁忙"];
+            }];
+
         }
+            break;
         default:
             break;
     }

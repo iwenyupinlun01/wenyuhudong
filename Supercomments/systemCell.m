@@ -11,6 +11,7 @@
 #import "systemCell.h"
 #import "UILabel+MultipleLines.h"
 #import "xitongModel.h"
+#import "Timestr.h"
 @interface systemCell()
 @property (nonatomic,strong) xitongModel *xitongmodel;
 @end
@@ -33,7 +34,7 @@
 -(void)layoutSubviews
 {
     [super layoutSubviews];
-    self.timelabel.frame = CGRectMake(DEVICE_WIDTH-60*WIDTH_SCALE, self.frame.size.height-28, 50*WIDTH_SCALE, 18*HEIGHT_SCALE);
+    self.timelabel.frame = CGRectMake(DEVICE_WIDTH-160*WIDTH_SCALE, self.frame.size.height-28, 150*WIDTH_SCALE, 18*HEIGHT_SCALE);
 }
 
 - (UILabel *)contentLabel{
@@ -55,7 +56,7 @@
         _timelabel = [[UILabel alloc] init];
         _timelabel.textColor = [UIColor wjColorFloat:@"999999"];
         _timelabel.font = [UIFont systemFontOfSize:12];
-        _timelabel.text = @"12:30";
+        _timelabel.textAlignment = NSTextAlignmentRight;
     }
     return _timelabel;
 }
@@ -63,16 +64,15 @@
 -(void)setcelldata:(xitongModel *)model
 {
     self.xitongmodel = model;
-    self.timelabel.text = model.puttimestr;
+    self.timelabel.text = [Timestr datetime:model.puttimestr];
 }
-
 
 - (void)layoutSubviewsWithText:(NSString *)text{
     CGSize textSize = [_contentLabel setText:text lines:QSTextDefaultLines andLineSpacing:QSTextLineSpacing constrainedToSize:CGSizeMake(DEVICE_WIDTH - 30,MAXFLOAT)];
     _contentLabel.frame = CGRectMake(15,  10, textSize.width, textSize.height);
 //    _contentLabel.layer.borderColor = [UIColor redColor].CGColor;
 //    _contentLabel.layer.borderWidth = 1;
-    
+
 }
 
 + (CGFloat)cellHeightWithText:(NSString *)text{
