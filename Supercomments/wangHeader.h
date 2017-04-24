@@ -47,5 +47,6 @@
 #define guanyujiemian @"http://np.iwenyu.cn/forum/user/about.html"
 //消息通知
 #define xiaoxitongzhijk @"http://np.iwenyu.cn/forum/user/messageInform.html?token=%@&page=%@"
-
+//修改头像
+#define touxiang @"http://np.iwenyu.cn/forum/user/userIcon.html?token=%@"
 #endif /* wangHeader_h */

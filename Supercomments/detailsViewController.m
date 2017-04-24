@@ -24,7 +24,8 @@
 #import "YcKeyBoardView.h"
 
 #import "keyboardView.h"
-@interface detailsViewController ()<UITableViewDataSource,UITableViewDelegate,UITextViewDelegate>
+#import <DZNEmptyDataSet/UIScrollView+EmptyDataSet.h>
+@interface detailsViewController ()<UITableViewDataSource,UITableViewDelegate,UITextViewDelegate,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate>
 {
     int pn;
 }
@@ -413,6 +414,10 @@ NSMutableArray * ymDataArray;
         _maintable.delegate = self;
         _maintable.tableHeaderView = self.headview;
         _maintable.backgroundColor = [UIColor whiteColor];
+        
+        _maintable.emptyDataSetSource = self;
+        _maintable.emptyDataSetDelegate = self;
+        
     }
     return _maintable;
 }
@@ -1049,4 +1054,10 @@ NSMutableArray * ymDataArray;
         return NO;
     }
 }
+
+#pragma mark - 加载失败
+
+//- (UIImage *)imageForEmptyDataSet:(UIScrollView *)scrollView {
+//    return [UIImage imageNamed:@"加载失败"];
+//}
 @end

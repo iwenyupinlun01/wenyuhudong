@@ -23,6 +23,6 @@
 @property (nonatomic,strong) NSString *objidstr;
 @property (nonatomic,strong) NSString *weburlstr;
 
-@property (nonatomic,assign) BOOL isdianzan;
+@property (nonatomic,strong) NSString *ishot;
 
 @end

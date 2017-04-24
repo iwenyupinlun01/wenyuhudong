@@ -27,7 +27,6 @@
         [self.contentView addSubview:self.fromlab];
         [self.contentView addSubview:self.contentlab];
         [self.contentView addSubview:self.tiview];
-        [self.contentView addSubview:self.reimg];
         [self.contentView addSubview:self.commbtn];
         [self.contentView addSubview:self.zbtn];
         [self.contentView addSubview:self.timelab];
@@ -183,7 +182,6 @@
     self.tiview.titlelab.text = [NSString stringWithFormat:@"%@%@",@"  标题: ",model.titlestr];
     self.commbtn.textlab.text = model.pinglunstr;
     self.zbtn.zanlab.text = model.dianzanstr;
-    
     self.timelab.text = [Timestr datetime:model.timestr];
     
     if ([model.sifoudianzanstr isEqualToString:@"0"]) {
@@ -203,6 +201,12 @@
     }else
     {
         self.fromlab.text = [NSString stringWithFormat:@"%@%@%@",@"今日牛评老司机已赞",model.fromstr,@"次"];
+        
+    }
+    if ([model.ishot isEqualToString:@"1"]) {
+        [self.contentView addSubview:self.reimg];
+    }else
+    {
         
     }
     

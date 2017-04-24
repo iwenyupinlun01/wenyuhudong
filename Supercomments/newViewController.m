@@ -15,7 +15,8 @@
 #import "YYPhotoGroupView.h"
 #import "SureWebViewController.h"
 #import "loginViewController.h"
-@interface newViewController ()<UITableViewDataSource,UITableViewDelegate,mycellVdelegate>
+#import <DZNEmptyDataSet/UIScrollView+EmptyDataSet.h>
+@interface newViewController ()<UITableViewDataSource,UITableViewDelegate,mycellVdelegate,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate>
 /** 用于加载下一页的参数(页码) */
 {
     int pn;
@@ -39,6 +40,11 @@ static NSString *newidentfid = @"newidentfid";
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor whiteColor];
+    self.newtable.emptyDataSetSource = self;
+    self.newtable.emptyDataSetDelegate = self;
+    
+    // 删除单元格分隔线的一个小技巧
+    self.newtable.tableFooterView = [UIView new];
     
     pn=1;
     self.dataSource = [NSMutableArray array];
@@ -116,6 +122,7 @@ static NSString *newidentfid = @"newidentfid";
             self.nmodel.typestr = dicarr[@"type"];
             self.nmodel.sifoudianzanstr = dicarr[@"is_support"];
             self.nmodel.weburlstr = dicarr[@"url"];
+            self.nmodel.ishot = dicarr[@"is_hot"];
             [self.dataSource addObject:self.nmodel.contentstr];
             [self.dataarr addObject:self.nmodel];
             [self.imgarr addObject:self.nmodel.imgurlstr];
@@ -399,11 +406,13 @@ static NSString *newidentfid = @"newidentfid";
 }
 
 //回复
+
 -(void)myTabVClick2:(UITableViewCell *)cell
 {
     NSIndexPath *index = [self.newtable indexPathForCell:cell];
     NSLog(@"333===%ld   回复",index.row);
 }
+
 //跳转网页
 -(void)myTabVClick3:(UITableViewCell *)cell
 {
@@ -420,4 +429,9 @@ static NSString *newidentfid = @"newidentfid";
     
 }
 
+#pragma mark - 加载失败
+
+- (UIImage *)imageForEmptyDataSet:(UIScrollView *)scrollView {
+    return [UIImage imageNamed:@"加载失败"];
+}
 @end

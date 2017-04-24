@@ -245,12 +245,39 @@ static NSString *myinfoidentfid1 = @"myidentfid1";
     [picker dismissViewControllerAnimated:YES completion:nil];
     
     UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
-    
     UIImageView *picimage = [self.myinfotable viewWithTag:200];
     picimage.image = image;
-    
     [self.myinfotable reloadData];
+    [self upLoadImage:image];
 }
+
+- (void)upLoadImage:(UIImage*)myImage
+{
+    NSString *tokenstr = [[NSString alloc] init];
+    NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
+    NSString *token = [userdefat objectForKey:@"tokenuser"];
+    if (token.length==0) {
+        tokenstr = @"";
+    }
+    else
+    {
+        tokenstr = token;
+    }
+    NSLog(@"token--------%@",tokenstr);
+    NSData *data=UIImageJPEGRepresentation(myImage, 0.01);
+    
+    
+    
+    [AFManager upLoadpath:[NSString stringWithFormat:touxiang,tokenstr] reqBody:nil file:data fileName:@"file" fileType:@"image/jpg" block:^(id infor) {
+        NSLog(@"infor-----%@",infor);
+        
+    } errorBlock:^(NSError *error) {
+        
+    }];
+}
+
+
+
 
 -(void)nameasd:(NSNotification *)notifocation
 {
