@@ -21,7 +21,10 @@
 #import "sectionView.h"
 #import "SureWebViewController.h"
 #import "loginViewController.h"
-@interface detailsViewController ()<UITableViewDataSource,UITableViewDelegate>
+#import "YcKeyBoardView.h"
+
+#import "keyboardView.h"
+@interface detailsViewController ()<UITableViewDataSource,UITableViewDelegate,UITextViewDelegate>
 {
     int pn;
 }
@@ -39,6 +42,7 @@
 @property (nonatomic,strong) NSMutableArray *sonCommentarr;
 @property (nonatomic,strong) sectionView *secview;
 
+@property (nonatomic,strong) keyboardView *keyView;
 @end
 static NSString *detailsidentfid = @"detailsidentfid";
 
@@ -62,8 +66,6 @@ NSMutableArray * ymDataArray;
     [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
     self.navigationController.navigationBar.barTintColor = [UIColor wjColorFloat:@"F5F5F5"];
     
-
-    
     pn=1;
     self.cellcontarr = [NSMutableArray array];
     self.detalisarr = [NSMutableArray array];
@@ -72,6 +74,7 @@ NSMutableArray * ymDataArray;
     // 3.2.上拉加载更多
     [self addFooter];
     [self.view addSubview:self.maintable];
+    [self.view addSubview:self.keyView];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -303,24 +306,12 @@ NSMutableArray * ymDataArray;
             self.detailsmodel.timestr = [dicarr objectForKey:@"ctime"];
             self.detailsmodel.contstr = [dicarr objectForKey:@"content"];
             self.detailsmodel.pingarr = [dicarr objectForKey:@"sonComment"];
-            
-           // NSString *urlstr = @"http://www.qqbody.com/uploads/allimg/201401/09-045302_580.jpg";
-         
             self.detailsmodel.imgurlstr = [dicarr objectForKey:@"headImg"];
-            
-            
             NSMutableArray *commarr = [NSMutableArray array];
             commarr = [dicarr objectForKey:@"sonComment"];
-            [self.cellcontarr addObject:[NSString stringWithFormat:@"%lu",(unsigned long)commarr.count]];
-            
             [self.sonCommentarr addObject:self.detailsmodel.pingarr];
-
             [self.detalisarr addObject:self.detailsmodel];
-            
-
         }
-        
-         NSLog(@"pinglunarr==========%@",self.cellcontarr);
         
         [self.maintable.mj_header endRefreshing];
         [self.maintable reloadData];
@@ -407,6 +398,8 @@ NSMutableArray * ymDataArray;
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(webimagego)];
         [_headview.title addGestureRecognizer:tap];
         
+        
+        
     }
     return _headview;
 }
@@ -424,6 +417,32 @@ NSMutableArray * ymDataArray;
     return _maintable;
 }
 
+
+-(keyboardView *)keyView
+{
+    if(!_keyView)
+    {
+        _keyView = [[keyboardView alloc] init];
+        _keyView.frame = CGRectMake(0, DEVICE_HEIGHT-64, DEVICE_WIDTH, 44);
+        //增加监听，当键盘出现或改变时收出消息
+        _keyView.textview.delegate = self;
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(keyboardWillShow:)
+                                                     name:UIKeyboardWillShowNotification
+                                                   object:nil];
+        
+        //增加监听，当键退出时收出消息
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(keyboardWillHide:)
+                                                     name:UIKeyboardWillHideNotification
+                                                   object:nil];
+        
+    }
+    return _keyView;
+}
+
+#pragma mark - UITableViewDataSource && UITableViewDelegate
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     self.detailsmodel = self.detalisarr[section];
@@ -438,35 +457,50 @@ NSMutableArray * ymDataArray;
     }
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
     _detailsmodel  = self.detalisarr[indexPath.section];
-    // 取第indexPath.row这行对应的品牌名称
     
+    // 取第indexPath.row这行对应的品牌名称
     NSString *str4 = [_detailsmodel.pingarr[indexPath.row] objectForKey:@"content"];
     NSString *str1 = [_detailsmodel.pingarr[indexPath.row]objectForKey:@"s_nickname"];
-   // NSString *str3 = [_detailsmodel.pingarr[indexPath.row]objectForKey:@"s_to_nickname"];
-    
-
-    NSString *str2 = @"回复";
+    NSString *str3 = [_detailsmodel.pingarr[indexPath.row]objectForKey:@"s_to_nickname"];
+    NSString *str2 = @"回复: ";
 
     
-    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@%@",str1,str2,str4]];
-    [str addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:NSMakeRange(0,str1.length)];
-    [str addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:NSMakeRange(str1.length,str2.length)];
+    if ([self isNullToString:str3]) {
+        
+        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@%@",str1,str2,str4]];
+        [str addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"CDCDC7"] range:NSMakeRange(0,str1.length)];
+        [str addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"333333"] range:NSMakeRange(str1.length,str2.length)];
+        [str addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"333333"] range:NSMakeRange(str1.length+str2.length, str4.length)];
+        NSLog(@"str===============%@",str);
+        
+        CGSize size = [str boundingRectWithSize:CGSizeMake(DEVICE_WIDTH -64*WIDTH_SCALE-14*WIDTH_SCALE, 0) options:NSStringDrawingUsesLineFragmentOrigin context:nil].size;
+        
+        cell.pinglunlab.attributedText = str;
+        
+        cell.pinglunlab.frame = CGRectMake(128/2*WIDTH_SCALE,  8*HEIGHT_SCALE, DEVICE_WIDTH -64*WIDTH_SCALE-14*WIDTH_SCALE, size.height);
+        
+        cell.pinglunlab.font = [UIFont systemFontOfSize:14*FX];
+        
+    }
+    else
+    {
+   
+        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@%@%@",str1,str2,str3,str4]];
+        [str addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"CDCDC7"] range:NSMakeRange(0,str1.length)];
+        [str addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"333333"] range:NSMakeRange(str1.length,str2.length)];
+        
+        [str addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"CDCDC7"] range:NSMakeRange(str1.length+str2.length,str3.length)];
+        [str addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"333333"] range:NSMakeRange(str1.length+str2.length+str3.length,str4.length)];
+        NSLog(@"str===============%@",str);
+        CGSize size = [str boundingRectWithSize:CGSizeMake(DEVICE_WIDTH -64*WIDTH_SCALE-14*WIDTH_SCALE, 0) options:NSStringDrawingUsesLineFragmentOrigin context:nil].size;
+        cell.pinglunlab.attributedText = str;
+        cell.pinglunlab.frame = CGRectMake(128/2*WIDTH_SCALE,  8*HEIGHT_SCALE, DEVICE_WIDTH -64*WIDTH_SCALE-14*WIDTH_SCALE, size.height);
+        
+        cell.pinglunlab.font = [UIFont systemFontOfSize:14*FX];
+    }
     
-//    [str addAttribute:NSForegroundColorAttributeName value:[UIColor greenColor] range:NSMakeRange(str1.length+str2.length,str3.length)];
-//    [str addAttribute:NSForegroundColorAttributeName value:[UIColor orangeColor] range:NSMakeRange(str1.length+str2.length+str3.length,str4.length)];
-    
-    
-    
-    NSString *anotherString=[str string];
-    
-    NSLog(@"str===============%@",str);
-    
-    cell.pinglunlab.attributedText = str;
-    CGSize textSize = [cell.pinglunlab setText:anotherString lines:QSTextDefaultLines2 andLineSpacing:QSTextLineSpacing constrainedToSize:CGSizeMake(DEVICE_WIDTH,MAXFLOAT)];
-    cell.pinglunlab.frame = CGRectMake(128/2*WIDTH_SCALE,  8*HEIGHT_SCALE, DEVICE_WIDTH -64*WIDTH_SCALE-14*WIDTH_SCALE, textSize.height);
-    cell.pinglunlab.font = [UIFont systemFontOfSize:14*FX];
+    cell.pinglunlab.numberOfLines = 0;
     return cell;
 }
 
@@ -501,6 +535,15 @@ NSMutableArray * ymDataArray;
     [self.secview setcelldata:self.detalisarr[section]];
     self.secview.layer.masksToBounds = YES;
     //self.secview.layer.borderWidth = 1;
+    
+    
+    _secview.userInteractionEnabled = YES;//打开用户交互
+    //初始化一个手势
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tableviewaction:)];
+    //为图片添加手势
+    [_secview addGestureRecognizer:singleTap];
+
+    
     return _secview;
 }
 
@@ -514,9 +557,22 @@ NSMutableArray * ymDataArray;
     return view;
 }
 
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+
     
+    [self.keyView.textview becomeFirstResponder];
+
+    //    self.detailsmodel  = self.detalisarr[indexPath.section];
+    //    NSMutableArray *mutaArray = [[NSMutableArray alloc] init];
+    //    [mutaArray addObjectsFromArray:self.detailsmodel.pingarr];
+    //    NSDictionary *dit = @{@"content":@"11111",@"id":@"33"};
+    //
+    //    [mutaArray addObject:dit];
+    //    self.detailsmodel.pingarr = mutaArray;
+    //
+    //    [self.maintable reloadData];
     NSLog(@"点击cell");
 }
 
@@ -672,8 +728,72 @@ NSMutableArray * ymDataArray;
 -(void)pinglunclick
 {
     NSLog(@"评论");
+    
+    [self.keyView.textview becomeFirstResponder];
 }
 
+#pragma mark - 输入框方法
+
+//当键盘出现或改变时调用
+- (void)keyboardWillShow:(NSNotification *)aNotification
+{
+    //获取键盘的高度
+    NSDictionary *userInfo = [aNotification userInfo];
+    NSValue *aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
+    CGRect keyboardRect = [aValue CGRectValue];
+    int height = keyboardRect.size.height;
+    
+    [UIView animateWithDuration:[aNotification.userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue] animations:^{
+        self.keyView.transform=CGAffineTransformMakeTranslation(0, -height-44);
+        
+    }];
+}
+
+//当键退出时调用
+
+- (void)keyboardWillHide:(NSNotification *)aNotification
+{
+    [UIView animateWithDuration:[aNotification.userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue] animations:^{
+        
+        self.keyView.transform=CGAffineTransformIdentity;
+    } completion:^(BOOL finished) {
+        
+        self.keyView.textview.text=@"";
+        //[self.keyView removeFromSuperview];
+    }];
+}
+
+
+
+#pragma mark - UITextViewDelegate
+
+//将要结束/退出编辑模式
+- (BOOL)textViewShouldEndEditing:(UITextView *)textView
+{
+    NSLog(@"退出编辑模式");
+    return YES;
+}
+
+//响应return
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
+    if ([text isEqualToString:@"\n"]){ //判断输入的字是否是回车，即按下return
+        //在这里做你响应return键的代码
+        NSLog(@"return");
+        [textView resignFirstResponder];
+        return NO; //这里返回NO，就代表return键值失效，即页面上按下return，不会出现换行，如果为yes，则输入页面会换行
+    }
+    return YES;
+}
+
+//键盘回收
+
+-(void)tableviewaction:(UIGestureRecognizer *)gerkeyboard
+{
+    //NSLog(@"键盘回收");
+    [self.keyView.textview resignFirstResponder];
+
+}
+//图片放大
 -(void)webimagego
 {
     NSString *urlstr = self.headm.weburlstr;
@@ -768,5 +888,16 @@ NSMutableArray * ymDataArray;
     
     return fanhuistr;
 }
-
+- (BOOL )isNullToString:(id)string
+{
+    if ([string isEqual:@"NULL"] || [string isKindOfClass:[NSNull class]] || [string isEqual:[NSNull null]] || [string isEqual:NULL] || [[string class] isSubclassOfClass:[NSNull class]] || string == nil || string == NULL || [string isKindOfClass:[NSNull class]] || [[string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length]==0 || [string isEqualToString:@"<null>"] || [string isEqualToString:@"(null)"])
+    {
+        return YES;
+        
+    }else
+    {
+        
+        return NO;
+    }
+}
 @end

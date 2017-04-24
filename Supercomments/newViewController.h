@@ -10,4 +10,7 @@
 
 @interface newViewController : UIViewController
 
+@property (nonatomic,strong) NSString *isfrom;
+
+
 @end

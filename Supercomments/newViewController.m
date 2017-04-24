@@ -20,7 +20,7 @@
 {
     int pn;
 }
- 
+
 @property (nonatomic,strong) UITableView *newtable;
 @property (nonatomic,strong) UIImageView *demoimg;
 @property (nonatomic,strong) NSMutableArray *dataSource;
@@ -51,7 +51,6 @@ static NSString *newidentfid = @"newidentfid";
     [self.view addSubview:self.newtable];
     
 }
-
 
 
 - (void)addHeader
@@ -108,7 +107,6 @@ static NSString *newidentfid = @"newidentfid";
             self.nmodel.contentstr = dicarr[@"content"];
             self.nmodel.timestr = dicarr[@"create_time"];
             self.nmodel.imgurlstr = dicarr[@"images"];
-            //self.nmodel.imgurlstr = @"http://dl.bizhi.sogou.com/images/2012/03/14/124196.jpg";
             self.nmodel.namestr = dicarr[@"name"];
             self.nmodel.dianzanstr = dicarr[@"support_num"];
             self.nmodel.pinglunstr = dicarr[@"reply_num"];
@@ -161,7 +159,6 @@ static NSString *newidentfid = @"newidentfid";
             self.nmodel.contentstr = dicarr[@"content"];
             self.nmodel.timestr = dicarr[@"create_time"];
             self.nmodel.imgurlstr = dicarr[@"images"];
-            //self.nmodel.imgurlstr = @"http://baiduapp.changweibo.net/user_img/2017/0415/14362936404.png";
             self.nmodel.namestr = dicarr[@"name"];
             self.nmodel.dianzanstr = dicarr[@"support_num"];
             self.nmodel.pinglunstr = dicarr[@"reply_num"];

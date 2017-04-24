@@ -88,6 +88,10 @@
 		53E412F01EAA1C8E00EBC0CE /* xitongModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 53E412EF1EAA1C8E00EBC0CE /* xitongModel.m */; };
 		53E587841EA7651D004CB302 /* detailcellmodel.m in Sources */ = {isa = PBXBuildFile; fileRef = 53E587831EA7651D004CB302 /* detailcellmodel.m */; };
 		53E587871EA7672A004CB302 /* pinglunCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 53E587861EA7672A004CB302 /* pinglunCell.m */; };
+		53E863C51EAD8E84001F6FD8 /* YcKeyBoardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 53E863C41EAD8E84001F6FD8 /* YcKeyBoardView.m */; };
+		53E863C71EAD8EDA001F6FD8 /* chat_bottom_textfield.png in Resources */ = {isa = PBXBuildFile; fileRef = 53E863C61EAD8EDA001F6FD8 /* chat_bottom_textfield.png */; };
+		53E863CA1EAD99B0001F6FD8 /* keyboardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 53E863C91EAD99B0001F6FD8 /* keyboardView.m */; };
+		53E863CC1EADADB4001F6FD8 /* 牛评用户协议.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 53E863CB1EADADB4001F6FD8 /* 牛评用户协议.jpg */; };
 		53EC944A1E9DC1C400E03E07 /* hDisplayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 53EC94491E9DC1C400E03E07 /* hDisplayView.m */; };
 		53EC944E1E9DC6DE00E03E07 /* UILabel+YBAttributeTextTapAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 53EC944D1E9DC6DE00E03E07 /* UILabel+YBAttributeTextTapAction.m */; };
 		53F9CB631E9B53B200C1F3A7 /* ShareSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53F9CB3A1E9B53B200C1F3A7 /* ShareSDK.framework */; };
@@ -288,6 +292,12 @@
 		53E587831EA7651D004CB302 /* detailcellmodel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = detailcellmodel.m; sourceTree = "<group>"; };
 		53E587851EA7672A004CB302 /* pinglunCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pinglunCell.h; sourceTree = "<group>"; };
 		53E587861EA7672A004CB302 /* pinglunCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = pinglunCell.m; sourceTree = "<group>"; };
+		53E863C31EAD8E84001F6FD8 /* YcKeyBoardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YcKeyBoardView.h; sourceTree = "<group>"; };
+		53E863C41EAD8E84001F6FD8 /* YcKeyBoardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YcKeyBoardView.m; sourceTree = "<group>"; };
+		53E863C61EAD8EDA001F6FD8 /* chat_bottom_textfield.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chat_bottom_textfield.png; sourceTree = "<group>"; };
+		53E863C81EAD99AF001F6FD8 /* keyboardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = keyboardView.h; sourceTree = "<group>"; };
+		53E863C91EAD99B0001F6FD8 /* keyboardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = keyboardView.m; sourceTree = "<group>"; };
+		53E863CB1EADADB4001F6FD8 /* 牛评用户协议.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "牛评用户协议.jpg"; sourceTree = "<group>"; };
 		53EC94481E9DC1C400E03E07 /* hDisplayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hDisplayView.h; sourceTree = "<group>"; };
 		53EC94491E9DC1C400E03E07 /* hDisplayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = hDisplayView.m; sourceTree = "<group>"; };
 		53EC944C1E9DC6DE00E03E07 /* UILabel+YBAttributeTextTapAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+YBAttributeTextTapAction.h"; sourceTree = "<group>"; };
@@ -627,6 +637,9 @@
 		53619EDA1E98D25C007CC7AC /* view */ = {
 			isa = PBXGroup;
 			children = (
+				53E863C61EAD8EDA001F6FD8 /* chat_bottom_textfield.png */,
+				53E863C31EAD8E84001F6FD8 /* YcKeyBoardView.h */,
+				53E863C41EAD8E84001F6FD8 /* YcKeyBoardView.m */,
 				53619EDF1E98D8DA007CC7AC /* detaolsCell.h */,
 				53619EE01E98D8DA007CC7AC /* detaolsCell.m */,
 				53E587851EA7672A004CB302 /* pinglunCell.h */,
@@ -639,6 +652,8 @@
 				53F9CB891E9B834900C1F3A7 /* UILabel+Category.m */,
 				53FE161A1E9C89D000585111 /* sectionView.h */,
 				53FE161B1E9C89D000585111 /* sectionView.m */,
+				53E863C81EAD99AF001F6FD8 /* keyboardView.h */,
+				53E863C91EAD99B0001F6FD8 /* keyboardView.m */,
 			);
 			name = view;
 			sourceTree = "<group>";
@@ -688,6 +703,7 @@
 		53A8B2581E9CE3F100F6CBD5 /* view */ = {
 			isa = PBXGroup;
 			children = (
+				53E863CB1EADADB4001F6FD8 /* 牛评用户协议.jpg */,
 				53EC944B1E9DC6DE00E03E07 /* YBAttributeTextTapAction */,
 				53A8B2591E9CE40400F6CBD5 /* agreementView.h */,
 				53A8B25A1E9CE40400F6CBD5 /* agreementView.m */,
@@ -1200,12 +1216,14 @@
 			files = (
 				53F9CB6D1E9B53B200C1F3A7 /* TencentOpenApi_IOS_Bundle.bundle in Resources */,
 				53F9CB721E9B53B200C1F3A7 /* README.txt in Resources */,
+				53E863CC1EADADB4001F6FD8 /* 牛评用户协议.jpg in Resources */,
 				53F9CB641E9B53B200C1F3A7 /* ShareSDKConfigFile.bundle in Resources */,
 				53AEBE2A1E948A2500280F70 /* LaunchScreen.storyboard in Resources */,
 				53F9CB671E9B53B200C1F3A7 /* ShareSDKUI.bundle in Resources */,
 				53F9CB6F1E9B53B200C1F3A7 /* WeiboSDK.bundle in Resources */,
 				53F9CB741E9B53B200C1F3A7 /* ShareSDK.bundle in Resources */,
 				53AEBE271E948A2500280F70 /* Assets.xcassets in Resources */,
+				53E863C71EAD8EDA001F6FD8 /* chat_bottom_textfield.png in Resources */,
 				53F9CB711E9B53B200C1F3A7 /* read_me.txt in Resources */,
 				53AEBE251E948A2500280F70 /* Main.storyboard in Resources */,
 				53E294301E9F49CA0034D4E7 /* reply_button@2x.png in Resources */,
@@ -1272,11 +1290,13 @@
 				53E412F01EAA1C8E00EBC0CE /* xitongModel.m in Sources */,
 				53619EE41E98E0C7007CC7AC /* detailsheadView.m in Sources */,
 				53D48A831EA4D52F00E5ADA3 /* headModel.m in Sources */,
+				53E863CA1EAD99B0001F6FD8 /* keyboardView.m in Sources */,
 				53E587871EA7672A004CB302 /* pinglunCell.m in Sources */,
 				53619EC51E9778E9007CC7AC /* newCell.m in Sources */,
 				53619EA61E963508007CC7AC /* nicknameViewController.m in Sources */,
 				53AEBE551E94C9FF00280F70 /* LGSegment.m in Sources */,
 				5337FEFF1E9DF29A004664D7 /* SQCommentTableViewCell.m in Sources */,
+				53E863C51EAD8E84001F6FD8 /* YcKeyBoardView.m in Sources */,
 				53E2942F1E9F49CA0034D4E7 /* NSString+NSString_ILExtension.m in Sources */,
 				53AEBE521E9496FF00280F70 /* homeViewController.m in Sources */,
 				53619EE11E98D8DA007CC7AC /* detaolsCell.m in Sources */,

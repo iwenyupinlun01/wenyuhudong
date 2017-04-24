@@ -11,6 +11,8 @@
 #import "WXApi.h"
 #import "AFNetworking.h"
 #import "AppDelegate.h"
+
+#import "YYPhotoGroupView.h"
 @interface loginViewController ()<YBAttributeTapActionDelegate,WXApiDelegate>
 @property (nonatomic,strong) UIImageView *logoimg;
 @property (nonatomic,strong) UILabel *namelab;
@@ -19,6 +21,7 @@
 @property (nonatomic,strong) UIButton *zhijiebtn;
 @property (nonatomic,strong) UILabel *aggrentlab;
 
+@property (nonatomic,strong) UIImageView *xieyiimg;
 @end
 
 @implementation loginViewController
@@ -121,6 +124,17 @@
     return _zhijiebtn;
 }
 
+-(UIImageView *)xieyiimg
+{
+    if(!_xieyiimg)
+    {
+        _xieyiimg = [[UIImageView alloc] init];
+        _xieyiimg.image = [UIImage imageNamed:@"牛评用户协议"];
+    }
+    return _xieyiimg;
+}
+
+
 
 -(UILabel *)aggrentlab
 {
@@ -150,6 +164,7 @@
         
         [_aggrentlab yb_addAttributeTapActionWithStrings:@[@"用户协议"] tapClicked:^(NSString *string, NSRange range, NSInteger index) {
             NSLog(@"122");
+            [self tapAction];
         }];
         
     }
@@ -242,5 +257,8 @@
     [self presentViewController:alert animated:YES completion:nil];
 }
 
+- (void)tapAction{
+    
+}
 
 @end

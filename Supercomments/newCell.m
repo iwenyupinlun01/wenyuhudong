@@ -81,7 +81,7 @@
     if(!_contentlab)
     {
         _contentlab = [[UILabel alloc] init];
-        _contentlab.font = [UIFont systemFontOfSize:16*FX];
+        
         _contentlab.textColor = [UIColor wjColorFloat:@"333333"];
         
     }
@@ -138,13 +138,7 @@
     if(!_tiview)
     {
         _tiview = [[titleView alloc] init];
-       // _titlelab.titlelab.backgroundColor = [UIColor redColor];
-       // _tiview.titlelab.text = @"这是标题";
-        
-//        UITapGestureRecognizer*tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:selfaction:@selector(Actiondo:)];
-        
         UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(Actiondo)];
-        
         [_tiview addGestureRecognizer:tapGesture];
     }
     return _tiview;
@@ -167,7 +161,7 @@
     
     CGSize textSize = [UILabel sizeWithText:text
                                       lines:QSTextDefaultLines2
-                                       font:[UIFont systemFontOfSize:16*FX]
+                                       font:[UIFont systemFontOfSize:17*FX]
                              andLineSpacing:QSTextLineSpacing
                           constrainedToSize:CGSizeMake(DEVICE_WIDTH - 28*WIDTH_SCALE,MAXFLOAT)];
     
@@ -177,7 +171,6 @@
 
 +(CGFloat)cellimagehti:(NSString *)imgstr
 {
-    
     return 200;
 }
 
@@ -186,7 +179,7 @@
     self.nmodel = model;
     self.namelab.text = model.namestr;
     self.contentlab.text = model.contentstr;
-    self.tiview.titlelab.text = [NSString stringWithFormat:@"%@%@",@"标题: ",model.titlestr];
+    self.tiview.titlelab.text = [NSString stringWithFormat:@"%@%@",@"  标题: ",model.titlestr];
     self.commbtn.textlab.text = model.pinglunstr;
     self.zbtn.zanlab.text = model.dianzanstr;
     self.timelab.text = [self datetime:model.timestr];

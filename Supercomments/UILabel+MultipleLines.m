@@ -48,6 +48,7 @@
     return self.frame.size;
 }
 
+
 //根据文本占用的size
 + (CGSize)sizeWithText:(NSString *)text lines:(NSInteger)lines font:(UIFont*)font andLineSpacing:(CGFloat)lineSpacing constrainedToSize:(CGSize)cSize{
     
