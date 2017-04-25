@@ -58,11 +58,9 @@
 
 -(void)islogin
 {
-    
     NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
     NSString *tokenkey = [userdefat objectForKey:@"tokenuser"];
     NSLog(@"tokenkey===========%@",tokenkey);
-    
     [AFManager getReqURL:[NSString stringWithFormat:loginbool,tokenkey] block:^(id infor) {
         NSLog(@"infor=%@",infor);
         if ([[infor objectForKey:@"code"]intValue]==0) {
@@ -101,26 +99,34 @@
     }
     NSLog(@"token--------%@",tokenstr);
     
-    [AFManager getReqURL:[NSString stringWithFormat:tongzhixianxishuliang,tokenstr] block:^(id infor) {
-        NSLog(@"info---------%@",infor);
-        NSString *inforstr = [[NSString alloc] init];
-        NSString *system_inform = [[NSString alloc] init];
-        if ([[infor objectForKey:@"code"] intValue]==1) {
-            NSDictionary *dic = [infor objectForKey:@"info"];
-            inforstr = [dic objectForKey:@"inform"];
-            system_inform = [dic objectForKey:@"system_inform"];
-        }
-        if ([inforstr isEqualToString:@"0"]&&[system_inform isEqualToString:@"0"]) {
+    if (tokenstr.length!=0) {
+        [AFManager getReqURL:[NSString stringWithFormat:tongzhixianxishuliang,tokenstr] block:^(id infor) {
+            NSLog(@"info---------%@",infor);
+            NSString *inforstr = [[NSString alloc] init];
+            NSString *system_inform = [[NSString alloc] init];
+            if ([[infor objectForKey:@"code"] intValue]==1) {
+                NSDictionary *dic = [infor objectForKey:@"info"];
+                inforstr = [dic objectForKey:@"inform"];
+                system_inform = [dic objectForKey:@"system_inform"];
+            }
+            if ([inforstr isEqualToString:@"0"]&&[system_inform isEqualToString:@"0"]) {
+                
+            }
+            else
+            {
+                [self.view addSubview:self.xiaohongdianview];
+            }
             
-        }
-        else
-        {
-            [self.view addSubview:self.xiaohongdianview];
-        }
+        } errorblock:^(NSError *error) {
+            [MBProgressHUD showSuccess:@"请检查网络"];
+        }];
+
+    }else
+    {
         
-    } errorblock:^(NSError *error) {
-        
-    }];
+    }
+    
+    
 }
 
 

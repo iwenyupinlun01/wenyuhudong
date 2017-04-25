@@ -9,9 +9,9 @@
 #import "replyViewController.h"
 #import "replyCell.h"
 #import "replyModel.h"
-@interface replyViewController ()<UITableViewDelegate,UITableViewDataSource,myTabVdelegate>
+#import <DZNEmptyDataSet/UIScrollView+EmptyDataSet.h>
+@interface replyViewController ()<UITableViewDelegate,UITableViewDataSource,myTabVdelegate,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate>
 @property (nonatomic,strong) UITableView *replytable;
-
 @property (nonatomic,strong) NSMutableArray *replyarr;
 @property (nonatomic,strong) replyModel *rmodel;
 @end
@@ -112,6 +112,8 @@ static NSString *replyidentfid = @"replyidentfid";
         _replytable = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT-64)];
         _replytable.dataSource = self;
         _replytable.delegate = self;
+        _replytable.emptyDataSetSource = self;
+        _replytable.emptyDataSetDelegate = self;
     }
     return _replytable;
 }
@@ -186,4 +188,9 @@ static NSString *replyidentfid = @"replyidentfid";
     NSLog(@"%ld",(long)indexPath.row);
 }
 
+#pragma mark - 加载失败
+
+- (UIImage *)imageForEmptyDataSet:(UIScrollView *)scrollView {
+    return [UIImage imageNamed:@"加载失败"];
+}
 @end

@@ -434,4 +434,5 @@ static NSString *newidentfid = @"newidentfid";
 - (UIImage *)imageForEmptyDataSet:(UIScrollView *)scrollView {
     return [UIImage imageNamed:@"加载失败"];
 }
+
 @end

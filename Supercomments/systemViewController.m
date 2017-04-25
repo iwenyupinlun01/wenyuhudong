@@ -10,7 +10,11 @@
 #import "systemCell.h"
 #import "UIColor+BgColor.h"
 #import "xitongModel.h"
-@interface systemViewController ()<UITableViewDataSource,UITableViewDelegate,SWTableViewCellDelegate>
+#import <DZNEmptyDataSet/UIScrollView+EmptyDataSet.h>
+@interface systemViewController ()<UITableViewDataSource,UITableViewDelegate,SWTableViewCellDelegate,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate>
+{
+    int pn;
+}
 @property (nonatomic,strong) UITableView *systemtableview;
 @property (nonatomic,strong) NSMutableArray *dataSource;
 @property (nonatomic,strong) xitongModel *ximodel;
@@ -35,10 +39,16 @@ static NSString * const kShowTextCellReuseIdentifier = @"QSShowTextCell";
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor wjColorFloat:@"333333"]}];
 
     self.navigationController.navigationBar.barTintColor = [UIColor wjColorFloat:@"F5F5F5"];
-    
+    pn=1;
     self.dataSource = [NSMutableArray array];
     self.xitongarr = [NSMutableArray array];
-    [self loaddatafromweb];
+    //[self loaddatafromweb];
+    
+    // 3.1.下拉刷新
+    [self addHeader];
+    // 3.2.上拉加载更多
+    [self addFooter];
+    
     [self.view addSubview:self.systemtableview];
 }
 
@@ -47,8 +57,35 @@ static NSString * const kShowTextCellReuseIdentifier = @"QSShowTextCell";
     // Dispose of any resources that can be recreated.
 }
 
--(void)loaddatafromweb
+#pragma mark - 刷新加载数据
+
+- (void)addHeader
 {
+    // 头部刷新控件
+    self.systemtableview.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(refreshAction)];
+    [self.systemtableview.mj_header beginRefreshing];
+    
+}
+
+- (void)addFooter
+{
+    self.systemtableview.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(refreshLoadMore)];
+}
+- (void)refreshAction {
+    
+    [self headerRefreshEndAction];
+    
+}
+- (void)refreshLoadMore {
+    
+    [self footerRefreshEndAction];
+    
+}
+- (void)headerRefreshEndAction
+{
+    
+    [self.dataSource removeAllObjects];
+    [self.xitongarr removeAllObjects];
     NSString *tokenstr = [[NSString alloc] init];
     NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
     NSString *token = [userdefat objectForKey:@"tokenuser"];
@@ -76,14 +113,57 @@ static NSString * const kShowTextCellReuseIdentifier = @"QSShowTextCell";
                 [self.dataSource addObject:concent];
                 
                 [self.xitongarr addObject:self.ximodel];
-             
+                
             }
         }
-        
+        [self.systemtableview.mj_header endRefreshing];
         [self.systemtableview reloadData];
     } errorblock:^(NSError *error) {
-        
+        [self.systemtableview.mj_header endRefreshing];
     }];
+
+}
+
+-(void)footerRefreshEndAction
+{
+    NSString *tokenstr = [[NSString alloc] init];
+    NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
+    NSString *token = [userdefat objectForKey:@"tokenuser"];
+    if (token.length==0) {
+        tokenstr = @"";
+    }
+    else
+    {
+        tokenstr = token;
+    }
+    NSLog(@"token--------%@",tokenstr);
+    pn++;
+    NSString *pnstr = [NSString stringWithFormat:@"%d",pn];
+    [AFManager getReqURL:[NSString stringWithFormat:xitongtongzhi,tokenstr,pnstr] block:^(id infor) {
+        NSLog(@"info-------%@",infor);
+        if ([[infor objectForKey:@"code"] intValue]==1)
+        {
+            NSArray *dit = [infor objectForKey:@"info"];
+            for (int i = 0; i<dit.count; i++)
+            {
+                NSDictionary *dicarr = [dit objectAtIndex:i];
+                self.ximodel = [[xitongModel alloc] init];
+                self.ximodel.puttimestr = dicarr[@"pubtime"];
+                self.ximodel.idstr = dicarr[@"id"];
+                
+                NSString *concent = dicarr[@"inform_content"];
+                [self.dataSource addObject:concent];
+                
+                [self.xitongarr addObject:self.ximodel];
+                
+            }
+        }
+        [self.systemtableview.mj_footer endRefreshing];
+        [self.systemtableview reloadData];
+    } errorblock:^(NSError *error) {
+        [self.systemtableview.mj_footer endRefreshing];
+    }];
+ 
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -110,6 +190,8 @@ static NSString * const kShowTextCellReuseIdentifier = @"QSShowTextCell";
         _systemtableview.dataSource = self;
         _systemtableview.delegate = self;
         _systemtableview.backgroundColor = [UIColor clearColor];
+        _systemtableview.emptyDataSetSource = self;
+        _systemtableview.emptyDataSetDelegate = self;
     }
     return _systemtableview;
 }
@@ -270,5 +352,9 @@ static NSString * const kShowTextCellReuseIdentifier = @"QSShowTextCell";
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+#pragma mark - 加载失败
 
+- (UIImage *)imageForEmptyDataSet:(UIScrollView *)scrollView {
+    return [UIImage imageNamed:@"加载失败"];
+}
 @end

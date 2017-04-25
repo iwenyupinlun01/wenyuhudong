@@ -47,6 +47,7 @@
 		53619EE41E98E0C7007CC7AC /* detailsheadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 53619EE31E98E0C7007CC7AC /* detailsheadView.m */; };
 		5387A7B71EAB4F720057B518 /* SureWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5387A7B61EAB4F720057B518 /* SureWebViewController.m */; };
 		5387A7BA1EAB68900057B518 /* MBProgressHUD+XMG.m in Sources */ = {isa = PBXBuildFile; fileRef = 5387A7B91EAB68900057B518 /* MBProgressHUD+XMG.m */; };
+		538D53C41EAEECD700E2DCAF /* strisNull.m in Sources */ = {isa = PBXBuildFile; fileRef = 538D53C31EAEECD700E2DCAF /* strisNull.m */; };
 		539550E01EA0B508001A268C /* newModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 539550DF1EA0B508001A268C /* newModel.m */; };
 		539550E61EA0C638001A268C /* navViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 539550E51EA0C638001A268C /* navViewController.m */; };
 		539550EA1EA0D9A1001A268C /* AFManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 539550E91EA0D9A1001A268C /* AFManager.m */; };
@@ -208,6 +209,8 @@
 		5387A7B61EAB4F720057B518 /* SureWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SureWebViewController.m; sourceTree = "<group>"; };
 		5387A7B81EAB68900057B518 /* MBProgressHUD+XMG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD+XMG.h"; sourceTree = "<group>"; };
 		5387A7B91EAB68900057B518 /* MBProgressHUD+XMG.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MBProgressHUD+XMG.m"; sourceTree = "<group>"; };
+		538D53C21EAEECD700E2DCAF /* strisNull.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = strisNull.h; sourceTree = "<group>"; };
+		538D53C31EAEECD700E2DCAF /* strisNull.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = strisNull.m; sourceTree = "<group>"; };
 		539550DE1EA0B508001A268C /* newModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = newModel.h; sourceTree = "<group>"; };
 		539550DF1EA0B508001A268C /* newModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = newModel.m; sourceTree = "<group>"; };
 		539550E11EA0C386001A268C /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
@@ -692,6 +695,8 @@
 				539550E41EA0C638001A268C /* navViewController.h */,
 				539550E51EA0C638001A268C /* navViewController.m */,
 				539550EB1EA0D9CB001A268C /* wangHeader.h */,
+				538D53C21EAEECD700E2DCAF /* strisNull.h */,
+				538D53C31EAEECD700E2DCAF /* strisNull.m */,
 			);
 			name = utlis;
 			sourceTree = "<group>";
@@ -1310,6 +1315,7 @@
 				53FE161C1E9C89D000585111 /* sectionView.m in Sources */,
 				53619E651E961201007CC7AC /* myinfoCell1.m in Sources */,
 				53F9CB8A1E9B834900C1F3A7 /* UILabel+Category.m in Sources */,
+				538D53C41EAEECD700E2DCAF /* strisNull.m in Sources */,
 				53619EDE1E98D283007CC7AC /* detailsViewController.m in Sources */,
 				53E863D21EAE02B0001F6FD8 /* Timestr.m in Sources */,
 				53AEBE5C1E94CDBD00280F70 /* infoViewController.m in Sources */,

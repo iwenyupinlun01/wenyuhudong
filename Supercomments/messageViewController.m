@@ -9,12 +9,13 @@
 #import "messageViewController.h"
 #import "systemViewController.h"
 #import "replyViewController.h"
+
 @interface messageViewController ()<UITableViewDataSource,UITableViewDelegate>
 @property (nonatomic,strong) UITableView *messagetable;
 @property (nonatomic,strong) NSArray *messagearr;
-
 @property (nonatomic,strong) NSString *num01;
 @property (nonatomic,strong) NSString *num02;
+
 @end
 
 static NSString *messageidentfid = @"messageidentfid";
