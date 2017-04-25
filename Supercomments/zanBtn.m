@@ -18,6 +18,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        //self.backgroundColor = [UIColor redColor];
         [self addSubview:self.zanimg];
         [self addSubview:self.zanlab];
     }
@@ -28,7 +29,7 @@
 {
     [super layoutSubviews];
     self.zanimg.frame = CGRectMake(5*WIDTH_SCALE, 2*HEIGHT_SCALE, 16*WIDTH_SCALE, 16*WIDTH_SCALE);
-    self.zanlab.frame = CGRectMake(25*WIDTH_SCALE, 2*HEIGHT_SCALE, 20*WIDTH_SCALE, 20*HEIGHT_SCALE);
+    self.zanlab.frame = CGRectMake(16*WIDTH_SCALE, 2*HEIGHT_SCALE, 40*WIDTH_SCALE, 20*HEIGHT_SCALE);
 }
 
 #pragma mark - getters
@@ -49,9 +50,9 @@
     {
         _zanlab = [[UILabel alloc] init];
         _zanlab.textColor = [UIColor wjColorFloat:@"C7C7CD"];
-        _zanlab.textAlignment = NSTextAlignmentRight;
+        _zanlab.textAlignment = NSTextAlignmentCenter;
         _zanlab.font = [UIFont systemFontOfSize:13];
-        _zanlab.text = @"20";
+        
     }
     return _zanlab;
 }

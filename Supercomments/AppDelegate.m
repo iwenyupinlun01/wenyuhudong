@@ -54,7 +54,7 @@
     
     
     //向微信注册应用。
-    //[WXApi registerApp:WXPatient_App_ID withDescription:@"Wechat"];
+
     [WXApi registerApp:@"wx133ee2b8bd5d3c7d"];
     
     
@@ -107,8 +107,7 @@
         NSString *code = aresp.code;
         [self getWeiXinOpenId:code];
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:WXLoginSuccess object:@{@"code":aresp.code}];
-        
+     
     }
 }
 
@@ -116,7 +115,6 @@
 
 - (void)getWeiXinOpenId:(NSString *)code{
     NSString *url =[NSString stringWithFormat:@"https://api.weixin.qq.com/sns/oauth2/access_token?appid=%@&secret=%@&code=%@&grant_type=authorization_code",WXPatient_App_ID,WXPatient_App_Secret,code];
-    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSURL *zoneUrl = [NSURL URLWithString:url];
         NSString *zoneStr = [NSString stringWithContentsOfURL:zoneUrl encoding:NSUTF8StringEncoding error:nil];
@@ -127,17 +125,13 @@
             NSString *unionid = dic[@"unionid"];
             NSLog(@"openid---------%@",openID);
             NSLog(@"unid===========%@",unionid);
-            
             NSString *access_token = dic[@"access_token"];
             NSLog(@"token---------------%@",access_token);
             NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
             [defaults setObject:access_token forKey:@"access_token"];
             [defaults setObject:openID forKey:@"openid"];
             [defaults synchronize];
-            
             NSLog(@"%@",[defaults objectForKey:@"access_token"]);
-            
-            
             AFHTTPSessionManager *manage = [AFHTTPSessionManager manager];
             manage.responseSerializer = [AFHTTPResponseSerializer serializer];
             [manage GET:@"https://api.weixin.qq.com/sns/userinfo" parameters:@{@"openid":openID, @"access_token":access_token} progress:^(NSProgress * _Nonnull downloadProgress) {
@@ -160,13 +154,14 @@
                 //        }
                 NSString *namestr = [dict objectForKey:@"nickname"];
                 NSString *pathurlstr = [dict objectForKey:@"pathurlstr"];
-                
-                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                 [defaults setObject:dict forKey:@"userinfo"];
                 [defaults setObject:namestr forKey:@"namestr"];
                 [defaults setObject:pathurlstr forKey:@"pathurlstr"];
-                
+            
                 [defaults synchronize];
+//                [[NSNotificationCenter defaultCenter] postNotificationName:WXLoginSuccess object:@{@"code":aresp.code}];
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:WXLoginSuccess object:@"dengluchenggong"];
                 
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                 NSLog(@"userinfo error-->%@", error.localizedDescription);

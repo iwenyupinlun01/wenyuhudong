@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface hotViewController : UIViewController
-
+@property (nonatomic,strong) NSString *isfrom;
 @end

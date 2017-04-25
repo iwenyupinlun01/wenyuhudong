@@ -39,7 +39,7 @@
         [self.view addSubview:self.gobackbtn];
     }
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(WXLogin:) name:WXLoginSuccess object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(WXLogin:) name:WXLoginSuccess object:@"dengluchenggong"];
     
 }
 
@@ -222,7 +222,6 @@
     NSLog(@"openid---------%@",openid);
     NSDictionary *para = @{@"login_type":@"quickLogin",@"openid":openid,@"token_key":tokenkey,@"nickname":nickname,@"type":@"4",@"path":path};
     
-    
     [AFManager postReqURL:denglu reqBody:para block:^(id infor) {
         NSLog(@"infor---------%@",infor);
         if ([[infor objectForKey:@"code"] intValue]==1) {
@@ -233,15 +232,13 @@
             [userdefat setObject:uid forKey:@"uid"];
             NSLog(@"tolen-------------%@",token);
             [userdefat synchronize];
+            [self dismissViewControllerAnimated:YES completion:nil];
         }
         else
         {
             NSLog(@"状态异常，请稍后再试");
         }
     }];
-    
-    [self dismissViewControllerAnimated:YES completion:nil];
-    
 }
 
 #pragma mark - 设置弹出提示语

@@ -12,7 +12,7 @@
 #import "YYPhotoGroupView.h"
 #import "Timestr.h"
 @interface newCell()
-@property (nonatomic,strong) UIImageView *reimg;
+
 @property (nonatomic,strong) newModel *nmodel;
 @end
 
@@ -28,8 +28,7 @@
         [self.contentView addSubview:self.contentlab];
         [self.contentView addSubview:self.tiview];
         [self.contentView addSubview:self.commbtn];
-        [self.contentView addSubview:self.zbtn];
-        [self.contentView addSubview:self.timelab];
+        [self.contentView addSubview:self.zbtn];;
         [self.contentView addSubview:self.infoimg];
     }
     return self;
@@ -42,10 +41,10 @@
     self.fromlab.frame = CGRectMake(DEVICE_WIDTH-200*WIDTH_SCALE, 10*HEIGHT_SCALE, 185*WIDTH_SCALE, 14*HEIGHT_SCALE);
     self.reimg.frame = CGRectMake(14*WIDTH_SCALE, self.frame.size.height-30*HEIGHT_SCALE, 24*WIDTH_SCALE, 18*HEIGHT_SCALE);
     self.timelab.frame = CGRectMake(14*WIDTH_SCALE+30*WIDTH_SCALE, self.frame.size.height-30*HEIGHT_SCALE, 150*WIDTH_SCALE, 18*HEIGHT_SCALE);
-    self.commbtn.frame = CGRectMake(DEVICE_WIDTH-50*WIDTH_SCALE, self.frame.size.height-30*HEIGHT_SCALE, 40*WIDTH_SCALE, 22*HEIGHT_SCALE);
-    self.zbtn.frame = CGRectMake(DEVICE_WIDTH-110*WIDTH_SCALE, self.frame.size.height-30*HEIGHT_SCALE, 40*WIDTH_SCALE, 20*HEIGHT_SCALE);
-    self.tiview.frame = CGRectMake(14*WIDTH_SCALE, self.frame.size.height-65*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 30*HEIGHT_SCALE);
-    
+    self.timelab2.frame = CGRectMake(14*WIDTH_SCALE,self.frame.size.height-30*HEIGHT_SCALE, 150*WIDTH_SCALE, 18*HEIGHT_SCALE);
+    self.commbtn.frame = CGRectMake(DEVICE_WIDTH-50*WIDTH_SCALE, self.frame.size.height-30*HEIGHT_SCALE, 50*WIDTH_SCALE, 22*HEIGHT_SCALE);
+    self.zbtn.frame = CGRectMake(DEVICE_WIDTH-110*WIDTH_SCALE, self.frame.size.height-30*HEIGHT_SCALE, 50*WIDTH_SCALE, 20*HEIGHT_SCALE);
+    self.tiview.frame = CGRectMake(14*WIDTH_SCALE, self.frame.size.height-66*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 30*HEIGHT_SCALE);
     
 }
 
@@ -74,7 +73,6 @@
     return _fromlab;
 }
 
-#pragma 行间距 4
 
 -(UILabel *)contentlab
 {
@@ -99,6 +97,17 @@
         
     }
     return _timelab;
+}
+
+-(UILabel *)timelab2
+{
+    if(!_timelab2)
+    {
+        _timelab2 = [[UILabel alloc] init];
+        _timelab2.textColor = [UIColor wjColorFloat:@"C7C7CD"];
+        _timelab2.font = [UIFont systemFontOfSize:12*FX];
+    }
+    return _timelab2;
 }
 
 -(UIImageView *)reimg
@@ -183,7 +192,7 @@
     self.commbtn.textlab.text = model.pinglunstr;
     self.zbtn.zanlab.text = model.dianzanstr;
     self.timelab.text = [Timestr datetime:model.timestr];
-    
+    self.timelab2.text = [Timestr datetime:model.timestr];
     if ([model.sifoudianzanstr isEqualToString:@"0"]) {
         self.zbtn.zanimg.image = [UIImage imageNamed:@"点赞-"];
     }
@@ -205,16 +214,16 @@
     }
     if ([model.ishot isEqualToString:@"1"]) {
         [self.contentView addSubview:self.reimg];
+        [self.contentView addSubview:self.timelab];
     }else
     {
-        
+        [self.contentView addSubview:self.timelab2];
     }
     
     NSString *str=model.timestr;//时间戳
-   // [self datetime:str];
     [Timestr datetime:str];
     
-    CGSize textSize = [self.contentlab setText:model.contentstr lines:QSTextDefaultLines2 andLineSpacing:QSTextLineSpacing constrainedToSize:CGSizeMake(DEVICE_WIDTH,MAXFLOAT)];
+    CGSize textSize = [self.contentlab setText:model.contentstr lines:QSTextDefaultLines2 andLineSpacing:QSTextLineSpacing constrainedToSize:CGSizeMake(DEVICE_WIDTH-28*WIDTH_SCALE,MAXFLOAT)];
     self.contentlab.frame = CGRectMake(14*WIDTH_SCALE,  30*HEIGHT_SCALE, DEVICE_WIDTH -28*WIDTH_SCALE, textSize.height);
     
     CGFloat hei = textSize.height;
@@ -294,87 +303,5 @@
     [self.delegate myTabVClick3:self];
 }
 
-////时间计算
-//-(NSString *)datetime:(NSString *)datestr
-//{
-//    NSTimeInterval time=[datestr doubleValue]+28800;//因为时差问题要加8小时 == 28800 sec
-//    NSDate *detaildate=[NSDate dateWithTimeIntervalSince1970:time];
-//    NSLog(@"date:%@",[detaildate description]);
-//    //实例化一个NSDateFormatter对象
-//    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-//    //设定时间格式,这里可以设置成自己需要的格式
-//    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-//    
-//    //NSString *currentDateStr = [dateFormatter stringFromDate: detaildate];
-//    NSDate *date = [NSDate date];
-//    //计算时间间隔（单位是秒）
-//    NSTimeInterval time2 = [date timeIntervalSinceDate:detaildate];
-//    //计算天数、时、分、秒
-//    
-//    int days = ((int)time2)/(3600*24);
-//    int hours = ((int)time2)%(3600*24)/3600;
-//    int minutes = ((int)time2)%(3600*24)%3600/60;
-//    int seconds = ((int)time2)%(3600*24)%3600%60;
-//    
-//    NSString *dateContent = [[NSString alloc] initWithFormat:@"过去%i天%i小时%i分%i秒",days,hours,minutes,seconds];
-//    NSLog(@"datacunt=====%@",dateContent);
-//    
-//    NSString *fanhuistr = [[NSString alloc] init];
-//    if (days>=365) {
-//        //实例化一个NSDateFormatter对象
-//        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-//        //设定时间格式,这里可以设置成自己需要的格式
-//        [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-//        //用[NSDate date]可以获取系统当前时间
-//        NSString *currentDateStr = [dateFormatter stringFromDate:detaildate];
-//        //输出格式为：2010-10-27 10:22:13
-//        NSLog(@"%@",currentDateStr);
-//        fanhuistr = currentDateStr;
-//    }
-//    else if(hours>=72&&hours<365)
-//    {
-//        //M月M日
-//        //实例化一个NSDateFormatter对象
-//        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-//        //设定时间格式,这里可以设置成自己需要的格式
-//        [dateFormatter setDateFormat:@"MM-dd HH:mm:ss"];
-//        //用[NSDate date]可以获取系统当前时间
-//        NSString *currentDateStr = [dateFormatter stringFromDate:detaildate];
-//        //输出格式为：2010-10-27 10:22:13
-//        NSLog(@"%@",currentDateStr);
-//        fanhuistr = currentDateStr;
-//    }else if (hours<72&&hours>=48)
-//    {
-//        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-//        //设定时间格式,这里可以设置成自己需要的格式
-//        [dateFormatter setDateFormat:@"HH:mm"];
-//        //用[NSDate date]可以获取系统当前时间
-//        NSString *currentDateStr = [dateFormatter stringFromDate:detaildate];
-//        //输出格式为：2010-10-27 10:22:13
-//        NSLog(@"%@",currentDateStr);
-//        
-//        fanhuistr = [NSString stringWithFormat:@"%@%@",@"前天",@"currentDateStr"];
-//        
-//    }else if (hours<48&&hours>=24)
-//    {
-//        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-//        //设定时间格式,这里可以设置成自己需要的格式
-//        [dateFormatter setDateFormat:@"HH:mm"];
-//        //用[NSDate date]可以获取系统当前时间
-//        NSString *currentDateStr = [dateFormatter stringFromDate:detaildate];
-//        //输出格式为：2010-10-27 10:22:13
-//        NSLog(@"%@",currentDateStr);
-//        
-//        fanhuistr = [NSString stringWithFormat:@"%@%@",@"昨天",@"currentDateStr"];
-//    }else if (hours<24&&hours>=1)
-//    {
-//         fanhuistr = [NSString stringWithFormat:@"%d%@%@",hours,@"小时",@"前"];
-//    }else
-//    {
-//        fanhuistr = [NSString stringWithFormat:@"%d%@%@",minutes,@"分钟",@"前"];
-//    }
-//    
-//    return fanhuistr;
-//}
 
 @end

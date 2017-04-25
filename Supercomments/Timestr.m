@@ -84,7 +84,7 @@
     }else if (hours<24&&hours>=1)
     {
         fanhuistr = [NSString stringWithFormat:@"%d%@%@",hours,@"小时",@"前"];
-    }else
+    }else if(hours<1)
     {
         fanhuistr = [NSString stringWithFormat:@"%d%@%@",minutes,@"分钟",@"前"];
     }

@@ -28,8 +28,8 @@
 -(void)layoutSubviews
 {
     [super layoutSubviews];
-    self.leftimg.frame = CGRectMake(5*WIDTH_SCALE, 2*HEIGHT_SCALE, 18*WIDTH_SCALE, 18*WIDTH_SCALE);
-    self.textlab.frame = CGRectMake(25*WIDTH_SCALE, 2*HEIGHT_SCALE, 20*WIDTH_SCALE, 20*HEIGHT_SCALE);
+    self.leftimg.frame = CGRectMake(5*WIDTH_SCALE, 2*HEIGHT_SCALE, 16*WIDTH_SCALE, 16*WIDTH_SCALE);
+    self.textlab.frame = CGRectMake(16*WIDTH_SCALE, 2*HEIGHT_SCALE, 20*WIDTH_SCALE, 20*HEIGHT_SCALE);
     
 }
 

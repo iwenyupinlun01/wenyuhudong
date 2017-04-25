@@ -30,7 +30,7 @@
 
 #define denglu @"http://np.iwenyu.cn/ucenter/member/login.html"
 //点赞或者取消点赞
-#define dianzan @"http://np.iwenyu.cn/forum/index/addSupport.html"
+#define qudianzan @"http://np.iwenyu.cn/forum/index/addSupport.html"
 //通知消息数量
 #define tongzhixianxishuliang @"http://np.iwenyu.cn/forum/index/getInformNum.html?token=%@"
 //回复消息
@@ -50,6 +50,7 @@
 //修改头像
 #define touxiang @"http://np.iwenyu.cn/forum/user/userIcon.html?token=%@"
 //token替换
-#define tokentihuan @"http://np.iwenyu.cn/user/index/begin.html"
-
+#define tokentihuan @"http://np.iwenyu.cn/forum/user/begin.html"
+//退出登陆
+#define tuichudenglu @"http://np.iwenyu.cn/forum/user/loginout.html"
 #endif /* wangHeader_h */

@@ -560,8 +560,6 @@ NSMutableArray * ymDataArray;
     return _secview;
 }
 
-
-
 - (nullable UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
     UIView *view=[[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, 14)];
@@ -571,8 +569,6 @@ NSMutableArray * ymDataArray;
     [view addSubview:lineview];
     return view;
 }
-
-
 
 #pragma mark - 实现方法
 
@@ -584,6 +580,7 @@ NSMutableArray * ymDataArray;
 -(void)shareclick
 {
     NSLog(@"分享");
+    
 }
 
 -(void)dianzanclick
@@ -599,26 +596,25 @@ NSMutableArray * ymDataArray;
             [self presentViewController:loginvc animated:YES completion:nil];
         }else
         {
-            
             NSString *dianzanstr = self.headm.shifoudianzanstr;
             NSDictionary *reqdic = @{@"token":[tokenstr tokenstrfrom],@"object_id":self.detalisidstr,@"status":dianzanstr,@"type":@"1"};
-            [AFManager postReqURL:dianzanstr reqBody:reqdic block:^(id infor) {
-                NSLog(@"infor-------%@",infor);
-                NSString *code = [infor objectForKey:@"code"];
-                if ([code intValue]==1) {
+            [CLNetworkingManager postNetworkRequestWithUrlString:qudianzan parameters:reqdic isCache:YES succeed:^(id data) {
+                NSLog(@"data===%@",data);
+                NSString *codestr = [data objectForKey:@"code"];
+                if ([codestr intValue]==1) {
                     [MBProgressHUD showSuccess:@"成功"];
                     NSLog(@"成功");
                 }
-                else if ([code intValue]==0)
+                else if ([codestr intValue]==0)
                 {
                     [MBProgressHUD showSuccess:@"token错误"];
                     NSLog(@"token错误");
                 }
-                else if ([code intValue]==4)
+                else if ([codestr intValue]==4)
                 {
                     [MBProgressHUD showSuccess:@"抱歉您的账户被暂时限制了，无法进行此操作"];
                     NSLog(@"抱歉您的账户被暂时限制了，无法进行此操作");
-                }else if ([code intValue]==2100)
+                }else if ([codestr intValue]==2100)
                 {
                     [MBProgressHUD showSuccess:@"该牛评不存在或者被冻结"];
                     NSLog(@"该牛评不存在或者被冻结");
@@ -628,6 +624,8 @@ NSMutableArray * ymDataArray;
                     [MBProgressHUD showSuccess:@"系统繁忙，请稍后再试"];
                     NSLog(@"系统繁忙，请稍后再试");
                 }
+
+            } fail:^(NSError *error) {
                 
             }];
             self.headview.dianzanbtn.zanimg.image = [UIImage imageNamed:@"点赞-拷贝"];
@@ -648,23 +646,24 @@ NSMutableArray * ymDataArray;
             NSString *dianzanstr = self.headm.shifoudianzanstr;
             self.headview.dianzanbtn.zanimg.image = [UIImage imageNamed:@"点赞-拷贝"];
             NSDictionary *reqdic = @{@"token":[tokenstr tokenstrfrom],@"object_id":self.detalisidstr,@"status":dianzanstr,@"type":@"1"};
-            [AFManager postReqURL:dianzanstr reqBody:reqdic block:^(id infor) {
-                NSLog(@"infor-------%@",infor);
-                NSString *code = [infor objectForKey:@"code"];
-                if ([code intValue]==1) {
+            
+            [CLNetworkingManager postNetworkRequestWithUrlString:qudianzan parameters:reqdic isCache:YES succeed:^(id data) {
+                NSLog(@"data===%@",data);
+                NSString *codestr = [data objectForKey:@"code"];
+                if ([codestr intValue]==1) {
                     [MBProgressHUD showSuccess:@"成功"];
                     NSLog(@"成功");
                 }
-                else if ([code intValue]==0)
+                else if ([codestr intValue]==0)
                 {
                     [MBProgressHUD showSuccess:@"token错误"];
                     NSLog(@"token错误");
                 }
-                else if ([code intValue]==4)
+                else if ([codestr intValue]==4)
                 {
                     [MBProgressHUD showSuccess:@"抱歉您的账户被暂时限制了，无法进行此操作"];
                     NSLog(@"抱歉您的账户被暂时限制了，无法进行此操作");
-                }else if ([code intValue]==2100)
+                }else if ([codestr intValue]==2100)
                 {
                     [MBProgressHUD showSuccess:@"该牛评不存在或者被冻结"];
                     NSLog(@"该牛评不存在或者被冻结");
@@ -675,12 +674,14 @@ NSMutableArray * ymDataArray;
                     NSLog(@"系统繁忙，请稍后再试");
                 }
                 
+            } fail:^(NSError *error) {
+                
             }];
-
+            
             self.headm.shifoudianzanstr = @"0";
             self.headview.dianzanbtn.zanimg.image = [UIImage imageNamed:@"点赞-"];
             [self.maintable reloadData];
-
+            
         }
 
     }

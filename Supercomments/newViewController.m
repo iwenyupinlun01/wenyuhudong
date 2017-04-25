@@ -205,15 +205,15 @@ static NSString *newidentfid = @"newidentfid";
     NSString *contaststr = [NSString stringWithFormat:@"%@",self.dataSource[indexPath.row]];
     
     if (imgstr.length==0) {
-        return [newCell cellHeightWithText:self.dataSource[indexPath.row]]+(16+14+16+4+20+16+16)*HEIGHT_SCALE;
+        return [newCell cellHeightWithText:self.dataSource[indexPath.row]]+(16+16+4+20+16+16+10)*HEIGHT_SCALE;
     }
     else if(contaststr.length==0&&imgstr.length!=0)
     {
-        return (16+14+16+4+20+16+16+196)*HEIGHT_SCALE;
+        return (16+16+4+20+16+16+196+10)*HEIGHT_SCALE;
     }
     else
     {
-         return [newCell cellHeightWithText:self.dataSource[indexPath.row]]+(16+14+16+4+20+16+16+14+196)*HEIGHT_SCALE;
+         return [newCell cellHeightWithText:self.dataSource[indexPath.row]]+(16+16+4+20+16+16+14+196+10)*HEIGHT_SCALE;
     }
     return 0;
 }
@@ -232,6 +232,7 @@ static NSString *newidentfid = @"newidentfid";
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.delegate = self;
     [cell setcelldata:self.dataarr[indexPath.row]];
+    self.nmodel = self.dataarr[indexPath.row];
     return cell;
 }
 
@@ -390,4 +391,9 @@ static NSString *newidentfid = @"newidentfid";
     return [UIImage imageNamed:@"加载失败"];
 }
 
+- (void)emptyDataSet:(UIScrollView *)scrollView didTapView:(UIView *)view;
+{
+    NSLog(@"重新加载");
+    [self addHeader];
+}
 @end

@@ -61,60 +61,56 @@ static NSString *messageidentfid = @"messageidentfid";
 
 -(void)loaddatafromweb
 {
-    NSString *tokenstr = [[NSString alloc] init];
-    NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
-    NSString *token = [userdefat objectForKey:@"tokenuser"];
-    if (token.length==0) {
-        tokenstr = @"";
-    }
-    else
+  
+    if ([tokenstr tokenstrfrom].length==0) {
+        
+    }else
     {
-        tokenstr = token;
+        [AFManager getReqURL:[NSString stringWithFormat:tongzhixianxishuliang,[tokenstr tokenstrfrom]] block:^(id infor) {
+            NSLog(@"info---------%@",infor);
+            if ([[infor objectForKey:@"code"] intValue]==1) {
+                NSDictionary *dic = [infor objectForKey:@"info"];
+                NSString *infor = [dic objectForKey:@"inform"];
+                NSString *system_inform = [dic objectForKey:@"system_inform"];
+                _num01 = infor;
+                _num02 = system_inform;
+            }
+            
+            NSLog(@"num01-------%@",_num02);
+            UILabel *lab = [self.messagetable viewWithTag:201];
+            UILabel *lab2 = [self.messagetable viewWithTag:202];
+            if ([_num01 isEqualToString:@"0"]&&[_num02 isEqualToString:@"0"]) {
+                lab.alpha = 0;
+                lab2.alpha = 0;
+                //两个都为0
+            }
+            else if ([_num01 isEqualToString:@"0"]&&![_num02 isEqualToString:@"0"])
+            {
+                lab.alpha = 0;
+                lab2.alpha = 1;
+                lab2.text = _num02;
+            }
+            else if (![_num01 isEqualToString:@"0"]&&[_num02 isEqualToString:@"0"])
+            {
+                lab.alpha = 1;
+                lab2.alpha = 0;
+                lab.text = _num01;
+            }
+            else
+            {
+                lab.alpha = 1;
+                lab2.alpha = 1;
+                lab.text = _num01;
+                lab2.text = _num02;
+            }
+            [self.messagetable reloadData];
+            
+        } errorblock:^(NSError *error) {
+            
+        }];
+
     }
-    NSLog(@"token--------%@",tokenstr);
     
-    [AFManager getReqURL:[NSString stringWithFormat:tongzhixianxishuliang,tokenstr] block:^(id infor) {
-        NSLog(@"info---------%@",infor);
-        if ([[infor objectForKey:@"code"] intValue]==1) {
-            NSDictionary *dic = [infor objectForKey:@"info"];
-            NSString *infor = [dic objectForKey:@"inform"];
-            NSString *system_inform = [dic objectForKey:@"system_inform"];
-            _num01 = infor;
-            _num02 = system_inform;
-        }
-        
-        NSLog(@"num01-------%@",_num02);
-        UILabel *lab = [self.messagetable viewWithTag:201];
-        UILabel *lab2 = [self.messagetable viewWithTag:202];
-        if ([_num01 isEqualToString:@"0"]&&[_num02 isEqualToString:@"0"]) {
-            lab.alpha = 0;
-            lab2.alpha = 0;
-            //两个都为0
-        }
-        else if ([_num01 isEqualToString:@"0"]&&![_num02 isEqualToString:@"0"])
-        {
-            lab.alpha = 0;
-            lab2.alpha = 1;
-            lab2.text = _num02;
-        }
-        else if (![_num01 isEqualToString:@"0"]&&[_num02 isEqualToString:@"0"])
-        {
-            lab.alpha = 1;
-            lab2.alpha = 0;
-            lab.text = _num01;
-        }
-        else
-        {
-            lab.alpha = 1;
-            lab2.alpha = 1;
-            lab.text = _num01;
-            lab2.text = _num02;
-        }
-        [self.messagetable reloadData];
-        
-    } errorblock:^(NSError *error) {
-        
-    }];
 }
 
 

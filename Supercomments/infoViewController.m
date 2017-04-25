@@ -1,4 +1,4 @@
-//
+ //
 //  infoViewController.m
 //  Supercomments
 //
@@ -32,12 +32,11 @@ static NSString *infocellidentfid = @"infocellidentfid";
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"返回.png"] style:UIBarButtonItemStylePlain target:self action:@selector(backAction)];
     self.navigationItem.leftBarButtonItem.tintColor = [UIColor wjColorFloat:@"333333"];
-    
     self.title = @"个人";
+    self.navigationController.interactivePopGestureRecognizer.delegate = (id)self;
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor wjColorFloat:@"333333"]}];
     [self.navigationController.navigationBar setShadowImage:[UIImage new]];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
-    
     [self.view addSubview:self.infotableview];
     
 }
@@ -64,56 +63,51 @@ static NSString *infocellidentfid = @"infocellidentfid";
 
 -(void)loaddatafromweb
 {
-    NSString *tokenstr = [[NSString alloc] init];
-    NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
-    NSString *token = [userdefat objectForKey:@"tokenuser"];
-    if (token.length==0) {
-        tokenstr = @"";
-    }
-    else
+    if ([tokenstr tokenstrfrom].length==0) {
+        
+    }else
     {
-        tokenstr = token;
+        [AFManager getReqURL:[NSString stringWithFormat:tongzhixianxishuliang,[tokenstr tokenstrfrom]] block:^(id infor) {
+            NSLog(@"info---------%@",infor);
+            NSString *inforstr = [[NSString alloc] init];
+            NSString *system_inform = [[NSString alloc] init];
+            if ([[infor objectForKey:@"code"] intValue]==1) {
+                NSDictionary *dic = [infor objectForKey:@"info"];
+                inforstr = [dic objectForKey:@"inform"];
+                system_inform = [dic objectForKey:@"system_inform"];
+            }
+            inforstr = @"3";
+            system_inform = @"0";
+            
+            
+            UILabel *namelab = [self.infotableview viewWithTag:100];
+            if ([inforstr isEqualToString:@"0"]&&[system_inform isEqualToString:@"0"]) {
+                
+                namelab.alpha = 0;
+                NSString *textstr = [NSString stringWithFormat:@"%d",[inforstr intValue]+[system_inform intValue]];
+                namelab.text = textstr;
+                
+                [self.infotableview reloadData];
+            }
+            else
+            {
+                NSLog(@"提示操作");
+                
+                namelab.alpha = 1;
+                NSString *textstr = [NSString stringWithFormat:@"%d",[inforstr intValue]+[system_inform intValue]];
+                namelab.text = textstr;
+                _cell.numlab.text = textstr;
+                
+                //[_cell addSubview:namelab];
+                [self.infotableview reloadData];
+            }
+            
+        } errorblock:^(NSError *error) {
+            
+        }];
+
     }
-    NSLog(@"token--------%@",tokenstr);
     
-    [AFManager getReqURL:[NSString stringWithFormat:tongzhixianxishuliang,tokenstr] block:^(id infor) {
-        NSLog(@"info---------%@",infor);
-        NSString *inforstr = [[NSString alloc] init];
-        NSString *system_inform = [[NSString alloc] init];
-        if ([[infor objectForKey:@"code"] intValue]==1) {
-            NSDictionary *dic = [infor objectForKey:@"info"];
-            inforstr = [dic objectForKey:@"inform"];
-            system_inform = [dic objectForKey:@"system_inform"];
-        }
-        inforstr = @"3";
-        system_inform = @"0";
-        
-        
-        UILabel *namelab = [self.infotableview viewWithTag:100];
-        if ([inforstr isEqualToString:@"0"]&&[system_inform isEqualToString:@"0"]) {
-
-            namelab.alpha = 0;
-            NSString *textstr = [NSString stringWithFormat:@"%d",[inforstr intValue]+[system_inform intValue]];
-            namelab.text = textstr;
-            
-            [self.infotableview reloadData];
-        }
-        else
-        {
-            NSLog(@"提示操作");
-
-            namelab.alpha = 1;
-            NSString *textstr = [NSString stringWithFormat:@"%d",[inforstr intValue]+[system_inform intValue]];
-            namelab.text = textstr;
-            _cell.numlab.text = textstr;
-            
-            //[_cell addSubview:namelab];
-            [self.infotableview reloadData];
-        }
-        
-    } errorblock:^(NSError *error) {
-        
-    }];
 }
 #pragma mark - getters
 
@@ -161,8 +155,8 @@ static NSString *infocellidentfid = @"infocellidentfid";
         UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
         //为图片添加手势
         NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
+        
         NSDictionary *dic = [userdefat objectForKey:@"userinfo"];
-        // NSString *nickname = [dic objectForKey:@"nickname"];
         NSString *path = [dic objectForKey:@"headimgurl"];
         [_headview.infoimg sd_setImageWithURL:[NSURL URLWithString:path] placeholderImage:[UIImage imageNamed:@"头像默认图"]];
         [ _headview.infoimg addGestureRecognizer:singleTap];
@@ -214,12 +208,22 @@ static NSString *infocellidentfid = @"infocellidentfid";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row==0) {
-        messageViewController *messagevc = [[messageViewController alloc] init];
-        [self.navigationController pushViewController:messagevc animated:YES];
+        if ([tokenstr tokenstrfrom].length==0) {
+            [MBProgressHUD showSuccess:@"请先登录"];
+        }else
+        {
+            messageViewController *messagevc = [[messageViewController alloc] init];
+            [self.navigationController pushViewController:messagevc animated:YES];
+        }
     }
     if (indexPath.row==1) {
-        feedbackViewController *feedbackvc = [[feedbackViewController alloc] init];
-        [self.navigationController pushViewController:feedbackvc animated:YES];
+        if ([tokenstr tokenstrfrom].length==0) {
+            [MBProgressHUD showSuccess:@"请先登录"];
+        }else
+        {
+            feedbackViewController *feedbackvc = [[feedbackViewController alloc] init];
+            [self.navigationController pushViewController:feedbackvc animated:YES];
+        }
     }
     if (indexPath.row==2) {
         setViewController *setvc = [[setViewController alloc]init];

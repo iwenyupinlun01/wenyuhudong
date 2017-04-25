@@ -31,9 +31,10 @@
 @property (nonatomic,strong) UILabel *timelab;
 @property (nonatomic,strong) commentsBtn *commbtn;
 @property (nonatomic,strong) zanBtn *zbtn;
-
+@property (nonatomic,strong) UIImageView *reimg;
 @property (nonatomic,strong) NSString *heightstr;
 
+@property (nonatomic,strong) UILabel *timelab2;
 @property (nonatomic,strong) UIImageView *infoimg;
 
 @property(assign,nonatomic)id<mycellVdelegate>delegate;

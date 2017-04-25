@@ -45,9 +45,9 @@
 {
     [super viewWillAppear:animated];
     [self.navigationController.navigationBar setHidden:YES];
+    [self islogin];
     [self tokentihuanfrom];
     [self loaddatafromweb];
-    [self islogin];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -84,10 +84,8 @@
     }];
 }
 
-
 -(void)loaddatafromweb
 {
-    
     if ([tokenstr tokenstrfrom].length!=0) {
         [AFManager getReqURL:[NSString stringWithFormat:tongzhixianxishuliang,[tokenstr tokenstrfrom]] block:^(id infor) {
             NSLog(@"info---------%@",infor);
@@ -114,19 +112,19 @@
     {
         
     }
-
 }
 
 -(void)tokentihuanfrom
 {
-    [AFManager postReqURL:tokentihuan reqBody:@{@"token":[tokenstr tokenstrfrom]} block:^(id infor) {
-        NSLog(@"infor------%@",infor);
+    [CLNetworkingManager postNetworkRequestWithUrlString:tokentihuan parameters:@{@"token":[tokenstr tokenstrfrom]} isCache:YES succeed:^(id data) {
+        NSLog(@"data===%@",data);
+    } fail:^(NSError *error) {
         
+        //[MBProgressHUD showSuccess:@"服务器故障"];
     }];
 }
 
 #pragma mark - getteres
-
 
 -(UIView *)xiaohongdianview
 {
@@ -285,8 +283,6 @@
             
         }];
     }
-
-
 }
 
 @end

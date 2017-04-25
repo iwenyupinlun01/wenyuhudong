@@ -164,5 +164,13 @@ static NSString *setidentfid1 = @"setidentfid1";
 -(void)gobackbtnclick
 {
     NSLog(@"退出当前帐号");
+    [CLNetworkingManager postNetworkRequestWithUrlString:tuichudenglu parameters:@{@"token":[tokenstr tokenstrfrom]} isCache:YES succeed:^(id data) {
+        NSLog(@"data===%@",data);
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        [defaults removeObjectForKey:@"tokenuser"];
+        [defaults removeObjectForKey:@"access_token"]; 
+    } fail:^(NSError *error) {
+        
+    }];
 }
 @end
