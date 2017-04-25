@@ -14,6 +14,8 @@
 @property (nonatomic,strong) NSString *contstr;
 @property (nonatomic,strong) NSString *imgurlstr;
 
+@property (nonatomic,strong) NSString *idstr;
+@property (nonatomic,strong) NSString *touidstr;
 
 @property (nonatomic,strong) NSMutableArray *pingarr;
 

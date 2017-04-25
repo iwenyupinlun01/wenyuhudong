@@ -58,11 +58,41 @@
     [WXApi registerApp:@"wx133ee2b8bd5d3c7d"];
     
     
+    [ShareSDK registerApp:@"1d0c68ab95d2c"
+     
+     //第二个参数（分享平台集合）
+          activePlatforms:@[
+                            @(SSDKPlatformSubTypeWechatSession),
+                            @(SSDKPlatformSubTypeWechatTimeline),]
+                 onImport:^(SSDKPlatformType platformType)
+     {
+         switch (platformType)
+         {
+                 //微信
+             case SSDKPlatformTypeWechat:
+                 [ShareSDKConnector connectWeChat:[WXApi class]];
+                 break;
+
+            default:
+                 break;
+         }
+         
+     }
+     //
+          onConfiguration:^(SSDKPlatformType platformType, NSMutableDictionary *appInfo) {
+              switch (platformType)
+              {
+                    //腾讯微信权限类型authType:SSO + Web授权
+                  case SSDKPlatformTypeWechat:
+                      [appInfo SSDKSetupWeChatByAppId:@"wx133ee2b8bd5d3c7d"
+                                            appSecret:@"a905fbeb82b080c8c643360a062f2531"];
+                      break;
+                default:
+                      break;
+              }
+          }];
     
-    
-    
-    return YES;
-    
+
     //    /**
     //     可以在这里进行一个判断的设置，如果是app第一次启动就加载启动页，如果不是，则直接进入首页
     //     **/

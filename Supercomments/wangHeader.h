@@ -53,4 +53,6 @@
 #define tokentihuan @"http://np.iwenyu.cn/forum/user/begin.html"
 //退出登陆
 #define tuichudenglu @"http://np.iwenyu.cn/forum/user/loginout.html"
+//评论
+#define pinglunhuifu @"http://np.iwenyu.cn/forum/index/addComment.html"
 #endif /* wangHeader_h */

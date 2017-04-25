@@ -18,7 +18,7 @@
 @property (nonatomic,strong) NSString *typefromstr;
 @property (nonatomic,strong) NSString *weburlstr;
 @property (nonatomic,strong) NSString *shifoudianzanstr;
-
+@property (nonatomic,strong) NSString *objectidstr;
 
 @property (nonatomic,strong) NSMutableArray *thumarr;
 @end

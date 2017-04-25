@@ -83,7 +83,7 @@
         _picimage = [[UIImageView alloc] init];
         _picimage.layer.masksToBounds =YES;
         _picimage.layer.cornerRadius = 18*WIDTH_SCALE;
-        _picimage.backgroundColor = [UIColor greenColor];
+        //_picimage.backgroundColor = [UIColor greenColor];
     }
     return _picimage;
 }

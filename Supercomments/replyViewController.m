@@ -91,19 +91,9 @@ static NSString *replyidentfid = @"replyidentfid";
 - (void)headerRefreshEndAction
 {
     [self.replyarr removeAllObjects];
-    NSString *tokenstr = [[NSString alloc] init];
-    NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
-    NSString *token = [userdefat objectForKey:@"tokenuser"];
-    if (token.length==0) {
-        tokenstr = @"";
-    }
-    else
-    {
-        tokenstr = token;
-    }
-    NSLog(@"token--------%@",tokenstr);
+
     
-    [AFManager getReqURL:[NSString stringWithFormat:xiaoxitongzhijk,@"d277155062b89da9c09c53f4975d9f6d",@"1"] block:^(id infor) {
+    [AFManager getReqURL:[NSString stringWithFormat:xiaoxitongzhijk,[tokenstr tokenstrfrom],@"1"] block:^(id infor) {
         NSLog(@"infor------------%@",infor);
         if ([[infor objectForKey:@"code"] intValue]==1) {
             NSArray *ditarr = [infor objectForKey:@"info"];
@@ -138,20 +128,9 @@ static NSString *replyidentfid = @"replyidentfid";
 -(void)footerRefreshEndAction
 {
     pn++;
-    
-    NSString *tokenstr = [[NSString alloc] init];
-    NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
-    NSString *token = [userdefat objectForKey:@"tokenuser"];
-    if (token.length==0) {
-        tokenstr = @"";
-    }
-    else
-    {
-        tokenstr = token;
-    }
-    NSLog(@"token--------%@",tokenstr);
+ 
     NSString *pnstr = [NSString stringWithFormat:@"%d",pn];
-    [AFManager getReqURL:[NSString stringWithFormat:xiaoxitongzhijk,@"d277155062b89da9c09c53f4975d9f6d",pnstr] block:^(id infor) {
+    [AFManager getReqURL:[NSString stringWithFormat:xiaoxitongzhijk,[tokenstr tokenstrfrom],pnstr] block:^(id infor) {
         NSLog(@"infor------------%@",infor);
         if ([[infor objectForKey:@"code"] intValue]==1) {
             NSArray *ditarr = [infor objectForKey:@"info"];

@@ -15,6 +15,7 @@
 @property (nonatomic,strong) NSString *nickname;
 @property (nonatomic,strong) NSString *tonickname;
 
-
+@property (nonatomic,strong) NSString *pidstr;
+@property (nonatomic,strong) NSString *touidstr;
 @property (nonatomic,assign) NSInteger secindex;
 @end

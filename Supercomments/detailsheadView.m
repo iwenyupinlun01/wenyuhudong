@@ -89,7 +89,7 @@
         _numberlab = [[UILabel alloc] init];
         _numberlab.textColor = [UIColor wjColorFloat:@"C7C7CD"];
         _numberlab.font = [UIFont systemFontOfSize:14*FX];
-        _numberlab.text = @"2人评论";
+        
     }
     return _numberlab;
 }
