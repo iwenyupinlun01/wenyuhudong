@@ -38,6 +38,7 @@
         _textview.layer.masksToBounds = YES;
         _textview.layer.borderWidth = 0.6;
         _textview.layer.cornerRadius = 4;
+        _textview.returnKeyType=UIReturnKeySend;
     }
     return _textview;
 }

@@ -11,6 +11,9 @@
 #import "replyModel.h"
 #import <DZNEmptyDataSet/UIScrollView+EmptyDataSet.h>
 @interface replyViewController ()<UITableViewDelegate,UITableViewDataSource,myTabVdelegate,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate>
+{
+    int pn;
+}
 @property (nonatomic,strong) UITableView *replytable;
 @property (nonatomic,strong) NSMutableArray *replyarr;
 @property (nonatomic,strong) replyModel *rmodel;
@@ -29,12 +32,16 @@ static NSString *replyidentfid = @"replyidentfid";
     self.navigationController.interactivePopGestureRecognizer.delegate = (id)self;
     self.title = @"回复";
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor wjColorFloat:@"333333"]}];
-
+    pn=1;
     self.replyarr = [NSMutableArray array];
     
-    [self datafromweb];
+    // 3.1.下拉刷新
+    [self addHeader];
+    // 3.2.上拉加载更多
+    [self addFooter];
+    //[self datafromweb];
     self.replytable.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-//    [self.view addSubview:self.messagetable];
+
     self.navigationController.navigationBar.barTintColor = [UIColor wjColorFloat:@"F5F5F5"];
     [self.view addSubview:self.replytable];
     
@@ -57,9 +64,33 @@ static NSString *replyidentfid = @"replyidentfid";
     // Dispose of any resources that can be recreated.
 }
 
--(void)datafromweb
+#pragma mark - 刷新加载数据
+
+- (void)addHeader
 {
+    // 头部刷新控件
+    self.replytable.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(refreshAction)];
+    [self.replytable.mj_header beginRefreshing];
     
+}
+
+- (void)addFooter
+{
+    self.replytable.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(refreshLoadMore)];
+}
+- (void)refreshAction {
+    
+    [self headerRefreshEndAction];
+    
+}
+- (void)refreshLoadMore {
+    
+    [self footerRefreshEndAction];
+    
+}
+- (void)headerRefreshEndAction
+{
+    [self.replyarr removeAllObjects];
     NSString *tokenstr = [[NSString alloc] init];
     NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
     NSString *token = [userdefat objectForKey:@"tokenuser"];
@@ -94,14 +125,63 @@ static NSString *replyidentfid = @"replyidentfid";
         {
             NSLog(@"没有查询到任何数据");
         }
+        [self.replytable.mj_header endRefreshing];
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.replytable reloadData];
         });
     } errorblock:^(NSError *error) {
-        
+        [self.replytable.mj_header endRefreshing];
     }];
-    
+
 }
+
+-(void)footerRefreshEndAction
+{
+    pn++;
+    
+    NSString *tokenstr = [[NSString alloc] init];
+    NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
+    NSString *token = [userdefat objectForKey:@"tokenuser"];
+    if (token.length==0) {
+        tokenstr = @"";
+    }
+    else
+    {
+        tokenstr = token;
+    }
+    NSLog(@"token--------%@",tokenstr);
+    NSString *pnstr = [NSString stringWithFormat:@"%d",pn];
+    [AFManager getReqURL:[NSString stringWithFormat:xiaoxitongzhijk,@"d277155062b89da9c09c53f4975d9f6d",pnstr] block:^(id infor) {
+        NSLog(@"infor------------%@",infor);
+        if ([[infor objectForKey:@"code"] intValue]==1) {
+            NSArray *ditarr = [infor objectForKey:@"info"];
+            for (int i = 0; i<ditarr.count; i++) {
+                NSDictionary *dit = [ditarr objectAtIndex:i];
+                self.rmodel = [[replyModel alloc] init];
+                self.rmodel.replyurl = dit[@"user_icon"];
+                self.rmodel.replyname = dit[@"publisher_nickname"];
+                self.rmodel.replytext = dit[@"comment_content"];
+                self.rmodel.comment_img_type = dit[@"comment_img_type"];
+                self.rmodel.comment_imgstr = dit[@"comment_img"];
+                self.rmodel.replytimestr = dit[@"pubtime"];
+                self.rmodel.obj_id = dit[@"object_id"];
+                self.rmodel.is_checkstr = dit[@"is_check"];
+                [self.replyarr addObject:self.rmodel];
+            }
+        }
+        else if ([[infor objectForKey:@"code"] intValue]==2)
+        {
+            NSLog(@"没有查询到任何数据");
+        }
+        [self.replytable.mj_footer endRefreshing];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.replytable reloadData];
+        });
+    } errorblock:^(NSError *error) {
+        [self.replytable.mj_footer endRefreshing];
+    }];
+}
+
 
 #pragma mark - getters
 

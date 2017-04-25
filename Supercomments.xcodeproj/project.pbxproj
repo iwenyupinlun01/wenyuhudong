@@ -48,6 +48,7 @@
 		5387A7B71EAB4F720057B518 /* SureWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5387A7B61EAB4F720057B518 /* SureWebViewController.m */; };
 		5387A7BA1EAB68900057B518 /* MBProgressHUD+XMG.m in Sources */ = {isa = PBXBuildFile; fileRef = 5387A7B91EAB68900057B518 /* MBProgressHUD+XMG.m */; };
 		538D53C41EAEECD700E2DCAF /* strisNull.m in Sources */ = {isa = PBXBuildFile; fileRef = 538D53C31EAEECD700E2DCAF /* strisNull.m */; };
+		538D53D01EAF09E800E2DCAF /* tokenstr.m in Sources */ = {isa = PBXBuildFile; fileRef = 538D53CF1EAF09E800E2DCAF /* tokenstr.m */; };
 		539550E01EA0B508001A268C /* newModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 539550DF1EA0B508001A268C /* newModel.m */; };
 		539550E61EA0C638001A268C /* navViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 539550E51EA0C638001A268C /* navViewController.m */; };
 		539550EA1EA0D9A1001A268C /* AFManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 539550E91EA0D9A1001A268C /* AFManager.m */; };
@@ -211,6 +212,8 @@
 		5387A7B91EAB68900057B518 /* MBProgressHUD+XMG.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MBProgressHUD+XMG.m"; sourceTree = "<group>"; };
 		538D53C21EAEECD700E2DCAF /* strisNull.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = strisNull.h; sourceTree = "<group>"; };
 		538D53C31EAEECD700E2DCAF /* strisNull.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = strisNull.m; sourceTree = "<group>"; };
+		538D53CE1EAF09E800E2DCAF /* tokenstr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tokenstr.h; sourceTree = "<group>"; };
+		538D53CF1EAF09E800E2DCAF /* tokenstr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = tokenstr.m; sourceTree = "<group>"; };
 		539550DE1EA0B508001A268C /* newModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = newModel.h; sourceTree = "<group>"; };
 		539550DF1EA0B508001A268C /* newModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = newModel.m; sourceTree = "<group>"; };
 		539550E11EA0C386001A268C /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
@@ -697,6 +700,8 @@
 				539550EB1EA0D9CB001A268C /* wangHeader.h */,
 				538D53C21EAEECD700E2DCAF /* strisNull.h */,
 				538D53C31EAEECD700E2DCAF /* strisNull.m */,
+				538D53CE1EAF09E800E2DCAF /* tokenstr.h */,
+				538D53CF1EAF09E800E2DCAF /* tokenstr.m */,
 			);
 			name = utlis;
 			sourceTree = "<group>";
@@ -1322,6 +1327,7 @@
 				53E294481E9F49CA0034D4E7 /* YMTextData.m in Sources */,
 				53619EAC1E964925007CC7AC /* systemViewController.m in Sources */,
 				53AEBE721E95014B00280F70 /* infoCell.m in Sources */,
+				538D53D01EAF09E800E2DCAF /* tokenstr.m in Sources */,
 				53619E521E960164007CC7AC /* messageViewController.m in Sources */,
 				53619ED11E988A01007CC7AC /* setbtn.m in Sources */,
 				53619EC01E976EBB007CC7AC /* UIColor+BgColor.m in Sources */,

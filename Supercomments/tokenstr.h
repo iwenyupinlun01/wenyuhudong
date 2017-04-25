@@ -1,5 +1,5 @@
 //
-//  strisNull.h
+//  tokenstr.h
 //  Supercomments
 //
 //  Created by 王俊钢 on 2017/4/25.
@@ -8,6 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-@interface strisNull : NSObject
-+ (BOOL )isNullToString:(id)string;
+@interface tokenstr : NSObject
++(NSString *)tokenstrfrom;
 @end

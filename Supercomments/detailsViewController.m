@@ -22,7 +22,7 @@
 #import "SureWebViewController.h"
 #import "loginViewController.h"
 #import "YcKeyBoardView.h"
-
+#import "Timestr.h"
 #import "keyboardView.h"
 #import <DZNEmptyDataSet/UIScrollView+EmptyDataSet.h>
 @interface detailsViewController ()<UITableViewDataSource,UITableViewDelegate,UITextViewDelegate,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate>
@@ -96,6 +96,8 @@ NSMutableArray * ymDataArray;
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
 }
 
+#pragma mark - 刷新控件
+
 - (void)addHeader
 {
     // 头部刷新控件
@@ -105,7 +107,7 @@ NSMutableArray * ymDataArray;
 
 - (void)addFooter
 {
-    self.maintable.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(refreshLoadMore)];
+    self.maintable.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(refreshLoadMore)];
 }
 - (void)refreshAction {
     
@@ -123,20 +125,7 @@ NSMutableArray * ymDataArray;
 
     [self.cellcontarr removeAllObjects];
     [self.detalisarr removeAllObjects];
-    
-    NSString *tokenstr = [[NSString alloc] init];
-    NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
-    NSString *token = [userdefat objectForKey:@"tokenuser"];
-    if (token.length==0) {
-        tokenstr = @"";
-    }
-    else
-    {
-        tokenstr = token;
-    }
-    NSLog(@"token--------%@",token);
-    
-    NSString *strurl = [NSString stringWithFormat:xiangqin,self.detalisidstr,@"1",tokenstr];
+    NSString *strurl = [NSString stringWithFormat:xiangqin,self.detalisidstr,@"1",[tokenstr tokenstrfrom]];
     
     [AFManager getReqURL:strurl block:^(id infor) {
         self.headm = [[headModel alloc] init];
@@ -149,7 +138,8 @@ NSMutableArray * ymDataArray;
         self.headm.fromstr = [NSString stringWithFormat:@"%@%@%@",@"网易老司机已赞",[dic objectForKey:@"support_count"],@"次"];
         self.headm.imgurlstr = [dic objectForKey:@"images"];
         self.headm.weburlstr = [dic objectForKey:@"url"];
-        self.headm.timestr = [self datetime:[dic objectForKey:@"create_time"]];
+        //self.headm.timestr = [self datetime:[dic objectForKey:@"create_time"]];
+        self.headm.timestr = [Timestr datetime:[dic objectForKey:@"create_time"]];
         self.headm.shifoudianzanstr = [dic objectForKey:@"is_support"];
         self.headview.namelab.text = self.headm.namestr;
         self.headview.timelab.text = self.headm.timestr;
@@ -177,7 +167,6 @@ NSMutableArray * ymDataArray;
             NSString *usernamestr = [bookdic objectForKey:@"user_nickname"];
             [usernamearr addObject:usernamestr];
         }
-
         
         NSArray *goodArray = usernamearr;
         NSString *goodTotalString = [goodArray componentsJoinedByString:@", "];
@@ -325,30 +314,14 @@ NSMutableArray * ymDataArray;
 -(void)footerRefreshEndAction
 {
     pn ++;
-    NSString *tokenstr = [[NSString alloc] init];
-    NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
-    NSString *token = [userdefat objectForKey:@"tokenuser"];
-    if (token.length==0) {
-        tokenstr = @"";
-    }
-    else
-    {
-        tokenstr = token;
-    }
-    NSLog(@"token--------%@",token);
-    
     NSString *pnstr = [NSString stringWithFormat:@"%d",pn];
-    NSString *strurl = [NSString stringWithFormat:xiangqin,self.detalisidstr,pnstr,tokenstr];
+    NSString *strurl = [NSString stringWithFormat:xiangqin,self.detalisidstr,pnstr,[tokenstr tokenstrfrom]];
     [AFManager getReqURL:strurl block:^(id infor) {
         self.headm = [[headModel alloc] init];
         NSLog(@"info=---------------------%@",infor);
         NSDictionary *dic =  [infor objectForKey:@"info"];
-        
-        
         //cell部分
-        
         NSMutableArray *dtrarr = [NSMutableArray array];
-        
         dtrarr = [dic objectForKey:@"all_comment"];
         self.sonCommentarr = [NSMutableArray array];
         NSLog(@"all_comment=========%@",dtrarr);
@@ -360,17 +333,11 @@ NSMutableArray * ymDataArray;
             self.detailsmodel.contstr = [dicarr objectForKey:@"content"];
             self.detailsmodel.imgurlstr = [dicarr objectForKey:@"headImg"];
             self.detailsmodel.pingarr = [dicarr objectForKey:@"sonComment"];
-            
-            
             NSMutableArray *commarr = [NSMutableArray array];
             commarr = [dicarr objectForKey:@"sonComment"];
             [self.cellcontarr addObject:[NSString stringWithFormat:@"%lu",(unsigned long)commarr.count]];
-            
             [self.sonCommentarr addObject:self.detailsmodel.pingarr];
-            
             [self.detalisarr addObject:self.detailsmodel];
-            
-            
         }
         
         NSLog(@"pinglunarr==========%@",self.cellcontarr);
@@ -395,12 +362,8 @@ NSMutableArray * ymDataArray;
         [_headview.sharebtn addTarget:self action:@selector(shareclick) forControlEvents:UIControlEventTouchUpInside];
         [_headview.dianzanbtn addTarget:self action:@selector(dianzanclick) forControlEvents:UIControlEventTouchUpInside];
         [_headview.combtn addTarget:self action:@selector(pinglunclick) forControlEvents:UIControlEventTouchUpInside];
-        
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(webimagego)];
         [_headview.title addGestureRecognizer:tap];
-        
-        
-        
     }
     return _headview;
 }
@@ -628,27 +591,17 @@ NSMutableArray * ymDataArray;
     NSLog(@"点赞");
     
     if ([self.headm.shifoudianzanstr isEqualToString:@"0"]) {
-        NSString *tokenstr = [[NSString alloc] init];
-        NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
-        NSString *token = [userdefat objectForKey:@"tokenuser"];
-        if (token.length==0) {
-            tokenstr = @"";
-        }
-        else
-        {
-            tokenstr = token;
-        }
-        NSLog(@"token--------%@",tokenstr);
-        if (tokenstr.length==0) {
+       
+        if ([tokenstr tokenstrfrom].length==0) {
             NSLog(@"请登陆");
             loginViewController *loginvc = [[loginViewController alloc] init];
             loginvc.jinru = @"jinru";
             [self presentViewController:loginvc animated:YES completion:nil];
         }else
         {
-      
+            
             NSString *dianzanstr = self.headm.shifoudianzanstr;
-            NSDictionary *reqdic = @{@"token":tokenstr,@"object_id":self.detalisidstr,@"status":dianzanstr,@"type":@"1"};
+            NSDictionary *reqdic = @{@"token":[tokenstr tokenstrfrom],@"object_id":self.detalisidstr,@"status":dianzanstr,@"type":@"1"};
             [AFManager postReqURL:dianzanstr reqBody:reqdic block:^(id infor) {
                 NSLog(@"infor-------%@",infor);
                 NSString *code = [infor objectForKey:@"code"];
@@ -684,18 +637,7 @@ NSMutableArray * ymDataArray;
 
     }else
     {
-        NSString *tokenstr = [[NSString alloc] init];
-        NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
-        NSString *token = [userdefat objectForKey:@"tokenuser"];
-        if (token.length==0) {
-            tokenstr = @"";
-        }
-        else
-        {
-            tokenstr = token;
-        }
-        NSLog(@"token--------%@",tokenstr);
-        if (tokenstr.length==0) {
+        if ([tokenstr tokenstrfrom].length==0) {
             NSLog(@"请登陆");
             loginViewController *loginvc = [[loginViewController alloc] init];
             loginvc.jinru = @"jinru";
@@ -705,7 +647,7 @@ NSMutableArray * ymDataArray;
             
             NSString *dianzanstr = self.headm.shifoudianzanstr;
             self.headview.dianzanbtn.zanimg.image = [UIImage imageNamed:@"点赞-拷贝"];
-            NSDictionary *reqdic = @{@"token":tokenstr,@"object_id":self.detalisidstr,@"status":dianzanstr,@"type":@"1"};
+            NSDictionary *reqdic = @{@"token":[tokenstr tokenstrfrom],@"object_id":self.detalisidstr,@"status":dianzanstr,@"type":@"1"};
             [AFManager postReqURL:dianzanstr reqBody:reqdic block:^(id infor) {
                 NSLog(@"infor-------%@",infor);
                 NSString *code = [infor objectForKey:@"code"];
@@ -749,19 +691,8 @@ NSMutableArray * ymDataArray;
 -(void)pinglunclick
 {
     NSLog(@"评论");
-    
-    NSString *tokenstr = [[NSString alloc] init];
-    NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
-    NSString *token = [userdefat objectForKey:@"tokenuser"];
-    if (token.length==0) {
-        tokenstr = @"";
-    }
-    else
-    {
-        tokenstr = token;
-    }
-    NSLog(@"token--------%@",tokenstr);
-    if (tokenstr.length==0) {
+
+    if ([tokenstr tokenstrfrom].length==0) {
         NSLog(@"请登陆");
         loginViewController *logvc = [[loginViewController alloc] init];
         logvc.jinru = @"jinru";
@@ -779,18 +710,8 @@ NSMutableArray * ymDataArray;
 //二级评论
 - (void)buttonPress:(UIButton *)sender {
     
-    NSString *tokenstr = [[NSString alloc] init];
-    NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
-    NSString *token = [userdefat objectForKey:@"tokenuser"];
-    if (token.length==0) {
-        tokenstr = @"";
-    }
-    else
-    {
-        tokenstr = token;
-    }
-    NSLog(@"token--------%@",tokenstr);
-    if (tokenstr.length==0) {
+
+    if ([tokenstr tokenstrfrom].length==0) {
         NSLog(@"请登陆");
         loginViewController *logvc = [[loginViewController alloc] init];
         logvc.jinru = @"jinru";
@@ -811,18 +732,7 @@ NSMutableArray * ymDataArray;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    NSString *tokenstr = [[NSString alloc] init];
-    NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
-    NSString *token = [userdefat objectForKey:@"tokenuser"];
-    if (token.length==0) {
-        tokenstr = @"";
-    }
-    else
-    {
-        tokenstr = token;
-    }
-    NSLog(@"token--------%@",tokenstr);
-    if (tokenstr.length==0) {
+    if ([tokenstr tokenstrfrom].length==0) {
         NSLog(@"请登陆");
         loginViewController *logvc = [[loginViewController alloc] init];
         logvc.jinru = @"jinru";
@@ -914,7 +824,7 @@ NSMutableArray * ymDataArray;
                 NSDate* dat = [NSDate dateWithTimeIntervalSinceNow:0];
                 NSTimeInterval a=[dat timeIntervalSince1970];
                 NSString *timeString = [NSString stringWithFormat:@"%f", a];
-                NSString *time = [self datetime:timeString];
+                NSString *time = [Timestr datetime:timeString];
                 NSString *content = self.keyView.textview.text;
                 NSString *imageurl = @"";
                 self.detailsmodel.namestr = name;
@@ -954,90 +864,6 @@ NSMutableArray * ymDataArray;
     surevc.canDownRefresh = YES;
     [self.navigationController pushViewController:surevc animated:YES];
     
-}
-
-#pragma mark - 时间计算方法
-
--(NSString *)datetime:(NSString *)datestr
-{
-    NSTimeInterval time=[datestr doubleValue]+28800;//因为时差问题要加8小时 == 28800 sec
-    NSDate *detaildate=[NSDate dateWithTimeIntervalSince1970:time];
-    NSLog(@"date:%@",[detaildate description]);
-    //实例化一个NSDateFormatter对象
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    //设定时间格式,这里可以设置成自己需要的格式
-    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-    
-    //NSString *currentDateStr = [dateFormatter stringFromDate: detaildate];
-    NSDate *date = [NSDate date];
-    //计算时间间隔（单位是秒）
-    NSTimeInterval time2 = [date timeIntervalSinceDate:detaildate];
-    //计算天数、时、分、秒
-    
-    int days = ((int)time2)/(3600*24);
-    int hours = ((int)time2)%(3600*24)/3600;
-    int minutes = ((int)time2)%(3600*24)%3600/60;
-    int seconds = ((int)time2)%(3600*24)%3600%60;
-    
-    NSString *dateContent = [[NSString alloc] initWithFormat:@"过去%i天%i小时%i分%i秒",days,hours,minutes,seconds];
-    NSLog(@"datacunt=====%@",dateContent);
-    
-    NSString *fanhuistr = [[NSString alloc] init];
-    if (days>=365) {
-        //实例化一个NSDateFormatter对象
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        //设定时间格式,这里可以设置成自己需要的格式
-        [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-        //用[NSDate date]可以获取系统当前时间
-        NSString *currentDateStr = [dateFormatter stringFromDate:detaildate];
-        //输出格式为：2010-10-27 10:22:13
-        NSLog(@"%@",currentDateStr);
-        fanhuistr = currentDateStr;
-    }
-    else if(hours>=72&&hours<365)
-    {
-        //M月M日
-        //实例化一个NSDateFormatter对象
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        //设定时间格式,这里可以设置成自己需要的格式
-        [dateFormatter setDateFormat:@"MM-dd HH:mm:ss"];
-        //用[NSDate date]可以获取系统当前时间
-        NSString *currentDateStr = [dateFormatter stringFromDate:detaildate];
-        //输出格式为：2010-10-27 10:22:13
-        NSLog(@"%@",currentDateStr);
-        fanhuistr = currentDateStr;
-    }else if (hours<72&&hours>=48)
-    {
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        //设定时间格式,这里可以设置成自己需要的格式
-        [dateFormatter setDateFormat:@"HH:mm"];
-        //用[NSDate date]可以获取系统当前时间
-        NSString *currentDateStr = [dateFormatter stringFromDate:detaildate];
-        //输出格式为：2010-10-27 10:22:13
-        NSLog(@"%@",currentDateStr);
-        
-        fanhuistr = [NSString stringWithFormat:@"%@%@",@"前天",@"currentDateStr"];
-        
-    }else if (hours<48&&hours>=24)
-    {
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        //设定时间格式,这里可以设置成自己需要的格式
-        [dateFormatter setDateFormat:@"HH:mm"];
-        //用[NSDate date]可以获取系统当前时间
-        NSString *currentDateStr = [dateFormatter stringFromDate:detaildate];
-        //输出格式为：2010-10-27 10:22:13
-        NSLog(@"%@",currentDateStr);
-        
-        fanhuistr = [NSString stringWithFormat:@"%@%@",@"昨天",@"currentDateStr"];
-    }else if (hours<24&&hours>=1)
-    {
-        fanhuistr = [NSString stringWithFormat:@"%d%@%@",hours,@"小时",@"前"];
-    }else
-    {
-        fanhuistr = [NSString stringWithFormat:@"%d%@%@",minutes,@"分钟",@"前"];
-    }
-    
-    return fanhuistr;
 }
 
 #pragma mark - 判断字符串为空

@@ -38,7 +38,7 @@
 {
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];// 启动状态栏网络请求指示
     
-    str=[str stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    //str=[str stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
     AFHTTPSessionManager*manager =[AFHTTPSessionManager manager];
     manager.requestSerializer=[AFHTTPRequestSerializer serializer];
@@ -60,7 +60,7 @@
 +(void)postReqURL:(NSString*)str reqBody:(NSDictionary *)reqBodyDic block:(void(^)(id infor))callBack;
 {
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];// 启动状态栏网络请求指示
-    str=[str stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    //str=[str stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
     AFHTTPSessionManager*manager =[AFHTTPSessionManager manager];
     

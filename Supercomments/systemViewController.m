@@ -69,7 +69,7 @@ static NSString * const kShowTextCellReuseIdentifier = @"QSShowTextCell";
 
 - (void)addFooter
 {
-    self.systemtableview.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(refreshLoadMore)];
+    self.systemtableview.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(refreshLoadMore)];
 }
 - (void)refreshAction {
     

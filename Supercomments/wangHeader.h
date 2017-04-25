@@ -49,4 +49,7 @@
 #define xiaoxitongzhijk @"http://np.iwenyu.cn/forum/user/messageInform.html?token=%@&page=%@"
 //修改头像
 #define touxiang @"http://np.iwenyu.cn/forum/user/userIcon.html?token=%@"
+//token替换
+#define tokentihuan @"http://np.iwenyu.cn/user/index/begin.html"
+
 #endif /* wangHeader_h */

@@ -58,10 +58,10 @@ static NSString *newidentfid = @"newidentfid";
     
 }
 
+#pragma mark - 刷新控件
 
 - (void)addHeader
 {
-    
     // 头部刷新控件
     self.newtable.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(refreshAction)];
     
@@ -71,7 +71,7 @@ static NSString *newidentfid = @"newidentfid";
 
 - (void)addFooter
 {
-    self.newtable.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(refreshLoadMore)];
+    self.newtable.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(refreshLoadMore)];
 }
 - (void)refreshAction {
     
@@ -88,20 +88,8 @@ static NSString *newidentfid = @"newidentfid";
     [self.dataSource removeAllObjects];
     [self.dataarr removeAllObjects];
     [self.imgarr removeAllObjects];
-    NSString *tokenstr = [[NSString alloc] init];
-    NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
-    NSString *token = [userdefat objectForKey:@"tokenuser"];
-    if (token.length==0) {
-        tokenstr = @"";
-    }
-    else
-    {
-        tokenstr = token;
-    }
-    NSLog(@"token--------%@",token);
     
-    
-    NSString *strurl = [NSString stringWithFormat:newVCload,@"1",@"1",tokenstr];
+    NSString *strurl = [NSString stringWithFormat:newVCload,@"1",@"1",[tokenstr tokenstrfrom]];
     [AFManager getReqURL:strurl block:^(id infor) {
         NSLog(@"infor=====%@",infor);
         NSLog(@"str====%@",strurl);
@@ -139,21 +127,8 @@ static NSString *newidentfid = @"newidentfid";
 - (void)footerRefreshEndAction {
     pn ++;
     
-    
-    NSString *tokenstr = [[NSString alloc] init];
-    NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
-    NSString *token = [userdefat objectForKey:@"tokenuser"];
-    if (token.length==0) {
-        tokenstr = @"";
-    }
-    else
-    {
-        tokenstr = token;
-    }
-    NSLog(@"token--------%@",token);
-    
     NSString *pnstr = [NSString stringWithFormat:@"%d",pn];
-    NSString *strurl = [NSString stringWithFormat:newVCload,pnstr,@"1",tokenstr];
+    NSString *strurl = [NSString stringWithFormat:newVCload,pnstr,@"1",[tokenstr tokenstrfrom]];
     
     [AFManager getReqURL:strurl block:^(id infor) {
         NSLog(@"infor=====%@",infor);
@@ -291,19 +266,7 @@ static NSString *newidentfid = @"newidentfid";
     NSLog(@"dianzanstr--------%@",dianzanstr);
     if ([dianzanstr isEqualToString:@"0"]) {
 
-        NSString *tokenstr = [[NSString alloc] init];
-        NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
-        NSString *token = [userdefat objectForKey:@"tokenuser"];
-        if (token.length==0) {
-            tokenstr = @"";
-        }
-        else
-        {
-            tokenstr = token;
-        }
-        NSLog(@"token--------%@",tokenstr);
-        
-        if (tokenstr.length==0) {
+        if ([tokenstr tokenstrfrom].length==0) {
             
             loginViewController *loginvc = [[loginViewController alloc] init];
             loginvc.jinru = @"jinru";
@@ -312,8 +275,7 @@ static NSString *newidentfid = @"newidentfid";
         }
         else
         {
-            
-            NSDictionary *reqdic = @{@"token":tokenstr,@"object_id":self.nmodel.newidstr,@"status":dianzanstr,@"type":@"1"};
+            NSDictionary *reqdic = @{@"token":[tokenstr tokenstrfrom],@"object_id":self.nmodel.newidstr,@"status":dianzanstr,@"type":@"1"};
             [AFManager postReqURL:dianzanstr reqBody:reqdic block:^(id infor) {
                 NSLog(@"infor-------%@",infor);
                 NSString *code = [infor objectForKey:@"code"];
@@ -349,28 +311,15 @@ static NSString *newidentfid = @"newidentfid";
     }
     else
     {
-        NSString *tokenstr = [[NSString alloc] init];
-        NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
-        NSString *token = [userdefat objectForKey:@"tokenuser"];
-        if (token.length==0) {
-            tokenstr = @"";
-        }
-        else
-        {
-            tokenstr = token;
-        }
-        NSLog(@"token--------%@",tokenstr);
-        
-        if (tokenstr.length==0) {
+        if ([tokenstr tokenstrfrom].length==0) {
             NSLog(@"请登陆");
             loginViewController *loginvc = [[loginViewController alloc] init];
             loginvc.jinru = @"jinru";
             [self presentViewController:loginvc animated:YES completion:nil];
-            
         }
         else
         {
-            NSDictionary *reqdic = @{@"token":tokenstr,@"object_id":self.nmodel.newidstr,@"status":dianzanstr,@"type":@"1"};
+            NSDictionary *reqdic = @{@"token":[tokenstr tokenstrfrom],@"object_id":self.nmodel.newidstr,@"status":dianzanstr,@"type":@"1"};
             [AFManager postReqURL:dianzanstr reqBody:reqdic block:^(id infor) {
                 NSLog(@"infor-------%@",infor);
                 NSString *code = [infor objectForKey:@"code"];
@@ -401,7 +350,6 @@ static NSString *newidentfid = @"newidentfid";
             self.nmodel.sifoudianzanstr = @"0";
             [self.newtable reloadData];
         }
-        
     }
 }
 
@@ -411,6 +359,14 @@ static NSString *newidentfid = @"newidentfid";
 {
     NSIndexPath *index = [self.newtable indexPathForCell:cell];
     NSLog(@"333===%ld   回复",index.row);
+    self.nmodel = [[newModel alloc] init];
+    self.nmodel = self.dataarr[index.row];
+    NSString *str = self.nmodel.newidstr;
+    NSLog(@"str======%@",str);
+    detailsViewController *detailsvc = [[detailsViewController alloc] init];
+    detailsvc.detalisidstr = str;
+    [self.navigationController pushViewController:detailsvc animated:YES];
+    
 }
 
 //跳转网页
@@ -426,7 +382,6 @@ static NSString *newidentfid = @"newidentfid";
     surevc.url = urlstr;
     surevc.canDownRefresh = YES;
     [self.navigationController pushViewController:surevc animated:YES];
-    
 }
 
 #pragma mark - 加载失败

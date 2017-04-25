@@ -45,6 +45,7 @@
 {
     [super viewWillAppear:animated];
     [self.navigationController.navigationBar setHidden:YES];
+    [self tokentihuanfrom];
     [self loaddatafromweb];
     [self islogin];
 }
@@ -72,11 +73,10 @@
             NSLog(@"已经登陆");
             self.denglustr = @"denglu";
             NSDictionary *dic = [infor objectForKey:@"info"];
-            //NSString *urlstr = [dic objectForKey:@"headPath"];
-            NSString *urlstr = @"http://www.qqbody.com/uploads/allimg/201401/09-045302_580.jpg";
+            NSString *urlstr = [dic objectForKey:@"headPath"];
+            urlstr = @"http://www.qqbody.com/uploads/allimg/201401/09-045302_580.jpg";
             
             [self.infobtn sd_setImageWithURL:[NSURL URLWithString:urlstr] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"未登录"]];
-            //[self.infobtn sd_setImageWithURL:[NSURL URLWithString:urlstr] forState:normal];
         }
         
     } errorblock:^(NSError *error) {
@@ -87,20 +87,9 @@
 
 -(void)loaddatafromweb
 {
-    NSString *tokenstr = [[NSString alloc] init];
-    NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
-    NSString *token = [userdefat objectForKey:@"tokenuser"];
-    if (token.length==0) {
-        tokenstr = @"";
-    }
-    else
-    {
-        tokenstr = token;
-    }
-    NSLog(@"token--------%@",tokenstr);
     
-    if (tokenstr.length!=0) {
-        [AFManager getReqURL:[NSString stringWithFormat:tongzhixianxishuliang,tokenstr] block:^(id infor) {
+    if ([tokenstr tokenstrfrom].length!=0) {
+        [AFManager getReqURL:[NSString stringWithFormat:tongzhixianxishuliang,[tokenstr tokenstrfrom]] block:^(id infor) {
             NSLog(@"info---------%@",infor);
             NSString *inforstr = [[NSString alloc] init];
             NSString *system_inform = [[NSString alloc] init];
@@ -118,17 +107,23 @@
             }
             
         } errorblock:^(NSError *error) {
-            [MBProgressHUD showSuccess:@"请检查网络"];
+            //[MBProgressHUD showSuccess:@"请检查网络"];
         }];
 
     }else
     {
         
     }
-    
-    
+
 }
 
+-(void)tokentihuanfrom
+{
+    [AFManager postReqURL:tokentihuan reqBody:@{@"token":[tokenstr tokenstrfrom]} block:^(id infor) {
+        NSLog(@"infor------%@",infor);
+        
+    }];
+}
 
 #pragma mark - getteres
 
