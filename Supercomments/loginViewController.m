@@ -13,15 +13,17 @@
 #import "AppDelegate.h"
 
 #import "YYPhotoGroupView.h"
-@interface loginViewController ()<YBAttributeTapActionDelegate,WXApiDelegate>
+@interface loginViewController ()<YBAttributeTapActionDelegate,WXApiDelegate,UIScrollViewDelegate>
 @property (nonatomic,strong) UIImageView *logoimg;
 @property (nonatomic,strong) UILabel *namelab;
 @property (nonatomic,strong) UIButton *gobackbtn;
 @property (nonatomic,strong) UIButton *loginbtn;
 @property (nonatomic,strong) UIButton *zhijiebtn;
 @property (nonatomic,strong) UILabel *aggrentlab;
-
 @property (nonatomic,strong) UIImageView *xieyiimg;
+//协议展示
+@property (nonatomic,strong)UIScrollView * scrollView;
+@property (nonatomic,strong)UIImageView *imageView;
 @end
 
 @implementation loginViewController
@@ -29,17 +31,19 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:self.logoimg];
-    [self.view addSubview:self.namelab];
-    [self.view addSubview:self.loginbtn];
-    [self.view addSubview:self.zhijiebtn];
-    [self.view addSubview:self.aggrentlab];
-    
-    if ([self.jinru isEqualToString:@"jinru"]) {
-        [self.view addSubview:self.gobackbtn];
-    }
+//    [self.view addSubview:self.logoimg];
+//    [self.view addSubview:self.namelab];
+//    [self.view addSubview:self.loginbtn];
+//    [self.view addSubview:self.zhijiebtn];
+//    [self.view addSubview:self.aggrentlab];
+//    
+//    if ([self.jinru isEqualToString:@"jinru"]) {
+//        [self.view addSubview:self.gobackbtn];
+//    }
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(WXLogin:) name:WXLoginSuccess object:@"dengluchenggong"];
+    
+    [self createView];
     
 }
 
@@ -136,7 +140,6 @@
     }
     return _xieyiimg;
 }
-
 
 
 -(UILabel *)aggrentlab
@@ -260,5 +263,49 @@
 - (void)tapAction{
     
 }
+
+
+-(void)createView
+{
+    _scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 64, self.view.bounds.size.width, self.view.bounds.size.height - 64)];
+    [self.view addSubview:_scrollView];
+    _imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height - 64)];
+    _imageView.image = [UIImage imageNamed:@"牛评用户协议.jpg"];
+    _imageView.contentMode = UIViewContentModeScaleAspectFit;
+    [_scrollView addSubview:_imageView];
+    
+    //设置内容大小
+    _scrollView.contentSize = _imageView.frame.size;
+    //设置代理为控制器
+    _scrollView.delegate = self;
+    //设置最小缩放比例
+    _scrollView.minimumZoomScale = 1;
+    //设置最大缩放比例
+    _scrollView.maximumZoomScale = 2;
+    UITapGestureRecognizer *tapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(handleTapGesture:)];
+    //设置手势点击数,双击：点2下
+    tapGesture.numberOfTapsRequired=2;
+    //    self.imageView.userInteractionEnabled = YES;
+    [_scrollView addGestureRecognizer:tapGesture];
+    //    [self.imageView addGestureRecognizer:tapGesture];
+    
+}
+
+// Do any additional setup after loading the view, typically from a nib.
+//放大缩小
+-(void)handleTapGesture:(UIGestureRecognizer*)sender
+{
+    if(_scrollView.zoomScale > 1.0){
+        [_scrollView setZoomScale:1.0 animated:YES];
+    }else{
+        [_scrollView setZoomScale:2.0 animated:YES];
+    }
+}
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
+{
+    
+    return _imageView;
+}
+
 
 @end

@@ -76,8 +76,8 @@ static NSString *infocellidentfid = @"infocellidentfid";
                 inforstr = [dic objectForKey:@"inform"];
                 system_inform = [dic objectForKey:@"system_inform"];
             }
-            inforstr = @"3";
-            system_inform = @"0";
+//            inforstr = @"3";
+//            system_inform = @"0";
             
             
             UILabel *namelab = [self.infotableview viewWithTag:100];

@@ -8,7 +8,7 @@
 
 #import "sectionView.h"
 #import "detailcellmodel.h"
-
+#import "Timestr.h"
 @interface sectionView()
 @property (nonatomic,strong) detailcellmodel *detalmodel;
 @end
@@ -51,14 +51,14 @@
 {
     self.detalmodel = model;
     self.namelab.text = model.namestr;
-    self.timelab.text = model.timestr;
+    //self.timelab.text = model.timestr;
+    self.timelab.text = [Timestr datetime:model.timestr];
     self.contentlab.text = model.contstr;
     
     [self.picimg sd_setImageWithURL:[NSURL URLWithString:model.imgurlstr] placeholderImage:[UIImage imageNamed:@"头像默认图"]];
     CGSize textSize = [_contentlab setText:_contentlab.text lines:QSTextDefaultLines andLineSpacing:QSTextLineSpacing constrainedToSize:CGSizeMake(DEVICE_WIDTH - 94*WIDTH_SCALE-14*WIDTH_SCALE,MAXFLOAT)];
     self.contentlab.frame = CGRectMake(14*WIDTH_SCALE+32*WIDTH_SCALE+14*WIDTH_SCALE,  60*HEIGHT_SCALE, textSize.width, textSize.height);
     _hei = textSize.height;
-    
     model.sectionhei = _hei;
 }
 

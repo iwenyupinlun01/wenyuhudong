@@ -21,17 +21,13 @@
 {
     int pn;
 }
-
 @property (nonatomic,strong) UITableView *newtable;
 @property (nonatomic,strong) UIImageView *demoimg;
 @property (nonatomic,strong) NSMutableArray *dataSource;
 @property (nonatomic,strong) NSMutableArray *dataarr;
 @property (nonatomic,strong) newModel *nmodel;
-
 @property (nonatomic,strong) NSMutableArray *imgarr;
-
 @property (strong, nonatomic) NSMutableArray<newModel *> * menus;
-
 @end
 static NSString *newidentfid = @"newidentfid";
 @implementation newViewController
@@ -42,10 +38,8 @@ static NSString *newidentfid = @"newidentfid";
     self.view.backgroundColor = [UIColor whiteColor];
     self.newtable.emptyDataSetSource = self;
     self.newtable.emptyDataSetDelegate = self;
-    
     // 删除单元格分隔线的一个小技巧
     self.newtable.tableFooterView = [UIView new];
-    
     pn=1;
     self.dataSource = [NSMutableArray array];
     self.dataarr = [NSMutableArray array];
@@ -55,7 +49,6 @@ static NSString *newidentfid = @"newidentfid";
     // 3.2.上拉加载更多
     [self addFooter];
     [self.view addSubview:self.newtable];
-    
 }
 
 #pragma mark - 刷新控件
@@ -64,25 +57,26 @@ static NSString *newidentfid = @"newidentfid";
 {
     // 头部刷新控件
     self.newtable.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(refreshAction)];
-    
     [self.newtable.mj_header beginRefreshing];
-    
 }
 
 - (void)addFooter
 {
     self.newtable.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(refreshLoadMore)];
 }
+
 - (void)refreshAction {
     
     [self headerRefreshEndAction];
     
 }
+
 - (void)refreshLoadMore {
     
     [self footerRefreshEndAction];
     
 }
+
 - (void)headerRefreshEndAction {
     
     [self.dataSource removeAllObjects];
@@ -94,7 +88,6 @@ static NSString *newidentfid = @"newidentfid";
         NSLog(@"infor=====%@",infor);
         NSLog(@"str====%@",strurl);
         NSArray *dit = [infor objectForKey:@"info"];
-        
         for (int i = 0; i<dit.count; i++) {
             NSDictionary *dicarr = [dit objectAtIndex:i];
             self.nmodel = [[newModel alloc] init];
@@ -116,9 +109,7 @@ static NSString *newidentfid = @"newidentfid";
             [self.imgarr addObject:self.nmodel.imgurlstr];
         }
         [self.newtable.mj_header endRefreshing];
-        
         [self.newtable reloadData];
-       
     } errorblock:^(NSError *error) {
          [self.newtable.mj_header endRefreshing];
     }];
@@ -126,14 +117,11 @@ static NSString *newidentfid = @"newidentfid";
 }
 - (void)footerRefreshEndAction {
     pn ++;
-    
     NSString *pnstr = [NSString stringWithFormat:@"%d",pn];
     NSString *strurl = [NSString stringWithFormat:newVCload,pnstr,@"1",[tokenstr tokenstrfrom]];
-    
     [AFManager getReqURL:strurl block:^(id infor) {
         NSLog(@"infor=====%@",infor);
         NSLog(@"str====%@",strurl);
-        
         NSArray *dit = [infor objectForKey:@"info"];
         for (int i = 0; i<dit.count; i++) {
             NSDictionary *dicarr = [dit objectAtIndex:i];

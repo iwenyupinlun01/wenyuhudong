@@ -111,29 +111,28 @@ NSMutableArray * ymDataArray;
 {
     self.maintable.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(refreshLoadMore)];
 }
+
 - (void)refreshAction {
     
     [self headerRefreshEndAction];
     
 }
+
 - (void)refreshLoadMore {
     
     [self footerRefreshEndAction];
-    
 }
 
 -(void)headerRefreshEndAction
 {
-
     [self.cellcontarr removeAllObjects];
     [self.detalisarr removeAllObjects];
+    [self.sonCommentarr removeAllObjects];
     NSString *strurl = [NSString stringWithFormat:xiangqin,self.detalisidstr,@"1",[tokenstr tokenstrfrom]];
-    
     [AFManager getReqURL:strurl block:^(id infor) {
         self.headm = [[headModel alloc] init];
         NSLog(@"info=---------------------%@",infor);
         NSDictionary *dic =  [infor objectForKey:@"info"];
-        
         //头部
         self.headm.namestr = [dic objectForKey:@"name"];
         self.headm.contactstr = [dic objectForKey:@"content"];
@@ -304,10 +303,8 @@ NSMutableArray * ymDataArray;
         _maintable.delegate = self;
         _maintable.tableHeaderView = self.headview;
         _maintable.backgroundColor = [UIColor whiteColor];
-        
         _maintable.emptyDataSetSource = self;
         _maintable.emptyDataSetDelegate = self;
-        
     }
     return _maintable;
 }
@@ -470,7 +467,7 @@ NSMutableArray * ymDataArray;
 {
     UIView *view=[[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, 14)];
     view.backgroundColor = [UIColor whiteColor];
-    UIView *lineview = [[UIView alloc] initWithFrame:CGRectMake(0, 14, DEVICE_WIDTH, 0.3)];
+    UIView *lineview = [[UIView alloc] initWithFrame:CGRectMake(0, 13, DEVICE_WIDTH, 0.7)];
     lineview.backgroundColor = [UIColor wjColorFloat:@"C7C7CD"];
     [view addSubview:lineview];
     return view;
@@ -518,7 +515,7 @@ NSMutableArray * ymDataArray;
                            }
                            case SSDKResponseStateFail:
                            {
-                               UIAlertController *control = [UIAlertController alertControllerWithTitle:@"分享失败" message:nil preferredStyle:UIAlertControllerStyleAlert];
+                               UIAlertController *control = [UIAlertController alertControllerWithTitle:@"您还没有安装微信" message:nil preferredStyle:UIAlertControllerStyleAlert];
                                UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                                    
                                }];

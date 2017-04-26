@@ -10,4 +10,5 @@
 
 @interface Timestr : NSObject
 +(NSString *)datetime:(NSString *)datestr;
+//+(NSString *)timedatastr:(NSString *)timestr;
 @end
