@@ -10,5 +10,7 @@
 
 @interface Timestr : NSObject
 +(NSString *)datetime:(NSString *)datestr;
-//+(NSString *)timedatastr:(NSString *)timestr;
+
+//获取当前系统的时间戳
++(NSString* )getNowTimestamp;
 @end

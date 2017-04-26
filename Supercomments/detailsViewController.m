@@ -9,11 +9,9 @@
 #import "detailsViewController.h"
 #import "detaolsCell.h"
 #import "detailsheadView.h"
-
 #import "headModel.h"
 #import "pinglunCell.h"
 #import "detailcellmodel.h"
-
 #import "sectionView.h"
 #import "SureWebViewController.h"
 #import "loginViewController.h"
@@ -166,37 +164,77 @@ NSMutableArray * ymDataArray;
         }
         
         NSArray *goodArray = usernamearr;
-        NSString *goodTotalString = [goodArray componentsJoinedByString:@", "];
-        NSMutableAttributedString *newGoodString = [[NSMutableAttributedString alloc] initWithString:goodTotalString];
-        [newGoodString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:14] range:NSMakeRange(0, goodTotalString.length)];
-        //设置行距 实际开发中间距为0太丑了，根据项目需求自己把握
-        NSMutableParagraphStyle *paragraphstyle = [[NSMutableParagraphStyle alloc] init];
-        paragraphstyle.lineSpacing = 3;
-        [newGoodString addAttribute:NSParagraphStyleAttributeName value:paragraphstyle range:NSMakeRange(0, goodTotalString.length)];
-        // 添加图片
-        NSTextAttachment *attch = [[NSTextAttachment alloc] init];
-        // 图片
-        attch.image = [UIImage imageNamed:@"详情页点赞-提示"];
-        // 设置图片大小
-        attch.bounds = CGRectMake(0, 0, 14*WIDTH_SCALE, 14*WIDTH_SCALE);
-        // 创建带有图片的富文本
-        NSAttributedString *string = [NSAttributedString attributedStringWithAttachment:attch];
-        [newGoodString insertAttributedString:string atIndex:0];
-        self.headview.thumlabel.attributedText = newGoodString;
-        self.headview.thumlabel.numberOfLines = 0;
-        //设置UILable自适
-        self.headview.thumlabel.lineBreakMode = NSLineBreakByCharWrapping;
-        [self.headview.thumlabel sizeToFit];
-        if (goodArray.count==0) {
-            [self.headview.thumlabel setHidden:YES];
-            
+        //NSArray *goodArray = @[@"one",@"呵呵哒",@"呵呵",@"李白",@"呵呵",@"呵呵",@"呵呵",@"呵呵哒",@"项目需求",@"呵呵",@"呵呵哒",@"项目需求",@"呵呵",@"呵呵哒",@"项目需求",@"呵呵",@"呵呵哒",@"项目需求",@"呵呵",@"呵呵哒",@"项目需求",@"呵呵",@"呵呵哒",@"项目需求",@"呵呵",@"呵呵哒",@"项目需求",@"呵呵",@"呵呵哒",@"项目需求",@"呵呵",@"呵呵哒",@"项目需求"];
+        
+        if (goodArray.count<=12) {
+            NSString *goodTotalString2 = [goodArray componentsJoinedByString:@", "];
+            NSString *goodTotalString = [NSString stringWithFormat:@"%@%lu%@",goodTotalString2,(unsigned long)goodArray.count,@"人已赞"];
+            NSMutableAttributedString *newGoodString = [[NSMutableAttributedString alloc] initWithString:goodTotalString];
+            [newGoodString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:14] range:NSMakeRange(0, goodTotalString.length)];
+            //设置行距 实际开发中间距为0太丑了，根据项目需求自己把握
+            NSMutableParagraphStyle *paragraphstyle = [[NSMutableParagraphStyle alloc] init];
+            paragraphstyle.lineSpacing = 3;
+            [newGoodString addAttribute:NSParagraphStyleAttributeName value:paragraphstyle range:NSMakeRange(0, goodTotalString.length)];
+            // 添加图片
+            NSTextAttachment *attch = [[NSTextAttachment alloc] init];
+            // 图片
+            attch.image = [UIImage imageNamed:@"详情页点赞-提示"];
+            // 设置图片大小
+            attch.bounds = CGRectMake(0, 0, 14*WIDTH_SCALE, 14*WIDTH_SCALE);
+            // 创建带有图片的富文本
+            NSAttributedString *string = [NSAttributedString attributedStringWithAttachment:attch];
+            [newGoodString insertAttributedString:string atIndex:0];
+            self.headview.thumlabel.attributedText = newGoodString;
+            self.headview.thumlabel.numberOfLines = 0;
+            //设置UILable自适
+            self.headview.thumlabel.lineBreakMode = NSLineBreakByCharWrapping;
+            [self.headview.thumlabel sizeToFit];
+            if (goodArray.count==0) {
+                [self.headview.thumlabel setHidden:YES];
+                
+            }else
+            {
+                [self.headview.thumlabel setHidden:NO];
+                
+            }
+
         }else
         {
-            [self.headview.thumlabel setHidden:NO];
-            
+            NSArray *smallArray = [goodArray subarrayWithRange:NSMakeRange(0, 12)];
+            NSString *goodTotalString2 = [smallArray componentsJoinedByString:@", "];
+            NSString *goodTotalString = [NSString stringWithFormat:@"%@%@%lu%@",goodTotalString2,@"等",(unsigned long)goodArray.count,@"人已赞"];
+            NSMutableAttributedString *newGoodString = [[NSMutableAttributedString alloc] initWithString:goodTotalString];
+            [newGoodString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:14] range:NSMakeRange(0, goodTotalString.length)];
+            //设置行距 实际开发中间距为0太丑了，根据项目需求自己把握
+            NSMutableParagraphStyle *paragraphstyle = [[NSMutableParagraphStyle alloc] init];
+            paragraphstyle.lineSpacing = 3;
+            [newGoodString addAttribute:NSParagraphStyleAttributeName value:paragraphstyle range:NSMakeRange(0, goodTotalString.length)];
+            // 添加图片
+            NSTextAttachment *attch = [[NSTextAttachment alloc] init];
+            // 图片
+            attch.image = [UIImage imageNamed:@"详情页点赞-提示"];
+            // 设置图片大小
+            attch.bounds = CGRectMake(0, 0, 14*WIDTH_SCALE, 14*WIDTH_SCALE);
+            // 创建带有图片的富文本
+            NSAttributedString *string = [NSAttributedString attributedStringWithAttachment:attch];
+            [newGoodString insertAttributedString:string atIndex:0];
+            self.headview.thumlabel.attributedText = newGoodString;
+            self.headview.thumlabel.numberOfLines = 0;
+            //设置UILable自适
+            self.headview.thumlabel.lineBreakMode = NSLineBreakByCharWrapping;
+            [self.headview.thumlabel sizeToFit];
+            if (goodArray.count==0) {
+                [self.headview.thumlabel setHidden:YES];
+                
+            }else
+            {
+                [self.headview.thumlabel setHidden:NO];
+                
+            }
         }
         
-        [self headfromcontentstr:self.headm.contactstr andimageurl:self.headm.imgurlstr];
+       // [self headfromcontentstr:self.headm.contactstr andimageurl:self.headm.imgurlstr];
+        [self headfromcontentstr:self.headm.contactstr andimageurl:self.headm.imgurlstr andgoodarr:goodArray];
         //cell部分
         
         //section
@@ -781,24 +819,23 @@ NSMutableArray * ymDataArray;
 //                一级评论
                 self.detailsmodel = [[detailcellmodel alloc] init];
                 NSMutableArray *mutaArray = [[NSMutableArray alloc] init];
-                [mutaArray addObjectsFromArray:self.detalisarr];
                 
                 NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                 NSString *namestr = [defaults objectForKey:@"namestr"];
                 NSString *name = namestr;
-                NSDate* dat = [NSDate dateWithTimeIntervalSinceNow:0];
-                NSTimeInterval a=[dat timeIntervalSince1970];
-                NSString *timeString = [NSString stringWithFormat:@"%f", a];
-                NSString *time = [Timestr datetime:timeString];
+                NSString *nowtime = [Timestr getNowTimestamp];
                 NSString *content = self.keyView.textview.text;
                 NSString *imageurl = @"";
                 self.detailsmodel.namestr = name;
-                self.detailsmodel.timestr = time;
+                self.detailsmodel.timestr = nowtime;
                 self.detailsmodel.contstr = content;
                 self.detailsmodel.imgurlstr = imageurl;
                 [mutaArray addObject:self.detailsmodel];
+                [mutaArray addObjectsFromArray:self.detalisarr];
                 self.detalisarr = mutaArray;
+                
                 [self.maintable reloadData];
+                
                 //网络请求
                 NSDictionary *para = @{@"token":[tokenstr tokenstrfrom],@"to_uid":@"0",@"object_id":self.headm.objectidstr,@"content":self.keyView.textview.text,@"pid":@"0"};
                 
@@ -874,98 +911,154 @@ NSMutableArray * ymDataArray;
 
 #pragma mark - headfrom
 
--(void)headfromcontentstr:(NSString *)content andimageurl:(NSString *)urlstr
+-(void)headfromcontentstr:(NSString *)content andimageurl:(NSString *)urlstr andgoodarr:(NSArray *)thumarr
 {
-    if (content.length!=0&&urlstr.length!=0) {
-        CGSize textSize = [self.headview.contentlab setText:self.headview.contentlab.text lines:QSTextDefaultLines andLineSpacing:QSTextLineSpacing constrainedToSize:CGSizeMake(DEVICE_WIDTH - 28*WIDTH_SCALE,MAXFLOAT)];
-        self.headview.contentlab.frame = CGRectMake(14*WIDTH_SCALE,  30*HEIGHT_SCALE+14*HEIGHT_SCALE, textSize.width, textSize.height);
-        [self.headview.headimg sd_setImageWithURL:[NSURL URLWithString:self.headm.imgurlstr] placeholderImage:[UIImage imageNamed:@"默认图"]];
-        self.headview.headimg.frame =CGRectMake(14*WIDTH_SCALE, 30*HEIGHT_SCALE+textSize.height*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 200*HEIGHT_SCALE);
-        self.headview.title.frame = CGRectMake(14*WIDTH_SCALE,  30*HEIGHT_SCALE+textSize.height*HEIGHT_SCALE+14*HEIGHT_SCALE+200*HEIGHT_SCALE+4*HEIGHT_SCALE+14*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 20*HEIGHT_SCALE);
-        self.headview.timelab.frame = CGRectMake(14*WIDTH_SCALE, 30*HEIGHT_SCALE+textSize.height*HEIGHT_SCALE+14*HEIGHT_SCALE+200*HEIGHT_SCALE+4*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE, 100*WIDTH_SCALE, 12*HEIGHT_SCALE);
-        [self.headview.combtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.right.equalTo(self.headview).with.offset(-70*WIDTH_SCALE);
-            make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
-        }];
-        [self.headview.dianzanbtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.right.equalTo(self.headview).with.offset(-140*WIDTH_SCALE);
-            make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
-        }];
-        
-        [self.headview.thumlabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.headview).with.offset(14*WIDTH_SCALE);
-            make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
-            make.top.equalTo(self.headview.timelab).with.offset(33*HEIGHT_SCALE);
+    if (thumarr.count==0) {
+        if (content.length!=0&&urlstr.length!=0) {
+            CGSize textSize = [self.headview.contentlab setText:self.headview.contentlab.text lines:QSTextDefaultLines andLineSpacing:QSTextLineSpacing constrainedToSize:CGSizeMake(DEVICE_WIDTH - 28*WIDTH_SCALE,MAXFLOAT)];
             
-        }];
-        [self.headview.sharebtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
-            make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
-        }];
-        _headview.frame = CGRectMake(0, 0, DEVICE_WIDTH, textSize.height+420*HEIGHT_SCALE);
-    }
-    else if (content.length==0&&urlstr.length!=0)
-    {
-        
-        [self.headview.headimg sd_setImageWithURL:[NSURL URLWithString:self.headm.imgurlstr] placeholderImage:[UIImage imageNamed:@"默认图"]];
-        self.headview.headimg.frame =CGRectMake(14*WIDTH_SCALE, 30*HEIGHT_SCALE+14*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 200*HEIGHT_SCALE);
-        self.headview.title.frame = CGRectMake(14*WIDTH_SCALE,  30*HEIGHT_SCALE+200*HEIGHT_SCALE+4*HEIGHT_SCALE+14*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 20*HEIGHT_SCALE);
-        self.headview.timelab.frame = CGRectMake(14*WIDTH_SCALE, 30*HEIGHT_SCALE+200*HEIGHT_SCALE+4*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE, 100*WIDTH_SCALE, 12*HEIGHT_SCALE);
-        [self.headview.combtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.right.equalTo(self.headview).with.offset(-70*WIDTH_SCALE);
-            make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
-        }];
-        [self.headview.dianzanbtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.right.equalTo(self.headview).with.offset(-140*WIDTH_SCALE);
-            make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
-        }];
-        
-        
-        [self.headview.thumlabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.headview).with.offset(14*WIDTH_SCALE);
-            make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
-            make.top.equalTo(self.headview.timelab).with.offset(33*HEIGHT_SCALE);
+            self.headview.contentlab.frame = CGRectMake(14*WIDTH_SCALE,  30*HEIGHT_SCALE+14*HEIGHT_SCALE, textSize.width, textSize.height);
+            [self.headview.headimg sd_setImageWithURL:[NSURL URLWithString:self.headm.imgurlstr] placeholderImage:[UIImage imageNamed:@"默认图"]];
+            self.headview.headimg.frame =CGRectMake(14*WIDTH_SCALE, 30*HEIGHT_SCALE+textSize.height*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 200*HEIGHT_SCALE);
+            self.headview.title.frame = CGRectMake(14*WIDTH_SCALE,  30*HEIGHT_SCALE+textSize.height*HEIGHT_SCALE+14*HEIGHT_SCALE+200*HEIGHT_SCALE+4*HEIGHT_SCALE+14*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 20*HEIGHT_SCALE);
+            self.headview.timelab.frame = CGRectMake(14*WIDTH_SCALE, 30*HEIGHT_SCALE+textSize.height*HEIGHT_SCALE+14*HEIGHT_SCALE+200*HEIGHT_SCALE+4*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE, 100*WIDTH_SCALE, 12*HEIGHT_SCALE);
+            [self.headview.combtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.right.equalTo(self.headview).with.offset(-70*WIDTH_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
+            }];
+            [self.headview.dianzanbtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.right.equalTo(self.headview).with.offset(-140*WIDTH_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
+            }];
+            [self.headview.sharebtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
+            }];
             
-        }];
-        [self.headview.sharebtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
-            make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
-        }];
-        _headview.frame = CGRectMake(0, 0, DEVICE_WIDTH, 410*HEIGHT_SCALE);
+            _headview.frame = CGRectMake(0, 0, DEVICE_WIDTH, textSize.height+380*HEIGHT_SCALE);
+        }
+        else if (content.length==0&&urlstr.length!=0)
+        {
+            [self.headview.headimg sd_setImageWithURL:[NSURL URLWithString:self.headm.imgurlstr] placeholderImage:[UIImage imageNamed:@"默认图"]];
+            self.headview.headimg.frame =CGRectMake(14*WIDTH_SCALE, 30*HEIGHT_SCALE+14*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 200*HEIGHT_SCALE);
+            self.headview.title.frame = CGRectMake(14*WIDTH_SCALE,  30*HEIGHT_SCALE+200*HEIGHT_SCALE+4*HEIGHT_SCALE+14*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 20*HEIGHT_SCALE);
+            self.headview.timelab.frame = CGRectMake(14*WIDTH_SCALE, 30*HEIGHT_SCALE+200*HEIGHT_SCALE+4*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE, 100*WIDTH_SCALE, 12*HEIGHT_SCALE);
+            [self.headview.combtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.right.equalTo(self.headview).with.offset(-70*WIDTH_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
+            }];
+            [self.headview.dianzanbtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.right.equalTo(self.headview).with.offset(-140*WIDTH_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
+            }];
+            [self.headview.sharebtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
+            }];
+            _headview.frame = CGRectMake(0, 0, DEVICE_WIDTH, 380*HEIGHT_SCALE);
+        }else
+        {
+            CGSize textSize = [self.headview.contentlab setText:self.headview.contentlab.text lines:QSTextDefaultLines andLineSpacing:QSTextLineSpacing constrainedToSize:CGSizeMake(DEVICE_WIDTH - 28*WIDTH_SCALE,MAXFLOAT)];
+            self.headview.contentlab.frame = CGRectMake(14*WIDTH_SCALE,  30*HEIGHT_SCALE+14*HEIGHT_SCALE, textSize.width, textSize.height);
+            self.headview.title.frame = CGRectMake(14*WIDTH_SCALE,  30*HEIGHT_SCALE+textSize.height*HEIGHT_SCALE+4*HEIGHT_SCALE+14*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 20*HEIGHT_SCALE);
+            self.headview.timelab.frame = CGRectMake(14*WIDTH_SCALE, 30*HEIGHT_SCALE+textSize.height*HEIGHT_SCALE+4*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE, 100*WIDTH_SCALE, 12*HEIGHT_SCALE);
+            [self.headview.combtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.right.equalTo(self.headview).with.offset(-70*WIDTH_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
+            }];
+            [self.headview.dianzanbtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.right.equalTo(self.headview).with.offset(-140*WIDTH_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
+            }];
+            [self.headview.sharebtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
+            }];
+            _headview.frame = CGRectMake(0, 0, DEVICE_WIDTH, textSize.height+160*HEIGHT_SCALE);
+        }
+
     }else
     {
-        CGSize textSize = [self.headview.contentlab setText:self.headview.contentlab.text lines:QSTextDefaultLines andLineSpacing:QSTextLineSpacing constrainedToSize:CGSizeMake(DEVICE_WIDTH - 28*WIDTH_SCALE,MAXFLOAT)];
-        self.headview.contentlab.frame = CGRectMake(14*WIDTH_SCALE,  30*HEIGHT_SCALE+14*HEIGHT_SCALE, textSize.width, textSize.height);
-        self.headview.title.frame = CGRectMake(14*WIDTH_SCALE,  30*HEIGHT_SCALE+textSize.height*HEIGHT_SCALE+4*HEIGHT_SCALE+14*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 20*HEIGHT_SCALE);
-        self.headview.timelab.frame = CGRectMake(14*WIDTH_SCALE, 30*HEIGHT_SCALE+textSize.height*HEIGHT_SCALE+4*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE, 100*WIDTH_SCALE, 12*HEIGHT_SCALE);
-        [self.headview.combtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.right.equalTo(self.headview).with.offset(-70*WIDTH_SCALE);
-            make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
-        }];
-        [self.headview.dianzanbtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.right.equalTo(self.headview).with.offset(-140*WIDTH_SCALE);
-            make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
-        }];
-        
-        
-        [self.headview.thumlabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.headview).with.offset(14*WIDTH_SCALE);
-            make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
-            make.top.equalTo(self.headview.timelab).with.offset(33*HEIGHT_SCALE);
+        if (content.length!=0&&urlstr.length!=0) {
+            CGSize textSize = [self.headview.contentlab setText:self.headview.contentlab.text lines:QSTextDefaultLines andLineSpacing:QSTextLineSpacing constrainedToSize:CGSizeMake(DEVICE_WIDTH - 28*WIDTH_SCALE,MAXFLOAT)];
+            CGSize textsize2= [self.headview.thumlabel.text boundingRectWithSize:CGSizeMake(DEVICE_WIDTH-28*WIDTH_SCALE, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil].size;
             
-        }];
-        [self.headview.sharebtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
-            make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
-        }];
-        _headview.frame = CGRectMake(0, 0, DEVICE_WIDTH, textSize.height+200*HEIGHT_SCALE);
+            self.headview.contentlab.frame = CGRectMake(14*WIDTH_SCALE,  30*HEIGHT_SCALE+14*HEIGHT_SCALE, textSize.width, textSize.height);
+            [self.headview.headimg sd_setImageWithURL:[NSURL URLWithString:self.headm.imgurlstr] placeholderImage:[UIImage imageNamed:@"默认图"]];
+            self.headview.headimg.frame =CGRectMake(14*WIDTH_SCALE, 30*HEIGHT_SCALE+textSize.height*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 200*HEIGHT_SCALE);
+            self.headview.title.frame = CGRectMake(14*WIDTH_SCALE,  30*HEIGHT_SCALE+textSize.height*HEIGHT_SCALE+14*HEIGHT_SCALE+200*HEIGHT_SCALE+4*HEIGHT_SCALE+14*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 20*HEIGHT_SCALE);
+            self.headview.timelab.frame = CGRectMake(14*WIDTH_SCALE, 30*HEIGHT_SCALE+textSize.height*HEIGHT_SCALE+14*HEIGHT_SCALE+200*HEIGHT_SCALE+4*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE, 100*WIDTH_SCALE, 12*HEIGHT_SCALE);
+            [self.headview.combtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.right.equalTo(self.headview).with.offset(-70*WIDTH_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
+            }];
+            [self.headview.dianzanbtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.right.equalTo(self.headview).with.offset(-140*WIDTH_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
+            }];
+            
+            [self.headview.sharebtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
+            }];
+            _headview.frame = CGRectMake(0, 0, DEVICE_WIDTH, textSize.height+400*HEIGHT_SCALE+textsize2.height);
+        }
+        else if (content.length==0&&urlstr.length!=0)
+        {
+            CGSize textsize2= [self.headview.thumlabel.text boundingRectWithSize:CGSizeMake(DEVICE_WIDTH-28*WIDTH_SCALE, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil].size;
+            [self.headview.headimg sd_setImageWithURL:[NSURL URLWithString:self.headm.imgurlstr] placeholderImage:[UIImage imageNamed:@"默认图"]];
+            self.headview.headimg.frame =CGRectMake(14*WIDTH_SCALE, 30*HEIGHT_SCALE+14*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 200*HEIGHT_SCALE);
+            self.headview.title.frame = CGRectMake(14*WIDTH_SCALE,  30*HEIGHT_SCALE+200*HEIGHT_SCALE+4*HEIGHT_SCALE+14*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 20*HEIGHT_SCALE);
+            self.headview.timelab.frame = CGRectMake(14*WIDTH_SCALE, 30*HEIGHT_SCALE+200*HEIGHT_SCALE+4*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE, 100*WIDTH_SCALE, 12*HEIGHT_SCALE);
+            [self.headview.combtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.right.equalTo(self.headview).with.offset(-70*WIDTH_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
+            }];
+            [self.headview.dianzanbtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.right.equalTo(self.headview).with.offset(-140*WIDTH_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
+            }];
+            [self.headview.thumlabel mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(self.headview).with.offset(14*WIDTH_SCALE);
+                make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
+                make.top.equalTo(self.headview.timelab).with.offset(33*HEIGHT_SCALE);
+                
+            }];
+            [self.headview.sharebtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
+            }];
+            _headview.frame = CGRectMake(0, 0, DEVICE_WIDTH, 400*HEIGHT_SCALE+textsize2.height);
+        }else
+        {
+            CGSize textSize = [self.headview.contentlab setText:self.headview.contentlab.text lines:QSTextDefaultLines andLineSpacing:QSTextLineSpacing constrainedToSize:CGSizeMake(DEVICE_WIDTH - 28*WIDTH_SCALE,MAXFLOAT)];
+            CGSize textsize2= [self.headview.thumlabel.text boundingRectWithSize:CGSizeMake(DEVICE_WIDTH-28*WIDTH_SCALE, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil].size;
+            self.headview.contentlab.frame = CGRectMake(14*WIDTH_SCALE,  30*HEIGHT_SCALE+14*HEIGHT_SCALE, textSize.width, textSize.height);
+            self.headview.title.frame = CGRectMake(14*WIDTH_SCALE,  30*HEIGHT_SCALE+textSize.height*HEIGHT_SCALE+4*HEIGHT_SCALE+14*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 20*HEIGHT_SCALE);
+            self.headview.timelab.frame = CGRectMake(14*WIDTH_SCALE, 30*HEIGHT_SCALE+textSize.height*HEIGHT_SCALE+4*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE, 100*WIDTH_SCALE, 12*HEIGHT_SCALE);
+            [self.headview.combtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.right.equalTo(self.headview).with.offset(-70*WIDTH_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
+            }];
+            [self.headview.dianzanbtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.right.equalTo(self.headview).with.offset(-140*WIDTH_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
+            }];
+            [self.headview.thumlabel mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(self.headview).with.offset(14*WIDTH_SCALE);
+                make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
+                make.top.equalTo(self.headview.timelab).with.offset(33*HEIGHT_SCALE);
+                
+            }];
+            [self.headview.sharebtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
+            }];
+            _headview.frame = CGRectMake(0, 0, DEVICE_WIDTH, textSize.height+200*HEIGHT_SCALE+textsize2.height);
+        }
+
     }
+    
 }
 
-
-#pragma mark - 加载失败
-
-//- (UIImage *)imageForEmptyDataSet:(UIScrollView *)scrollView {
-//    return [UIImage imageNamed:@"加载失败"];
-//}
 @end

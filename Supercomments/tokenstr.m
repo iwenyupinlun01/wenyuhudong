@@ -26,4 +26,11 @@
     return tokenstr;
 }
 
++(NSString *)nicknamestrfrom
+{
+    NSString *nicknamestr = [[NSString alloc] init];
+    
+    return nicknamestr;
+}
+
 @end

@@ -12,84 +12,7 @@
 //时间计算
 +(NSString *)datetime:(NSString *)datestr
 {
-//    NSTimeInterval time=[datestr doubleValue]+28800;//因为时差问题要加8小时 == 28800 sec
-//    NSDate *detaildate=[NSDate dateWithTimeIntervalSince1970:time];
-//    NSLog(@"date:%@",[detaildate description]);
-//    //实例化一个NSDateFormatter对象
-//    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-//    //设定时间格式,这里可以设置成自己需要的格式
-//    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-//    
-//    //NSString *currentDateStr = [dateFormatter stringFromDate: detaildate];
-//    NSDate *date = [NSDate date];
-//    //计算时间间隔（单位是秒）
-//    NSTimeInterval time2 = [date timeIntervalSinceDate:detaildate];
-//    //计算天数、时、分、秒
-//    
-//    int days = ((int)time2)/(3600*24);
-//    int hours = ((int)time2)%(3600*24)/3600;
-//    int minutes = ((int)time2)%(3600*24)%3600/60;
-//    int seconds = ((int)time2)%(3600*24)%3600%60;
-//    
-//    NSString *dateContent = [[NSString alloc] initWithFormat:@"过去%i天%i小时%i分%i秒",days,hours,minutes,seconds];
-//    NSLog(@"datacunt=====%@",dateContent);
-//    
-//    NSString *fanhuistr = [[NSString alloc] init];
-//    if (days>=365) {
-//        //实例化一个NSDateFormatter对象
-//        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-//        //设定时间格式,这里可以设置成自己需要的格式
-//        [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-//        //用[NSDate date]可以获取系统当前时间
-//        NSString *currentDateStr = [dateFormatter stringFromDate:detaildate];
-//        //输出格式为：2010-10-27 10:22:13
-//        NSLog(@"%@",currentDateStr);
-//        fanhuistr = currentDateStr;
-//    }
-//    else if(hours>=72&&hours<365)
-//    {
-//        //M月M日
-//        //实例化一个NSDateFormatter对象
-//        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-//        //设定时间格式,这里可以设置成自己需要的格式
-//        [dateFormatter setDateFormat:@"MM-dd HH:mm:ss"];
-//        //用[NSDate date]可以获取系统当前时间
-//        NSString *currentDateStr = [dateFormatter stringFromDate:detaildate];
-//        //输出格式为：2010-10-27 10:22:13
-//        NSLog(@"%@",currentDateStr);
-//        fanhuistr = currentDateStr;
-//    }else if (hours<72&&hours>=48)
-//    {
-//        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-//        //设定时间格式,这里可以设置成自己需要的格式
-//        [dateFormatter setDateFormat:@"HH:mm"];
-//        //用[NSDate date]可以获取系统当前时间
-//        NSString *currentDateStr = [dateFormatter stringFromDate:detaildate];
-//        //输出格式为：2010-10-27 10:22:13
-//        NSLog(@"%@",currentDateStr);
-//        
-//        fanhuistr = [NSString stringWithFormat:@"%@%@",@"前天",@"currentDateStr"];
-//        
-//    }else if (hours<48&&hours>=24)
-//    {
-//        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-//        //设定时间格式,这里可以设置成自己需要的格式
-//        [dateFormatter setDateFormat:@"HH:mm"];
-//        //用[NSDate date]可以获取系统当前时间
-//        NSString *currentDateStr = [dateFormatter stringFromDate:detaildate];
-//        //输出格式为：2010-10-27 10:22:13
-//        NSLog(@"%@",currentDateStr);
-//        
-//        fanhuistr = [NSString stringWithFormat:@"%@%@",@"昨天",@"currentDateStr"];
-//    }else if (hours<24&&hours>=1)
-//    {
-//        fanhuistr = [NSString stringWithFormat:@"%d%@%@",hours,@"小时",@"前"];
-//    }else if(hours<1)
-//    {
-//        fanhuistr = [NSString stringWithFormat:@"%d%@%@",minutes,@"分钟",@"前"];
-//    }
-//    
-//    return fanhuistr;
+
     NSString*  format = @"YYYY-MM-dd HH:mm:ss";
     NSInteger timeinter = [datestr intValue];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -167,88 +90,12 @@
 
 }
 
-+(NSString *)timedatastr:(NSString *)timestr
-{
-    NSString*  format = @"YYYY-MM-dd HH:mm:ss";
-    NSInteger timeinter = [timestr intValue];
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateStyle:NSDateFormatterMediumStyle];
-    [formatter setTimeStyle:NSDateFormatterShortStyle];
-    [formatter setDateFormat:format]; // （@"YYYY-MM-dd hh:mm:ss"）----------设置你想要的格式,hh与HH的区别:分别表示12小时制,24小时制
-    NSTimeZone *timeZone = [NSTimeZone timeZoneWithName:@"Asia/Beijing"];
-    [formatter setTimeZone:timeZone];
-    NSDate *confromTimesp = [NSDate dateWithTimeIntervalSince1970:timeinter];
-    NSLog(@"1296035591  = %@",confromTimesp);
-    NSString *confromTimespStr = [formatter stringFromDate:confromTimesp];
-    NSString *modeltimestr = confromTimespStr;
-    //首先创建格式化对象
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-    //然后创建日期对象
-    NSDate *date1 = [dateFormatter dateFromString:modeltimestr];
-    NSDate *date = [NSDate date];
-    //计算时间间隔（单位是秒）
-    NSTimeInterval time = [date1 timeIntervalSinceDate:date];
-    //计算天数、时、分、秒
-    int days = ((int)time)/(3600*24);
-    int hours = ((int)time)%(3600*24)/3600;
-    int minutes = ((int)time)%(3600*24)%3600/60;
-    int seconds = ((int)time)%(3600*24)%3600%60;
-    NSString *dateContent = [[NSString alloc] initWithFormat:@"仅剩%i天%i小时%i分%i秒",days,hours,minutes,seconds];
-    NSLog(@"datecontent-------%@",dateContent);
-    NSString *fanhuistr = [[NSString alloc] init];
-    if (days>=365) {
-        fanhuistr = modeltimestr;
-    }
-    else if(hours>=72&&hours<365)
-    {
-        //M月M日
-        //实例化一个NSDateFormatter对象
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        //设定时间格式,这里可以设置成自己需要的格式
-        [dateFormatter setDateFormat:@"MM-dd HH:mm:ss"];
-        //用[NSDate date]可以获取系统当前时间
-        NSString *currentDateStr = [dateFormatter stringFromDate:date1];
-        fanhuistr = currentDateStr;
-    }else if (hours<72&&hours>=48)
-    {
-        //前天
-        //实例化一个NSDateFormatter对象
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        //设定时间格式,这里可以设置成自己需要的格式
-         [dateFormatter setDateFormat:@"HH:mm"];
-        //用[NSDate date]可以获取系统当前时间
-        NSString *currentDateStr = [dateFormatter stringFromDate:date1];
-        fanhuistr = [NSString stringWithFormat:@"%@%@",@"前天",currentDateStr];
-        
-    }else if (hours<48&&hours>=24)
-    {
-        //前天
-        //实例化一个NSDateFormatter对象
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        //设定时间格式,这里可以设置成自己需要的格式
-        [dateFormatter setDateFormat:@"HH:mm"];
-        //用[NSDate date]可以获取系统当前时间
-        NSString *currentDateStr = [dateFormatter stringFromDate:date1];
-        fanhuistr = [NSString stringWithFormat:@"%@%@",@"昨天",currentDateStr];
-    }else if (hours<24&&hours>=1)
-    {
-        
-        fanhuistr = [NSString stringWithFormat:@"%d%@%@",hours,@"小时",@"前"];
-    }else if(hours<1)
-    {
-        fanhuistr = [NSString stringWithFormat:@"%d%@%@",minutes,@"分钟",@"前"];
-    }else
-    {
-        fanhuistr = @"刚刚";
-    }
-    return fanhuistr;
-}
+
 //获取当前系统时间的时间戳
 
 #pragma mark - 获取当前时间的 时间戳
 
--(NSInteger )getNowTimestamp{
++(NSString* )getNowTimestamp{
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
 
@@ -280,9 +127,9 @@
     
     NSLog(@"设备当前的时间戳:%ld",(long)timeSp); //时间戳的值
     
-   // NSString *timespstr = [NSString stringWithFormat:@"%ld",(long)timeSp];
+    NSString *timespstr = [NSString stringWithFormat:@"%ld",(long)timeSp];
     
-    return timeSp;
+    return timespstr;
     
 }
 

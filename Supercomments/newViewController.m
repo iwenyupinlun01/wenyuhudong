@@ -159,7 +159,7 @@ static NSString *newidentfid = @"newidentfid";
 {
     [super viewWillAppear:animated];
     self.newtable.frame = CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT-64);
-    
+    //[self headerRefreshEndAction];
 }
 
 #pragma mark - getters
@@ -213,13 +213,14 @@ static NSString *newidentfid = @"newidentfid";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     newCell *cell = [tableView dequeueReusableCellWithIdentifier:newidentfid];
-    if (!cell) {
+//    if (!cell) {
         cell = [[newCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:newidentfid];
-    }
+//    }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.delegate = self;
+    
     [cell setcelldata:self.dataarr[indexPath.row]];
-    self.nmodel = self.dataarr[indexPath.row];
+    //self.nmodel = self.dataarr[indexPath.row];
     return cell;
 }
 

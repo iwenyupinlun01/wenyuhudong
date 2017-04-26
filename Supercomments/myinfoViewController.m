@@ -253,27 +253,24 @@ static NSString *myinfoidentfid1 = @"myidentfid1";
 
 - (void)upLoadImage:(UIImage*)myImage
 {
-    NSString *tokenstr = [[NSString alloc] init];
-    NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
-    NSString *token = [userdefat objectForKey:@"tokenuser"];
-    if (token.length==0) {
-        tokenstr = @"";
-    }
-    else
-    {
-        tokenstr = token;
-    }
-    NSLog(@"token--------%@",tokenstr);
+    
     NSData *data=UIImageJPEGRepresentation(myImage, 0.01);
     
     
+//    @property (nonatomic, strong) UIImage *image;
+//    @property (nonatomic, strong) NSString *field;
+//    
+//    @property (nonatomic, strong) NSString *imageName; /
     
-    [AFManager upLoadpath:[NSString stringWithFormat:touxiang,tokenstr] reqBody:nil file:data fileName:@"file" fileType:@"image/jpg" block:^(id infor) {
-        NSLog(@"infor-----%@",infor);
-        
-    } errorBlock:^(NSError *error) {
-        
-    }];
+//    NSDictionary *dic = @{@"image":myImage,@"field":@"",@"imageNage":@"infoimg"};
+    
+    
+//    [AFManager upLoadpath:[NSString stringWithFormat:touxiang,[tokenstr tokenstrfrom]] reqBody:nil file:data fileName:@"file" fileType:@"image/jpg" block:^(id infor) {
+//        NSLog(@"infor-----%@",infor);
+//        
+//    } errorBlock:^(NSError *error) {
+//        
+//    }];
 }
 
 

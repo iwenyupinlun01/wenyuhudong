@@ -162,8 +162,8 @@ static NSString *hotidentfid = @"hotidentfid";
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+   // [self headerRefreshEndAction];
     self.hottable.frame = CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT-64);
-    
 }
 
 #pragma mark - getters
@@ -386,7 +386,5 @@ static NSString *hotidentfid = @"hotidentfid";
     NSLog(@"重新加载");
     [self addHeader];
 }
-
-
 
 @end

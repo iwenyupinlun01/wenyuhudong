@@ -51,7 +51,7 @@
 {
     self.detalmodel = model;
     self.namelab.text = model.namestr;
-    //self.timelab.text = model.timestr;
+
     self.timelab.text = [Timestr datetime:model.timestr];
     self.contentlab.text = model.contstr;
     
