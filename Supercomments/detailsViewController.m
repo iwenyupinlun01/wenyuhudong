@@ -10,10 +10,6 @@
 #import "detaolsCell.h"
 #import "detailsheadView.h"
 
-
-#include "YMTextData.h"
-#import "YMReplyInputView.h"
-
 #import "headModel.h"
 #import "pinglunCell.h"
 #import "detailcellmodel.h"
@@ -21,7 +17,6 @@
 #import "sectionView.h"
 #import "SureWebViewController.h"
 #import "loginViewController.h"
-#import "YcKeyBoardView.h"
 #import "Timestr.h"
 #import "keyboardView.h"
 #import <DZNEmptyDataSet/UIScrollView+EmptyDataSet.h>
@@ -31,12 +26,10 @@
 {
     int pn;
 }
-
 @property (nonatomic,assign) CGFloat height01;
 @property (nonatomic,assign) CGFloat pinglunhei;
 @property (nonatomic,strong) NSIndexPath *selectedIndexPath;
 @property (nonatomic,strong) detailsheadView *headview;
-@property (nonatomic,strong) YMReplyInputView *replyView;
 @property (nonatomic,strong) headModel *headm;
 @property (nonatomic,strong) UITableView *maintable;
 @property (nonatomic,strong) NSMutableArray *detalisarr;
