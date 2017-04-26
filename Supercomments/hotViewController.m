@@ -9,7 +9,6 @@
 #import "hotViewController.h"
 #import "newCell.h"
 #import "detailsViewController.h"
-#import "SQTopicTableViewController.h"
 #import "XWScanImage.h"
 #import "newModel.h"
 #import "YYPhotoGroupView.h"
@@ -21,6 +20,7 @@
 {
     int pn;
 }
+
 @property (nonatomic,strong) UITableView *hottable;
 @property (nonatomic,strong) UIImageView *demoimg;
 @property (nonatomic,strong) NSMutableArray *dataSource;

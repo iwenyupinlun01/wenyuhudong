@@ -8,15 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		53314A4B1EA1DE35009773F0 /* YYPhotoGroupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 53314A4A1EA1DE35009773F0 /* YYPhotoGroupView.m */; };
-		5337FEE61E9DF268004664D7 /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5337FEE51E9DF268004664D7 /* TTTAttributedLabel.m */; };
-		5337FEFB1E9DF29A004664D7 /* SQTopicTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5337FEE91E9DF29A004664D7 /* SQTopicTableViewController.m */; };
-		5337FEFC1E9DF29A004664D7 /* SQUserCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5337FEEB1E9DF29A004664D7 /* SQUserCenterViewController.m */; };
-		5337FEFD1E9DF29A004664D7 /* SQCommentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5337FEEE1E9DF29A004664D7 /* SQCommentModel.m */; };
-		5337FEFE1E9DF29A004664D7 /* SQTopicModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5337FEF01E9DF29A004664D7 /* SQTopicModel.m */; };
-		5337FEFF1E9DF29A004664D7 /* SQCommentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5337FEF31E9DF29A004664D7 /* SQCommentTableViewCell.m */; };
-		5337FF001E9DF29A004664D7 /* SQTopicTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5337FEF51E9DF29A004664D7 /* SQTopicTableViewCell.m */; };
-		5337FF011E9DF29A004664D7 /* SQCommentCellViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5337FEF81E9DF29A004664D7 /* SQCommentCellViewModel.m */; };
-		5337FF021E9DF29A004664D7 /* SQTopicCellViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5337FEFA1E9DF29A004664D7 /* SQTopicCellViewModel.m */; };
 		53619E431E95EEDB007CC7AC /* headView.m in Sources */ = {isa = PBXBuildFile; fileRef = 53619E421E95EEDB007CC7AC /* headView.m */; };
 		53619E521E960164007CC7AC /* messageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 53619E511E960164007CC7AC /* messageViewController.m */; };
 		53619E551E9601A5007CC7AC /* feedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 53619E541E9601A5007CC7AC /* feedbackViewController.m */; };
@@ -124,24 +115,6 @@
 		199683D136C99C557085109D /* Pods-Supercomments.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Supercomments.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Supercomments/Pods-Supercomments.debug.xcconfig"; sourceTree = "<group>"; };
 		53314A491EA1DE35009773F0 /* YYPhotoGroupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYPhotoGroupView.h; sourceTree = "<group>"; };
 		53314A4A1EA1DE35009773F0 /* YYPhotoGroupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYPhotoGroupView.m; sourceTree = "<group>"; };
-		5337FEE41E9DF268004664D7 /* TTTAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTAttributedLabel.h; sourceTree = "<group>"; };
-		5337FEE51E9DF268004664D7 /* TTTAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTAttributedLabel.m; sourceTree = "<group>"; };
-		5337FEE81E9DF29A004664D7 /* SQTopicTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQTopicTableViewController.h; sourceTree = "<group>"; };
-		5337FEE91E9DF29A004664D7 /* SQTopicTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQTopicTableViewController.m; sourceTree = "<group>"; };
-		5337FEEA1E9DF29A004664D7 /* SQUserCenterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQUserCenterViewController.h; sourceTree = "<group>"; };
-		5337FEEB1E9DF29A004664D7 /* SQUserCenterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQUserCenterViewController.m; sourceTree = "<group>"; };
-		5337FEED1E9DF29A004664D7 /* SQCommentModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQCommentModel.h; sourceTree = "<group>"; };
-		5337FEEE1E9DF29A004664D7 /* SQCommentModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQCommentModel.m; sourceTree = "<group>"; };
-		5337FEEF1E9DF29A004664D7 /* SQTopicModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQTopicModel.h; sourceTree = "<group>"; };
-		5337FEF01E9DF29A004664D7 /* SQTopicModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQTopicModel.m; sourceTree = "<group>"; };
-		5337FEF21E9DF29A004664D7 /* SQCommentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQCommentTableViewCell.h; sourceTree = "<group>"; };
-		5337FEF31E9DF29A004664D7 /* SQCommentTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQCommentTableViewCell.m; sourceTree = "<group>"; };
-		5337FEF41E9DF29A004664D7 /* SQTopicTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQTopicTableViewCell.h; sourceTree = "<group>"; };
-		5337FEF51E9DF29A004664D7 /* SQTopicTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQTopicTableViewCell.m; sourceTree = "<group>"; };
-		5337FEF71E9DF29A004664D7 /* SQCommentCellViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQCommentCellViewModel.h; sourceTree = "<group>"; };
-		5337FEF81E9DF29A004664D7 /* SQCommentCellViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQCommentCellViewModel.m; sourceTree = "<group>"; };
-		5337FEF91E9DF29A004664D7 /* SQTopicCellViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQTopicCellViewModel.h; sourceTree = "<group>"; };
-		5337FEFA1E9DF29A004664D7 /* SQTopicCellViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQTopicCellViewModel.m; sourceTree = "<group>"; };
 		53619E411E95EEDB007CC7AC /* headView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = headView.h; sourceTree = "<group>"; };
 		53619E421E95EEDB007CC7AC /* headView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = headView.m; sourceTree = "<group>"; };
 		53619E501E960164007CC7AC /* messageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = messageViewController.h; sourceTree = "<group>"; };
@@ -376,59 +349,6 @@
 			name = utlis;
 			sourceTree = "<group>";
 		};
-		5337FEE31E9DF268004664D7 /* TTTAttributedLabel */ = {
-			isa = PBXGroup;
-			children = (
-				5337FEE41E9DF268004664D7 /* TTTAttributedLabel.h */,
-				5337FEE51E9DF268004664D7 /* TTTAttributedLabel.m */,
-			);
-			path = TTTAttributedLabel;
-			sourceTree = "<group>";
-		};
-		5337FEE71E9DF29A004664D7 /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-				5337FEE81E9DF29A004664D7 /* SQTopicTableViewController.h */,
-				5337FEE91E9DF29A004664D7 /* SQTopicTableViewController.m */,
-				5337FEEA1E9DF29A004664D7 /* SQUserCenterViewController.h */,
-				5337FEEB1E9DF29A004664D7 /* SQUserCenterViewController.m */,
-			);
-			path = Controller;
-			sourceTree = "<group>";
-		};
-		5337FEEC1E9DF29A004664D7 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				5337FEED1E9DF29A004664D7 /* SQCommentModel.h */,
-				5337FEEE1E9DF29A004664D7 /* SQCommentModel.m */,
-				5337FEEF1E9DF29A004664D7 /* SQTopicModel.h */,
-				5337FEF01E9DF29A004664D7 /* SQTopicModel.m */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		5337FEF11E9DF29A004664D7 /* View */ = {
-			isa = PBXGroup;
-			children = (
-				5337FEF21E9DF29A004664D7 /* SQCommentTableViewCell.h */,
-				5337FEF31E9DF29A004664D7 /* SQCommentTableViewCell.m */,
-				5337FEF41E9DF29A004664D7 /* SQTopicTableViewCell.h */,
-				5337FEF51E9DF29A004664D7 /* SQTopicTableViewCell.m */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		5337FEF61E9DF29A004664D7 /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				5337FEF71E9DF29A004664D7 /* SQCommentCellViewModel.h */,
-				5337FEF81E9DF29A004664D7 /* SQCommentCellViewModel.m */,
-				5337FEF91E9DF29A004664D7 /* SQTopicCellViewModel.h */,
-				5337FEFA1E9DF29A004664D7 /* SQTopicCellViewModel.m */,
-			);
-			path = ViewModel;
-			sourceTree = "<group>";
-		};
 		53619E441E96003F007CC7AC /* 消息通知 */ = {
 			isa = PBXGroup;
 			children = (
@@ -598,11 +518,6 @@
 		53619ED81E98D252007CC7AC /* 详情 */ = {
 			isa = PBXGroup;
 			children = (
-				5337FEE71E9DF29A004664D7 /* Controller */,
-				5337FEEC1E9DF29A004664D7 /* Model */,
-				5337FEF11E9DF29A004664D7 /* View */,
-				5337FEF61E9DF29A004664D7 /* ViewModel */,
-				5337FEE31E9DF268004664D7 /* TTTAttributedLabel */,
 				53619EDB1E98D25C007CC7AC /* model */,
 				53619EDA1E98D25C007CC7AC /* view */,
 				53619ED91E98D25B007CC7AC /* controller */,
@@ -1293,7 +1208,6 @@
 				53619EC51E9778E9007CC7AC /* newCell.m in Sources */,
 				53619EA61E963508007CC7AC /* nicknameViewController.m in Sources */,
 				53AEBE551E94C9FF00280F70 /* LGSegment.m in Sources */,
-				5337FEFF1E9DF29A004664D7 /* SQCommentTableViewCell.m in Sources */,
 				538D53DE1EAF14BB00E2DCAF /* CLImageModel.m in Sources */,
 				53AEBE521E9496FF00280F70 /* homeViewController.m in Sources */,
 				53619EE11E98D8DA007CC7AC /* detaolsCell.m in Sources */,
@@ -1318,19 +1232,15 @@
 				53619EC01E976EBB007CC7AC /* UIColor+BgColor.m in Sources */,
 				53AEBE1F1E948A2500280F70 /* AppDelegate.m in Sources */,
 				53314A4B1EA1DE35009773F0 /* YYPhotoGroupView.m in Sources */,
-				5337FF011E9DF29A004664D7 /* SQCommentCellViewModel.m in Sources */,
-				5337FF001E9DF29A004664D7 /* SQTopicTableViewCell.m in Sources */,
 				53AEBE671E94D8A100280F70 /* newViewController.m in Sources */,
 				539550E61EA0C638001A268C /* navViewController.m in Sources */,
 				53619E6B1E962093007CC7AC /* setCell.m in Sources */,
 				53AEBE461E94910700280F70 /* MLMSegmentManager.m in Sources */,
-				5337FEFE1E9DF29A004664D7 /* SQTopicModel.m in Sources */,
 				53619EC81E988649007CC7AC /* zanBtn.m in Sources */,
 				53AEBE6A1E94D96A00280F70 /* hotViewController.m in Sources */,
 				53619E5F1E96055E007CC7AC /* myinfoViewController.m in Sources */,
 				53AEBE6F1E94F80400280F70 /* loginViewController.m in Sources */,
 				53E587841EA7651D004CB302 /* detailcellmodel.m in Sources */,
-				5337FEE61E9DF268004664D7 /* TTTAttributedLabel.m in Sources */,
 				53AEBE491E94910700280F70 /* UIView+ViewController.m in Sources */,
 				53AEBE451E94910700280F70 /* MLMSegmentHead.m in Sources */,
 				53E2944C1E9F72930034D4E7 /* XWScanImage.m in Sources */,
@@ -1340,11 +1250,9 @@
 				53619EA01E9634AE007CC7AC /* SZKCleanCache.m in Sources */,
 				53619EB21E964A45007CC7AC /* systemCell.m in Sources */,
 				53AEBE381E948D6500280F70 /* UIColor+WJColor.m in Sources */,
-				5337FEFC1E9DF29A004664D7 /* SQUserCenterViewController.m in Sources */,
 				53AEBE471E94910700280F70 /* MLMSegmentScroll.m in Sources */,
 				53619E581E9601B1007CC7AC /* setViewController.m in Sources */,
 				539550E01EA0B508001A268C /* newModel.m in Sources */,
-				5337FF021E9DF29A004664D7 /* SQTopicCellViewModel.m in Sources */,
 				53619EBB1E9765D3007CC7AC /* replyModel.m in Sources */,
 				53EC944A1E9DC1C400E03E07 /* hDisplayView.m in Sources */,
 				53619EB51E964A52007CC7AC /* replyCell.m in Sources */,
@@ -1355,11 +1263,9 @@
 				53619E621E9611F4007CC7AC /* myinfoCell0.m in Sources */,
 				53619E551E9601A5007CC7AC /* feedbackViewController.m in Sources */,
 				53619E431E95EEDB007CC7AC /* headView.m in Sources */,
-				5337FEFB1E9DF29A004664D7 /* SQTopicTableViewController.m in Sources */,
 				53619EAF1E964943007CC7AC /* replyViewController.m in Sources */,
 				53AEBE481E94910700280F70 /* UIView+EasyFrame.m in Sources */,
 				53AEBE1C1E948A2500280F70 /* main.m in Sources */,
-				5337FEFD1E9DF29A004664D7 /* SQCommentModel.m in Sources */,
 				53F9CB841E9B7F1A00C1F3A7 /* thumbView.m in Sources */,
 				539550EA1EA0D9A1001A268C /* AFManager.m in Sources */,
 				53A8B25B1E9CE40400F6CBD5 /* agreementView.m in Sources */,

@@ -9,7 +9,6 @@
 #import "newViewController.h"
 #import "newCell.h"
 #import "detailsViewController.h"
-#import "SQTopicTableViewController.h"
 #import "XWScanImage.h"
 #import "newModel.h"
 #import "YYPhotoGroupView.h"
