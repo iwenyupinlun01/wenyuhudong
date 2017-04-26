@@ -94,6 +94,7 @@
 		53E412F01EAA1C8E00EBC0CE /* xitongModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 53E412EF1EAA1C8E00EBC0CE /* xitongModel.m */; };
 		53E587841EA7651D004CB302 /* detailcellmodel.m in Sources */ = {isa = PBXBuildFile; fileRef = 53E587831EA7651D004CB302 /* detailcellmodel.m */; };
 		53E587871EA7672A004CB302 /* pinglunCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 53E587861EA7672A004CB302 /* pinglunCell.m */; };
+		53E5C0711EB08182008B1F22 /* xieyiScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 53E5C0701EB08182008B1F22 /* xieyiScrollView.m */; };
 		53E863C51EAD8E84001F6FD8 /* YcKeyBoardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 53E863C41EAD8E84001F6FD8 /* YcKeyBoardView.m */; };
 		53E863C71EAD8EDA001F6FD8 /* chat_bottom_textfield.png in Resources */ = {isa = PBXBuildFile; fileRef = 53E863C61EAD8EDA001F6FD8 /* chat_bottom_textfield.png */; };
 		53E863CA1EAD99B0001F6FD8 /* keyboardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 53E863C91EAD99B0001F6FD8 /* keyboardView.m */; };
@@ -312,6 +313,8 @@
 		53E587831EA7651D004CB302 /* detailcellmodel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = detailcellmodel.m; sourceTree = "<group>"; };
 		53E587851EA7672A004CB302 /* pinglunCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pinglunCell.h; sourceTree = "<group>"; };
 		53E587861EA7672A004CB302 /* pinglunCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = pinglunCell.m; sourceTree = "<group>"; };
+		53E5C06F1EB08182008B1F22 /* xieyiScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xieyiScrollView.h; sourceTree = "<group>"; };
+		53E5C0701EB08182008B1F22 /* xieyiScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = xieyiScrollView.m; sourceTree = "<group>"; };
 		53E863C31EAD8E84001F6FD8 /* YcKeyBoardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YcKeyBoardView.h; sourceTree = "<group>"; };
 		53E863C41EAD8E84001F6FD8 /* YcKeyBoardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YcKeyBoardView.m; sourceTree = "<group>"; };
 		53E863C61EAD8EDA001F6FD8 /* chat_bottom_textfield.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chat_bottom_textfield.png; sourceTree = "<group>"; };
@@ -770,6 +773,8 @@
 				53A8B25A1E9CE40400F6CBD5 /* agreementView.m */,
 				53EC94481E9DC1C400E03E07 /* hDisplayView.h */,
 				53EC94491E9DC1C400E03E07 /* hDisplayView.m */,
+				53E5C06F1EB08182008B1F22 /* xieyiScrollView.h */,
+				53E5C0701EB08182008B1F22 /* xieyiScrollView.m */,
 			);
 			name = view;
 			sourceTree = "<group>";
@@ -1364,6 +1369,7 @@
 				53619EE11E98D8DA007CC7AC /* detaolsCell.m in Sources */,
 				53AEBE221E948A2500280F70 /* ViewController.m in Sources */,
 				53619E681E961CD2007CC7AC /* WJGtextView.m in Sources */,
+				53E5C0711EB08182008B1F22 /* xieyiScrollView.m in Sources */,
 				53FE161C1E9C89D000585111 /* sectionView.m in Sources */,
 				538D53DD1EAF14BB00E2DCAF /* CLNetworkingManager.m in Sources */,
 				53619E651E961201007CC7AC /* myinfoCell1.m in Sources */,
