@@ -253,10 +253,10 @@ static NSString *newidentfid = @"newidentfid";
     
     NSString *dianzanstr = self.nmodel.sifoudianzanstr;
     NSLog(@"dianzanstr--------%@",dianzanstr);
+    
     if ([dianzanstr isEqualToString:@"0"]) {
-
+        
         if ([tokenstr tokenstrfrom].length==0) {
-            
             loginViewController *loginvc = [[loginViewController alloc] init];
             loginvc.jinru = @"jinru";
             [self presentViewController:loginvc animated:YES completion:nil];
@@ -264,13 +264,22 @@ static NSString *newidentfid = @"newidentfid";
         }
         else
         {
-            NSDictionary *reqdic = @{@"token":[tokenstr tokenstrfrom],@"object_id":self.nmodel.newidstr,@"status":dianzanstr,@"type":@"1"};
-            [AFManager postReqURL:dianzanstr reqBody:reqdic block:^(id infor) {
+            //点赞
+            self.nmodel.sifoudianzanstr = @"1";
+            NSDictionary *reqdic = @{@"token":[tokenstr tokenstrfrom],@"object_id":self.nmodel.newidstr,@"status":self.nmodel.sifoudianzanstr,@"type":@"0"};
+            
+            [AFManager postReqURL:qudianzan reqBody:reqdic block:^(id infor) {
                 NSLog(@"infor-------%@",infor);
                 NSString *code = [infor objectForKey:@"code"];
                 if ([code intValue]==1) {
-                    [MBProgressHUD showSuccess:@"成功"];
+                    [MBProgressHUD showSuccess:@"点赞"];
                     NSLog(@"成功");
+                    self.nmodel = [[newModel alloc] init];
+                    self.nmodel = self.dataarr[index.row];
+                    
+                    NSDictionary *dic = [infor objectForKey:@"info"];
+                    self.nmodel.dianzanstr = [dic objectForKey:@"spportNum"];
+                    [self.newtable reloadData];
                 }
                 else if ([code intValue]==0)
                 {
@@ -293,7 +302,7 @@ static NSString *newidentfid = @"newidentfid";
                 }
 
             }];
-            self.nmodel.sifoudianzanstr = @"1";
+
             [self.newtable reloadData];
         }
         
@@ -308,13 +317,21 @@ static NSString *newidentfid = @"newidentfid";
         }
         else
         {
-            NSDictionary *reqdic = @{@"token":[tokenstr tokenstrfrom],@"object_id":self.nmodel.newidstr,@"status":dianzanstr,@"type":@"1"};
-            [AFManager postReqURL:dianzanstr reqBody:reqdic block:^(id infor) {
+            //取消点赞
+            self.nmodel.sifoudianzanstr = @"0";
+            NSDictionary *reqdic = @{@"token":[tokenstr tokenstrfrom],@"object_id":self.nmodel.newidstr,@"status":self.nmodel.sifoudianzanstr,@"type":@"0"};
+            [AFManager postReqURL:qudianzan reqBody:reqdic block:^(id infor) {
                 NSLog(@"infor-------%@",infor);
                 NSString *code = [infor objectForKey:@"code"];
                 if ([code intValue]==1) {
-                    [MBProgressHUD showSuccess:@"成功"];
+                    [MBProgressHUD showSuccess:@"取消点赞"];
                     NSLog(@"成功");
+                    
+                    self.nmodel = [[newModel alloc] init];
+                    self.nmodel = self.dataarr[index.row];
+                    NSDictionary *dic = [infor objectForKey:@"info"];
+                    self.nmodel.dianzanstr = [dic objectForKey:@"spportNum"];
+                    [self.newtable reloadData];
                 }
                 else if ([code intValue]==0)
                 {
@@ -336,7 +353,7 @@ static NSString *newidentfid = @"newidentfid";
                     NSLog(@"系统繁忙，请稍后再试");
                 }
             }];
-            self.nmodel.sifoudianzanstr = @"0";
+        
             [self.newtable reloadData];
         }
     }
@@ -379,9 +396,29 @@ static NSString *newidentfid = @"newidentfid";
     return [UIImage imageNamed:@"加载失败"];
 }
 
+
+- (UIImage *)buttonImageForEmptyDataSet:(UIScrollView *)scrollView forState:(UIControlState)state{
+    return [UIImage imageNamed:@"矩形-1"];
+}
+
+
+- (NSAttributedString *)buttonTitleForEmptyDataSet:(UIScrollView *)scrollView forState:(UIControlState)state{
+    NSDictionary *attributes = @{NSFontAttributeName: [UIFont boldSystemFontOfSize:17.0f]};
+    return [[NSAttributedString alloc] initWithString:@"重新加载" attributes:attributes];
+    
+}
+
+
+
 - (void)emptyDataSet:(UIScrollView *)scrollView didTapView:(UIView *)view;
 {
     NSLog(@"重新加载");
     [self addHeader];
 }
+
+- (void)emptyDataSetDidTapButton:(UIScrollView *)scrollView{
+    // Do something
+    
+}
+    
 @end

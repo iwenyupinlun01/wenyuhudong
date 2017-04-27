@@ -168,6 +168,8 @@
     return _headimg;
 }
 
+#pragma mark - 图片放大
+
 - (void)tapAction2{
     YYPhotoGroupItem *item = [YYPhotoGroupItem new];
     item.thumbView         = _headimg;

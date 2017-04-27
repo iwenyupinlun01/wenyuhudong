@@ -22,7 +22,6 @@
     NSTimeZone *timeZone = [NSTimeZone timeZoneWithName:@"Asia/Beijing"];
     [formatter setTimeZone:timeZone];
     NSDate *confromTimesp = [NSDate dateWithTimeIntervalSince1970:timeinter];
-    NSLog(@"1296035591  = %@",confromTimesp);
     NSString *confromTimespStr = [formatter stringFromDate:confromTimesp];
     NSString *modeltimestr = confromTimespStr;
     //首先创建格式化对象
@@ -38,8 +37,6 @@
     int hours = ((int)time)%(3600*24)/3600;
     int minutes = ((int)time)%(3600*24)%3600/60;
     int seconds = ((int)time)%(3600*24)%3600%60;
-    NSString *dateContent = [[NSString alloc] initWithFormat:@"仅剩%i天%i小时%i分%i秒",days,hours,minutes,seconds];
-    NSLog(@"datecontent-------%@",dateContent);
     NSString *fanhuistr = [[NSString alloc] init];
     if (days>=365) {
         fanhuistr = modeltimestr;

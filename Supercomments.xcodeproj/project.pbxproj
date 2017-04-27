@@ -34,7 +34,6 @@
 		53619ED41E988B6C007CC7AC /* commentsBtn.m in Sources */ = {isa = PBXBuildFile; fileRef = 53619ED31E988B6C007CC7AC /* commentsBtn.m */; };
 		53619ED71E98B89D007CC7AC /* titleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 53619ED61E98B89D007CC7AC /* titleView.m */; };
 		53619EDE1E98D283007CC7AC /* detailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 53619EDD1E98D283007CC7AC /* detailsViewController.m */; };
-		53619EE11E98D8DA007CC7AC /* detaolsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 53619EE01E98D8DA007CC7AC /* detaolsCell.m */; };
 		53619EE41E98E0C7007CC7AC /* detailsheadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 53619EE31E98E0C7007CC7AC /* detailsheadView.m */; };
 		5387A7B71EAB4F720057B518 /* SureWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5387A7B61EAB4F720057B518 /* SureWebViewController.m */; };
 		5387A7BA1EAB68900057B518 /* MBProgressHUD+XMG.m in Sources */ = {isa = PBXBuildFile; fileRef = 5387A7B91EAB68900057B518 /* MBProgressHUD+XMG.m */; };
@@ -167,8 +166,6 @@
 		53619ED61E98B89D007CC7AC /* titleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = titleView.m; sourceTree = "<group>"; };
 		53619EDC1E98D283007CC7AC /* detailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = detailsViewController.h; sourceTree = "<group>"; };
 		53619EDD1E98D283007CC7AC /* detailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = detailsViewController.m; sourceTree = "<group>"; };
-		53619EDF1E98D8DA007CC7AC /* detaolsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = detaolsCell.h; sourceTree = "<group>"; };
-		53619EE01E98D8DA007CC7AC /* detaolsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = detaolsCell.m; sourceTree = "<group>"; };
 		53619EE21E98E0C7007CC7AC /* detailsheadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = detailsheadView.h; sourceTree = "<group>"; };
 		53619EE31E98E0C7007CC7AC /* detailsheadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = detailsheadView.m; sourceTree = "<group>"; };
 		5387A7B51EAB4F720057B518 /* SureWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SureWebViewController.h; sourceTree = "<group>"; };
@@ -538,8 +535,6 @@
 			isa = PBXGroup;
 			children = (
 				53E863C61EAD8EDA001F6FD8 /* chat_bottom_textfield.png */,
-				53619EDF1E98D8DA007CC7AC /* detaolsCell.h */,
-				53619EE01E98D8DA007CC7AC /* detaolsCell.m */,
 				53E587851EA7672A004CB302 /* pinglunCell.h */,
 				53E587861EA7672A004CB302 /* pinglunCell.m */,
 				53619EE21E98E0C7007CC7AC /* detailsheadView.h */,
@@ -1210,7 +1205,6 @@
 				53AEBE551E94C9FF00280F70 /* LGSegment.m in Sources */,
 				538D53DE1EAF14BB00E2DCAF /* CLImageModel.m in Sources */,
 				53AEBE521E9496FF00280F70 /* homeViewController.m in Sources */,
-				53619EE11E98D8DA007CC7AC /* detaolsCell.m in Sources */,
 				53AEBE221E948A2500280F70 /* ViewController.m in Sources */,
 				53619E681E961CD2007CC7AC /* WJGtextView.m in Sources */,
 				53E5C0711EB08182008B1F22 /* xieyiScrollView.m in Sources */,

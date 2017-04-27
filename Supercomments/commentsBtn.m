@@ -31,6 +31,7 @@
     self.leftimg.frame = CGRectMake(5*WIDTH_SCALE, 2*HEIGHT_SCALE, 16*WIDTH_SCALE, 16*WIDTH_SCALE);
     self.textlab.frame = CGRectMake(16*WIDTH_SCALE, 2*HEIGHT_SCALE, 20*WIDTH_SCALE, 20*HEIGHT_SCALE);
     
+    
 }
 
 #pragma mark - getters
@@ -53,7 +54,7 @@
         _textlab = [[UILabel alloc] init];
         _textlab.textColor = [UIColor wjColorFloat:@"C7C7CD"];
         _textlab.text = @"12";
-        _textlab.textAlignment = NSTextAlignmentRight;
+        _textlab.textAlignment = NSTextAlignmentCenter;
         _textlab.font = [UIFont systemFontOfSize:13];
     }
     return _textlab;

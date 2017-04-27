@@ -7,7 +7,6 @@
 //
 
 #import "detailsViewController.h"
-#import "detaolsCell.h"
 #import "detailsheadView.h"
 #import "headModel.h"
 #import "pinglunCell.h"
@@ -65,6 +64,7 @@ NSMutableArray * ymDataArray;
     pn=1;
     self.cellcontarr = [NSMutableArray array];
     self.detalisarr = [NSMutableArray array];
+    self.headm.thumarray = [NSMutableArray array];
     // 3.1.下拉刷新
     [self addHeader];
     // 3.2.上拉加载更多
@@ -153,12 +153,12 @@ NSMutableArray * ymDataArray;
         }
         
         NSMutableArray *usernamearr = [NSMutableArray array];
-        NSMutableArray *bookarr = [NSMutableArray array];
-        
-        bookarr = [dic objectForKey:@"bookmark_user"];
-        for (int i = 0; i<bookarr.count; i++) {
+       // NSMutableArray *bookarr = [NSMutableArray array];
+        self.headm.thumarray = [NSMutableArray array];
+        self.headm.thumarray = [dic objectForKey:@"bookmark_user"];
+        for (int i = 0; i<self.headm.thumarray.count; i++) {
             NSDictionary *bookdic = [NSDictionary dictionary];
-            bookdic = [bookarr objectAtIndex:i];
+            bookdic = [self.headm.thumarray objectAtIndex:i];
             NSString *usernamestr = [bookdic objectForKey:@"user_nickname"];
             [usernamearr addObject:usernamestr];
         }
@@ -189,14 +189,7 @@ NSMutableArray * ymDataArray;
             //设置UILable自适
             self.headview.thumlabel.lineBreakMode = NSLineBreakByCharWrapping;
             [self.headview.thumlabel sizeToFit];
-            if (goodArray.count==0) {
-                [self.headview.thumlabel setHidden:YES];
-                
-            }else
-            {
-                [self.headview.thumlabel setHidden:NO];
-                
-            }
+            
 
         }else
         {
@@ -222,15 +215,15 @@ NSMutableArray * ymDataArray;
             self.headview.thumlabel.numberOfLines = 0;
             //设置UILable自适
             self.headview.thumlabel.lineBreakMode = NSLineBreakByCharWrapping;
-            [self.headview.thumlabel sizeToFit];
-            if (goodArray.count==0) {
-                [self.headview.thumlabel setHidden:YES];
-                
-            }else
-            {
-                [self.headview.thumlabel setHidden:NO];
-                
-            }
+             [self.headview.thumlabel sizeToFit];
+//            if (goodArray.count==0) {
+//                [self.headview.thumlabel setHidden:YES];
+//                
+//            }else
+//            {
+//                [self.headview.thumlabel setHidden:NO];
+//                
+//            }
         }
         
        // [self headfromcontentstr:self.headm.contactstr andimageurl:self.headm.imgurlstr];
@@ -241,7 +234,6 @@ NSMutableArray * ymDataArray;
         NSMutableArray *dtrarr = [NSMutableArray array];
         dtrarr = [dic objectForKey:@"all_comment"];
         self.sonCommentarr = [NSMutableArray array];
-        NSLog(@"all_comment=========%@",dtrarr);
         for (int i = 0; i<dtrarr.count; i++) {
             NSDictionary *dicarr = [dtrarr objectAtIndex:i];
             self.detailsmodel = [[detailcellmodel alloc] init];
@@ -296,11 +288,7 @@ NSMutableArray * ymDataArray;
             [self.sonCommentarr addObject:self.detailsmodel.pingarr];
             [self.detalisarr addObject:self.detailsmodel];
         }
-        
-        NSLog(@"pinglunarr==========%@",self.cellcontarr);
-        
         [self.maintable.mj_footer endRefreshing];
-        
         [self.maintable reloadData];
     } errorblock:^(NSError *error) {
         [self.maintable.mj_footer endRefreshing];
@@ -575,14 +563,26 @@ NSMutableArray * ymDataArray;
             [self presentViewController:loginvc animated:YES completion:nil];
         }else
         {
-            NSString *dianzanstr = self.headm.shifoudianzanstr;
-            NSDictionary *reqdic = @{@"token":[tokenstr tokenstrfrom],@"object_id":self.detalisidstr,@"status":dianzanstr,@"type":@"1"};
-            [CLNetworkingManager postNetworkRequestWithUrlString:qudianzan parameters:reqdic isCache:YES succeed:^(id data) {
-                NSLog(@"data===%@",data);
-                NSString *codestr = [data objectForKey:@"code"];
+            //点赞
+            NSDictionary *reqdic = @{@"token":[tokenstr tokenstrfrom],@"object_id":self.detalisidstr,@"status":@"1",@"type":@"1"};
+            [AFManager postReqURL:qudianzan reqBody:reqdic block:^(id infor) {
+                NSLog(@"infor=====%@",infor);
+                NSString *codestr = [infor objectForKey:@"code"];
                 if ([codestr intValue]==1) {
-                    [MBProgressHUD showSuccess:@"成功"];
+                    self.headview.dianzanbtn.zanimg.image = [UIImage imageNamed:@"点赞-拷贝"];
+                    [MBProgressHUD showSuccess:@"点赞"];
                     NSLog(@"成功");
+                    self.headm.shifoudianzanstr = @"1";
+                    self.headm.thumarray = [NSMutableArray array];
+                    [self.headm.thumarray addObject:@"name001"];
+                    NSLog(@"headmarr-----%@",self.headm.thumarray);
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^
+                                   {
+                                       // 更UI
+                                    [self headfromcontentstr:self.headm.contactstr andimageurl:self.headm.imgurlstr andgoodarr:self.headm.thumarray];
+                                   });
+           
                 }
                 else if ([codestr intValue]==0)
                 {
@@ -604,11 +604,10 @@ NSMutableArray * ymDataArray;
                     NSLog(@"系统繁忙，请稍后再试");
                 }
 
-            } fail:^(NSError *error) {
-                
             }];
-            self.headview.dianzanbtn.zanimg.image = [UIImage imageNamed:@"点赞-拷贝"];
-            self.headm.shifoudianzanstr = @"1";
+
+            
+          
             [self.maintable reloadData];
         }
 
@@ -621,17 +620,23 @@ NSMutableArray * ymDataArray;
             [self presentViewController:loginvc animated:YES completion:nil];
         }else
         {
+            //取消点赞
+            NSDictionary *reqdic = @{@"token":[tokenstr tokenstrfrom],@"object_id":self.detalisidstr,@"status":@"0",@"type":@"1"};
             
-            NSString *dianzanstr = self.headm.shifoudianzanstr;
-            self.headview.dianzanbtn.zanimg.image = [UIImage imageNamed:@"点赞-拷贝"];
-            NSDictionary *reqdic = @{@"token":[tokenstr tokenstrfrom],@"object_id":self.detalisidstr,@"status":dianzanstr,@"type":@"1"};
-            
-            [CLNetworkingManager postNetworkRequestWithUrlString:qudianzan parameters:reqdic isCache:YES succeed:^(id data) {
+            [CLNetworkingManager postNetworkRequestWithUrlString:qudianzan parameters:reqdic isCache:NO succeed:^(id data) {
                 NSLog(@"data===%@",data);
                 NSString *codestr = [data objectForKey:@"code"];
                 if ([codestr intValue]==1) {
-                    [MBProgressHUD showSuccess:@"成功"];
+                    self.headm.shifoudianzanstr = @"0";
+                    self.headview.dianzanbtn.zanimg.image = [UIImage imageNamed:@"点赞-"];
+                    [MBProgressHUD showSuccess:@"取消点赞"];
                     NSLog(@"成功");
+                    dispatch_async(dispatch_get_main_queue(), ^
+                                   {
+                                       // 更UI
+                                       [self headfromcontentstr:self.headm.contactstr andimageurl:self.headm.imgurlstr andgoodarr:self.headm.thumarray];
+                                   });
+                  
                 }
                 else if ([codestr intValue]==0)
                 {
@@ -657,8 +662,7 @@ NSMutableArray * ymDataArray;
                 
             }];
             
-            self.headm.shifoudianzanstr = @"0";
-            self.headview.dianzanbtn.zanimg.image = [UIImage imageNamed:@"点赞-"];
+           
             [self.maintable reloadData];
             
         }
@@ -908,12 +912,12 @@ NSMutableArray * ymDataArray;
     }
 }
 
-
 #pragma mark - headfrom
 
 -(void)headfromcontentstr:(NSString *)content andimageurl:(NSString *)urlstr andgoodarr:(NSArray *)thumarr
 {
     if (thumarr.count==0) {
+        [self.headview.thumlabel setHidden:YES];
         if (content.length!=0&&urlstr.length!=0) {
             CGSize textSize = [self.headview.contentlab setText:self.headview.contentlab.text lines:QSTextDefaultLines andLineSpacing:QSTextLineSpacing constrainedToSize:CGSizeMake(DEVICE_WIDTH - 28*WIDTH_SCALE,MAXFLOAT)];
             
@@ -979,6 +983,7 @@ NSMutableArray * ymDataArray;
 
     }else
     {
+        [self.headview.thumlabel setHidden:NO];
         if (content.length!=0&&urlstr.length!=0) {
             CGSize textSize = [self.headview.contentlab setText:self.headview.contentlab.text lines:QSTextDefaultLines andLineSpacing:QSTextLineSpacing constrainedToSize:CGSizeMake(DEVICE_WIDTH - 28*WIDTH_SCALE,MAXFLOAT)];
             CGSize textsize2= [self.headview.thumlabel.text boundingRectWithSize:CGSizeMake(DEVICE_WIDTH-28*WIDTH_SCALE, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil].size;
@@ -996,7 +1001,12 @@ NSMutableArray * ymDataArray;
                 make.right.equalTo(self.headview).with.offset(-140*WIDTH_SCALE);
                 make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
             }];
-            
+            [self.headview.thumlabel mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(self.headview).with.offset(14*WIDTH_SCALE);
+                make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
+                make.top.equalTo(self.headview.timelab).with.offset(33*HEIGHT_SCALE);
+                
+            }];
             [self.headview.sharebtn mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
                 make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
