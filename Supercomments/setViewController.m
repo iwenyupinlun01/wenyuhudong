@@ -10,6 +10,7 @@
 #import "setCell.h"
 #import "aboutViewController.h"
 #import "SZKCleanCache.h"
+#import "loginViewController.h"
 @interface setViewController ()<UITableViewDataSource,UITableViewDelegate>
 @property (nonatomic,strong) UITableView *settableview;
 @property (nonatomic,strong) UIButton *gobackbtn;
@@ -103,7 +104,7 @@ static NSString *setidentfid1 = @"setidentfid1";
         [cell setSeparatorInset:UIEdgeInsetsZero];
         cell.textLabel.text = @"清理缓存";
         cell.textLabel.textColor = [UIColor wjColorFloat:@"333333"];
-        NSString *str = [NSString stringWithFormat:@"%.2fm",[SZKCleanCache folderSizeAtPath]];
+        NSString *str = [NSString stringWithFormat:@"%.2fM",[SZKCleanCache folderSizeAtPath]];
         cell.rightlab.text = str;
         return cell;
     }
@@ -138,7 +139,7 @@ static NSString *setidentfid1 = @"setidentfid1";
 {
     if (indexPath.row==0) {
         //输出缓存大小 m
-        NSLog(@"%.2fm",[SZKCleanCache folderSizeAtPath]);
+        NSLog(@"%.2fM",[SZKCleanCache folderSizeAtPath]);
         
         //清楚缓存
         [SZKCleanCache cleanCache:^{
@@ -147,7 +148,8 @@ static NSString *setidentfid1 = @"setidentfid1";
         }];
     }
     if (indexPath.row==1) {
-        
+                
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"itms-apps://itunes.apple.com/app/1227372692"] options:@{} completionHandler:nil];
     }
     if (indexPath.row==2) {
         aboutViewController *aboutvc = [[aboutViewController alloc] init];
@@ -164,13 +166,44 @@ static NSString *setidentfid1 = @"setidentfid1";
 -(void)gobackbtnclick
 {
     NSLog(@"退出当前帐号");
-    [CLNetworkingManager postNetworkRequestWithUrlString:tuichudenglu parameters:@{@"token":[tokenstr tokenstrfrom]} isCache:YES succeed:^(id data) {
-        NSLog(@"data===%@",data);
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        [defaults removeObjectForKey:@"tokenuser"];
-        [defaults removeObjectForKey:@"access_token"]; 
-    } fail:^(NSError *error) {
+    
+    UIAlertController *control = [UIAlertController alertControllerWithTitle:@"提示" message:@"确定要退出登录吗" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *action0 = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
         
     }];
+    UIAlertAction *action1 = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [CLNetworkingManager postNetworkRequestWithUrlString:tuichudenglu parameters:@{@"token":[tokenstr tokenstrfrom]} isCache:YES succeed:^(id data) {
+            NSLog(@"data===%@",data);
+            if ([[data objectForKey:@"code"] intValue]==1) {
+                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                [defaults removeObjectForKey:@"tokenuser"];
+                [defaults removeObjectForKey:@"access_token"];
+                [defaults removeObjectForKey:@"namestr"];
+                [defaults removeObjectForKey:@"pathurlstr"];
+            }
+            else if([[data objectForKey:@"code"] intValue]==-2)
+            {
+                [MBProgressHUD showSuccess:@"必需要登陆才能操作"];
+            }
+            else if([[data objectForKey:@"code"] intValue]==0)
+            {
+                [MBProgressHUD showSuccess:@"token错误"];
+            }else
+            {
+                [MBProgressHUD showSuccess:@"系统繁忙，请您稍后重试"];
+
+            }
+            
+        } fail:^(NSError *error) {
+            
+        }];
+        loginViewController *logvc = [[loginViewController alloc] init];
+        [self presentViewController:logvc animated:YES completion:nil];
+    }];
+    [control addAction:action0];
+    [control addAction:action1];
+    [self presentViewController:control animated:YES completion:nil];
+    
+    
 }
 @end

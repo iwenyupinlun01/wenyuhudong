@@ -32,16 +32,15 @@
 static NSString *hotidentfid = @"hotidentfid";
 @implementation hotViewController
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor whiteColor];
     self.hottable.emptyDataSetSource = self;
     self.hottable.emptyDataSetDelegate = self;
-    
     // 删除单元格分隔线的一个小技巧
     self.hottable.tableFooterView = [UIView new];
-    
     pn=1;
     self.dataSource = [NSMutableArray array];
     self.dataarr = [NSMutableArray array];
@@ -59,25 +58,26 @@ static NSString *hotidentfid = @"hotidentfid";
 {
     // 头部刷新控件
     self.hottable.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(refreshAction)];
-    
     [self.hottable.mj_header beginRefreshing];
-    
 }
 
 - (void)addFooter
 {
     self.hottable.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(refreshLoadMore)];
 }
+
 - (void)refreshAction {
     
     [self headerRefreshEndAction];
     
 }
+
 - (void)refreshLoadMore {
     
     [self footerRefreshEndAction];
     
 }
+
 - (void)headerRefreshEndAction {
     
     [self.dataSource removeAllObjects];
@@ -89,7 +89,6 @@ static NSString *hotidentfid = @"hotidentfid";
         NSLog(@"infor=====%@",infor);
         NSLog(@"str====%@",strurl);
         NSArray *dit = [infor objectForKey:@"info"];
-        
         for (int i = 0; i<dit.count; i++) {
             NSDictionary *dicarr = [dit objectAtIndex:i];
             self.nmodel = [[newModel alloc] init];
@@ -111,15 +110,12 @@ static NSString *hotidentfid = @"hotidentfid";
             [self.imgarr addObject:self.nmodel.imgurlstr];
         }
         [self.hottable.mj_header endRefreshing];
-        
         [self.hottable reloadData];
-        
     } errorblock:^(NSError *error) {
         [self.hottable.mj_header endRefreshing];
     }];
     
 }
-
 - (void)footerRefreshEndAction {
     pn ++;
     NSString *pnstr = [NSString stringWithFormat:@"%d",pn];
@@ -148,7 +144,9 @@ static NSString *hotidentfid = @"hotidentfid";
             [self.imgarr addObject:self.nmodel.imgurlstr];
         }
         [self.hottable.mj_footer endRefreshing];
+        
         [self.hottable reloadData];
+        
     } errorblock:^(NSError *error) {
         
     }];
@@ -162,8 +160,8 @@ static NSString *hotidentfid = @"hotidentfid";
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-   // [self headerRefreshEndAction];
     self.hottable.frame = CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT-64);
+    //[self headerRefreshEndAction];
 }
 
 #pragma mark - getters
@@ -217,12 +215,14 @@ static NSString *hotidentfid = @"hotidentfid";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     newCell *cell = [tableView dequeueReusableCellWithIdentifier:hotidentfid];
-    //if (!cell) {
-        cell = [[newCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:hotidentfid];
-//    }
+    //    if (!cell) {
+    cell = [[newCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:hotidentfid];
+    //    }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.delegate = self;
+    
     [cell setcelldata:self.dataarr[indexPath.row]];
+    //self.nmodel = self.dataarr[indexPath.row];
     return cell;
 }
 
@@ -255,10 +255,10 @@ static NSString *hotidentfid = @"hotidentfid";
     
     NSString *dianzanstr = self.nmodel.sifoudianzanstr;
     NSLog(@"dianzanstr--------%@",dianzanstr);
+    
     if ([dianzanstr isEqualToString:@"0"]) {
         
         if ([tokenstr tokenstrfrom].length==0) {
-            
             loginViewController *loginvc = [[loginViewController alloc] init];
             loginvc.jinru = @"jinru";
             [self presentViewController:loginvc animated:YES completion:nil];
@@ -266,13 +266,24 @@ static NSString *hotidentfid = @"hotidentfid";
         }
         else
         {
-            NSDictionary *reqdic = @{@"token":[tokenstr tokenstrfrom],@"object_id":self.nmodel.newidstr,@"status":dianzanstr,@"type":@"1"};
-            [AFManager postReqURL:dianzanstr reqBody:reqdic block:^(id infor) {
+            //点赞
+            self.nmodel.sifoudianzanstr = @"1";
+            NSDictionary *reqdic = @{@"token":[tokenstr tokenstrfrom],@"object_id":self.nmodel.newidstr,@"status":@"1",@"type":@"1"};
+            
+            [AFManager postReqURL:qudianzan reqBody:reqdic block:^(id infor) {
                 NSLog(@"infor-------%@",infor);
                 NSString *code = [infor objectForKey:@"code"];
                 if ([code intValue]==1) {
-                    [MBProgressHUD showSuccess:@"成功"];
+                    [MBProgressHUD showSuccess:@"点赞"];
                     NSLog(@"成功");
+                    self.nmodel = [[newModel alloc] init];
+                    self.nmodel = self.dataarr[index.row];
+                    
+                    NSDictionary *dic = [infor objectForKey:@"info"];
+                    self.nmodel.dianzanstr = [dic objectForKey:@"spportNum"];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self.hottable reloadData];
+                    });
                 }
                 else if ([code intValue]==0)
                 {
@@ -295,7 +306,7 @@ static NSString *hotidentfid = @"hotidentfid";
                 }
                 
             }];
-            self.nmodel.sifoudianzanstr = @"1";
+            
             [self.hottable reloadData];
         }
         
@@ -310,13 +321,23 @@ static NSString *hotidentfid = @"hotidentfid";
         }
         else
         {
-            NSDictionary *reqdic = @{@"token":[tokenstr tokenstrfrom],@"object_id":self.nmodel.newidstr,@"status":dianzanstr,@"type":@"1"};
-            [AFManager postReqURL:dianzanstr reqBody:reqdic block:^(id infor) {
+            //取消点赞
+            self.nmodel.sifoudianzanstr = @"0";
+            NSDictionary *reqdic = @{@"token":[tokenstr tokenstrfrom],@"object_id":self.nmodel.newidstr,@"status":@"0",@"type":@"1"};
+            [AFManager postReqURL:qudianzan reqBody:reqdic block:^(id infor) {
                 NSLog(@"infor-------%@",infor);
                 NSString *code = [infor objectForKey:@"code"];
                 if ([code intValue]==1) {
-                    [MBProgressHUD showSuccess:@"成功"];
+                    [MBProgressHUD showSuccess:@"取消点赞"];
                     NSLog(@"成功");
+                    
+                    self.nmodel = [[newModel alloc] init];
+                    self.nmodel = self.dataarr[index.row];
+                    NSDictionary *dic = [infor objectForKey:@"info"];
+                    self.nmodel.dianzanstr = [dic objectForKey:@"spportNum"];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self.hottable reloadData];
+                    });
                 }
                 else if ([code intValue]==0)
                 {
@@ -338,7 +359,7 @@ static NSString *hotidentfid = @"hotidentfid";
                     NSLog(@"系统繁忙，请稍后再试");
                 }
             }];
-            self.nmodel.sifoudianzanstr = @"0";
+            
             [self.hottable reloadData];
         }
     }
@@ -381,10 +402,26 @@ static NSString *hotidentfid = @"hotidentfid";
     return [UIImage imageNamed:@"加载失败"];
 }
 
-- (void)emptyDataSet:(UIScrollView *)scrollView didTapView:(UIView *)view;
+
+- (UIImage *)buttonImageForEmptyDataSet:(UIScrollView *)scrollView forState:(UIControlState)state{
+    return [UIImage imageNamed:@"加载按钮"];
+}
+
+
+- (NSAttributedString *)buttonTitleForEmptyDataSet:(UIScrollView *)scrollView forState:(UIControlState)state{
+    NSDictionary *attributes = @{NSFontAttributeName: [UIFont boldSystemFontOfSize:17.0f]};
+    return [[NSAttributedString alloc] initWithString:@"重新加载" attributes:attributes];
+    
+}
+
+- (void)emptyDataSet:(UIScrollView *)scrollView didTapButton:(UIButton *)button
 {
     NSLog(@"重新加载");
     [self addHeader];
+}
+- (void)emptyDataSetDidTapButton:(UIScrollView *)scrollView{
+    // Do something
+    
 }
 
 @end

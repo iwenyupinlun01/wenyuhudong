@@ -23,7 +23,7 @@
 -(void)layoutSubviews
 {
     [super layoutSubviews];
-    self.rightlab.frame = CGRectMake(DEVICE_WIDTH-80*WIDTH_SCALE, 15*HEIGHT_SCALE, 60*WIDTH_SCALE, 30*HEIGHT_SCALE);
+    self.rightlab.frame = CGRectMake(DEVICE_WIDTH-90*WIDTH_SCALE, 15*HEIGHT_SCALE, 60*WIDTH_SCALE, 30*HEIGHT_SCALE);
 }
 
 #pragma mark - getters
@@ -35,7 +35,8 @@
     {
         _rightlab = [[UILabel alloc] init];
         _rightlab.textColor = [UIColor wjColorFloat:@"999999"];
-        
+        _rightlab.textAlignment = NSTextAlignmentRight;
+        _rightlab.font = [UIFont systemFontOfSize:14];
     }
     return _rightlab;
 }

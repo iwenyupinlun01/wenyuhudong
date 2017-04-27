@@ -31,6 +31,8 @@
 @interface AppDelegate ()<WXApiDelegate>
 ///声明微信代理属性
 //@property (nonatomic,assign)id<WXApiDelegate>wxDelegate;
+
+@property (nonatomic,strong) NSString *typestr;
 @end
 
 @implementation AppDelegate
@@ -52,11 +54,11 @@
     //navigationController.navigationBar.barTintColor = [UIColor wjColorFloat:@"008CCF"];
     [self.window makeKeyAndVisible];
     
+    self.typestr = @"0";
     
     //向微信注册应用。
 
     [WXApi registerApp:@"wx133ee2b8bd5d3c7d"];
-    
     
     [ShareSDK registerApp:@"1d0c68ab95d2c"
      
@@ -93,38 +95,47 @@
           }];
     
 
-    //    /**
-    //     可以在这里进行一个判断的设置，如果是app第一次启动就加载启动页，如果不是，则直接进入首页
-    //     **/
-    //    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"everLaunched"]) {
-    //        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"everLaunched"];
-    //        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstLaunch"];
-    //    }
-    //    else{
-    //        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"firstLaunch"];
-    //    }
-    //
-    //    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"firstLaunch"]) {
-    //        // 这里判断是否第一次
-    //
-    //        hDisplayView *hvc = [[hDisplayView alloc]initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT)];
-    //
-    //        [self.window.rootViewController.view addSubview:hvc];
-    //
-    //        [UIView animateWithDuration:0.25 animations:^{
-    //            hvc.frame = CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT);
-    //
-    //        }];
-    //
-    //    }
+        /**
+         可以在这里进行一个判断的设置，如果是app第一次启动就加载启动页，如果不是，则直接进入首页
+         **/
+        if (![[NSUserDefaults standardUserDefaults] boolForKey:@"everLaunched"]) {
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"everLaunched"];
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstLaunch"];
+        }
+        else{
+            [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"firstLaunch"];
+        }
+    
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"firstLaunch"]) {
+            // 这里判断是否第一次
+    
+            hDisplayView *hvc = [[hDisplayView alloc]initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT)];
+    
+            [self.window.rootViewController.view addSubview:hvc];
+            
+            [UIView animateWithDuration:0.25 animations:^{
+                hvc.frame = CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT);
+    
+            }];
+    
+        }
     // 启动图片延时: 2秒
     //[NSThread sleepForTimeInterval:2];
+    if ([self.typestr isEqualToString:@"0"]) {
+        [NSThread sleepForTimeInterval:2];
+        
+    }else
+    {
+        //[NSThread sleepForTimeInterval:0];
+        return NO;
+    }
     return YES;
 }
 
 -(void)onReq:(BaseReq *)req{
     
     NSLog(@"huidiao");
+    
 }
 
 //微信代理方法
@@ -190,6 +201,7 @@
             
                 [defaults synchronize];
 //                [[NSNotificationCenter defaultCenter] postNotificationName:WXLoginSuccess object:@{@"code":aresp.code}];
+                self.typestr = @"1";
                 
                 [[NSNotificationCenter defaultCenter] postNotificationName:WXLoginSuccess object:@"dengluchenggong"];
                 
@@ -202,7 +214,6 @@
 }
 
 
-
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary*)options{
     
     [WXApi handleOpenURL:url delegate:self];
@@ -213,7 +224,6 @@
     
     return [WXApi handleOpenURL:url delegate:self];
 }
-
 
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {

@@ -19,7 +19,8 @@
 #import <DZNEmptyDataSet/UIScrollView+EmptyDataSet.h>
 #import <ShareSDK/ShareSDK.h>
 #import <ShareSDKUI/ShareSDK+SSUI.h>
-@interface detailsViewController ()<UITableViewDataSource,UITableViewDelegate,UITextViewDelegate,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate>
+#import "AppDelegate.h"
+@interface detailsViewController ()<UITableViewDataSource,UITableViewDelegate,UITextViewDelegate,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate,UIScrollViewDelegate>
 {
     int pn;
 }
@@ -38,6 +39,8 @@
 @property (nonatomic,strong) keyboardView *keyView;
 
 @property (nonatomic,strong) NSString *fromkeyboard;
+
+@property (nonatomic,strong) NSMutableArray *usernamearr;
 @end
 static NSString *detailsidentfid = @"detailsidentfid";
 
@@ -152,7 +155,7 @@ NSMutableArray * ymDataArray;
             self.headview.dianzanbtn.zanimg.image = [UIImage imageNamed:@"点赞-拷贝"];
         }
         
-        NSMutableArray *usernamearr = [NSMutableArray array];
+        self.usernamearr = [NSMutableArray array];
        // NSMutableArray *bookarr = [NSMutableArray array];
         self.headm.thumarray = [NSMutableArray array];
         self.headm.thumarray = [dic objectForKey:@"bookmark_user"];
@@ -160,74 +163,14 @@ NSMutableArray * ymDataArray;
             NSDictionary *bookdic = [NSDictionary dictionary];
             bookdic = [self.headm.thumarray objectAtIndex:i];
             NSString *usernamestr = [bookdic objectForKey:@"user_nickname"];
-            [usernamearr addObject:usernamestr];
+            [self.usernamearr addObject:usernamestr];
         }
         
-        NSArray *goodArray = usernamearr;
+        //NSArray *goodArray = usernamearr;
         //NSArray *goodArray = @[@"one",@"呵呵哒",@"呵呵",@"李白",@"呵呵",@"呵呵",@"呵呵",@"呵呵哒",@"项目需求",@"呵呵",@"呵呵哒",@"项目需求",@"呵呵",@"呵呵哒",@"项目需求",@"呵呵",@"呵呵哒",@"项目需求",@"呵呵",@"呵呵哒",@"项目需求",@"呵呵",@"呵呵哒",@"项目需求",@"呵呵",@"呵呵哒",@"项目需求",@"呵呵",@"呵呵哒",@"项目需求",@"呵呵",@"呵呵哒",@"项目需求"];
         
-        if (goodArray.count<=12) {
-            NSString *goodTotalString2 = [goodArray componentsJoinedByString:@", "];
-            NSString *goodTotalString = [NSString stringWithFormat:@"%@%lu%@",goodTotalString2,(unsigned long)goodArray.count,@"人已赞"];
-            NSMutableAttributedString *newGoodString = [[NSMutableAttributedString alloc] initWithString:goodTotalString];
-            [newGoodString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:14] range:NSMakeRange(0, goodTotalString.length)];
-            //设置行距 实际开发中间距为0太丑了，根据项目需求自己把握
-            NSMutableParagraphStyle *paragraphstyle = [[NSMutableParagraphStyle alloc] init];
-            paragraphstyle.lineSpacing = 3;
-            [newGoodString addAttribute:NSParagraphStyleAttributeName value:paragraphstyle range:NSMakeRange(0, goodTotalString.length)];
-            // 添加图片
-            NSTextAttachment *attch = [[NSTextAttachment alloc] init];
-            // 图片
-            attch.image = [UIImage imageNamed:@"详情页点赞-提示"];
-            // 设置图片大小
-            attch.bounds = CGRectMake(0, 0, 14*WIDTH_SCALE, 14*WIDTH_SCALE);
-            // 创建带有图片的富文本
-            NSAttributedString *string = [NSAttributedString attributedStringWithAttachment:attch];
-            [newGoodString insertAttributedString:string atIndex:0];
-            self.headview.thumlabel.attributedText = newGoodString;
-            self.headview.thumlabel.numberOfLines = 0;
-            //设置UILable自适
-            self.headview.thumlabel.lineBreakMode = NSLineBreakByCharWrapping;
-            [self.headview.thumlabel sizeToFit];
-            
-
-        }else
-        {
-            NSArray *smallArray = [goodArray subarrayWithRange:NSMakeRange(0, 12)];
-            NSString *goodTotalString2 = [smallArray componentsJoinedByString:@", "];
-            NSString *goodTotalString = [NSString stringWithFormat:@"%@%@%lu%@",goodTotalString2,@"等",(unsigned long)goodArray.count,@"人已赞"];
-            NSMutableAttributedString *newGoodString = [[NSMutableAttributedString alloc] initWithString:goodTotalString];
-            [newGoodString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:14] range:NSMakeRange(0, goodTotalString.length)];
-            //设置行距 实际开发中间距为0太丑了，根据项目需求自己把握
-            NSMutableParagraphStyle *paragraphstyle = [[NSMutableParagraphStyle alloc] init];
-            paragraphstyle.lineSpacing = 3;
-            [newGoodString addAttribute:NSParagraphStyleAttributeName value:paragraphstyle range:NSMakeRange(0, goodTotalString.length)];
-            // 添加图片
-            NSTextAttachment *attch = [[NSTextAttachment alloc] init];
-            // 图片
-            attch.image = [UIImage imageNamed:@"详情页点赞-提示"];
-            // 设置图片大小
-            attch.bounds = CGRectMake(0, 0, 14*WIDTH_SCALE, 14*WIDTH_SCALE);
-            // 创建带有图片的富文本
-            NSAttributedString *string = [NSAttributedString attributedStringWithAttachment:attch];
-            [newGoodString insertAttributedString:string atIndex:0];
-            self.headview.thumlabel.attributedText = newGoodString;
-            self.headview.thumlabel.numberOfLines = 0;
-            //设置UILable自适
-            self.headview.thumlabel.lineBreakMode = NSLineBreakByCharWrapping;
-             [self.headview.thumlabel sizeToFit];
-//            if (goodArray.count==0) {
-//                [self.headview.thumlabel setHidden:YES];
-//                
-//            }else
-//            {
-//                [self.headview.thumlabel setHidden:NO];
-//                
-//            }
-        }
         
-       // [self headfromcontentstr:self.headm.contactstr andimageurl:self.headm.imgurlstr];
-        [self headfromcontentstr:self.headm.contactstr andimageurl:self.headm.imgurlstr andgoodarr:goodArray];
+        [self headfromcontentstr:self.headm.contactstr andimageurl:self.headm.imgurlstr andgoodarr:self.usernamearr];
         //cell部分
         
         //section
@@ -317,15 +260,29 @@ NSMutableArray * ymDataArray;
 {
     if(!_maintable)
     {
-        _maintable = [[UITableView alloc] initWithFrame:CGRectMake(0, -40, DEVICE_WIDTH, DEVICE_HEIGHT-24) style:UITableViewStyleGrouped];
+        _maintable = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT-64) style:UITableViewStylePlain];
         _maintable.dataSource = self;
         _maintable.delegate = self;
         _maintable.tableHeaderView = self.headview;
         _maintable.backgroundColor = [UIColor whiteColor];
         _maintable.emptyDataSetSource = self;
         _maintable.emptyDataSetDelegate = self;
+        _maintable.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     }
     return _maintable;
+}
+
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    if (scrollView == self.maintable)
+    {
+        CGFloat sectionHeaderHeight = 40;
+        if (scrollView.contentOffset.y<=sectionHeaderHeight&&scrollView.contentOffset.y>=0) {
+            scrollView.contentInset = UIEdgeInsetsMake(-scrollView.contentOffset.y, 0, 0, 0);
+        } else if (scrollView.contentOffset.y>=sectionHeaderHeight) {
+            scrollView.contentInset = UIEdgeInsetsMake(-sectionHeaderHeight, 0, 0, 0);
+        }
+    }
 }
 
 -(keyboardView *)keyView
@@ -572,17 +529,17 @@ NSMutableArray * ymDataArray;
                     self.headview.dianzanbtn.zanimg.image = [UIImage imageNamed:@"点赞-拷贝"];
                     [MBProgressHUD showSuccess:@"点赞"];
                     NSLog(@"成功");
+                    
                     self.headm.shifoudianzanstr = @"1";
-                    self.headm.thumarray = [NSMutableArray array];
-                    [self.headm.thumarray addObject:@"name001"];
-                    NSLog(@"headmarr-----%@",self.headm.thumarray);
+                    [self.usernamearr addObject:[tokenstr nicknamestrfrom]];
+                    
+                    NSLog(@"headmarr-----%@",self.usernamearr);
                     
                     dispatch_async(dispatch_get_main_queue(), ^
-                                   {
-                                       // 更UI
-                                    [self headfromcontentstr:self.headm.contactstr andimageurl:self.headm.imgurlstr andgoodarr:self.headm.thumarray];
-                                   });
-           
+                        {
+                            // 更UI
+                            [self headfromcontentstr:self.headm.contactstr andimageurl:self.headm.imgurlstr andgoodarr:self.usernamearr];
+                        });
                 }
                 else if ([codestr intValue]==0)
                 {
@@ -631,11 +588,12 @@ NSMutableArray * ymDataArray;
                     self.headview.dianzanbtn.zanimg.image = [UIImage imageNamed:@"点赞-"];
                     [MBProgressHUD showSuccess:@"取消点赞"];
                     NSLog(@"成功");
+                    [self.usernamearr removeObjectAtIndex:self.usernamearr.count-1];
                     dispatch_async(dispatch_get_main_queue(), ^
-                                   {
+                    {
                                        // 更UI
-                                       [self headfromcontentstr:self.headm.contactstr andimageurl:self.headm.imgurlstr andgoodarr:self.headm.thumarray];
-                                   });
+                         [self headfromcontentstr:self.headm.contactstr andimageurl:self.headm.imgurlstr andgoodarr:self.usernamearr];
+                    });
                   
                 }
                 else if ([codestr intValue]==0)
@@ -675,7 +633,9 @@ NSMutableArray * ymDataArray;
 -(void)pinglunclick
 {
     NSLog(@"评论");
-
+  
+    
+    
     if ([tokenstr tokenstrfrom].length==0) {
         NSLog(@"请登陆");
         loginViewController *logvc = [[loginViewController alloc] init];
@@ -686,6 +646,7 @@ NSMutableArray * ymDataArray;
     }
     else
     {
+        self.maintable.alpha = 0.4;
         self.fromkeyboard = @"zhupinglun";
         [self.keyView.textview becomeFirstResponder];
     }
@@ -693,7 +654,7 @@ NSMutableArray * ymDataArray;
 }
 //二级评论
 - (void)buttonPress:(UIButton *)sender {
-    
+  
 
     if ([tokenstr tokenstrfrom].length==0) {
         NSLog(@"请登陆");
@@ -705,7 +666,7 @@ NSMutableArray * ymDataArray;
     }
     else
     {
-        
+        self.maintable.alpha = 0.4;
         NSLog(@"index==%ld",(long)sender.tag);
         [self.keyView.textview becomeFirstResponder];
         self.fromkeyboard = @"section";
@@ -727,6 +688,7 @@ NSMutableArray * ymDataArray;
     }
     else
     {
+        self.maintable.alpha = 0.4;
         self.fromkeyboard = @"cellpinglun";
         [self.keyView.textview becomeFirstResponder];
         self.keyView.index = indexPath.section;
@@ -762,7 +724,7 @@ NSMutableArray * ymDataArray;
 - (void)keyboardWillHide:(NSNotification *)aNotification
 {
     [UIView animateWithDuration:[aNotification.userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue] animations:^{
-        
+        self.maintable.alpha = 1;
         self.keyView.transform=CGAffineTransformIdentity;
     } completion:^(BOOL finished) {
         
@@ -916,6 +878,64 @@ NSMutableArray * ymDataArray;
 
 -(void)headfromcontentstr:(NSString *)content andimageurl:(NSString *)urlstr andgoodarr:(NSArray *)thumarr
 {
+    if (thumarr.count<=12) {
+        NSString *goodTotalString2 = [thumarr componentsJoinedByString:@", "];
+        NSString *goodTotalString = [NSString stringWithFormat:@"%@%lu%@",goodTotalString2,(unsigned long)thumarr.count,@"人已赞"];
+        NSMutableAttributedString *newGoodString = [[NSMutableAttributedString alloc] initWithString:goodTotalString];
+        [newGoodString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:14] range:NSMakeRange(0, goodTotalString.length)];
+        //设置行距 实际开发中间距为0太丑了，根据项目需求自己把握
+        NSMutableParagraphStyle *paragraphstyle = [[NSMutableParagraphStyle alloc] init];
+        paragraphstyle.lineSpacing = 3;
+        [newGoodString addAttribute:NSParagraphStyleAttributeName value:paragraphstyle range:NSMakeRange(0, goodTotalString.length)];
+        // 添加图片
+        NSTextAttachment *attch = [[NSTextAttachment alloc] init];
+        // 图片
+        attch.image = [UIImage imageNamed:@"详情页点赞-提示"];
+        // 设置图片大小
+        attch.bounds = CGRectMake(0, 0, 14*WIDTH_SCALE, 14*WIDTH_SCALE);
+        // 创建带有图片的富文本
+        NSAttributedString *string = [NSAttributedString attributedStringWithAttachment:attch];
+        [newGoodString insertAttributedString:string atIndex:0];
+        self.headview.thumlabel.attributedText = newGoodString;
+        self.headview.thumlabel.numberOfLines = 0;
+        //设置UILable自适
+        self.headview.thumlabel.lineBreakMode = NSLineBreakByCharWrapping;
+        [self.headview.thumlabel sizeToFit];
+        
+    }else
+    {
+        NSArray *smallArray = [thumarr subarrayWithRange:NSMakeRange(0, 12)];
+        NSString *goodTotalString2 = [smallArray componentsJoinedByString:@", "];
+        NSString *goodTotalString = [NSString stringWithFormat:@"%@%@%lu%@",goodTotalString2,@"等",(unsigned long)thumarr.count,@"人已赞"];
+        NSMutableAttributedString *newGoodString = [[NSMutableAttributedString alloc] initWithString:goodTotalString];
+        [newGoodString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:14] range:NSMakeRange(0, goodTotalString.length)];
+        //设置行距 实际开发中间距为0太丑了，根据项目需求自己把握
+        NSMutableParagraphStyle *paragraphstyle = [[NSMutableParagraphStyle alloc] init];
+        paragraphstyle.lineSpacing = 3;
+        [newGoodString addAttribute:NSParagraphStyleAttributeName value:paragraphstyle range:NSMakeRange(0, goodTotalString.length)];
+        // 添加图片
+        NSTextAttachment *attch = [[NSTextAttachment alloc] init];
+        // 图片
+        attch.image = [UIImage imageNamed:@"详情页点赞-提示"];
+        // 设置图片大小
+        attch.bounds = CGRectMake(0, 0, 14*WIDTH_SCALE, 14*WIDTH_SCALE);
+        // 创建带有图片的富文本
+        NSAttributedString *string = [NSAttributedString attributedStringWithAttachment:attch];
+        [newGoodString insertAttributedString:string atIndex:0];
+        self.headview.thumlabel.attributedText = newGoodString;
+        self.headview.thumlabel.numberOfLines = 0;
+        //设置UILable自适
+        self.headview.thumlabel.lineBreakMode = NSLineBreakByCharWrapping;
+        [self.headview.thumlabel sizeToFit];
+        
+    }
+
+    
+    
+    
+    
+    
+    
     if (thumarr.count==0) {
         [self.headview.thumlabel setHidden:YES];
         if (content.length!=0&&urlstr.length!=0) {
@@ -960,6 +980,7 @@ NSMutableArray * ymDataArray;
                 make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
             }];
             _headview.frame = CGRectMake(0, 0, DEVICE_WIDTH, 380*HEIGHT_SCALE);
+            //_maintable.frame = CGRectMake(0, -40, DEVICE_WIDTH, DEVICE_HEIGHT-24);
         }else
         {
             CGSize textSize = [self.headview.contentlab setText:self.headview.contentlab.text lines:QSTextDefaultLines andLineSpacing:QSTextLineSpacing constrainedToSize:CGSizeMake(DEVICE_WIDTH - 28*WIDTH_SCALE,MAXFLOAT)];
@@ -1071,4 +1092,9 @@ NSMutableArray * ymDataArray;
     
 }
 
+
+
+
+
 @end
+

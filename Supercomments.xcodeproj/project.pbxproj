@@ -73,6 +73,8 @@
 		53E587841EA7651D004CB302 /* detailcellmodel.m in Sources */ = {isa = PBXBuildFile; fileRef = 53E587831EA7651D004CB302 /* detailcellmodel.m */; };
 		53E587871EA7672A004CB302 /* pinglunCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 53E587861EA7672A004CB302 /* pinglunCell.m */; };
 		53E5C0711EB08182008B1F22 /* xieyiScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 53E5C0701EB08182008B1F22 /* xieyiScrollView.m */; };
+		53E5C0751EB1D309008B1F22 /* xieyiViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 53E5C0741EB1D309008B1F22 /* xieyiViewController.m */; };
+		53E5C0781EB1D802008B1F22 /* bannerLab.m in Sources */ = {isa = PBXBuildFile; fileRef = 53E5C0771EB1D802008B1F22 /* bannerLab.m */; };
 		53E863C71EAD8EDA001F6FD8 /* chat_bottom_textfield.png in Resources */ = {isa = PBXBuildFile; fileRef = 53E863C61EAD8EDA001F6FD8 /* chat_bottom_textfield.png */; };
 		53E863CA1EAD99B0001F6FD8 /* keyboardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 53E863C91EAD99B0001F6FD8 /* keyboardView.m */; };
 		53E863CC1EADADB4001F6FD8 /* 牛评用户协议.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 53E863CB1EADADB4001F6FD8 /* 牛评用户协议.jpg */; };
@@ -248,6 +250,10 @@
 		53E587861EA7672A004CB302 /* pinglunCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = pinglunCell.m; sourceTree = "<group>"; };
 		53E5C06F1EB08182008B1F22 /* xieyiScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xieyiScrollView.h; sourceTree = "<group>"; };
 		53E5C0701EB08182008B1F22 /* xieyiScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = xieyiScrollView.m; sourceTree = "<group>"; };
+		53E5C0731EB1D309008B1F22 /* xieyiViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xieyiViewController.h; sourceTree = "<group>"; };
+		53E5C0741EB1D309008B1F22 /* xieyiViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = xieyiViewController.m; sourceTree = "<group>"; };
+		53E5C0761EB1D802008B1F22 /* bannerLab.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bannerLab.h; sourceTree = "<group>"; };
+		53E5C0771EB1D802008B1F22 /* bannerLab.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = bannerLab.m; sourceTree = "<group>"; };
 		53E863C61EAD8EDA001F6FD8 /* chat_bottom_textfield.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chat_bottom_textfield.png; sourceTree = "<group>"; };
 		53E863C81EAD99AF001F6FD8 /* keyboardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = keyboardView.h; sourceTree = "<group>"; };
 		53E863C91EAD99B0001F6FD8 /* keyboardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = keyboardView.m; sourceTree = "<group>"; };
@@ -638,6 +644,8 @@
 				53EC94491E9DC1C400E03E07 /* hDisplayView.m */,
 				53E5C06F1EB08182008B1F22 /* xieyiScrollView.h */,
 				53E5C0701EB08182008B1F22 /* xieyiScrollView.m */,
+				53E5C0761EB1D802008B1F22 /* bannerLab.h */,
+				53E5C0771EB1D802008B1F22 /* bannerLab.m */,
 			);
 			name = view;
 			sourceTree = "<group>";
@@ -901,6 +909,8 @@
 			children = (
 				53AEBE6D1E94F80400280F70 /* loginViewController.h */,
 				53AEBE6E1E94F80400280F70 /* loginViewController.m */,
+				53E5C0731EB1D309008B1F22 /* xieyiViewController.h */,
+				53E5C0741EB1D309008B1F22 /* xieyiViewController.m */,
 			);
 			name = controller;
 			sourceTree = "<group>";
@@ -1231,12 +1241,14 @@
 				53619E6B1E962093007CC7AC /* setCell.m in Sources */,
 				53AEBE461E94910700280F70 /* MLMSegmentManager.m in Sources */,
 				53619EC81E988649007CC7AC /* zanBtn.m in Sources */,
+				53E5C0751EB1D309008B1F22 /* xieyiViewController.m in Sources */,
 				53AEBE6A1E94D96A00280F70 /* hotViewController.m in Sources */,
 				53619E5F1E96055E007CC7AC /* myinfoViewController.m in Sources */,
 				53AEBE6F1E94F80400280F70 /* loginViewController.m in Sources */,
 				53E587841EA7651D004CB302 /* detailcellmodel.m in Sources */,
 				53AEBE491E94910700280F70 /* UIView+ViewController.m in Sources */,
 				53AEBE451E94910700280F70 /* MLMSegmentHead.m in Sources */,
+				53E5C0781EB1D802008B1F22 /* bannerLab.m in Sources */,
 				53E2944C1E9F72930034D4E7 /* XWScanImage.m in Sources */,
 				53619ED71E98B89D007CC7AC /* titleView.m in Sources */,
 				53EC944E1E9DC6DE00E03E07 /* UILabel+YBAttributeTextTapAction.m in Sources */,

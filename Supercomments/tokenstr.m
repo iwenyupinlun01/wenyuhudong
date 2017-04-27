@@ -29,8 +29,33 @@
 +(NSString *)nicknamestrfrom
 {
     NSString *nicknamestr = [[NSString alloc] init];
-    
+    NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
+    NSString *namestr = [userdefat objectForKey:@"namestr"];
+    if (namestr.length==0) {
+        nicknamestr = @"";
+    }
+    else
+    {
+        nicknamestr = namestr;
+    }
+    NSLog(@"token--------%@",nicknamestr);
     return nicknamestr;
+}
+
++(NSString *)userimgstrfrom
+{
+    NSString *userimgstr = [[NSString alloc] init];
+    NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
+    NSString *imgstr = [userdefat objectForKey:@"pathurlstr"];
+    if (imgstr.length==0) {
+        userimgstr = @"";
+    }
+    else
+    {
+        userimgstr = imgstr;
+    }
+    NSLog(@"token--------%@",userimgstr);
+    return userimgstr;
 }
 
 @end

@@ -41,20 +41,15 @@ static NSString *infocellidentfid = @"infocellidentfid";
     
 }
 -(void)viewWillAppear:(BOOL)animated{
-    
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
     self.navigationController.navigationBar.barTintColor = [UIColor wjColorFloat:@"F5F5F5"];
     [self loaddatafromweb];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
-
 {
-    
     [super viewWillDisappear:animated];
-    
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
-    
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -76,9 +71,6 @@ static NSString *infocellidentfid = @"infocellidentfid";
                 inforstr = [dic objectForKey:@"inform"];
                 system_inform = [dic objectForKey:@"system_inform"];
             }
-//            inforstr = @"3";
-//            system_inform = @"0";
-            
             
             UILabel *namelab = [self.infotableview viewWithTag:100];
             if ([inforstr isEqualToString:@"0"]&&[system_inform isEqualToString:@"0"]) {
@@ -92,12 +84,10 @@ static NSString *infocellidentfid = @"infocellidentfid";
             else
             {
                 NSLog(@"提示操作");
-                
                 namelab.alpha = 1;
                 NSString *textstr = [NSString stringWithFormat:@"%d",[inforstr intValue]+[system_inform intValue]];
                 namelab.text = textstr;
                 _cell.numlab.text = textstr;
-                
                 //[_cell addSubview:namelab];
                 [self.infotableview reloadData];
             }
@@ -154,10 +144,9 @@ static NSString *infocellidentfid = @"infocellidentfid";
         //初始化一个手势
         UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
         //为图片添加手势
-        NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
-        
-        NSDictionary *dic = [userdefat objectForKey:@"userinfo"];
-        NSString *path = [dic objectForKey:@"headimgurl"];
+
+        NSString *path = [tokenstr userimgstrfrom];
+        NSLog(@"path-%@",path);
         [_headview.infoimg sd_setImageWithURL:[NSURL URLWithString:path] placeholderImage:[UIImage imageNamed:@"头像默认图"]];
         [ _headview.infoimg addGestureRecognizer:singleTap];
     }

@@ -25,13 +25,14 @@ static NSString *nickcellidentfid = @"nickidentfid";
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"保存" style:UIBarButtonItemStylePlain target:self action:@selector(rightaction1)];
     self.navigationItem.rightBarButtonItem.tintColor = [UIColor wjColorFloat:@"333333"];
     
+
     
     UITapGestureRecognizer *TapGestureTecognizer=[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(keyboardHide)];
     TapGestureTecognizer.cancelsTouchesInView=NO;
     [self.nicktable addGestureRecognizer:TapGestureTecognizer];
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor wjColorFloat:@"333333"]}];
-    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+   // [self.navigationController.navigationBar setShadowImage:[UIImage new]];
+   // [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
     self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
     self.nicktable.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.view addSubview:self.nicktable];
@@ -42,19 +43,14 @@ static NSString *nickcellidentfid = @"nickidentfid";
     // Dispose of any resources that can be recreated.
 }
 -(void)viewWillAppear:(BOOL)animated{
-    
+    [super viewWillAppear:animated];
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
-   
 }
 
 -(void)viewWillDisappear:(BOOL)animated
-
 {
-    
     [super viewWillDisappear:animated];
-    
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
-    
 }
 #pragma mark - getters
 
@@ -66,7 +62,7 @@ static NSString *nickcellidentfid = @"nickidentfid";
         _nicktable.dataSource = self;
         _nicktable.delegate = self;
         _nicktable.backgroundColor = [UIColor wjColorFloat:@"F5F5F5"];
-        _nicktable.scrollEnabled = NO;
+        //_nicktable.scrollEnabled = NO;
     }
     return _nicktable;
 }
@@ -84,6 +80,9 @@ static NSString *nickcellidentfid = @"nickidentfid";
     if (!cell) {
         cell = [[nicknameCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nickcellidentfid];
     }
+    
+    [cell.nicknametext addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+    self.nicknamestr = [tokenstr nicknamestrfrom];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     [cell setSeparatorInset:UIEdgeInsetsZero];
     cell.nicknametext.tag = 100;
@@ -98,6 +97,17 @@ static NSString *nickcellidentfid = @"nickidentfid";
 }
 
 #pragma mark -UITextFieldDelegate
+
+- (void)textFieldDidChange:(UITextField *)textField
+{
+    UITextField *textname = [self.nicktable viewWithTag:100];
+    if (textField == textname) {
+        if (textField.text.length > 12) {
+            textField.text = [textField.text substringToIndex:12];
+        }
+    }
+}
+
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
@@ -116,14 +126,23 @@ static NSString *nickcellidentfid = @"nickidentfid";
 {
     NSLog(@"保存");
     //保存修改的用户名
-    UITextField *text = [self.nicktable viewWithTag:100];
-    [[NSNotificationCenter defaultCenter]postNotificationName:@"usernamexiugai" object:text.text];
-    NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
-    [userdefat setObject:text.text forKey:@"namestr"];
-    [userdefat synchronize];
     
-    [self.navigationController popViewControllerAnimated:YES];
     
+    UITextField *textname = [self.nicktable viewWithTag:100];
+    if (textname.text.length<4) {
+        [MBProgressHUD showSuccess:@"请至少输入四位有效字符"];
+    }else if (textname.text.length>12)
+    {
+        [MBProgressHUD showSuccess:@"不能超过12位字符"];
+    }
+    else
+    {
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"usernamexiugai" object:textname.text];
+        NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
+        [userdefat setObject:textname.text forKey:@"namestr"];
+        [userdefat synchronize];
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 -(void)keyboardHide

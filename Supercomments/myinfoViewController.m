@@ -30,10 +30,6 @@ static NSString *myinfoidentfid1 = @"myidentfid1";
     
     self.title = @"个人中心";
     
-    
-    
-    
-    
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor wjColorFloat:@"333333"]}];
     [self.navigationController.navigationBar setShadowImage:[UIImage new]];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
@@ -51,19 +47,14 @@ static NSString *myinfoidentfid1 = @"myidentfid1";
 }
 
 -(void)viewWillAppear:(BOOL)animated{
-    
+    [super viewWillAppear:animated];
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
-   
 }
 
 -(void)viewWillDisappear:(BOOL)animated
-
 {
-    
     [super viewWillDisappear:animated];
-    
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
-    
 }
 
 #pragma mark - getters
@@ -99,8 +90,10 @@ static NSString *myinfoidentfid1 = @"myidentfid1";
         [cell setSeparatorInset:UIEdgeInsetsZero];
         cell.infoimage.tag = 200;
         
-        NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
-        NSString *path = [userdefat objectForKey:@"pathurlstr"];
+//        NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
+//        NSString *path2 = [userdefat objectForKey:@"pathurlstr"];
+        NSString *path = [tokenstr userimgstrfrom];
+        NSLog(@"path-%@",path);
 
         [cell.infoimage sd_setImageWithURL:[NSURL URLWithString:path] placeholderImage:[UIImage imageNamed:@"头像默认图"]];
         return cell;
@@ -264,13 +257,16 @@ static NSString *myinfoidentfid1 = @"myidentfid1";
     
 //    NSDictionary *dic = @{@"image":myImage,@"field":@"",@"imageNage":@"infoimg"};
     
+    NSString *urlstr = [NSString stringWithFormat:touxiang,[tokenstr tokenstrfrom]];
+    NSLog(@"urlstr-------%@",urlstr);
+    [AFManager upLoadpath:urlstr reqBody:nil file:data fileName:@"file.jpg" fileType:@"image/jpg" block:^(id infor) {
+        NSLog(@"infor-----%@",infor);
+        
+    } errorBlock:^(NSError *error) {
+        
+    }];
     
-//    [AFManager upLoadpath:[NSString stringWithFormat:touxiang,[tokenstr tokenstrfrom]] reqBody:nil file:data fileName:@"file" fileType:@"image/jpg" block:^(id infor) {
-//        NSLog(@"infor-----%@",infor);
-//        
-//    } errorBlock:^(NSError *error) {
-//        
-//    }];
+    
 }
 
 

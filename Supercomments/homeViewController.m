@@ -72,8 +72,9 @@
         {
             NSLog(@"已经登陆");
             self.denglustr = @"denglu";
-            NSDictionary *dic = [infor objectForKey:@"info"];
-            NSString *urlstr = [dic objectForKey:@"headPath"];
+            //NSDictionary *dic = [infor objectForKey:@"info"];
+           // NSString *urlstr = [dic objectForKey:@"headPath"];
+            NSString *urlstr = [tokenstr tokenstrfrom];
             urlstr = @"http://www.qqbody.com/uploads/allimg/201401/09-045302_580.jpg";
             
             [self.infobtn sd_setImageWithURL:[NSURL URLWithString:urlstr] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"未登录"]];
@@ -118,6 +119,19 @@
 {
     [CLNetworkingManager postNetworkRequestWithUrlString:tokentihuan parameters:@{@"token":[tokenstr tokenstrfrom]} isCache:YES succeed:^(id data) {
         NSLog(@"data===%@",data);
+        if ([[data objectForKey:@"code"] intValue]==1) {
+            NSString *newtoken = [data objectForKey:@"token"];
+            if ([newtoken isEqualToString:[tokenstr tokenstrfrom]]) {
+                NSLog(@"相同");
+            }else
+            {
+                NSLog(@"不同，替换");
+                NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
+                [userdefat setObject:newtoken forKey:@"tokenuser"];
+                [userdefat synchronize];
+            }
+        }
+        
     } fail:^(NSError *error) {
         
         //[MBProgressHUD showSuccess:@"服务器故障"];

@@ -19,6 +19,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        //self.backgroundColor = [UIColor greenColor];
         [self addSubview:self.leftimg];
         [self addSubview:self.textlab];
     }
@@ -29,7 +30,7 @@
 {
     [super layoutSubviews];
     self.leftimg.frame = CGRectMake(5*WIDTH_SCALE, 2*HEIGHT_SCALE, 16*WIDTH_SCALE, 16*WIDTH_SCALE);
-    self.textlab.frame = CGRectMake(16*WIDTH_SCALE, 2*HEIGHT_SCALE, 20*WIDTH_SCALE, 20*HEIGHT_SCALE);
+    self.textlab.frame = CGRectMake(16*WIDTH_SCALE, 2*HEIGHT_SCALE, 40*WIDTH_SCALE, 20*HEIGHT_SCALE);
     
     
 }

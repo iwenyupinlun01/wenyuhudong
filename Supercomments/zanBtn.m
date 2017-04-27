@@ -39,7 +39,6 @@
     if(!_zanimg)
     {
         _zanimg = [[UIImageView alloc]init];
-//        _zanimg.image = [UIImage imageNamed:@"点赞-"];
     }
     return _zanimg;
 }

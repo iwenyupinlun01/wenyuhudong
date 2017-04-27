@@ -266,7 +266,7 @@ static NSString *newidentfid = @"newidentfid";
         {
             //点赞
             self.nmodel.sifoudianzanstr = @"1";
-            NSDictionary *reqdic = @{@"token":[tokenstr tokenstrfrom],@"object_id":self.nmodel.newidstr,@"status":self.nmodel.sifoudianzanstr,@"type":@"0"};
+            NSDictionary *reqdic = @{@"token":[tokenstr tokenstrfrom],@"object_id":self.nmodel.newidstr,@"status":@"1",@"type":@"1"};
             
             [AFManager postReqURL:qudianzan reqBody:reqdic block:^(id infor) {
                 NSLog(@"infor-------%@",infor);
@@ -279,7 +279,9 @@ static NSString *newidentfid = @"newidentfid";
                     
                     NSDictionary *dic = [infor objectForKey:@"info"];
                     self.nmodel.dianzanstr = [dic objectForKey:@"spportNum"];
-                    [self.newtable reloadData];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                          [self.newtable reloadData];
+                    });
                 }
                 else if ([code intValue]==0)
                 {
@@ -319,7 +321,7 @@ static NSString *newidentfid = @"newidentfid";
         {
             //取消点赞
             self.nmodel.sifoudianzanstr = @"0";
-            NSDictionary *reqdic = @{@"token":[tokenstr tokenstrfrom],@"object_id":self.nmodel.newidstr,@"status":self.nmodel.sifoudianzanstr,@"type":@"0"};
+            NSDictionary *reqdic = @{@"token":[tokenstr tokenstrfrom],@"object_id":self.nmodel.newidstr,@"status":@"0",@"type":@"1"};
             [AFManager postReqURL:qudianzan reqBody:reqdic block:^(id infor) {
                 NSLog(@"infor-------%@",infor);
                 NSString *code = [infor objectForKey:@"code"];
@@ -331,7 +333,9 @@ static NSString *newidentfid = @"newidentfid";
                     self.nmodel = self.dataarr[index.row];
                     NSDictionary *dic = [infor objectForKey:@"info"];
                     self.nmodel.dianzanstr = [dic objectForKey:@"spportNum"];
-                    [self.newtable reloadData];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self.newtable reloadData];
+                    });
                 }
                 else if ([code intValue]==0)
                 {
@@ -398,7 +402,7 @@ static NSString *newidentfid = @"newidentfid";
 
 
 - (UIImage *)buttonImageForEmptyDataSet:(UIScrollView *)scrollView forState:(UIControlState)state{
-    return [UIImage imageNamed:@"矩形-1"];
+    return [UIImage imageNamed:@"加载按钮"];
 }
 
 
@@ -408,14 +412,11 @@ static NSString *newidentfid = @"newidentfid";
     
 }
 
-
-
-- (void)emptyDataSet:(UIScrollView *)scrollView didTapView:(UIView *)view;
+- (void)emptyDataSet:(UIScrollView *)scrollView didTapButton:(UIButton *)button
 {
     NSLog(@"重新加载");
     [self addHeader];
 }
-
 - (void)emptyDataSetDidTapButton:(UIScrollView *)scrollView{
     // Do something
     

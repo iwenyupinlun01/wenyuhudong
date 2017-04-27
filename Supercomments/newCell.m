@@ -169,7 +169,7 @@
 + (CGFloat)cellHeightWithText:(NSString *)text{
     
     CGSize textSize = [UILabel sizeWithText:text
-                                      lines:QSTextDefaultLines2
+                                      lines:4
                                        font:[UIFont systemFontOfSize:17*FX]
                              andLineSpacing:QSTextLineSpacing
                           constrainedToSize:CGSizeMake(DEVICE_WIDTH - 28*WIDTH_SCALE,MAXFLOAT)];
@@ -223,7 +223,7 @@
     NSString *str=model.timestr;//时间戳
     [Timestr datetime:str];
     
-    CGSize textSize = [self.contentlab setText:model.contentstr lines:QSTextDefaultLines2 andLineSpacing:QSTextLineSpacing constrainedToSize:CGSizeMake(DEVICE_WIDTH-28*WIDTH_SCALE,MAXFLOAT)];
+    CGSize textSize = [self.contentlab setText:model.contentstr lines:4 andLineSpacing:QSTextLineSpacing constrainedToSize:CGSizeMake(DEVICE_WIDTH-28*WIDTH_SCALE,MAXFLOAT)];
     self.contentlab.frame = CGRectMake(14*WIDTH_SCALE,  30*HEIGHT_SCALE, DEVICE_WIDTH -28*WIDTH_SCALE, textSize.height);
     
     CGFloat hei = textSize.height;
