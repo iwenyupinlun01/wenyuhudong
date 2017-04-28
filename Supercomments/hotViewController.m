@@ -28,6 +28,7 @@
 @property (nonatomic,strong) newModel *nmodel;
 @property (nonatomic,strong) NSMutableArray *imgarr;
 @property (strong, nonatomic) NSMutableArray<newModel *> * menus;
+
 @end
 static NSString *hotidentfid = @"hotidentfid";
 @implementation hotViewController
@@ -399,19 +400,20 @@ static NSString *hotidentfid = @"hotidentfid";
 #pragma mark - 加载失败
 
 - (UIImage *)imageForEmptyDataSet:(UIScrollView *)scrollView {
+    
     return [UIImage imageNamed:@"空的"];
 }
 
 
-- (UIImage *)buttonImageForEmptyDataSet:(UIScrollView *)scrollView forState:(UIControlState)state{
-    return [UIImage imageNamed:@"加载按钮"];
-}
-
-- (NSAttributedString *)buttonTitleForEmptyDataSet:(UIScrollView *)scrollView forState:(UIControlState)state{
-    NSDictionary *attributes = @{NSFontAttributeName: [UIFont boldSystemFontOfSize:17.0f]};
-    return [[NSAttributedString alloc] initWithString:@"重新加载" attributes:attributes];
-    
-}
+//- (UIImage *)buttonImageForEmptyDataSet:(UIScrollView *)scrollView forState:(UIControlState)state{
+//    return [UIImage imageNamed:@"加载按钮"];
+//}
+//
+//- (NSAttributedString *)buttonTitleForEmptyDataSet:(UIScrollView *)scrollView forState:(UIControlState)state{
+//    NSDictionary *attributes = @{NSFontAttributeName: [UIFont boldSystemFontOfSize:17.0f]};
+//    return [[NSAttributedString alloc] initWithString:@"重新加载" attributes:attributes];
+//    
+//}
 
 - (void)emptyDataSet:(UIScrollView *)scrollView didTapButton:(UIButton *)button
 {

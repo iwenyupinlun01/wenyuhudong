@@ -26,7 +26,6 @@
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
-
 {
     
     UIViewController* topVC = self.topViewController;

@@ -136,7 +136,7 @@ static NSString *messageidentfid = @"messageidentfid";
         _messagetable = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT-64)];
         _messagetable.dataSource = self;
         _messagetable.delegate = self;
-        _messagetable.scrollEnabled = NO;
+        //_messagetable.scrollEnabled = NO;
         
     }
     return _messagetable;

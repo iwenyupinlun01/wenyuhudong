@@ -27,6 +27,8 @@
 @property (nonatomic,strong) newModel *nmodel;
 @property (nonatomic,strong) NSMutableArray *imgarr;
 @property (strong, nonatomic) NSMutableArray<newModel *> * menus;
+
+@property (nonatomic,strong) NSString *panduan404str;
 @end
 static NSString *newidentfid = @"newidentfid";
 @implementation newViewController
@@ -43,6 +45,7 @@ static NSString *newidentfid = @"newidentfid";
     self.dataSource = [NSMutableArray array];
     self.dataarr = [NSMutableArray array];
     self.imgarr = [NSMutableArray array];
+    self.panduan404str = @"0";
     // 3.1.下拉刷新
     [self addHeader];
     // 3.2.上拉加载更多
@@ -111,6 +114,7 @@ static NSString *newidentfid = @"newidentfid";
         [self.newtable reloadData];
     } errorblock:^(NSError *error) {
          [self.newtable.mj_header endRefreshing];
+        self.panduan404str = @"1";
     }];
     
 }
@@ -397,20 +401,20 @@ static NSString *newidentfid = @"newidentfid";
 #pragma mark - 加载失败
 
 - (UIImage *)imageForEmptyDataSet:(UIScrollView *)scrollView {
-    return [UIImage imageNamed:@"加载失败"];
+    if ([_panduan404str isEqualToString:@"1"]) {
+        return [UIImage imageNamed:@"加载失败"];
+    }else
+    {
+        return [UIImage imageNamed:@"空的"];
+    }
+    return nil;
 }
 
+//- (UIImage *)buttonImageForEmptyDataSet:(UIScrollView *)scrollView forState:(UIControlState)state{
+//    return [UIImage imageNamed:@"加载按钮"];
+//}
 
-- (UIImage *)buttonImageForEmptyDataSet:(UIScrollView *)scrollView forState:(UIControlState)state{
-    return [UIImage imageNamed:@"加载按钮"];
-}
 
-
-- (NSAttributedString *)buttonTitleForEmptyDataSet:(UIScrollView *)scrollView forState:(UIControlState)state{
-    NSDictionary *attributes = @{NSFontAttributeName: [UIFont boldSystemFontOfSize:17.0f]};
-    return [[NSAttributedString alloc] initWithString:@"重新加载" attributes:attributes];
-    
-}
 
 - (void)emptyDataSet:(UIScrollView *)scrollView didTapButton:(UIButton *)button
 {

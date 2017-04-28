@@ -76,7 +76,6 @@
 		53E5C0751EB1D309008B1F22 /* xieyiViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 53E5C0741EB1D309008B1F22 /* xieyiViewController.m */; };
 		53E5C0781EB1D802008B1F22 /* bannerLab.m in Sources */ = {isa = PBXBuildFile; fileRef = 53E5C0771EB1D802008B1F22 /* bannerLab.m */; };
 		53E5C07B1EB1F8ED008B1F22 /* TimeInterval.m in Sources */ = {isa = PBXBuildFile; fileRef = 53E5C07A1EB1F8ED008B1F22 /* TimeInterval.m */; };
-		53E863C71EAD8EDA001F6FD8 /* chat_bottom_textfield.png in Resources */ = {isa = PBXBuildFile; fileRef = 53E863C61EAD8EDA001F6FD8 /* chat_bottom_textfield.png */; };
 		53E863CA1EAD99B0001F6FD8 /* keyboardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 53E863C91EAD99B0001F6FD8 /* keyboardView.m */; };
 		53E863CC1EADADB4001F6FD8 /* 牛评用户协议.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 53E863CB1EADADB4001F6FD8 /* 牛评用户协议.jpg */; };
 		53E863D21EAE02B0001F6FD8 /* Timestr.m in Sources */ = {isa = PBXBuildFile; fileRef = 53E863D11EAE02B0001F6FD8 /* Timestr.m */; };
@@ -257,7 +256,6 @@
 		53E5C0771EB1D802008B1F22 /* bannerLab.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = bannerLab.m; sourceTree = "<group>"; };
 		53E5C0791EB1F8ED008B1F22 /* TimeInterval.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeInterval.h; sourceTree = "<group>"; };
 		53E5C07A1EB1F8ED008B1F22 /* TimeInterval.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeInterval.m; sourceTree = "<group>"; };
-		53E863C61EAD8EDA001F6FD8 /* chat_bottom_textfield.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chat_bottom_textfield.png; sourceTree = "<group>"; };
 		53E863C81EAD99AF001F6FD8 /* keyboardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = keyboardView.h; sourceTree = "<group>"; };
 		53E863C91EAD99B0001F6FD8 /* keyboardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = keyboardView.m; sourceTree = "<group>"; };
 		53E863CB1EADADB4001F6FD8 /* 牛评用户协议.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "牛评用户协议.jpg"; sourceTree = "<group>"; };
@@ -543,7 +541,6 @@
 		53619EDA1E98D25C007CC7AC /* view */ = {
 			isa = PBXGroup;
 			children = (
-				53E863C61EAD8EDA001F6FD8 /* chat_bottom_textfield.png */,
 				53E587851EA7672A004CB302 /* pinglunCell.h */,
 				53E587861EA7672A004CB302 /* pinglunCell.m */,
 				53619EE21E98E0C7007CC7AC /* detailsheadView.h */,
@@ -1149,7 +1146,6 @@
 				53F9CB6F1E9B53B200C1F3A7 /* WeiboSDK.bundle in Resources */,
 				53F9CB741E9B53B200C1F3A7 /* ShareSDK.bundle in Resources */,
 				53AEBE271E948A2500280F70 /* Assets.xcassets in Resources */,
-				53E863C71EAD8EDA001F6FD8 /* chat_bottom_textfield.png in Resources */,
 				53F9CB711E9B53B200C1F3A7 /* read_me.txt in Resources */,
 				53AEBE251E948A2500280F70 /* Main.storyboard in Resources */,
 			);

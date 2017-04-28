@@ -41,6 +41,8 @@
 @property (nonatomic,strong) NSString *fromkeyboard;
 
 @property (nonatomic,strong) NSMutableArray *usernamearr;
+
+@property (nonatomic,strong) UIView *bgview;
 @end
 static NSString *detailsidentfid = @"detailsidentfid";
 
@@ -74,6 +76,9 @@ NSMutableArray * ymDataArray;
     [self addFooter];
     [self.view addSubview:self.maintable];
     [self.view addSubview:self.keyView];
+    [self.view.window addSubview:self.bgview];
+    
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -250,8 +255,10 @@ NSMutableArray * ymDataArray;
         [_headview.sharebtn addTarget:self action:@selector(shareclick) forControlEvents:UIControlEventTouchUpInside];
         [_headview.dianzanbtn addTarget:self action:@selector(dianzanclick) forControlEvents:UIControlEventTouchUpInside];
         [_headview.combtn addTarget:self action:@selector(pinglunclick) forControlEvents:UIControlEventTouchUpInside];
+        
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(webimagego)];
         [_headview.title addGestureRecognizer:tap];
+        
     }
     return _headview;
 }
@@ -290,8 +297,7 @@ NSMutableArray * ymDataArray;
     if(!_keyView)
     {
         _keyView = [[keyboardView alloc] init];
-        //_keyView.backgroundColor = [UIColor greenColor];
-        _keyView.frame = CGRectMake(0, DEVICE_HEIGHT-64-44, DEVICE_WIDTH, 44);
+        _keyView.frame = CGRectMake(0, DEVICE_HEIGHT-64-44-14, DEVICE_WIDTH, 44+14);
         //增加监听，当键盘出现或改变时收出消息
         _keyView.textview.delegate = self;
         [[NSNotificationCenter defaultCenter] addObserver:self
@@ -306,8 +312,24 @@ NSMutableArray * ymDataArray;
                                                    object:nil];
         
         [_keyView.sendbtn addTarget:self action:@selector(sendbtnclick) forControlEvents:UIControlEventTouchUpInside];
+        _keyView.backgroundColor = [UIColor whiteColor];
+        _keyView.textview.backgroundColor = [UIColor whiteColor];
     }
     return _keyView;
+}
+
+-(UIView *)bgview
+{
+    if(!_bgview)
+    {
+        _bgview = [[UIView alloc] init];
+    
+        _bgview.backgroundColor = [UIColor colorWithRed:(40/255.0f) green:(40/255.0f) blue:(40/255.0f) alpha:1.0f];
+        _bgview.alpha = 0.4;
+        UITapGestureRecognizer *tap2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(keyboardremove)];
+        [_bgview addGestureRecognizer:tap2];
+    }
+    return _bgview;
 }
 
 #pragma mark - UITableViewDataSource && UITableViewDelegate
@@ -421,7 +443,7 @@ NSMutableArray * ymDataArray;
     self.secview.layer.masksToBounds = YES;
 
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [button setFrame:CGRectMake(0, 0, self.view.frame.size.width, 54)];
+    [button setFrame:CGRectMake(0, 0, self.view.frame.size.width, 64)];
     [button setTag:section+1];
     button.backgroundColor = [UIColor whiteColor];
     // 设置Image
@@ -436,7 +458,6 @@ NSMutableArray * ymDataArray;
     // 添加点击事件
     [button addTarget:self action:@selector(buttonPress:) forControlEvents:UIControlEventTouchUpInside];
     [_secview addSubview:button];
-    
     return _secview;
 }
 
@@ -644,7 +665,7 @@ NSMutableArray * ymDataArray;
     }
     else
     {
-        self.maintable.alpha = 0.4;
+       // self.maintable.alpha = 0.4;
         self.fromkeyboard = @"zhupinglun";
         [self.keyView.textview becomeFirstResponder];
     }
@@ -664,7 +685,7 @@ NSMutableArray * ymDataArray;
     }
     else
     {
-        self.maintable.alpha = 0.4;
+        //self.maintable.alpha = 0.4;
         NSLog(@"index==%ld",(long)sender.tag);
         [self.keyView.textview becomeFirstResponder];
         self.fromkeyboard = @"section";
@@ -686,7 +707,7 @@ NSMutableArray * ymDataArray;
     }
     else
     {
-        self.maintable.alpha = 0.4;
+        //self.maintable.alpha = 0.4;
         self.fromkeyboard = @"cellpinglun";
         [self.keyView.textview becomeFirstResponder];
         self.keyView.index = indexPath.section;
@@ -711,26 +732,37 @@ NSMutableArray * ymDataArray;
     NSValue *aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
     CGRect keyboardRect = [aValue CGRectValue];
     int height = keyboardRect.size.height;
-    
+    _bgview.frame = CGRectMake(0, 0,DEVICE_WIDTH,DEVICE_HEIGHT-height-58);
+    [self.view.window addSubview:self.bgview];
     [UIView animateWithDuration:[aNotification.userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue] animations:^{
+       
         self.keyView.transform=CGAffineTransformMakeTranslation(0, -height);
-        self.maintable.alpha = 0.4;
-        
+
     }];
+    
+    
 }
 
 //当键退出时调用
 
 - (void)keyboardWillHide:(NSNotification *)aNotification
 {
+    [self.bgview removeFromSuperview];
     [UIView animateWithDuration:[aNotification.userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue] animations:^{
-        self.maintable.alpha = 1;
+        
         self.keyView.transform=CGAffineTransformIdentity;
+        
     } completion:^(BOOL finished) {
         
         self.keyView.textview.text=@"";
-        //[self.keyView removeFromSuperview];
+        
     }];
+}
+
+-(void)keyboardremove
+{
+    NSLog(@"空白处点击");
+    [self.keyView.textview resignFirstResponder];
 }
 
 
@@ -1032,12 +1064,6 @@ NSMutableArray * ymDataArray;
         [self.headview.thumlabel sizeToFit];
         
     }
-
-    
-    
-    
-    
-    
     
     if (thumarr.count==0) {
         [self.headview.thumlabel setHidden:YES];
@@ -1083,7 +1109,6 @@ NSMutableArray * ymDataArray;
                 make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
             }];
             _headview.frame = CGRectMake(0, 0, DEVICE_WIDTH, 380*HEIGHT_SCALE);
-            //_maintable.frame = CGRectMake(0, -40, DEVICE_WIDTH, DEVICE_HEIGHT-24);
         }else
         {
             CGSize textSize = [self.headview.contentlab setText:self.headview.contentlab.text lines:QSTextDefaultLines andLineSpacing:QSTextLineSpacing constrainedToSize:CGSizeMake(DEVICE_WIDTH - 28*WIDTH_SCALE,MAXFLOAT)];

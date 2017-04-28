@@ -20,4 +20,7 @@
 @property (nonatomic,strong) NSString *pidstr;
 @property (nonatomic,strong) NSString *touidstr;
 @property (nonatomic,assign) NSInteger secindex;
+
+@property (nonatomic,strong) UIView *bgview;
 @end
+

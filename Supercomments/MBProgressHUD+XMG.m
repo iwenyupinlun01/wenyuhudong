@@ -72,6 +72,7 @@
 
 + (void)hideHUD
 {
+
     [self hideHUDForView:nil];
 }
 @end

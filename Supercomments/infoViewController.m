@@ -14,7 +14,7 @@
 #import "setViewController.h"
 #import "myinfoViewController.h"
 
-@interface infoViewController ()<UITableViewDataSource,UITableViewDelegate>
+@interface infoViewController ()<UITableViewDataSource,UITableViewDelegate,MBProgressHUDDelegate>
 @property (nonatomic,strong) UITableView *infotableview;
 @property (nonatomic,strong) NSArray *imgarr;
 @property (nonatomic,strong) NSArray *textarr;

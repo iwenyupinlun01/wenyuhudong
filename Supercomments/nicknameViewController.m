@@ -129,20 +129,46 @@ static NSString *nickcellidentfid = @"nickidentfid";
     
     
     UITextField *textname = [self.nicktable viewWithTag:100];
-    if (textname.text.length<4) {
-        [MBProgressHUD showSuccess:@"请至少输入四位有效字符"];
-    }else if (textname.text.length>12)
-    {
-        [MBProgressHUD showSuccess:@"不能超过12位字符"];
-    }
-    else
-    {
-        [[NSNotificationCenter defaultCenter]postNotificationName:@"usernamexiugai" object:textname.text];
-        NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
-        [userdefat setObject:textname.text forKey:@"namestr"];
-        [userdefat synchronize];
-        [self.navigationController popViewControllerAnimated:YES];
-    }
+
+        
+        [AFManager postReqURL:xiugainicheng reqBody:@{@"token":[tokenstr tokenstrfrom],@"nickname":textname.text} block:^(id infor) {
+            NSLog(@"infor-------%@",infor);
+            if ([[infor objectForKey:@"code"] intValue]==-1) {
+                [MBProgressHUD showSuccess:@"token失效"];
+            }
+            if ([[infor objectForKey:@"code"] intValue]==0) {
+                [MBProgressHUD showSuccess:@"token错误"];
+            }
+            if ([[infor objectForKey:@"code"] intValue]==1) {
+                [MBProgressHUD showSuccess:@"修改成功"];
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"usernamexiugai" object:textname.text];
+                NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
+                [userdefat setObject:textname.text forKey:@"namestr"];
+                [userdefat synchronize];
+                [self.navigationController popViewControllerAnimated:YES];
+
+            }
+            if ([[infor objectForKey:@"code"] intValue]==3100) {
+                [MBProgressHUD showSuccess:@"昵称格式不正确"];
+            }if ([[infor objectForKey:@"code"] intValue]==3101) {
+                [MBProgressHUD showSuccess:@"该昵称禁止注册"];
+            }
+            if ([[infor objectForKey:@"code"] intValue]==3102) {
+                [MBProgressHUD showSuccess:@"该昵称已经被注册过了"];
+            }
+            if ([[infor objectForKey:@"code"] intValue]==3103) {
+                [MBProgressHUD showSuccess:@"您没有进行任何修改"];
+            }
+            if ([[infor objectForKey:@"code"] intValue]==3104) {
+                [MBProgressHUD showSuccess:@"系统繁忙，请您稍后再试"];
+            }
+            if ([[infor objectForKey:@"code"] intValue]==3105) {
+                [MBProgressHUD showSuccess:@"昵称不能大于24个字符"];
+            }
+            if ([[infor objectForKey:@"code"] intValue]==3106) {
+                [MBProgressHUD showSuccess:@"昵称不能小于4个字符"];
+            }
+        }];
 }
 
 -(void)keyboardHide

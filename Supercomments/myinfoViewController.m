@@ -11,6 +11,9 @@
 #import "myinfoCell1.h"
 #import "nicknameViewController.h"
 @interface myinfoViewController ()<UITableViewDataSource,UITableViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
+{
+    MBProgressHUD *HUD;
+}
 @property (nonatomic,strong) UITableView *myinfotable;
 
 @property (nonatomic,strong) UIButton *sentbtn;
@@ -283,18 +286,31 @@ static NSString *myinfoidentfid1 = @"myidentfid1";
     NSData *data = UIImageJPEGRepresentation(originImage, 1.0f);
     NSString *base64str = [data base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
     NSLog(@"base64str-------%@",base64str);
-    [AFManager postReqURL:touxiang reqBody:@{@"token":[tokenstr tokenstrfrom],@"str":base64str} block:^(id infor) {
-        NSLog(@"infor-------%@",infor);
-        if ([[infor objectForKey:@"code"] intValue]==1) {
-            NSString *urlstr = [infor objectForKey:@"newIcon"];
-            NSUserDefaults *defat = [NSUserDefaults standardUserDefaults];
-            [defat setObject:urlstr forKey:@"pathurlstr"];
-            [defat synchronize];
-            
-            [self.myinfotable reloadData];
-        }
-    }];
     
+    
+    HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:HUD];
+    HUD.dimBackground = YES;
+    HUD.labelText = @"请稍等";
+    //显示对话框
+    [HUD showAnimated:YES whileExecutingBlock:^{
+        //对话框显示时需要执行的操作
+        [AFManager postReqURL:touxiang reqBody:@{@"token":[tokenstr tokenstrfrom],@"str":base64str} block:^(id infor) {
+            NSLog(@"infor-------%@",infor);
+            if ([[infor objectForKey:@"code"] intValue]==1) {
+                NSString *urlstr = [infor objectForKey:@"newIcon"];
+                NSUserDefaults *defat = [NSUserDefaults standardUserDefaults];
+                [defat setObject:urlstr forKey:@"pathurlstr"];
+                [defat synchronize];
+                [self.myinfotable reloadData];
+            }
+        }];
+        
+    } completionBlock:^{
+        //操作执行完后取消对话框
+        [HUD removeFromSuperview];
+        HUD = nil;
+    }];
 }
 
 -(void)nameasd:(NSNotification *)notifocation

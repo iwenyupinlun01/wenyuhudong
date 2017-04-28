@@ -57,5 +57,6 @@
 #define pinglunhuifu @"http://np.iwenyu.cn/forum/index/addComment.html"
 //界面隐藏
 #define jiemianyingcang @"http://np.iwenyu.cn/forum/user/proHide.html?token=%@&type=%@"
-
+//修改昵称
+#define xiugainicheng @"http://np.iwenyu.cn/forum/user/editNickname.html"
 #endif /* wangHeader_h */

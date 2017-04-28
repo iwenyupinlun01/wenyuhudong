@@ -128,6 +128,7 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 		return YES;
 	}
 	return NO;
+    
 }
 
 + (NSUInteger)hideAllHUDsForView:(UIView *)view animated:(BOOL)animated {
