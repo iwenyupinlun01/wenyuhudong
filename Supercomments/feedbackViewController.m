@@ -40,13 +40,12 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated{
-    
+    [super viewWillAppear:animated];
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
     self.feedtext.frame = CGRectMake(14*WIDTH_SCALE, 20*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 280*HEIGHT_SCALE);
 }
 
 -(void)viewWillDisappear:(BOOL)animated
-
 {
     [super viewWillDisappear:animated];
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;

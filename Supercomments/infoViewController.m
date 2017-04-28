@@ -21,6 +21,8 @@
 @property (nonatomic,strong) headView *headview;
 
 @property (nonatomic,strong) infoCell *cell;
+
+
 @end
 static NSString *infocellidentfid = @"infocellidentfid";
 
@@ -58,6 +60,10 @@ static NSString *infocellidentfid = @"infocellidentfid";
 
 -(void)loaddatafromweb
 {
+    NSString *path = [tokenstr userimgstrfrom];
+    NSLog(@"path-%@",path);
+    [_headview.infoimg sd_setImageWithURL:[NSURL URLWithString:path] placeholderImage:[UIImage imageNamed:@"头像默认图"]];
+    
     if ([tokenstr tokenstrfrom].length==0) {
         
     }else
@@ -144,10 +150,6 @@ static NSString *infocellidentfid = @"infocellidentfid";
         //初始化一个手势
         UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
         //为图片添加手势
-
-        NSString *path = [tokenstr userimgstrfrom];
-        NSLog(@"path-%@",path);
-        [_headview.infoimg sd_setImageWithURL:[NSURL URLWithString:path] placeholderImage:[UIImage imageNamed:@"头像默认图"]];
         [ _headview.infoimg addGestureRecognizer:singleTap];
     }
     return _headview;

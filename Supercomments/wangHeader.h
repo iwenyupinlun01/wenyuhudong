@@ -48,11 +48,14 @@
 //消息通知
 #define xiaoxitongzhijk @"http://np.iwenyu.cn/forum/user/messageInform.html?token=%@&page=%@"
 //修改头像
-#define touxiang @"http://np.iwenyu.cn/forum/user/userIcon.html?token=%@"
+#define touxiang @"http://np.iwenyu.cn/forum/user/userIcon.html"
 //token替换
 #define tokentihuan @"http://np.iwenyu.cn/forum/user/begin.html"
 //退出登陆
 #define tuichudenglu @"http://np.iwenyu.cn/forum/user/loginout.html"
 //评论
 #define pinglunhuifu @"http://np.iwenyu.cn/forum/index/addComment.html"
+//界面隐藏
+#define jiemianyingcang @"http://np.iwenyu.cn/forum/user/proHide.html?token=%@&type=%@"
+
 #endif /* wangHeader_h */

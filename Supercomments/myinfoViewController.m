@@ -13,7 +13,8 @@
 @interface myinfoViewController ()<UITableViewDataSource,UITableViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 @property (nonatomic,strong) UITableView *myinfotable;
 
-
+@property (nonatomic,strong) UIButton *sentbtn;
+@property (nonatomic,strong) UIImageView *demoimg;
 @end
 
 static NSString *myinfoidentfid0 = @"myidentfid0";
@@ -39,6 +40,7 @@ static NSString *myinfoidentfid1 = @"myidentfid1";
 
     [self.view addSubview:self.myinfotable];
       [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(nameasd:) name:@"usernamexiugai" object:nil];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -58,6 +60,40 @@ static NSString *myinfoidentfid1 = @"myidentfid1";
 }
 
 #pragma mark - getters
+
+-(UIImageView *)demoimg
+{
+    if(!_demoimg)
+    {
+        _demoimg = [[UIImageView alloc] initWithFrame:CGRectMake(30, 90, 100, 100)];
+        _demoimg.image = [UIImage imageNamed:@"矢量智能对象"];
+    }
+    return _demoimg;
+}
+
+-(UIButton *)sentbtn
+{
+    if(!_sentbtn)
+    {
+        _sentbtn = [[UIButton alloc] initWithFrame:CGRectMake(50, 250, 100, 40)];
+        [_sentbtn setTitle:@"发送" forState:normal];
+        [_sentbtn setTitleColor:[UIColor blackColor] forState:normal];
+        [_sentbtn addTarget:self action:@selector(sentbtnclick) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _sentbtn;
+}
+
+-(void)sentbtnclick
+{
+    UIImage *originImage = [UIImage imageNamed:@"启动页"];
+    NSData *data = UIImageJPEGRepresentation(originImage, 1.0f);
+    NSString *base64str = [data base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
+    NSLog(@"base64str-------%@",base64str);
+    [AFManager postReqURL:touxiang reqBody:@{@"token":[tokenstr tokenstrfrom],@"str":base64str} block:^(id infor) {
+        NSLog(@"infor-------%@",infor);
+    }];
+}
+
 
 -(UITableView *)myinfotable
 {
@@ -241,36 +277,25 @@ static NSString *myinfoidentfid1 = @"myidentfid1";
     UIImageView *picimage = [self.myinfotable viewWithTag:200];
     picimage.image = image;
     [self.myinfotable reloadData];
-    [self upLoadImage:image];
-}
-
-- (void)upLoadImage:(UIImage*)myImage
-{
-    
-    NSData *data=UIImageJPEGRepresentation(myImage, 0.01);
     
     
-//    @property (nonatomic, strong) UIImage *image;
-//    @property (nonatomic, strong) NSString *field;
-//    
-//    @property (nonatomic, strong) NSString *imageName; /
-    
-//    NSDictionary *dic = @{@"image":myImage,@"field":@"",@"imageNage":@"infoimg"};
-    
-    NSString *urlstr = [NSString stringWithFormat:touxiang,[tokenstr tokenstrfrom]];
-    NSLog(@"urlstr-------%@",urlstr);
-    [AFManager upLoadpath:urlstr reqBody:nil file:data fileName:@"file.jpg" fileType:@"image/jpg" block:^(id infor) {
-        NSLog(@"infor-----%@",infor);
-        
-    } errorBlock:^(NSError *error) {
-        
+    UIImage *originImage = image;
+    NSData *data = UIImageJPEGRepresentation(originImage, 1.0f);
+    NSString *base64str = [data base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
+    NSLog(@"base64str-------%@",base64str);
+    [AFManager postReqURL:touxiang reqBody:@{@"token":[tokenstr tokenstrfrom],@"str":base64str} block:^(id infor) {
+        NSLog(@"infor-------%@",infor);
+        if ([[infor objectForKey:@"code"] intValue]==1) {
+            NSString *urlstr = [infor objectForKey:@"newIcon"];
+            NSUserDefaults *defat = [NSUserDefaults standardUserDefaults];
+            [defat setObject:urlstr forKey:@"pathurlstr"];
+            [defat synchronize];
+            
+            [self.myinfotable reloadData];
+        }
     }];
     
-    
 }
-
-
-
 
 -(void)nameasd:(NSNotification *)notifocation
 {
@@ -279,4 +304,5 @@ static NSString *myinfoidentfid1 = @"myidentfid1";
     namelab.text = name;
     [self.myinfotable reloadData];
 }
+
 @end

@@ -38,7 +38,7 @@
     {
         nicknamestr = namestr;
     }
-    NSLog(@"token--------%@",nicknamestr);
+    NSLog(@"name--------%@",nicknamestr);
     return nicknamestr;
 }
 
@@ -54,7 +54,7 @@
     {
         userimgstr = imgstr;
     }
-    NSLog(@"token--------%@",userimgstr);
+    NSLog(@"pathurlstr--------%@",userimgstr);
     return userimgstr;
 }
 

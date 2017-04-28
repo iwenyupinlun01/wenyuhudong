@@ -14,6 +14,7 @@
 #import "YYPhotoGroupView.h"
 #import "xieyiScrollView.h"
 #import "xieyiViewController.h"
+#import "Timestr.h"
 @interface loginViewController ()<YBAttributeTapActionDelegate,WXApiDelegate,UIScrollViewDelegate>
 @property (nonatomic,strong) UIImageView *logoimg;
 @property (nonatomic,strong) UILabel *namelab;
@@ -61,8 +62,6 @@
     self.zhijiebtn.frame = CGRectMake(DEVICE_WIDTH-50*WIDTH_SCALE-20*WIDTH_SCALE, DEVICE_HEIGHT-24*WIDTH_SCALE-12*WIDTH_SCALE, 50*WIDTH_SCALE, 12*HEIGHT_SCALE);
     self.aggrentlab.frame = CGRectMake(20*WIDTH_SCALE, DEVICE_HEIGHT-24*HEIGHT_SCALE-12*HEIGHT_SCALE, 180*WIDTH_SCALE, 12*HEIGHT_SCALE);
 }
-
-
 
 -(void)viewWillDisappear:(BOOL)animated
 {
@@ -177,54 +176,21 @@
         
         [_aggrentlab yb_addAttributeTapActionWithStrings:@[@"用户协议"] tapClicked:^(NSString *string, NSRange range, NSInteger index) {
             NSLog(@"122");
-            [self tapAction];
+            xieyiViewController *xieyiVC = [[xieyiViewController alloc] init];
+            [self presentViewController:xieyiVC animated:YES completion:nil];
         }];
         
     }
     return _aggrentlab;
 }
 
--(xieyiScrollView *)xieyiview
-{
-    if(!_xieyiview)
-    {
-        _xieyiview = [[xieyiScrollView alloc] init];
-        _xieyiview.frame = CGRectMake(0, DEVICE_HEIGHT, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
-        //设置内容大小
-        _xieyiview.contentSize = _xieyiview.xieyiimg.frame.size;
-        //设置代理为控制器
-        _xieyiview.delegate = self;
-        //设置最小缩放比例
-        _xieyiview.minimumZoomScale = 1;
-        //设置最大缩放比例
-        _xieyiview.maximumZoomScale = 2;
-        UITapGestureRecognizer *tapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(handleTapGesture:)];
-        //设置手势点击数,双击：点2下
-        tapGesture.numberOfTapsRequired=2;
-        [_xieyiview addGestureRecognizer:tapGesture];
-        
-        //添加单击手势监听
-        UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapGesture:)];
-        [singleTap setNumberOfTapsRequired:1];
-        [_xieyiview addGestureRecognizer:singleTap];
-        [singleTap requireGestureRecognizerToFail:tapGesture];
-        
-    }
-    return _xieyiview;
-}
-
-
 
 #pragma mark - 实现方法
 
 -(void)loginbtnclick
 {
-    
     [self weixinLogin];
-    
-
 }
-
 
 -(void)gobackbtnclick
 {
@@ -270,6 +236,7 @@
             NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
             [userdefat setObject:token forKey:@"tokenuser"];
             [userdefat setObject:uid forKey:@"uid"];
+            [userdefat setObject:[Timestr getNowTimestamp] forKey:@"denglushijian"];
             NSLog(@"tolen-------------%@",token);
             [userdefat synchronize];
             [self dismissViewControllerAnimated:YES completion:nil];
@@ -297,44 +264,6 @@
     [self presentViewController:alert animated:YES completion:nil];
 }
 
-- (void)tapAction{
-    
-//    [UIView animateWithDuration:0.3 animations:^{
-//        self.xieyiview.transform = CGAffineTransformMakeTranslation(0, -DEVICE_HEIGHT);
-//        
-//    } completion:^(BOOL finished) {
-//        
-//    }];
-    xieyiViewController *xieyiVC = [[xieyiViewController alloc] init];
-    [self presentViewController:xieyiVC animated:YES completion:nil];
-
-}
-
-#pragma mark - 协议展示
-//放大缩小
--(void)handleTapGesture:(UIGestureRecognizer*)sender
-{
-    if(_xieyiview.zoomScale > 1.0){
-        [_xieyiview setZoomScale:1.0 animated:YES];
-        
-    }else{
-        [_xieyiview setZoomScale:2.0 animated:YES];
-    }
-}
-
-- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
-{
-    return _xieyiview.xieyiimg;
-}
-
--(void)tapGesture:(UIGestureRecognizer*)sender
-{
-    [UIView animateWithDuration:0.3 animations:^{
-        _xieyiview.transform=CGAffineTransformIdentity;
-    } completion:^(BOOL finished) {
-        
-    }];
-}
 
 
 

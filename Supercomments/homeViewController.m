@@ -14,7 +14,7 @@
 #import "hotViewController.h"
 #import "loginViewController.h"
 #import <SDWebImage/UIButton+WebCache.h>
-
+#import "TimeInterval.h"
 //Segment高度
 
 #define LG_segmentH 44
@@ -57,32 +57,64 @@
 
 }
 
+//判断登陆是否过期
+
+-(BOOL)shijianjisuan
+{
+    NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
+    NSString *timestr = [userdefault objectForKey:@"islogin"];
+    NSLog(@"timestr------%@",timestr);
+    if ([TimeInterval datetime:timestr]) {
+        NSLog(@"123");
+        //没有过期
+        return YES;
+        
+    }else
+    {   //登陆过期
+        return NO;
+    }
+}
+
 -(void)islogin
 {
-    NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
-    NSString *tokenkey = [userdefat objectForKey:@"tokenuser"];
-    NSLog(@"tokenkey===========%@",tokenkey);
-    [AFManager getReqURL:[NSString stringWithFormat:loginbool,tokenkey] block:^(id infor) {
+    [AFManager getReqURL:[NSString stringWithFormat:loginbool,[tokenstr tokenstrfrom]] block:^(id infor) {
         NSLog(@"infor=%@",infor);
-        if ([[infor objectForKey:@"code"]intValue]==0) {
+        if ([[infor objectForKey:@"is_login"]intValue]!=1) {
             NSLog(@"未登录");
             self.denglustr = @"";
             [self.infobtn sd_setImageWithURL:[NSURL URLWithString:@""] forState:normal placeholderImage:[UIImage imageNamed:@"未登录"]];
+            //[self.infobtn setImage:[UIImage imageNamed:@"未登录"] forState:normal];
+            
         }else
         {
             NSLog(@"已经登陆");
-            self.denglustr = @"denglu";
-            //NSDictionary *dic = [infor objectForKey:@"info"];
-           // NSString *urlstr = [dic objectForKey:@"headPath"];
-            NSString *urlstr = [tokenstr tokenstrfrom];
-            urlstr = @"http://www.qqbody.com/uploads/allimg/201401/09-045302_580.jpg";
             
-            [self.infobtn sd_setImageWithURL:[NSURL URLWithString:urlstr] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"未登录"]];
+            if ([self shijianjisuan]) {
+                //没有过期
+                
+                self.denglustr = @"denglu";
+                NSString *urlstr = [tokenstr userimgstrfrom];
+                [self.infobtn sd_setImageWithURL:[NSURL URLWithString:urlstr] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"头像默认图"]];
+                
+            }else
+            {
+                //登陆过期
+                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                [defaults removeObjectForKey:@"tokenuser"];
+                [defaults removeObjectForKey:@"access_token"];
+                [defaults removeObjectForKey:@"namestr"];
+                [defaults removeObjectForKey:@"pathurlstr"];
+                
+            }
+
+            
+
         }
         
     } errorblock:^(NSError *error) {
         
     }];
+    
 }
 
 -(void)loaddatafromweb
@@ -254,10 +286,10 @@
     if(!_infobtn)
     {
         _infobtn = [[UIButton alloc] initWithFrame:CGRectMake(14, 24, 36, 36)];
-        //_infobtn.backgroundColor = [UIColor greenColor];
+
         _infobtn.layer.masksToBounds = YES;
         _infobtn.layer.cornerRadius = 18;
-        
+
         [_infobtn addTarget:self action:@selector(infoclick) forControlEvents:UIControlEventTouchUpInside];
     }
     return _infobtn;
@@ -285,14 +317,13 @@
 
 -(void)infoclick
 {
-    if (self.denglustr.length!=0) {
+    if ([tokenstr tokenstrfrom].length!=0) {
         infoViewController *infovc = [[infoViewController alloc] init];
         [self.navigationController pushViewController:infovc animated:YES];
 
     }else
     {
         loginViewController *loginvc = [[loginViewController alloc] init];
-        
         [self presentViewController:loginvc animated:YES completion:^{
             
         }];

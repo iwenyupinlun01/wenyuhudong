@@ -60,9 +60,9 @@ NSMutableArray * ymDataArray;
     
     self.title = @"详情";
     self.navigationController.interactivePopGestureRecognizer.delegate = (id)self;
-    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
-    self.navigationController.navigationBar.barTintColor = [UIColor wjColorFloat:@"F5F5F5"];
+//    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
+//    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+    self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
     
     pn=1;
     self.cellcontarr = [NSMutableArray array];
@@ -245,8 +245,8 @@ NSMutableArray * ymDataArray;
     if(!_headview)
     {
         _headview = [[detailsheadView alloc] init];
-        _headview.layer.masksToBounds = YES;
-        _headview.layer.borderWidth = 0.3;
+        //_headview.layer.masksToBounds = YES;
+       // _headview.layer.borderWidth = 3;
         [_headview.sharebtn addTarget:self action:@selector(shareclick) forControlEvents:UIControlEventTouchUpInside];
         [_headview.dianzanbtn addTarget:self action:@selector(dianzanclick) forControlEvents:UIControlEventTouchUpInside];
         [_headview.combtn addTarget:self action:@selector(pinglunclick) forControlEvents:UIControlEventTouchUpInside];
@@ -290,7 +290,8 @@ NSMutableArray * ymDataArray;
     if(!_keyView)
     {
         _keyView = [[keyboardView alloc] init];
-        _keyView.frame = CGRectMake(0, DEVICE_HEIGHT-64, DEVICE_WIDTH, 44);
+        //_keyView.backgroundColor = [UIColor greenColor];
+        _keyView.frame = CGRectMake(0, DEVICE_HEIGHT-64-44, DEVICE_WIDTH, 44);
         //增加监听，当键盘出现或改变时收出消息
         _keyView.textview.delegate = self;
         [[NSNotificationCenter defaultCenter] addObserver:self
@@ -304,6 +305,7 @@ NSMutableArray * ymDataArray;
                                                      name:UIKeyboardWillHideNotification
                                                    object:nil];
         
+        [_keyView.sendbtn addTarget:self action:@selector(sendbtnclick) forControlEvents:UIControlEventTouchUpInside];
     }
     return _keyView;
 }
@@ -403,7 +405,6 @@ NSMutableArray * ymDataArray;
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     self.detailsmodel = self.detalisarr[section];
-    
     return  [sectionView cellHeightWithText:self.detailsmodel.contstr]+70;
 }
 
@@ -620,13 +621,12 @@ NSMutableArray * ymDataArray;
                 
             }];
             
-           
+        }
+        
             [self.maintable reloadData];
             
         }
-
     }
-}
 
 #pragma mark - 评论方法
 //一级评论
@@ -634,8 +634,6 @@ NSMutableArray * ymDataArray;
 {
     NSLog(@"评论");
   
-    
-    
     if ([tokenstr tokenstrfrom].length==0) {
         NSLog(@"请登陆");
         loginViewController *logvc = [[loginViewController alloc] init];
@@ -705,6 +703,7 @@ NSMutableArray * ymDataArray;
 #pragma mark - 输入框方法
 
 //当键盘出现或改变时调用
+
 - (void)keyboardWillShow:(NSNotification *)aNotification
 {
     //获取键盘的高度
@@ -714,7 +713,8 @@ NSMutableArray * ymDataArray;
     int height = keyboardRect.size.height;
     
     [UIView animateWithDuration:[aNotification.userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue] animations:^{
-        self.keyView.transform=CGAffineTransformMakeTranslation(0, -height-44);
+        self.keyView.transform=CGAffineTransformMakeTranslation(0, -height);
+        self.maintable.alpha = 0.4;
         
     }];
 }
@@ -743,15 +743,115 @@ NSMutableArray * ymDataArray;
     return YES;
 }
 
+//发送按钮
+
+-(void)sendbtnclick
+{
+    if ([self isNullToString:self.keyView.textview.text])
+    {
+        [self.keyView.textview resignFirstResponder];
+    }
+    else
+    {
+        //三级评论
+        if ([_fromkeyboard isEqualToString:@"cellpinglun"]) {
+            
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            NSString *namestr = [defaults objectForKey:@"namestr"];
+            
+            self.detailsmodel  = self.detalisarr[self.keyView.index];
+            NSMutableArray *mutaArray = [[NSMutableArray alloc] init];
+            [mutaArray addObjectsFromArray:self.detailsmodel.pingarr];
+            NSDictionary *dit = @{@"content":self.keyView.textview.text,@"s_nickname":namestr,@"s_to_nickname":self.keyView.nickname};
+            [mutaArray addObject:dit];
+            self.detailsmodel.pingarr = mutaArray;
+            [self.maintable reloadData];
+            
+            //网络请求
+            NSDictionary *para = @{@"token":[tokenstr tokenstrfrom],@"to_uid":self.keyView.touidstr,@"object_id":self.headm.objectidstr,@"content":self.keyView.textview.text,@"pid":self.keyView.pidstr};
+            
+            [CLNetworkingManager postCacheRequestWithUrlString:pinglunhuifu parameters:para cacheTime:YES succeed:^(id data) {
+                NSLog(@"data-------%@",data);
+                
+            } fail:^(NSError *error) {
+                
+            }];
+            
+        }else if([_fromkeyboard isEqualToString:@"section"])
+        {
+            //二级评论
+            self.detailsmodel  = self.detalisarr[self.keyView.secindex];
+            NSString *pidstr = self.detailsmodel.idstr;
+            NSString *uidstr = self.detailsmodel.touidstr;
+            
+            NSMutableArray *mutaArray = [[NSMutableArray alloc] init];
+            [mutaArray addObjectsFromArray:self.detailsmodel.pingarr];
+            NSString *tonickname = self.detailsmodel.namestr;
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            NSString *namestr = [defaults objectForKey:@"namestr"];
+            NSDictionary *dit = @{@"content":self.keyView.textview.text,@"s_nickname":namestr,@"s_to_nickname":tonickname};
+            [mutaArray addObject:dit];
+            self.detailsmodel.pingarr = mutaArray;
+            [self.maintable reloadData];
+            
+            //网络请求
+            NSDictionary *para = @{@"token":[tokenstr tokenstrfrom],@"to_uid":uidstr,@"object_id":self.headm.objectidstr,@"content":self.keyView.textview.text,@"pid":pidstr};
+            
+            [CLNetworkingManager postCacheRequestWithUrlString:pinglunhuifu parameters:para cacheTime:YES succeed:^(id data) {
+                NSLog(@"data-------%@",data);
+                
+            } fail:^(NSError *error) {
+                
+            }];
+        }
+        else
+        {
+            //                一级评论
+            self.detailsmodel = [[detailcellmodel alloc] init];
+            NSMutableArray *mutaArray = [[NSMutableArray alloc] init];
+            
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            NSString *namestr = [defaults objectForKey:@"namestr"];
+            NSString *name = namestr;
+            NSString *nowtime = [Timestr getNowTimestamp];
+            NSString *content = self.keyView.textview.text;
+            NSString *imageurl = @"";
+            self.detailsmodel.namestr = name;
+            self.detailsmodel.timestr = nowtime;
+            self.detailsmodel.contstr = content;
+            self.detailsmodel.imgurlstr = imageurl;
+            [mutaArray addObject:self.detailsmodel];
+            [mutaArray addObjectsFromArray:self.detalisarr];
+            self.detalisarr = mutaArray;
+            
+            [self.maintable reloadData];
+            
+            //网络请求
+            NSDictionary *para = @{@"token":[tokenstr tokenstrfrom],@"to_uid":@"0",@"object_id":self.headm.objectidstr,@"content":self.keyView.textview.text,@"pid":@"0"};
+            
+            [CLNetworkingManager postCacheRequestWithUrlString:pinglunhuifu parameters:para cacheTime:YES succeed:^(id data) {
+                NSLog(@"data-------%@",data);
+                
+            } fail:^(NSError *error) {
+                
+            }];
+            
+        }
+    }
+    
+}
+
 //响应return
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
-    if ([text isEqualToString:@"\n"]){ //判断输入的字是否是回车，即按下return
-        //在这里做你响应return键的代码
+    if ([text isEqualToString:@"\n"])
+    {           //判断输入的字是否是回车，即按下return
+                //在这里做你响应return键的代码
         NSLog(@"return");
         [textView resignFirstResponder];
         
-        if ([self isNullToString:textView.text]) {
+        if ([self isNullToString:textView.text])
+        {
             [textView resignFirstResponder];
         }
         else
@@ -780,7 +880,34 @@ NSMutableArray * ymDataArray;
                     
                 }];
                 
-            }else if([_fromkeyboard isEqualToString:@"zhupinglun"])
+            }else if([_fromkeyboard isEqualToString:@"section"])
+            {
+                //二级评论
+                self.detailsmodel  = self.detalisarr[self.keyView.secindex];
+                NSString *pidstr = self.detailsmodel.idstr;
+                NSString *uidstr = self.detailsmodel.touidstr;
+                
+                NSMutableArray *mutaArray = [[NSMutableArray alloc] init];
+                [mutaArray addObjectsFromArray:self.detailsmodel.pingarr];
+                NSString *tonickname = self.detailsmodel.namestr;
+                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                NSString *namestr = [defaults objectForKey:@"namestr"];
+                NSDictionary *dit = @{@"content":self.keyView.textview.text,@"s_nickname":namestr,@"s_to_nickname":tonickname};
+                [mutaArray addObject:dit];
+                self.detailsmodel.pingarr = mutaArray;
+                [self.maintable reloadData];
+                
+                //网络请求
+                NSDictionary *para = @{@"token":[tokenstr tokenstrfrom],@"to_uid":uidstr,@"object_id":self.headm.objectidstr,@"content":self.keyView.textview.text,@"pid":pidstr};
+                
+                [CLNetworkingManager postCacheRequestWithUrlString:pinglunhuifu parameters:para cacheTime:YES succeed:^(id data) {
+                    NSLog(@"data-------%@",data);
+                    
+                } fail:^(NSError *error) {
+                    
+                }];
+            }
+            else
             {
 //                一级评论
                 self.detailsmodel = [[detailcellmodel alloc] init];
@@ -812,37 +939,13 @@ NSMutableArray * ymDataArray;
                     
                 }];
 
-            }else
-            {
-                //二级评论
-                self.detailsmodel  = self.detalisarr[self.keyView.secindex];
-                NSString *pidstr = self.detailsmodel.idstr;
-                NSString *uidstr = self.detailsmodel.touidstr;
-                
-                NSMutableArray *mutaArray = [[NSMutableArray alloc] init];
-                [mutaArray addObjectsFromArray:self.detailsmodel.pingarr];
-                NSString *tonickname = self.detailsmodel.namestr;
-                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-                NSString *namestr = [defaults objectForKey:@"namestr"];
-                NSDictionary *dit = @{@"content":self.keyView.textview.text,@"s_nickname":namestr,@"s_to_nickname":tonickname};
-                [mutaArray addObject:dit];
-                self.detailsmodel.pingarr = mutaArray;
-                [self.maintable reloadData];
-                
-                //网络请求
-                NSDictionary *para = @{@"token":[tokenstr tokenstrfrom],@"to_uid":uidstr,@"object_id":self.headm.objectidstr,@"content":self.keyView.textview.text,@"pid":pidstr};
-                
-                [CLNetworkingManager postCacheRequestWithUrlString:pinglunhuifu parameters:para cacheTime:YES succeed:^(id data) {
-                    NSLog(@"data-------%@",data);
-                    
-                } fail:^(NSError *error) {
-                    
-                }];
             }
         }
+    
         return NO; //这里返回NO，就代表return键值失效，即页面上按下return，不会出现换行，如果为yes，则输入页面会换行
     }
     return YES;
+
 }
 
 
@@ -1091,10 +1194,6 @@ NSMutableArray * ymDataArray;
     }
     
 }
-
-
-
-
 
 @end
 

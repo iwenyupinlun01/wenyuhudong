@@ -33,6 +33,7 @@
 //@property (nonatomic,assign)id<WXApiDelegate>wxDelegate;
 
 @property (nonatomic,strong) NSString *typestr;
+@property (strong, nonatomic) UIView *lunchView;
 @end
 
 @implementation AppDelegate
@@ -47,13 +48,10 @@
     homeViewController *homevc = [[homeViewController alloc] init];
     navViewController *navigationController=[[navViewController alloc] initWithRootViewController:homevc];
     self.window.rootViewController=navigationController;
-    
     navigationController.navigationBar.barStyle = UIBarStyleDefault;
     navigationController.navigationBar.translucent = NO;
     navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    //navigationController.navigationBar.barTintColor = [UIColor wjColorFloat:@"008CCF"];
     [self.window makeKeyAndVisible];
-    
     self.typestr = @"0";
     
     //向微信注册应用。
@@ -126,7 +124,7 @@
         
     }else
     {
-        //[NSThread sleepForTimeInterval:0];
+        [NSThread sleepForTimeInterval:0];
         return NO;
     }
     return YES;
@@ -194,13 +192,12 @@
                 //            unionid = xxxxxxxxxxxxxxxxxx;
                 //        }
                 NSString *namestr = [dict objectForKey:@"nickname"];
-                NSString *pathurlstr = [dict objectForKey:@"pathurlstr"];
+                NSString *pathurlstr = [dict objectForKey:@"headimgurl"];
                 [defaults setObject:dict forKey:@"userinfo"];
                 [defaults setObject:namestr forKey:@"namestr"];
                 [defaults setObject:pathurlstr forKey:@"pathurlstr"];
-            
                 [defaults synchronize];
-//                [[NSNotificationCenter defaultCenter] postNotificationName:WXLoginSuccess object:@{@"code":aresp.code}];
+                
                 self.typestr = @"1";
                 
                 [[NSNotificationCenter defaultCenter] postNotificationName:WXLoginSuccess object:@"dengluchenggong"];
@@ -236,12 +233,18 @@
     // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
 }
 
-
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    
+    NSLog(@"home");
+    [AFManager getReqURL:[NSString stringWithFormat:jiemianyingcang,[tokenstr tokenstrfrom],@"1"] block:^(id infor) {
+        NSLog(@"infor-------%@",infor);
+        
+    } errorblock:^(NSError *error) {
+        
+    }];
 }
-
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
@@ -337,4 +340,5 @@
         }
     }
 }
+
 @end

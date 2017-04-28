@@ -10,6 +10,7 @@
 #import "replyCell.h"
 #import "replyModel.h"
 #import <DZNEmptyDataSet/UIScrollView+EmptyDataSet.h>
+#import "detailsViewController.h"
 @interface replyViewController ()<UITableViewDelegate,UITableViewDataSource,myTabVdelegate,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate>
 {
     int pn;
@@ -45,13 +46,11 @@ static NSString *replyidentfid = @"replyidentfid";
     self.navigationController.navigationBar.barTintColor = [UIColor wjColorFloat:@"F5F5F5"];
     [self.view addSubview:self.replytable];
     
-    
-    
 }
+
 -(void)viewWillAppear:(BOOL)animated{
-    
+    [super viewWillAppear:animated];
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
-    
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -238,12 +237,21 @@ static NSString *replyidentfid = @"replyidentfid";
 -(void)myTabVClick:(UITableViewCell *)cell
 {
     NSIndexPath *index = [self.replytable indexPathForCell:cell];
-    
+    self.rmodel = self.replyarr[index.row];
+    NSString *idstr = self.rmodel.obj_id;
+    detailsViewController *detalsVC = [[detailsViewController alloc] init];
+    detalsVC.detalisidstr = idstr;
+    [self.navigationController pushViewController:detalsVC animated:YES];
     NSLog(@"333===%ld",index.row);
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
 {
+    self.rmodel = self.replyarr[indexPath.row];
+    NSString *idstr = self.rmodel.obj_id;
+    detailsViewController *detalsVC = [[detailsViewController alloc] init];
+    detalsVC.detalisidstr = idstr;
+    [self.navigationController pushViewController:detalsVC animated:YES];
     NSLog(@"%ld",(long)indexPath.row);
 }
 

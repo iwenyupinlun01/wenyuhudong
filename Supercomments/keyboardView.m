@@ -16,6 +16,7 @@
     if (self) {
         //self.backgroundColor = [UIColor greenColor];
         [self addSubview:self.textview];
+        [self addSubview:self.sendbtn];
     }
     return self;
 }
@@ -23,12 +24,11 @@
 -(void)layoutSubviews
 {
     [super layoutSubviews];
-    self.textview.frame = CGRectMake(5, 2, DEVICE_WIDTH-10, 42);
-    
+    self.textview.frame = CGRectMake(5, 2, DEVICE_WIDTH-65, 40);
+    self.sendbtn.frame = CGRectMake(DEVICE_WIDTH-60, 2, 50, 40);
 }
 
 #pragma mark - getters
-
 
 -(UITextView *)textview
 {
@@ -42,6 +42,18 @@
     }
     return _textview;
 }
+
+-(UIButton *)sendbtn
+{
+    if(!_sendbtn)
+    {
+        _sendbtn = [[UIButton alloc] init];
+        [_sendbtn setTitle:@"发送" forState:normal];
+        [_sendbtn setTitleColor:[UIColor wjColorFloat:@"008CCF"] forState:normal];
+    }
+    return _sendbtn;
+}
+
 
 
 

@@ -75,6 +75,7 @@
 		53E5C0711EB08182008B1F22 /* xieyiScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 53E5C0701EB08182008B1F22 /* xieyiScrollView.m */; };
 		53E5C0751EB1D309008B1F22 /* xieyiViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 53E5C0741EB1D309008B1F22 /* xieyiViewController.m */; };
 		53E5C0781EB1D802008B1F22 /* bannerLab.m in Sources */ = {isa = PBXBuildFile; fileRef = 53E5C0771EB1D802008B1F22 /* bannerLab.m */; };
+		53E5C07B1EB1F8ED008B1F22 /* TimeInterval.m in Sources */ = {isa = PBXBuildFile; fileRef = 53E5C07A1EB1F8ED008B1F22 /* TimeInterval.m */; };
 		53E863C71EAD8EDA001F6FD8 /* chat_bottom_textfield.png in Resources */ = {isa = PBXBuildFile; fileRef = 53E863C61EAD8EDA001F6FD8 /* chat_bottom_textfield.png */; };
 		53E863CA1EAD99B0001F6FD8 /* keyboardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 53E863C91EAD99B0001F6FD8 /* keyboardView.m */; };
 		53E863CC1EADADB4001F6FD8 /* 牛评用户协议.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 53E863CB1EADADB4001F6FD8 /* 牛评用户协议.jpg */; };
@@ -254,6 +255,8 @@
 		53E5C0741EB1D309008B1F22 /* xieyiViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = xieyiViewController.m; sourceTree = "<group>"; };
 		53E5C0761EB1D802008B1F22 /* bannerLab.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bannerLab.h; sourceTree = "<group>"; };
 		53E5C0771EB1D802008B1F22 /* bannerLab.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = bannerLab.m; sourceTree = "<group>"; };
+		53E5C0791EB1F8ED008B1F22 /* TimeInterval.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeInterval.h; sourceTree = "<group>"; };
+		53E5C07A1EB1F8ED008B1F22 /* TimeInterval.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeInterval.m; sourceTree = "<group>"; };
 		53E863C61EAD8EDA001F6FD8 /* chat_bottom_textfield.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chat_bottom_textfield.png; sourceTree = "<group>"; };
 		53E863C81EAD99AF001F6FD8 /* keyboardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = keyboardView.h; sourceTree = "<group>"; };
 		53E863C91EAD99B0001F6FD8 /* keyboardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = keyboardView.m; sourceTree = "<group>"; };
@@ -933,6 +936,8 @@
 				538D53CF1EAF09E800E2DCAF /* tokenstr.m */,
 				53E863D01EAE02B0001F6FD8 /* Timestr.h */,
 				53E863D11EAE02B0001F6FD8 /* Timestr.m */,
+				53E5C0791EB1F8ED008B1F22 /* TimeInterval.h */,
+				53E5C07A1EB1F8ED008B1F22 /* TimeInterval.m */,
 			);
 			name = utlimodel;
 			sourceTree = "<group>";
@@ -1219,6 +1224,7 @@
 				53619E681E961CD2007CC7AC /* WJGtextView.m in Sources */,
 				53E5C0711EB08182008B1F22 /* xieyiScrollView.m in Sources */,
 				53FE161C1E9C89D000585111 /* sectionView.m in Sources */,
+				53E5C07B1EB1F8ED008B1F22 /* TimeInterval.m in Sources */,
 				538D53DD1EAF14BB00E2DCAF /* CLNetworkingManager.m in Sources */,
 				53619E651E961201007CC7AC /* myinfoCell1.m in Sources */,
 				53F9CB8A1E9B834900C1F3A7 /* UILabel+Category.m in Sources */,

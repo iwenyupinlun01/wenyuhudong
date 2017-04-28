@@ -11,6 +11,7 @@
 #import "aboutViewController.h"
 #import "SZKCleanCache.h"
 #import "loginViewController.h"
+#import "homeViewController.h"
 @interface setViewController ()<UITableViewDataSource,UITableViewDelegate>
 @property (nonatomic,strong) UITableView *settableview;
 @property (nonatomic,strong) UIButton *gobackbtn;
@@ -170,6 +171,10 @@ static NSString *setidentfid1 = @"setidentfid1";
     UIAlertController *control = [UIAlertController alertControllerWithTitle:@"提示" message:@"确定要退出登录吗" preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *action0 = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
         
+        homeViewController *viewCtl = self.navigationController.viewControllers[0];
+        
+        [self.navigationController popToViewController:viewCtl animated:YES];
+
     }];
     UIAlertAction *action1 = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [CLNetworkingManager postNetworkRequestWithUrlString:tuichudenglu parameters:@{@"token":[tokenstr tokenstrfrom]} isCache:YES succeed:^(id data) {

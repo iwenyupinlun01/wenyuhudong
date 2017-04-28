@@ -167,17 +167,22 @@ static NSString * const kShowTextCellReuseIdentifier = @"QSShowTextCell";
 }
 
 -(void)viewWillAppear:(BOOL)animated{
-    
+    [super viewWillAppear:animated];
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
-   
     self.systemtableview.frame = CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT-64);
-
 }
 
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+    
+    [AFManager getReqURL:[NSString stringWithFormat:jiemianyingcang,[tokenstr tokenstrfrom],@"2"] block:^(id infor) {
+        NSLog(@"infor-------%@",infor);
+        
+    } errorblock:^(NSError *error) {
+        
+    }];
 }
 
 #pragma mark - getters
