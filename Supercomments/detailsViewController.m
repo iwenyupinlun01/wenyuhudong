@@ -64,8 +64,6 @@ NSMutableArray * ymDataArray;
     
     self.title = @"详情";
     self.navigationController.interactivePopGestureRecognizer.delegate = (id)self;
-//    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
-//    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
     self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
     
     pn=1;
@@ -78,7 +76,8 @@ NSMutableArray * ymDataArray;
     [self addFooter];
     [self.view addSubview:self.maintable];
     [self.view addSubview:self.keyView];
-    [self.view.window addSubview:self.bgview];
+
+    [self bgviewadd];
     
     
 }
@@ -307,12 +306,15 @@ NSMutableArray * ymDataArray;
                                                      name:UIKeyboardWillShowNotification
                                                    object:nil];
         
+        
         //增加监听，当键退出时收出消息
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(keyboardWillHide:)
                                                      name:UIKeyboardWillHideNotification
                                                    object:nil];
         
+        
+        _keyView.textview.delegate = self;
         [_keyView.sendbtn addTarget:self action:@selector(sendbtnclick) forControlEvents:UIControlEventTouchUpInside];
         _keyView.backgroundColor = [UIColor whiteColor];
         _keyView.textview.backgroundColor = [UIColor whiteColor];
@@ -320,19 +322,7 @@ NSMutableArray * ymDataArray;
     return _keyView;
 }
 
--(UIView *)bgview
-{
-    if(!_bgview)
-    {
-        _bgview = [[UIView alloc] init];
-    
-        _bgview.backgroundColor = [UIColor colorWithRed:(40/255.0f) green:(40/255.0f) blue:(40/255.0f) alpha:1.0f];
-        _bgview.alpha = 0.4;
-        UITapGestureRecognizer *tap2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(keyboardremove)];
-        [_bgview addGestureRecognizer:tap2];
-    }
-    return _bgview;
-}
+
 
 #pragma mark - UITableViewDataSource && UITableViewDelegate
 
@@ -558,15 +548,18 @@ NSMutableArray * ymDataArray;
                     NSDictionary *dianzandic = @{@"dianzanindex":self.dianzanindex,@"diansanstr":self.headm.shifoudianzanstr};
                     [[NSNotificationCenter defaultCenter]postNotificationName:@"shifoudiandankvo" object:dianzandic];
                     
-                    [self.usernamearr addObject:[tokenstr nicknamestrfrom]];
                     
+                    NSMutableArray *zongzhuanarr = [NSMutableArray array];
+                    [zongzhuanarr addObject:[tokenstr nicknamestrfrom]];
+                    [zongzhuanarr addObjectsFromArray:self.usernamearr];
+                    self.usernamearr = zongzhuanarr;
                     NSLog(@"headmarr-----%@",self.usernamearr);
                     
                     dispatch_async(dispatch_get_main_queue(), ^
-                        {
-                            // 更UI
-                            [self headfromcontentstr:self.headm.contactstr andimageurl:self.headm.imgurlstr andgoodarr:self.usernamearr];
-                        });
+                    {
+                        // 更UI
+                        [self headfromcontentstr:self.headm.contactstr andimageurl:self.headm.imgurlstr andgoodarr:self.usernamearr];
+                    });
                 }
                 else if ([codestr intValue]==0)
                 {
@@ -618,10 +611,12 @@ NSMutableArray * ymDataArray;
                     self.headview.dianzanbtn.zanimg.image = [UIImage imageNamed:@"点赞-"];
                     [MBProgressHUD showSuccess:@"取消点赞"];
                     NSLog(@"成功");
-                    [self.usernamearr removeObjectAtIndex:self.usernamearr.count-1];
+                    
+                    [self.usernamearr removeObjectAtIndex:0];
+
                     dispatch_async(dispatch_get_main_queue(), ^
                     {
-                                       // 更UI
+                        // 更UI
                          [self headfromcontentstr:self.headm.contactstr andimageurl:self.headm.imgurlstr andgoodarr:self.usernamearr];
                     });
                   
@@ -673,8 +668,8 @@ NSMutableArray * ymDataArray;
     }
     else
     {
-       // self.maintable.alpha = 0.4;
         self.fromkeyboard = @"zhupinglun";
+        
         [self.keyView.textview becomeFirstResponder];
     }
 
@@ -693,7 +688,6 @@ NSMutableArray * ymDataArray;
     }
     else
     {
-        //self.maintable.alpha = 0.4;
         NSLog(@"index==%ld",(long)sender.tag);
         [self.keyView.textview becomeFirstResponder];
         self.fromkeyboard = @"section";
@@ -715,7 +709,6 @@ NSMutableArray * ymDataArray;
     }
     else
     {
-        //self.maintable.alpha = 0.4;
         self.fromkeyboard = @"cellpinglun";
         [self.keyView.textview becomeFirstResponder];
         self.keyView.index = indexPath.section;
@@ -740,37 +733,52 @@ NSMutableArray * ymDataArray;
     NSValue *aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
     CGRect keyboardRect = [aValue CGRectValue];
     int height = keyboardRect.size.height;
-    _bgview.frame = CGRectMake(0, 0,DEVICE_WIDTH,DEVICE_HEIGHT-height-58);
-    [self.view.window addSubview:self.bgview];
+    
+    self.bgview.hidden = NO;
+    
     [UIView animateWithDuration:[aNotification.userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue] animations:^{
        
         self.keyView.transform=CGAffineTransformMakeTranslation(0, -height);
+        self.bgview.alpha = 0.6;
 
     }];
-    
-    
 }
+
 
 //当键退出时调用
 
 - (void)keyboardWillHide:(NSNotification *)aNotification
 {
-    [self.bgview removeFromSuperview];
     [UIView animateWithDuration:[aNotification.userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue] animations:^{
-        
+        self.bgview.alpha = 0.0;
         self.keyView.transform=CGAffineTransformIdentity;
         
     } completion:^(BOOL finished) {
-        
+        self.bgview.hidden = YES;
         self.keyView.textview.text=@"";
         
     }];
 }
 
--(void)keyboardremove
+-(void)bgviewadd
 {
-    NSLog(@"空白处点击");
+    //添加屏幕的蒙罩
+    self.bgview = [[UIView alloc]initWithFrame:self.view.frame];
+    self.bgview.backgroundColor = [UIColor blackColor];
+    self.bgview.alpha = 0.0;
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(backgroundTapped:)];
+    [self.bgview addGestureRecognizer:tap];
+    [self.view insertSubview:self.bgview belowSubview:self.keyView];
+   
+}
+
+-(void)backgroundTapped:(UIGestureRecognizer *)tgp
+{
     [self.keyView.textview resignFirstResponder];
+    NSLog(@"空白处");
+    //self.bgview.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.0];
+    //[self.bgview removeFromSuperview];
+    //self.bgview.hidden = YES;
 }
 
 

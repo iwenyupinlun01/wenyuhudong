@@ -424,6 +424,7 @@ static NSString *newidentfid = @"newidentfid";
 #pragma mark - 加载失败
 
 - (UIImage *)imageForEmptyDataSet:(UIScrollView *)scrollView {
+    
     if ([_panduan404str isEqualToString:@"1"]) {
         return [UIImage imageNamed:@"加载失败"];
     }else
@@ -432,12 +433,6 @@ static NSString *newidentfid = @"newidentfid";
     }
     return nil;
 }
-
-//- (UIImage *)buttonImageForEmptyDataSet:(UIScrollView *)scrollView forState:(UIControlState)state{
-//    return [UIImage imageNamed:@"加载按钮"];
-//}
-
-
 
 - (void)emptyDataSet:(UIScrollView *)scrollView didTapButton:(UIButton *)button
 {

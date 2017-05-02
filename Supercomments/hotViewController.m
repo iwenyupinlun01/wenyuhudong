@@ -51,6 +51,10 @@ static NSString *hotidentfid = @"hotidentfid";
     // 3.2.上拉加载更多
     [self addFooter];
     [self.view addSubview:self.hottable];
+    
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(kvcdianzan:) name:@"shifoudiandankvo" object:nil];
+    
 }
 
 #pragma mark - 刷新控件
@@ -240,6 +244,7 @@ static NSString *hotidentfid = @"hotidentfid";
     NSLog(@"str======%@",str);
     detailsViewController *detailsvc = [[detailsViewController alloc] init];
     detailsvc.detalisidstr = str;
+    detailsvc.dianzanindex = [NSString stringWithFormat:@"%ld",(long)indexPath.row];
     [self.navigationController pushViewController:detailsvc animated:YES];
     
 }
@@ -249,7 +254,6 @@ static NSString *hotidentfid = @"hotidentfid";
 {
     NSIndexPath *index = [self.hottable indexPathForCell:cell];
     NSLog(@"333===%ld   点赞",index.row);
-    
     
     self.nmodel = [[newModel alloc] init];
     self.nmodel = self.dataarr[index.row];
@@ -397,6 +401,28 @@ static NSString *hotidentfid = @"hotidentfid";
     [self.navigationController pushViewController:surevc animated:YES];
 }
 
+#pragma mark - kvo
+
+-(void)kvcdianzan:(NSNotification *)notifocation
+{
+    NSDictionary *dic = [notifocation object];
+    //NSString *dianzanstr = (NSString *)[notifocation object];
+    NSLog(@"dianzanstr---------%@",dic);
+    NSInteger index = [[dic objectForKey:@"dianzanindex"] intValue];
+    self.nmodel = self.dataarr[index];
+    self.nmodel.sifoudianzanstr = [dic objectForKey:@"diansanstr"];
+    [self.dataarr replaceObjectAtIndex:index withObject:self.nmodel];
+    [self.hottable reloadData];
+}
+
+- (void)dealloc{
+    //[super dealloc];
+    // 移除当前对象监听的事件
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+}
+
+
 #pragma mark - 加载失败
 
 - (UIImage *)imageForEmptyDataSet:(UIScrollView *)scrollView {
@@ -404,16 +430,6 @@ static NSString *hotidentfid = @"hotidentfid";
     return [UIImage imageNamed:@"空的"];
 }
 
-
-//- (UIImage *)buttonImageForEmptyDataSet:(UIScrollView *)scrollView forState:(UIControlState)state{
-//    return [UIImage imageNamed:@"加载按钮"];
-//}
-//
-//- (NSAttributedString *)buttonTitleForEmptyDataSet:(UIScrollView *)scrollView forState:(UIControlState)state{
-//    NSDictionary *attributes = @{NSFontAttributeName: [UIFont boldSystemFontOfSize:17.0f]};
-//    return [[NSAttributedString alloc] initWithString:@"重新加载" attributes:attributes];
-//    
-//}
 
 - (void)emptyDataSet:(UIScrollView *)scrollView didTapButton:(UIButton *)button
 {
