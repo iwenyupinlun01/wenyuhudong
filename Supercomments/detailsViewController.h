@@ -11,4 +11,5 @@
 
 @interface detailsViewController : UIViewController
 @property (nonatomic,strong) NSString *detalisidstr;
+@property (nonatomic,strong) NSString *dianzanindex;
 @end

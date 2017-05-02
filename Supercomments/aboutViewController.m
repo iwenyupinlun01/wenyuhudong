@@ -52,7 +52,6 @@
 }
 
 -(void)viewWillDisappear:(BOOL)animated
-
 {
     [super viewWillDisappear:animated];
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
@@ -62,6 +61,7 @@
 {
     [AFManager getReqURL:guanyujiemian block:^(id infor) {
         NSLog(@"infor------%@",infor);
+        
         NSDictionary *dit = [infor objectForKey:@"info"];
         NSString *infro = [dit objectForKey:@"intro"];
         NSString *logo = [dit objectForKey:@"logo"];

@@ -42,7 +42,7 @@ static NSString *myinfoidentfid1 = @"myidentfid1";
     self.myinfotable.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 
     [self.view addSubview:self.myinfotable];
-      [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(nameasd:) name:@"usernamexiugai" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(nameasd:) name:@"usernamexiugai" object:nil];
     
 }
 
@@ -321,4 +321,10 @@ static NSString *myinfoidentfid1 = @"myidentfid1";
     [self.myinfotable reloadData];
 }
 
+- (void)dealloc{
+    //[super dealloc];
+    // 移除当前对象监听的事件
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+}
 @end

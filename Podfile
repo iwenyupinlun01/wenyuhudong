@@ -18,4 +18,5 @@ pod 'Masonry'
 pod 'YYKit'
 pod 'MJRefresh'
 pod 'DZNEmptyDataSet'
+pod 'CGCellContentViewManager', '1.0'
 end

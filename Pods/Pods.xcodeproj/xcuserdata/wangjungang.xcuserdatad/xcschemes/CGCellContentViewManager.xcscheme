@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'E35D6055D52AD4F1B6FC208CEB6C1DC9'
-               BlueprintName = 'SWTableViewCell'
+               BlueprintIdentifier = '18DAA76EE37DC70CB83BB19C68BE2ED6'
+               BlueprintName = 'CGCellContentViewManager'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'libSWTableViewCell.a'>
+               BuildableName = 'libCGCellContentViewManager.a'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

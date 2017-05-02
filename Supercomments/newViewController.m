@@ -26,8 +26,6 @@
 @property (nonatomic,strong) NSMutableArray *dataarr;
 @property (nonatomic,strong) newModel *nmodel;
 @property (nonatomic,strong) NSMutableArray *imgarr;
-@property (strong, nonatomic) NSMutableArray<newModel *> * menus;
-
 @property (nonatomic,strong) NSString *panduan404str;
 @end
 static NSString *newidentfid = @"newidentfid";
@@ -52,9 +50,8 @@ static NSString *newidentfid = @"newidentfid";
     [self addFooter];
     [self.view addSubview:self.newtable];
     
-    [self xw_addNotificationForName:@"headdianzan" block:^(NSNotification *notification) {
-        NSLog(@"收到通知：%@", notification.userInfo);
-    }];
+     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(kvcdianzan:) name:@"shifoudiandankvo" object:nil];
+    
 }
 
 #pragma mark - 刷新控件
@@ -245,6 +242,7 @@ static NSString *newidentfid = @"newidentfid";
     NSLog(@"str======%@",str);
     detailsViewController *detailsvc = [[detailsViewController alloc] init];
     detailsvc.detalisidstr = str;
+    detailsvc.dianzanindex = [NSString stringWithFormat:@"%ld",(long)indexPath.row];
     [self.navigationController pushViewController:detailsvc animated:YES];
     
 }
@@ -400,6 +398,27 @@ static NSString *newidentfid = @"newidentfid";
     surevc.url = urlstr;
     surevc.canDownRefresh = YES;
     [self.navigationController pushViewController:surevc animated:YES];
+}
+
+#pragma mark - kvo
+
+-(void)kvcdianzan:(NSNotification *)notifocation
+{
+    NSDictionary *dic = [notifocation object];
+    //NSString *dianzanstr = (NSString *)[notifocation object];
+    NSLog(@"dianzanstr---------%@",dic);
+    NSInteger index = [[dic objectForKey:@"dianzanindex"] intValue];
+    self.nmodel = self.dataarr[index];
+    self.nmodel.sifoudianzanstr = [dic objectForKey:@"diansanstr"];
+    [self.dataarr replaceObjectAtIndex:index withObject:self.nmodel];
+    [self.newtable reloadData];
+}
+
+- (void)dealloc{
+    //[super dealloc];
+    // 移除当前对象监听的事件
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
 }
 
 #pragma mark - 加载失败

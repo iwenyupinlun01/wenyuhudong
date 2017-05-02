@@ -20,6 +20,7 @@
 #import <ShareSDK/ShareSDK.h>
 #import <ShareSDKUI/ShareSDK+SSUI.h>
 #import "AppDelegate.h"
+
 @interface detailsViewController ()<UITableViewDataSource,UITableViewDelegate,UITextViewDelegate,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate,UIScrollViewDelegate>
 {
     int pn;
@@ -43,6 +44,7 @@
 @property (nonatomic,strong) NSMutableArray *usernamearr;
 
 @property (nonatomic,strong) UIView *bgview;
+
 @end
 static NSString *detailsidentfid = @"detailsidentfid";
 
@@ -77,12 +79,6 @@ NSMutableArray * ymDataArray;
     [self.view addSubview:self.maintable];
     [self.view addSubview:self.keyView];
     [self.view.window addSubview:self.bgview];
-    
-    [self.headm.shifoudianzanstr xw_addObserverBlockForKeyPath:@"headdianzan" block:^(id obj, id oldVal, id newVal) {
-        
-        NSLog(@"kvo，修改name为%@", newVal);
-        
-    }];
     
     
 }
@@ -549,6 +545,7 @@ NSMutableArray * ymDataArray;
         }else
         {
             //点赞
+            
             NSDictionary *reqdic = @{@"token":[tokenstr tokenstrfrom],@"object_id":self.detalisidstr,@"status":@"1",@"type":@"1"};
             [AFManager postReqURL:qudianzan reqBody:reqdic block:^(id infor) {
                 NSLog(@"infor=====%@",infor);
@@ -557,8 +554,10 @@ NSMutableArray * ymDataArray;
                     self.headview.dianzanbtn.zanimg.image = [UIImage imageNamed:@"点赞-拷贝"];
                     [MBProgressHUD showSuccess:@"点赞"];
                     NSLog(@"成功");
-                    
                     self.headm.shifoudianzanstr = @"1";
+                    NSDictionary *dianzandic = @{@"dianzanindex":self.dianzanindex,@"diansanstr":self.headm.shifoudianzanstr};
+                    [[NSNotificationCenter defaultCenter]postNotificationName:@"shifoudiandankvo" object:dianzandic];
+                    
                     [self.usernamearr addObject:[tokenstr nicknamestrfrom]];
                     
                     NSLog(@"headmarr-----%@",self.usernamearr);
@@ -613,6 +612,9 @@ NSMutableArray * ymDataArray;
                 NSString *codestr = [data objectForKey:@"code"];
                 if ([codestr intValue]==1) {
                     self.headm.shifoudianzanstr = @"0";
+                    NSDictionary *dianzandic = @{@"dianzanindex":self.dianzanindex,@"diansanstr":self.headm.shifoudianzanstr};
+                    [[NSNotificationCenter defaultCenter]postNotificationName:@"shifoudiandankvo" object:dianzandic];
+                    
                     self.headview.dianzanbtn.zanimg.image = [UIImage imageNamed:@"点赞-"];
                     [MBProgressHUD showSuccess:@"取消点赞"];
                     NSLog(@"成功");

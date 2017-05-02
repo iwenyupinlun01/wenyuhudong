@@ -52,6 +52,6 @@
 #import "MBProgressHUD+XMG.h"
 #import "tokenstr.h"
 #import "CLNetworking.h"
-#import "NSObject+XWAdd.h"
+
 #ifdef __OBJC__
 #endif

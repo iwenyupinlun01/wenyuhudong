@@ -177,7 +177,7 @@ static NSString *infocellidentfid = @"infocellidentfid";
     _cell.leftimg.image = [UIImage imageNamed:self.imgarr[indexPath.row]];
     _cell.textlab.text = self.textarr[indexPath.row];
     _cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
-    _cell.selectionStyle = UITableViewCellSelectionStyleNone;
+   // _cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return _cell;
 }
 
