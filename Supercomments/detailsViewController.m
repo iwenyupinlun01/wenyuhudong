@@ -78,6 +78,12 @@ NSMutableArray * ymDataArray;
     [self.view addSubview:self.keyView];
     [self.view.window addSubview:self.bgview];
     
+    [self.headm.shifoudianzanstr xw_addObserverBlockForKeyPath:@"headdianzan" block:^(id obj, id oldVal, id newVal) {
+        
+        NSLog(@"kvo，修改name为%@", newVal);
+        
+    }];
+    
     
 }
 
@@ -785,6 +791,7 @@ NSMutableArray * ymDataArray;
     }
     else
     {
+        [self.keyView.textview resignFirstResponder];
         //三级评论
         if ([_fromkeyboard isEqualToString:@"cellpinglun"]) {
             
@@ -797,6 +804,7 @@ NSMutableArray * ymDataArray;
             NSDictionary *dit = @{@"content":self.keyView.textview.text,@"s_nickname":namestr,@"s_to_nickname":self.keyView.nickname};
             [mutaArray addObject:dit];
             self.detailsmodel.pingarr = mutaArray;
+            
             [self.maintable reloadData];
             
             //网络请求

@@ -51,6 +51,10 @@ static NSString *newidentfid = @"newidentfid";
     // 3.2.上拉加载更多
     [self addFooter];
     [self.view addSubview:self.newtable];
+    
+    [self xw_addNotificationForName:@"headdianzan" block:^(NSNotification *notification) {
+        NSLog(@"收到通知：%@", notification.userInfo);
+    }];
 }
 
 #pragma mark - 刷新控件

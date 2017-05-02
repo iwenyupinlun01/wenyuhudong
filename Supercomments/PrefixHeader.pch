@@ -39,8 +39,6 @@
 
 #define FX [UIScreen mainScreen].bounds.size.width/375
 
-
-#define serviseId  @"192.168.1.4"
 #endif /* PrefixHeader_pch */
 #import "wangHeader.h"
 
@@ -54,5 +52,6 @@
 #import "MBProgressHUD+XMG.h"
 #import "tokenstr.h"
 #import "CLNetworking.h"
+#import "NSObject+XWAdd.h"
 #ifdef __OBJC__
 #endif
