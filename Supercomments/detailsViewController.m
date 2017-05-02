@@ -264,11 +264,12 @@ NSMutableArray * ymDataArray;
     return _headview;
 }
 
+
 -(UITableView *)maintable
 {
     if(!_maintable)
     {
-        _maintable = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT-64) style:UITableViewStylePlain];
+        _maintable = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT-64-58) style:UITableViewStylePlain];
         _maintable.dataSource = self;
         _maintable.delegate = self;
         _maintable.tableHeaderView = self.headview;
@@ -607,13 +608,11 @@ NSMutableArray * ymDataArray;
                     self.headm.shifoudianzanstr = @"0";
                     NSDictionary *dianzandic = @{@"dianzanindex":self.dianzanindex,@"diansanstr":self.headm.shifoudianzanstr};
                     [[NSNotificationCenter defaultCenter]postNotificationName:@"shifoudiandankvo" object:dianzandic];
-                    
                     self.headview.dianzanbtn.zanimg.image = [UIImage imageNamed:@"点赞-"];
                     [MBProgressHUD showSuccess:@"取消点赞"];
                     NSLog(@"成功");
                     
                     [self.usernamearr removeObjectAtIndex:0];
-
                     dispatch_async(dispatch_get_main_queue(), ^
                     {
                         // 更UI
@@ -734,13 +733,13 @@ NSMutableArray * ymDataArray;
     CGRect keyboardRect = [aValue CGRectValue];
     int height = keyboardRect.size.height;
     
-    self.bgview.hidden = NO;
-    
     [UIView animateWithDuration:[aNotification.userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue] animations:^{
-       
         self.keyView.transform=CGAffineTransformMakeTranslation(0, -height);
         self.bgview.alpha = 0.6;
-
+        self.bgview.frame = CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT-44-14-height);
+        self.bgview.hidden = NO;
+    } completion:^(BOOL finished) {
+        
     }];
 }
 
@@ -755,9 +754,23 @@ NSMutableArray * ymDataArray;
         
     } completion:^(BOOL finished) {
         self.bgview.hidden = YES;
+        self.bgview.frame = CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT);
+        self.bgview.alpha = 1;
         self.keyView.textview.text=@"";
         
     }];
+}
+
+- (void)textViewDidChange:(UITextView *)textView
+{
+    if (textView.text.length==0) {
+        [self.keyView.sendbtn setTitleColor:[UIColor  wjColorFloat:@"C7C7CD"] forState:normal];
+
+    }else
+    {
+        [self.keyView.sendbtn setTitleColor:[UIColor blackColor] forState:normal];
+
+    }
 }
 
 -(void)bgviewadd
@@ -768,17 +781,16 @@ NSMutableArray * ymDataArray;
     self.bgview.alpha = 0.0;
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(backgroundTapped:)];
     [self.bgview addGestureRecognizer:tap];
-    [self.view insertSubview:self.bgview belowSubview:self.keyView];
-   
+    
+    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    [delegate.window addSubview:self.bgview];
+
 }
 
 -(void)backgroundTapped:(UIGestureRecognizer *)tgp
 {
     [self.keyView.textview resignFirstResponder];
     NSLog(@"空白处");
-    //self.bgview.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.0];
-    //[self.bgview removeFromSuperview];
-    //self.bgview.hidden = YES;
 }
 
 

@@ -46,6 +46,7 @@
         //_textview.layer.borderWidth = 0.6;
         //_textview.layer.cornerRadius = 4;
         _textview.returnKeyType=UIReturnKeySend;
+        _textview.enablesReturnKeyAutomatically = YES;
         [_textview setFont:[UIFont systemFontOfSize:15]];
        // _textview.backgroundColor = [UIColor greenColor];
     }

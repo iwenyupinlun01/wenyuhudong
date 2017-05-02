@@ -292,8 +292,10 @@ static NSString *myinfoidentfid1 = @"myidentfid1";
     [self.view addSubview:HUD];
     HUD.dimBackground = YES;
     HUD.labelText = @"请稍等";
-    //显示对话框
-    [HUD showAnimated:YES whileExecutingBlock:^{
+
+    [HUD show:YES];
+    
+    
         //对话框显示时需要执行的操作
         [AFManager postReqURL:touxiang reqBody:@{@"token":[tokenstr tokenstrfrom],@"str":base64str} block:^(id infor) {
             NSLog(@"infor-------%@",infor);
@@ -303,14 +305,14 @@ static NSString *myinfoidentfid1 = @"myidentfid1";
                 [defat setObject:urlstr forKey:@"pathurlstr"];
                 [defat synchronize];
                 [self.myinfotable reloadData];
+                
             }
+            [HUD removeFromSuperview];
+            HUD=nil;
+            [MBProgressHUD showSuccess:@"更改成功"];
         }];
         
-    } completionBlock:^{
-        //操作执行完后取消对话框
-        [HUD removeFromSuperview];
-        HUD = nil;
-    }];
+    
 }
 
 -(void)nameasd:(NSNotification *)notifocation
