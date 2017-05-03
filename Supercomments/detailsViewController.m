@@ -802,8 +802,9 @@ NSMutableArray * ymDataArray;
         self.bgview.hidden = YES;
         self.bgview.frame = CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT);
         self.bgview.alpha = 1;
-//        self.keyView.textview.text=@"";
-        
+        self.keyView.textview.text=@"";
+        self.keyView.touidstr = @"";
+        self.keyView.pidstr = @"";
         _keyView.textview.customPlaceholder = @"写评论";
         
     }];
@@ -824,7 +825,6 @@ NSMutableArray * ymDataArray;
 - (void)textViewDidBeginEditing:(UITextView *)textView
 {
     _keyView.textview.customPlaceholder = [NSString stringWithFormat:@"%@%@",@"评论@",self.headm.namestr];
-
 }
 
 -(void)bgviewadd
@@ -846,7 +846,6 @@ NSMutableArray * ymDataArray;
     [self.keyView.textview resignFirstResponder];
     NSLog(@"空白处");
 }
-
 
 #pragma mark - UITextViewDelegate
 
@@ -993,6 +992,7 @@ NSMutableArray * ymDataArray;
                 } fail:^(NSError *error) {
                     
                 }];
+                
                 
             }else if([_fromkeyboard isEqualToString:@"section"])
             {
@@ -1336,8 +1336,6 @@ NSMutableArray * ymDataArray;
                 make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
             }];
             _headview.frame = CGRectMake(0, 0, DEVICE_WIDTH, textSize.height+180*HEIGHT_SCALE+textsize2.height);
-            
-    
             
         }
 
