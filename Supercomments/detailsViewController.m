@@ -382,9 +382,10 @@ NSMutableArray * ymDataArray;
         [str addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"333333"] range:NSMakeRange(str1.length,str2.length)];
         [str addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"333333"] range:NSMakeRange(str1.length+str2.length, str4.length)];
         NSLog(@"str===============%@",str);
-        CGSize size = [str boundingRectWithSize:CGSizeMake(DEVICE_WIDTH -64*WIDTH_SCALE-14*WIDTH_SCALE, 0) options:NSStringDrawingUsesLineFragmentOrigin context:nil].size;
         cell.pinglunlab.attributedText = str;
-        cell.pinglunlab.frame = CGRectMake(128/2*WIDTH_SCALE+8,  8*HEIGHT_SCALE, DEVICE_WIDTH -64*WIDTH_SCALE-14*WIDTH_SCALE-8, size.height);
+        NSString *newstr = [str string];
+        CGSize size2 = [cell.pinglunlab setText:newstr lines:0 andLineSpacing:4 constrainedToSize:CGSizeMake(DEVICE_WIDTH -64*WIDTH_SCALE-14*WIDTH_SCALE-16*WIDTH_SCALE,MAXFLOAT)];
+        cell.pinglunlab.frame = CGRectMake(128/2*WIDTH_SCALE+8,  8*HEIGHT_SCALE, DEVICE_WIDTH -64*WIDTH_SCALE-14*WIDTH_SCALE-8, size2.height);
         cell.pinglunlab.font = [UIFont systemFontOfSize:14*FX];
     }
     else
@@ -396,9 +397,10 @@ NSMutableArray * ymDataArray;
         [str addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"576b95"] range:NSMakeRange(str1.length+str2.length,str3.length)];
         [str addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"333333"] range:NSMakeRange(str1.length+str2.length+str3.length,str4.length)];
         NSLog(@"str===============%@",str);
-        CGSize size = [str boundingRectWithSize:CGSizeMake(DEVICE_WIDTH -64*WIDTH_SCALE-14*WIDTH_SCALE, 0) options:NSStringDrawingUsesLineFragmentOrigin context:nil].size;
+        NSString *newstr = [str string];
+        CGSize size2 = [cell.pinglunlab setText:newstr lines:0 andLineSpacing:4 constrainedToSize:CGSizeMake(DEVICE_WIDTH -64*WIDTH_SCALE-14*WIDTH_SCALE-16*WIDTH_SCALE,MAXFLOAT)];
         cell.pinglunlab.attributedText = str;
-        cell.pinglunlab.frame = CGRectMake(128/2*WIDTH_SCALE+8,  8*HEIGHT_SCALE, DEVICE_WIDTH -64*WIDTH_SCALE-14*WIDTH_SCALE-8, size.height);
+        cell.pinglunlab.frame = CGRectMake(128/2*WIDTH_SCALE+8,  8*HEIGHT_SCALE, size2.width, size2.height);
         cell.pinglunlab.font = [UIFont systemFontOfSize:14*FX];
     }
     cell.pinglunlab.numberOfLines = 0;
@@ -422,16 +424,15 @@ NSMutableArray * ymDataArray;
     NSString *str2 = @"回复: ";
     
     if ([self isNullToString:str3]) {
-        
         NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@%@",str1,str2,str4]];
-        CGSize size = [str boundingRectWithSize:CGSizeMake(DEVICE_WIDTH -64*WIDTH_SCALE-14*WIDTH_SCALE-16, 0) options:NSStringDrawingUsesLineFragmentOrigin context:nil].size;
-        return size.height + 16*HEIGHT_SCALE;
+        NSString *newstr = [str string];
+        return [pinglunCell cellHeightWithText:newstr]+16;
     }
     else
     {
         NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@%@%@",str1,str2,str3,str4]];
-        CGSize size = [str boundingRectWithSize:CGSizeMake(DEVICE_WIDTH -64*WIDTH_SCALE-14*WIDTH_SCALE-16, 0) options:NSStringDrawingUsesLineFragmentOrigin context:nil].size;
-        return size.height + 16*HEIGHT_SCALE;
+        NSString *newstr = [str string];
+        return [pinglunCell cellHeightWithText:newstr]+16;
     }
     return 0;
 }
@@ -1270,4 +1271,3 @@ NSMutableArray * ymDataArray;
 }
 
 @end
-

@@ -65,10 +65,9 @@
     
     CGSize textSize = [UILabel sizeWithText:text
                                       lines:QSTextDefaultLines
-                                       font:[UIFont systemFontOfSize:16*FX]
-                             andLineSpacing:QSTextLineSpacing
-                          constrainedToSize:CGSizeMake(DEVICE_WIDTH - 94*WIDTH_SCALE-14*WIDTH_SCALE,MAXFLOAT)];
-    
+                                       font:[UIFont systemFontOfSize:14*FX]
+                             andLineSpacing:4
+                          constrainedToSize:CGSizeMake(DEVICE_WIDTH -64*WIDTH_SCALE-14*WIDTH_SCALE-16*WIDTH_SCALE,MAXFLOAT)];
     return textSize.height;
     
 }

@@ -27,6 +27,8 @@
 @property (nonatomic,strong) newModel *nmodel;
 @property (nonatomic,strong) NSMutableArray *imgarr;
 @property (nonatomic,strong) NSString *panduan404str;
+
+@property (nonatomic, assign) UIEdgeInsets insets;
 @end
 static NSString *newidentfid = @"newidentfid";
 @implementation newViewController
@@ -48,6 +50,8 @@ static NSString *newidentfid = @"newidentfid";
     [self addHeader];
     // 3.2.上拉加载更多
     [self addFooter];
+    
+     self.insets = UIEdgeInsetsMake(0, 14, 0, 14);
     [self.view addSubview:self.newtable];
     
      [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(kvcdianzan:) name:@"shifoudiandankvo" object:nil];
@@ -443,6 +447,23 @@ static NSString *newidentfid = @"newidentfid";
       [self addHeader];
 }
 
+#pragma mark 用于将cell分割线补全
+-(void)viewDidLayoutSubviews {
+    if ([self.newtable respondsToSelector:@selector(setSeparatorInset:)]) {
+        [self.newtable setSeparatorInset:self.insets];
+    }
+    if ([self.newtable respondsToSelector:@selector(setLayoutMargins:)])  {
+        [self.newtable setLayoutMargins:self.insets];
+    }
+}
 
-    
+-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath*)indexPath{
+    if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
+        [cell setLayoutMargins:self.insets];
+    }
+    if ([cell respondsToSelector:@selector(setSeparatorInset:)]){
+        [cell setSeparatorInset:self.insets];
+    }
+}
+
 @end

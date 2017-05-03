@@ -27,8 +27,9 @@
 @property (nonatomic,strong) NSMutableArray *dataarr;
 @property (nonatomic,strong) newModel *nmodel;
 @property (nonatomic,strong) NSMutableArray *imgarr;
-@property (strong, nonatomic) NSMutableArray<newModel *> * menus;
 
+
+@property (nonatomic, assign) UIEdgeInsets insets;
 @end
 static NSString *hotidentfid = @"hotidentfid";
 @implementation hotViewController
@@ -50,6 +51,9 @@ static NSString *hotidentfid = @"hotidentfid";
     [self addHeader];
     // 3.2.上拉加载更多
     [self addFooter];
+    
+    self.insets = UIEdgeInsetsMake(0, 14, 0, 14);
+    
     [self.view addSubview:self.hottable];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(kvcdianzan:) name:@"shifoudiandankvo" object:nil];
 }
@@ -121,6 +125,7 @@ static NSString *hotidentfid = @"hotidentfid";
     }];
     
 }
+
 - (void)footerRefreshEndAction {
     pn ++;
     NSString *pnstr = [NSString stringWithFormat:@"%d",pn];
@@ -190,6 +195,7 @@ static NSString *hotidentfid = @"hotidentfid";
         _hottable = [[UITableView alloc] init];
         _hottable.dataSource = self;
         _hottable.delegate = self;
+        _hottable.separatorColor = [UIColor wjColorFloat:@"F5F5F5"];
     }
     return _hottable;
 }
@@ -437,5 +443,26 @@ static NSString *hotidentfid = @"hotidentfid";
 {
     [self addHeader];
 }
+
+
+#pragma mark 用于将cell分割线补全
+-(void)viewDidLayoutSubviews {
+    if ([self.hottable respondsToSelector:@selector(setSeparatorInset:)]) {
+        [self.hottable setSeparatorInset:self.insets];
+    }
+    if ([self.hottable respondsToSelector:@selector(setLayoutMargins:)])  {
+        [self.hottable setLayoutMargins:self.insets];
+    }
+}
+
+-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath*)indexPath{
+    if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
+        [cell setLayoutMargins:self.insets];
+    }
+    if ([cell respondsToSelector:@selector(setSeparatorInset:)]){
+        [cell setSeparatorInset:self.insets];
+    }
+}
+
 
 @end
