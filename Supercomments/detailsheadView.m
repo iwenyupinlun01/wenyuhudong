@@ -47,7 +47,7 @@
     self.namelab.frame = CGRectMake(14*WIDTH_SCALE, 16*HEIGHT_SCALE, DEVICE_WIDTH/2, 14*HEIGHT_SCALE);
     self.fromlab.frame = CGRectMake(DEVICE_WIDTH-200*WIDTH_SCALE, 18*WIDTH_SCALE, 185*WIDTH_SCALE, 12*HEIGHT_SCALE);
     self.numberlab.frame = CGRectMake(14*WIDTH_SCALE, self.frame.size.height-14*HEIGHT_SCALE-8*HEIGHT_SCALE, 100*WIDTH_SCALE, 14*HEIGHT_SCALE);
-    _lineview.frame = CGRectMake(0, self.frame.size.height-1, DEVICE_WIDTH, 1);
+    _lineview.frame = CGRectMake(14, self.frame.size.height-1, DEVICE_WIDTH-28, 1);
     
 }
 
@@ -178,27 +178,27 @@
     {
         _headimg = [[UIImageView alloc] init];
         _headimg.userInteractionEnabled = YES;
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAction2)];
-        [_headimg addGestureRecognizer:tap];
-        
+//        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAction2)];
+//        [_headimg addGestureRecognizer:tap];
+//        
     }
     return _headimg;
 }
 
 #pragma mark - 图片放大
 
-- (void)tapAction2{
-    YYPhotoGroupItem *item = [YYPhotoGroupItem new];
-    item.thumbView         = _headimg;
-    item.largeImageURL     = [NSURL URLWithString:self.hmodel.imgurlstr];
-    YYPhotoGroupView *view = [[YYPhotoGroupView alloc] initWithGroupItems:@[item]];
-    UIView *toView         = [UIApplication sharedApplication].keyWindow.rootViewController.view;
-    [view presentFromImageView:_headimg
-                   toContainer:toView
-                      animated:YES completion:nil];
-    NSLog(@"233333333");
-    
-}
+//- (void)tapAction2{
+//    YYPhotoGroupItem *item = [YYPhotoGroupItem new];
+//    item.thumbView         = _headimg;
+//    item.largeImageURL     = [NSURL URLWithString:self.hmodel.imgurlstr];
+//    YYPhotoGroupView *view = [[YYPhotoGroupView alloc] initWithGroupItems:@[item]];
+//    UIView *toView         = [UIApplication sharedApplication].keyWindow.rootViewController.view;
+//    [view presentFromImageView:_headimg
+//                   toContainer:toView
+//                      animated:YES completion:nil];
+//    NSLog(@"233333333");
+//    
+//}
 
 
 

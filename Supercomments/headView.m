@@ -51,12 +51,8 @@
         _namelab.textColor = [UIColor wjColorFloat:@"333333"];
         _namelab.textAlignment = NSTextAlignmentCenter;
         _namelab.font = [UIFont systemFontOfSize:14];
-        _namelab.text = @"激动激动激动就";
     }
     return _namelab;
 }
-
-
-
 
 @end

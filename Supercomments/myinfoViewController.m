@@ -10,10 +10,9 @@
 #import "myinfoCell0.h"
 #import "myinfoCell1.h"
 #import "nicknameViewController.h"
+#import "MBManager.h"
 @interface myinfoViewController ()<UITableViewDataSource,UITableViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
-{
-    MBProgressHUD *HUD;
-}
+
 @property (nonatomic,strong) UITableView *myinfotable;
 
 @property (nonatomic,strong) UIButton *sentbtn;
@@ -288,13 +287,7 @@ static NSString *myinfoidentfid1 = @"myidentfid1";
     NSLog(@"base64str-------%@",base64str);
     
     
-    HUD = [[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:HUD];
-    HUD.dimBackground = YES;
-    HUD.labelText = @"请稍等";
-
-    [HUD show:YES];
-    
+     [MBManager showLoadingInView:self.view];
     
         //对话框显示时需要执行的操作
         [AFManager postReqURL:touxiang reqBody:@{@"token":[tokenstr tokenstrfrom],@"str":base64str} block:^(id infor) {
@@ -307,8 +300,7 @@ static NSString *myinfoidentfid1 = @"myidentfid1";
                 [self.myinfotable reloadData];
                 
             }
-            [HUD removeFromSuperview];
-            HUD=nil;
+            [MBManager hideAlert];
             [MBProgressHUD showSuccess:@"更改成功"];
         }];
         

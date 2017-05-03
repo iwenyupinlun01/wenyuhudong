@@ -42,7 +42,7 @@
     self.fromlab.frame = CGRectMake(DEVICE_WIDTH-200*WIDTH_SCALE, 16*HEIGHT_SCALE, 185*WIDTH_SCALE, 14*HEIGHT_SCALE);
     self.reimg.frame = CGRectMake(14*WIDTH_SCALE, self.frame.size.height-32*HEIGHT_SCALE, 24*WIDTH_SCALE, 16*HEIGHT_SCALE);
     self.timelab.frame = CGRectMake(14*WIDTH_SCALE+30*WIDTH_SCALE, self.frame.size.height-32*HEIGHT_SCALE, 150*WIDTH_SCALE, 18*HEIGHT_SCALE);
-    self.timelab2.frame = CGRectMake(14*WIDTH_SCALE,self.frame.size.height-20*HEIGHT_SCALE, 150*WIDTH_SCALE, 18*HEIGHT_SCALE);
+    self.timelab2.frame = CGRectMake(14*WIDTH_SCALE,self.frame.size.height-32*HEIGHT_SCALE, 150*WIDTH_SCALE, 18*HEIGHT_SCALE);
     self.commbtn.frame = CGRectMake(DEVICE_WIDTH-60*WIDTH_SCALE, self.frame.size.height-34*HEIGHT_SCALE, 50*WIDTH_SCALE, 16*HEIGHT_SCALE);
     self.zbtn.frame = CGRectMake(DEVICE_WIDTH-110*WIDTH_SCALE, self.frame.size.height-34*HEIGHT_SCALE, 50*WIDTH_SCALE, 16*HEIGHT_SCALE);
     self.tiview.frame = CGRectMake(14*WIDTH_SCALE, self.frame.size.height-74*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 30*HEIGHT_SCALE);
@@ -237,7 +237,6 @@
     
     CGFloat hei = textSize.height;
     
-    
     [[SDWebImageDownloader sharedDownloader]downloadImageWithURL:[NSURL URLWithString:model.imgurlstr] options:SDWebImageDownloaderUseNSURLCache progress:^(NSInteger receivedSize, NSInteger expectedSize) {
             
         } completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished) {
@@ -250,24 +249,23 @@
             else if(self.nmodel.contentstr.length==0&&self.nmodel.imgurlstr.length!=0)
             {
                 CGFloat width = image.size.width;
-                CGRect rect = CGRectMake(14*WIDTH_SCALE, (16+14+textSize.height+16)*HEIGHT_SCALE, width, 196*HEIGHT_SCALE);//创建矩形框
+                CGRect rect = CGRectMake(14*WIDTH_SCALE, (16+14+textSize.height+16)*HEIGHT_SCALE, width, 194*HEIGHT_SCALE);//创建矩形框
                 
                 _infoimg.image = [UIImage imageWithCGImage:CGImageCreateWithImageInRect([image CGImage] ,rect)];
                 
                 //self.infoimg.image = image;
                 [self.infoimg sd_setImageWithURL:[NSURL URLWithString:self.nmodel.imgurlstr] placeholderImage:[UIImage imageNamed:@"默认图"]];
                 
-                self.infoimg.frame =CGRectMake(14*WIDTH_SCALE, (16+14)*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 196*HEIGHT_SCALE);
+                self.infoimg.frame =CGRectMake(14*WIDTH_SCALE, (16+14+14)*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 196*HEIGHT_SCALE);
                 
                 [self.infoimg setHidden:NO];
             }
             else
             {
                 CGFloat width = image.size.width;
-                CGRect rect = CGRectMake(14*WIDTH_SCALE, (16+14+textSize.height+16)*HEIGHT_SCALE, width, 196*HEIGHT_SCALE);//创建矩形框
+                CGRect rect = CGRectMake(14*WIDTH_SCALE, (16+14+textSize.height+16)*HEIGHT_SCALE, width, 194*HEIGHT_SCALE);//创建矩形框
                 
                 _infoimg.image = [UIImage imageWithCGImage:CGImageCreateWithImageInRect([image CGImage] ,rect)];
-               // self.infoimg.image = image;
                 [self.infoimg sd_setImageWithURL:[NSURL URLWithString:self.nmodel.imgurlstr] placeholderImage:[UIImage imageNamed:@"默认图"]];
                 self.infoimg.frame =CGRectMake(14*WIDTH_SCALE, (16+14+hei+14)*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 196*HEIGHT_SCALE);
                 

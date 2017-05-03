@@ -70,6 +70,7 @@
 		53C40EBE1EB8227F0052CEB9 /* NSObject+XWAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = 53C40EBD1EB8227F0052CEB9 /* NSObject+XWAdd.m */; };
 		53D48A831EA4D52F00E5ADA3 /* headModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 53D48A821EA4D52F00E5ADA3 /* headModel.m */; };
 		53DF54A81EB9AC9E00AF6248 /* ColorImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 53DF54A71EB9AC9E00AF6248 /* ColorImage.m */; };
+		53DF54AC1EB9D10600AF6248 /* MBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 53DF54AB1EB9D10600AF6248 /* MBManager.m */; };
 		53E2944C1E9F72930034D4E7 /* XWScanImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 53E2944B1E9F72930034D4E7 /* XWScanImage.m */; };
 		53E412F01EAA1C8E00EBC0CE /* xitongModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 53E412EF1EAA1C8E00EBC0CE /* xitongModel.m */; };
 		53E587841EA7651D004CB302 /* detailcellmodel.m in Sources */ = {isa = PBXBuildFile; fileRef = 53E587831EA7651D004CB302 /* detailcellmodel.m */; };
@@ -246,6 +247,8 @@
 		53D48A821EA4D52F00E5ADA3 /* headModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = headModel.m; sourceTree = "<group>"; };
 		53DF54A61EB9AC9E00AF6248 /* ColorImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorImage.h; sourceTree = "<group>"; };
 		53DF54A71EB9AC9E00AF6248 /* ColorImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorImage.m; sourceTree = "<group>"; };
+		53DF54AA1EB9D10600AF6248 /* MBManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBManager.h; sourceTree = "<group>"; };
+		53DF54AB1EB9D10600AF6248 /* MBManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBManager.m; sourceTree = "<group>"; };
 		53E2944A1E9F72930034D4E7 /* XWScanImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XWScanImage.h; sourceTree = "<group>"; };
 		53E2944B1E9F72930034D4E7 /* XWScanImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XWScanImage.m; sourceTree = "<group>"; };
 		53E412EE1EAA1C8E00EBC0CE /* xitongModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xitongModel.h; sourceTree = "<group>"; };
@@ -618,6 +621,7 @@
 		539550E31EA0C623001A268C /* utlis */ = {
 			isa = PBXGroup;
 			children = (
+				53DF54A91EB9D10600AF6248 /* MBManager */,
 				53C40EBB1EB8227F0052CEB9 /* kvc */,
 				53E5C0721EB083EE008B1F22 /* utlimodel */,
 				5387A7B81EAB68900057B518 /* MBProgressHUD+XMG.h */,
@@ -933,6 +937,15 @@
 			path = kvc;
 			sourceTree = "<group>";
 		};
+		53DF54A91EB9D10600AF6248 /* MBManager */ = {
+			isa = PBXGroup;
+			children = (
+				53DF54AA1EB9D10600AF6248 /* MBManager.h */,
+				53DF54AB1EB9D10600AF6248 /* MBManager.m */,
+			);
+			path = MBManager;
+			sourceTree = "<group>";
+		};
 		53E294491E9F72930034D4E7 /* XWScanImage */ = {
 			isa = PBXGroup;
 			children = (
@@ -1240,6 +1253,7 @@
 				53FE161C1E9C89D000585111 /* sectionView.m in Sources */,
 				53E5C07B1EB1F8ED008B1F22 /* TimeInterval.m in Sources */,
 				538D53DD1EAF14BB00E2DCAF /* CLNetworkingManager.m in Sources */,
+				53DF54AC1EB9D10600AF6248 /* MBManager.m in Sources */,
 				53619E651E961201007CC7AC /* myinfoCell1.m in Sources */,
 				53F9CB8A1E9B834900C1F3A7 /* UILabel+Category.m in Sources */,
 				538D53C41EAEECD700E2DCAF /* strisNull.m in Sources */,

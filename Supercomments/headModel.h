@@ -12,6 +12,7 @@
 @property (nonatomic,strong) NSString *imgurlstr;
 @property (nonatomic,strong) NSString *timestr;
 @property (nonatomic,strong) NSString *namestr;
+
 @property (nonatomic,strong) NSString *contactstr;
 @property (nonatomic,strong) NSMutableArray *dianzaiarr;
 @property (nonatomic,strong) NSString *fromstr;
@@ -19,6 +20,8 @@
 @property (nonatomic,strong) NSString *weburlstr;
 @property (nonatomic,strong) NSString *shifoudianzanstr;
 @property (nonatomic,strong) NSString *objectidstr;
+
+
 
 @property (nonatomic,strong) NSMutableArray *thumarray;
 @end

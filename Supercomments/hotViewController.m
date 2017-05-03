@@ -55,7 +55,7 @@ static NSString *hotidentfid = @"hotidentfid";
     self.insets = UIEdgeInsetsMake(0, 14, 0, 14);
     
     [self.view addSubview:self.hottable];
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(kvcdianzan:) name:@"shifoudiandankvo" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(kvcdianzan:) name:@"shifoudiandankvo1" object:nil];
 }
 
 #pragma mark - 刷新控件
@@ -174,7 +174,6 @@ static NSString *hotidentfid = @"hotidentfid";
 {
     [super viewWillAppear:animated];
     self.hottable.frame = CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT-64);
-    //[self headerRefreshEndAction];
 }
 
 #pragma mark - getters
@@ -202,7 +201,6 @@ static NSString *hotidentfid = @"hotidentfid";
 
 #pragma mark -UITableViewDataSource&&UITableViewDelegate
 
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     NSString *imgstr = [NSString stringWithFormat:@"%@",self.imgarr[indexPath.row]];
@@ -222,7 +220,6 @@ static NSString *hotidentfid = @"hotidentfid";
     return 0;
 }
 
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return self.dataarr.count;
@@ -236,9 +233,7 @@ static NSString *hotidentfid = @"hotidentfid";
     //    }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.delegate = self;
-    
     [cell setcelldata:self.dataarr[indexPath.row]];
-    //self.nmodel = self.dataarr[indexPath.row];
     return cell;
 }
 
@@ -420,9 +415,17 @@ static NSString *hotidentfid = @"hotidentfid";
     //NSString *dianzanstr = (NSString *)[notifocation object];
     NSLog(@"dianzanstr---------%@",dic);
     NSInteger index = [[dic objectForKey:@"dianzanindex"] intValue];
-    self.nmodel = self.dataarr[index];
-    self.nmodel.sifoudianzanstr = [dic objectForKey:@"diansanstr"];
-    [self.dataarr replaceObjectAtIndex:index withObject:self.nmodel];
+    if (self.dataarr.count==0) {
+        self.nmodel = [[newModel alloc] init];
+        self.nmodel.sifoudianzanstr = [dic objectForKey:@"diansanstr"];
+        [self.dataarr addObject:self.nmodel];
+    }else
+    {
+        self.nmodel = self.dataarr[index];
+        self.nmodel.sifoudianzanstr = [dic objectForKey:@"diansanstr"];
+        [self.dataarr replaceObjectAtIndex:index withObject:self.nmodel];
+    }
+
     [self.hottable reloadData];
 }
 

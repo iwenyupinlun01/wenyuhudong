@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "WJGtextView.h"
 @interface keyboardView : UIView
-@property (nonatomic,strong) UITextView *textview;
+@property (nonatomic,strong) WJGtextView *textview;
 
 @property (nonatomic,strong) UIButton *sendbtn;
 

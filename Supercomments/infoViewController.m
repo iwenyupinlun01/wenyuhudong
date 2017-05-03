@@ -65,7 +65,7 @@ static NSString *infocellidentfid = @"infocellidentfid";
     NSString *path = [tokenstr userimgstrfrom];
     NSLog(@"path-%@",path);
     [_headview.infoimg sd_setImageWithURL:[NSURL URLWithString:path] placeholderImage:[UIImage imageNamed:@"头像默认图"]];
-    
+    _headview.namelab.text = [tokenstr nicknamestrfrom];
     if ([tokenstr tokenstrfrom].length==0) {
         
     }else
@@ -117,7 +117,6 @@ static NSString *infocellidentfid = @"infocellidentfid";
         _infotableview.dataSource = self;
         _infotableview.delegate = self;
         _infotableview.tableHeaderView = self.headview;
-        //_infotableview.scrollEnabled = NO;
         _infotableview.backgroundColor = [UIColor whiteColor];
     }
     return _infotableview;

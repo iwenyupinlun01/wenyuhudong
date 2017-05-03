@@ -36,16 +36,16 @@
 {
     [super layoutSubviews];
     self.textview.frame = CGRectMake(5, 16, DEVICE_WIDTH-65, 30);
-    self.sendbtn.frame = CGRectMake(DEVICE_WIDTH-14-40, 15, 40, 40);
+    self.sendbtn.frame = CGRectMake(DEVICE_WIDTH-14-40, 10, 40, 40);
 }
 
 #pragma mark - getters
 
--(UITextView *)textview
+-(WJGtextView *)textview
 {
     if(!_textview)
     {
-        _textview = [[UITextView alloc] init];
+        _textview = [[WJGtextView alloc] init];
         _textview.layer.masksToBounds = YES;
         //_textview.layer.borderWidth = 0.6;
         //_textview.layer.cornerRadius = 4;
@@ -76,7 +76,7 @@
     {
         _toplineview = [[UIView alloc] init];
         _toplineview.frame = CGRectMake(0, 0, DEVICE_WIDTH, 0.3);
-        _toplineview.backgroundColor = [UIColor wjColorFloat:@"C7C7CD"];
+        _toplineview.backgroundColor = [UIColor wjColorFloat:@"F5F5F5"];
     }
     return _toplineview;
 }
@@ -86,11 +86,10 @@
     if(!_endlineview)
     {
         _endlineview = [[UIView alloc] init];
-        _endlineview.backgroundColor = [UIColor wjColorFloat:@"C7C7CD"];
+        _endlineview.backgroundColor = [UIColor wjColorFloat:@"F5F5F5"];
     }
     return _endlineview;
 }
-
 
 -(UIView *)bgview
 {

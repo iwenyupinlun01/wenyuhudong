@@ -62,7 +62,6 @@ static NSString *setidentfid1 = @"setidentfid1";
     if(!_settableview)
     {
         _settableview = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT-64)];
-        //_settableview.scrollEnabled = NO;
         _settableview.dataSource = self;
         _settableview.delegate = self;
         
@@ -171,10 +170,7 @@ static NSString *setidentfid1 = @"setidentfid1";
     UIAlertController *control = [UIAlertController alertControllerWithTitle:@"提示" message:@"确定要退出登录吗" preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *action0 = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
         
-        homeViewController *viewCtl = self.navigationController.viewControllers[0];
-        
-        [self.navigationController popToViewController:viewCtl animated:YES];
-
+       
     }];
     UIAlertAction *action1 = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [CLNetworkingManager postNetworkRequestWithUrlString:tuichudenglu parameters:@{@"token":[tokenstr tokenstrfrom]} isCache:YES succeed:^(id data) {
@@ -202,8 +198,9 @@ static NSString *setidentfid1 = @"setidentfid1";
         } fail:^(NSError *error) {
             
         }];
-        loginViewController *logvc = [[loginViewController alloc] init];
-        [self presentViewController:logvc animated:YES completion:nil];
+        homeViewController *viewCtl = self.navigationController.viewControllers[0];
+        [self.navigationController popToViewController:viewCtl animated:YES];
+
     }];
     [control addAction:action0];
     [control addAction:action1];

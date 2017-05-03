@@ -35,12 +35,9 @@
     [self.view addSubview:self.logoimg];
     [self.view addSubview:self.namelab];
     [self.view addSubview:self.loginbtn];
-    [self.view addSubview:self.zhijiebtn];
+//    [self.view addSubview:self.zhijiebtn];
     [self.view addSubview:self.aggrentlab];
-    
-    if ([self.jinru isEqualToString:@"jinru"]) {
-        [self.view addSubview:self.gobackbtn];
-    }
+    [self.view addSubview:self.gobackbtn];
     [self.view addSubview:self.xieyiview];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(WXLogin:) name:WXLoginSuccess object:@"dengluchenggong"];
     
@@ -243,7 +240,7 @@
         }
         else
         {
-            NSLog(@"状态异常，请稍后再试");
+            [MBProgressHUD showSuccess:@"状态异常，请稍后再试"];
         }
     }];
 }

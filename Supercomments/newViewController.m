@@ -210,11 +210,11 @@ static NSString *newidentfid = @"newidentfid";
     }
     else if(contaststr.length==0&&imgstr.length!=0)
     {
-        return (16+16+4+20+16+16+196+10)*HEIGHT_SCALE;
+        return (16+16+4+20+16+16+196+20+14)*HEIGHT_SCALE;
     }
     else
     {
-         return [newCell cellHeightWithText:self.dataSource[indexPath.row]]+(16+16+4+20+16+16+14+196+10)*HEIGHT_SCALE;
+         return [newCell cellHeightWithText:self.dataSource[indexPath.row]]+(16+16+4+20+16+16+14+196+16)*HEIGHT_SCALE;
     }
     return 0;
 }
