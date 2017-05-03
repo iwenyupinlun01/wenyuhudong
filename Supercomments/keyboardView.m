@@ -13,6 +13,10 @@
 @property (nonatomic,strong) UIView *endlineview;
 @end
 
+
+
+
+
 @implementation keyboardView
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -32,7 +36,7 @@
 {
     [super layoutSubviews];
     self.textview.frame = CGRectMake(5, 16, DEVICE_WIDTH-65, 30);
-    self.sendbtn.frame = CGRectMake(DEVICE_WIDTH-14-40, 5, 40, 40);
+    self.sendbtn.frame = CGRectMake(DEVICE_WIDTH-14-40, 15, 40, 40);
 }
 
 #pragma mark - getters
@@ -48,6 +52,7 @@
         _textview.returnKeyType=UIReturnKeySend;
         _textview.enablesReturnKeyAutomatically = YES;
         [_textview setFont:[UIFont systemFontOfSize:15]];
+        [_textview setTintColor:[UIColor wjColorFloat:@"FF4444"]];
        // _textview.backgroundColor = [UIColor greenColor];
     }
     return _textview;

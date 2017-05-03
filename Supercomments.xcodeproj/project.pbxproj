@@ -69,6 +69,7 @@
 		53AEBE721E95014B00280F70 /* infoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 53AEBE711E95014B00280F70 /* infoCell.m */; };
 		53C40EBE1EB8227F0052CEB9 /* NSObject+XWAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = 53C40EBD1EB8227F0052CEB9 /* NSObject+XWAdd.m */; };
 		53D48A831EA4D52F00E5ADA3 /* headModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 53D48A821EA4D52F00E5ADA3 /* headModel.m */; };
+		53DF54A81EB9AC9E00AF6248 /* ColorImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 53DF54A71EB9AC9E00AF6248 /* ColorImage.m */; };
 		53E2944C1E9F72930034D4E7 /* XWScanImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 53E2944B1E9F72930034D4E7 /* XWScanImage.m */; };
 		53E412F01EAA1C8E00EBC0CE /* xitongModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 53E412EF1EAA1C8E00EBC0CE /* xitongModel.m */; };
 		53E587841EA7651D004CB302 /* detailcellmodel.m in Sources */ = {isa = PBXBuildFile; fileRef = 53E587831EA7651D004CB302 /* detailcellmodel.m */; };
@@ -243,6 +244,8 @@
 		53C40EBD1EB8227F0052CEB9 /* NSObject+XWAdd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+XWAdd.m"; sourceTree = "<group>"; };
 		53D48A811EA4D52F00E5ADA3 /* headModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = headModel.h; sourceTree = "<group>"; };
 		53D48A821EA4D52F00E5ADA3 /* headModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = headModel.m; sourceTree = "<group>"; };
+		53DF54A61EB9AC9E00AF6248 /* ColorImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorImage.h; sourceTree = "<group>"; };
+		53DF54A71EB9AC9E00AF6248 /* ColorImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorImage.m; sourceTree = "<group>"; };
 		53E2944A1E9F72930034D4E7 /* XWScanImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XWScanImage.h; sourceTree = "<group>"; };
 		53E2944B1E9F72930034D4E7 /* XWScanImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XWScanImage.m; sourceTree = "<group>"; };
 		53E412EE1EAA1C8E00EBC0CE /* xitongModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xitongModel.h; sourceTree = "<group>"; };
@@ -624,6 +627,8 @@
 				539550E41EA0C638001A268C /* navViewController.h */,
 				539550E51EA0C638001A268C /* navViewController.m */,
 				539550EB1EA0D9CB001A268C /* wangHeader.h */,
+				53DF54A61EB9AC9E00AF6248 /* ColorImage.h */,
+				53DF54A71EB9AC9E00AF6248 /* ColorImage.m */,
 			);
 			name = utlis;
 			sourceTree = "<group>";
@@ -1249,6 +1254,7 @@
 				53619E521E960164007CC7AC /* messageViewController.m in Sources */,
 				53619ED11E988A01007CC7AC /* setbtn.m in Sources */,
 				53619EC01E976EBB007CC7AC /* UIColor+BgColor.m in Sources */,
+				53DF54A81EB9AC9E00AF6248 /* ColorImage.m in Sources */,
 				53AEBE1F1E948A2500280F70 /* AppDelegate.m in Sources */,
 				53314A4B1EA1DE35009773F0 /* YYPhotoGroupView.m in Sources */,
 				53AEBE671E94D8A100280F70 /* newViewController.m in Sources */,

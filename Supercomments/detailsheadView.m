@@ -12,6 +12,8 @@
 
 @interface detailsheadView()
 @property (nonatomic,strong) headModel *hmodel;
+
+@property (nonatomic,strong) UIView *lineview;
 @end
 
 @implementation detailsheadView
@@ -33,6 +35,7 @@
         [self addSubview:self.thumlabel];
         [self addSubview:self.headimg];
         [self addSubview:self.thumlabel];
+        [self addSubview:self.lineview];
     }
     return self;
 }
@@ -43,17 +46,33 @@
     
     self.namelab.frame = CGRectMake(14*WIDTH_SCALE, 16*HEIGHT_SCALE, DEVICE_WIDTH/2, 14*HEIGHT_SCALE);
     self.fromlab.frame = CGRectMake(DEVICE_WIDTH-200*WIDTH_SCALE, 18*WIDTH_SCALE, 185*WIDTH_SCALE, 12*HEIGHT_SCALE);
-    self.numberlab.frame = CGRectMake(14*WIDTH_SCALE, self.frame.size.height-18*HEIGHT_SCALE-14*HEIGHT_SCALE, 100*WIDTH_SCALE, 14*HEIGHT_SCALE);
+    self.numberlab.frame = CGRectMake(14*WIDTH_SCALE, self.frame.size.height-14*HEIGHT_SCALE-8*HEIGHT_SCALE, 100*WIDTH_SCALE, 14*HEIGHT_SCALE);
+    _lineview.frame = CGRectMake(0, self.frame.size.height-1, DEVICE_WIDTH, 1);
+    
 }
 
 #pragma mark - getters
+
+
+-(UIView *)lineview
+{
+    if(!_lineview)
+    {
+        _lineview = [[UIView alloc] init];
+        _lineview.backgroundColor = [UIColor wjColorFloat:@"F5F5F5"];
+    }
+    return _lineview;
+}
+
+
+
 
 -(UILabel *)namelab
 {
     if(!_namelab)
     {
         _namelab = [[UILabel alloc] init];
-        _namelab.textColor = [UIColor wjColorFloat:@"C7C7CD"];
+        _namelab.textColor = [UIColor wjColorFloat:@"666666"];
         _namelab.font = [UIFont systemFontOfSize:14*FX];
     }
     return _namelab;
@@ -66,7 +85,6 @@
         _fromlab = [[UILabel alloc] init];
         _fromlab.textColor = [UIColor wjColorFloat:@"C7C7CD"];
         _fromlab.font = [UIFont systemFontOfSize:12*FX];
-        _fromlab.text = @"来自网易老司机的评论";
         _fromlab.textAlignment = NSTextAlignmentRight;
     }
     return _fromlab;
@@ -119,7 +137,6 @@
     if(!_dianzanbtn)
     {
         _dianzanbtn =  [[zanBtn alloc] init];
-//        _dianzanbtn.zanimg.image = [UIImage imageNamed:@"点赞-"];
     }
     return _dianzanbtn;
 }
@@ -150,7 +167,7 @@
     if(!_thumlabel)
     {
         _thumlabel = [[UILabel alloc] init];
-        _thumlabel.textColor = [UIColor wjColorFloat:@"C7C7CD"];
+        _thumlabel.textColor = [UIColor wjColorFloat:@"576b95"];
     }
     return _thumlabel;
 }

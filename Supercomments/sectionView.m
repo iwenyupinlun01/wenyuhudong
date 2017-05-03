@@ -41,11 +41,6 @@
 }
 
 
-//-(void)setFrame:(CGRect)frame{
-//    CGRect sectionRect = [self.tableView rectForSection:self.section];
-//    CGRect newFrame = CGRectMake(CGRectGetMinX(frame), CGRectGetMinY(sectionRect), CGRectGetWidth(frame), CGRectGetHeight(frame));
-//    [super setFrame:newFrame];
-//}
 
 -(void)setcelldata:(detailcellmodel*)model
 {
@@ -82,8 +77,8 @@
     if(!_namelab)
     {
         _namelab = [[UILabel alloc] init];
-        _namelab.text = @"姓名姓名";
-        _namelab.textColor = [UIColor wjColorFloat:@"CDCDC7"];
+        //_namelab.text = @"姓名姓名";
+        _namelab.textColor = [UIColor wjColorFloat:@"576b95"];
         _namelab.font = [UIFont systemFontOfSize:14*FX];
     }
     return _namelab;
@@ -94,7 +89,7 @@
     if(!_timelab)
     {
         _timelab = [[UILabel alloc] init];
-        _timelab.text = @"12:00";
+        //_timelab.text = @"12:00";
         _timelab.textColor = [UIColor wjColorFloat:@"CDCDC7"];
         _timelab.font = [UIFont systemFontOfSize:11*FX];
     }

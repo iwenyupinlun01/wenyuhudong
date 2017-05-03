@@ -46,6 +46,29 @@
 @property (nonatomic,strong) UIView *bgview;
 
 @end
+
+
+
+
+@implementation UIImage (ColorImage)
+
++ (UIImage *)imageWithColor:(UIColor *)color
+{
+    CGRect rect = CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+    
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return image;
+}
+
+@end
+
 static NSString *detailsidentfid = @"detailsidentfid";
 
 NSMutableArray * ymDataArray;
@@ -59,13 +82,16 @@ NSMutableArray * ymDataArray;
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"返回.png"] style:UIBarButtonItemStylePlain target:self action:@selector(backAction)];
     self.navigationItem.leftBarButtonItem.tintColor = [UIColor wjColorFloat:@"333333"];
-    
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor wjColorFloat:@"333333"]}];
-    
     self.title = @"详情";
     self.navigationController.interactivePopGestureRecognizer.delegate = (id)self;
     self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
-    
+    UINavigationBar *navigationBar = self.navigationController.navigationBar;
+    [navigationBar setBackgroundImage:[[UIImage alloc] init]
+                       forBarPosition:UIBarPositionAny
+                           barMetrics:UIBarMetricsDefault];
+    //此处使底部线条颜色为F5F5F5
+    [navigationBar setShadowImage:[UIImage imageWithColor:[UIColor wjColorFloat:@"F5F5F5"]]];
     pn=1;
     self.cellcontarr = [NSMutableArray array];
     self.detalisarr = [NSMutableArray array];
@@ -76,10 +102,7 @@ NSMutableArray * ymDataArray;
     [self addFooter];
     [self.view addSubview:self.maintable];
     [self.view addSubview:self.keyView];
-
     [self bgviewadd];
-    
-    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -142,6 +165,7 @@ NSMutableArray * ymDataArray;
         self.headm.objectidstr = [dic objectForKey:@"id"];
         self.headm.timestr = [Timestr datetime:[dic objectForKey:@"create_time"]];
         self.headm.shifoudianzanstr = [dic objectForKey:@"is_support"];
+        
         self.headview.namelab.text = self.headm.namestr;
         self.headview.timelab.text = self.headm.timestr;
         self.headview.fromlab.text = self.headm.fromstr;
@@ -151,18 +175,23 @@ NSMutableArray * ymDataArray;
         self.headview.contentlab.text = [dic objectForKey:@"content"];
         self.headview.timelab.text = self.headm.timestr;
         
-        NSString *tit = [dic objectForKey:@"title"];
-        NSString *tit2 = [NSString stringWithFormat:@"%@%@",@"标题:",tit];
-        self.headview.title.titlelab.text = tit2;
+        NSString *str1 = @" 标题: ";
+        NSString *str2 = [dic objectForKey:@"title"];
+        NSMutableAttributedString *strbut = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@",str1,str2]];
+        [strbut addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"333333"] range:NSMakeRange(0, str1.length)];
+        [strbut addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"576B95"] range:NSMakeRange(str1.length, str2.length)];
+        self.headview.title.titlelab.attributedText = strbut;
+        
         if ([self.headm.shifoudianzanstr isEqualToString:@"0"]) {
             self.headview.dianzanbtn.zanimg.image = [UIImage imageNamed:@"点赞-"];
+            self.headview.dianzanbtn.zanlab.textColor = [UIColor wjColorFloat:@"C7C7CD"];
         }else
         {
             self.headview.dianzanbtn.zanimg.image = [UIImage imageNamed:@"点赞-拷贝"];
+            self.headview.dianzanbtn.zanlab.textColor = [UIColor wjColorFloat:@"FF4444"];
         }
         
         self.usernamearr = [NSMutableArray array];
-       // NSMutableArray *bookarr = [NSMutableArray array];
         self.headm.thumarray = [NSMutableArray array];
         self.headm.thumarray = [dic objectForKey:@"bookmark_user"];
         for (int i = 0; i<self.headm.thumarray.count; i++) {
@@ -251,8 +280,6 @@ NSMutableArray * ymDataArray;
     if(!_headview)
     {
         _headview = [[detailsheadView alloc] init];
-        //_headview.layer.masksToBounds = YES;
-       // _headview.layer.borderWidth = 3;
         [_headview.sharebtn addTarget:self action:@selector(shareclick) forControlEvents:UIControlEventTouchUpInside];
         [_headview.dianzanbtn addTarget:self action:@selector(dianzanclick) forControlEvents:UIControlEventTouchUpInside];
         [_headview.combtn addTarget:self action:@selector(pinglunclick) forControlEvents:UIControlEventTouchUpInside];
@@ -323,8 +350,6 @@ NSMutableArray * ymDataArray;
     return _keyView;
 }
 
-
-
 #pragma mark - UITableViewDataSource && UITableViewDelegate
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -344,35 +369,36 @@ NSMutableArray * ymDataArray;
     _detailsmodel  = self.detalisarr[indexPath.section];
     
     // 取第indexPath.row这行对应的品牌名称
-    NSString *str4 = [_detailsmodel.pingarr[indexPath.row] objectForKey:@"content"];
+    NSString *str4 = [NSString stringWithFormat:@"%@%@",@":", [_detailsmodel.pingarr[indexPath.row] objectForKey:@"content"]];
     NSString *str1 = [_detailsmodel.pingarr[indexPath.row]objectForKey:@"s_nickname"];
+    //NSString *str1 = [NSString stringWithFormat:@"%@%@",@"  ",[_detailsmodel.pingarr[indexPath.row]objectForKey:@"s_nickname"]];
     NSString *str3 = [_detailsmodel.pingarr[indexPath.row]objectForKey:@"s_to_nickname"];
-    NSString *str2 = @"回复: ";
+    NSString *str2 = @"回复";
     
     
     if ([self isNullToString:str3]) {
         NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@%@",str1,str2,str4]];
-        [str addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"CDCDC7"] range:NSMakeRange(0,str1.length)];
+        [str addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"576b95"] range:NSMakeRange(0,str1.length)];
         [str addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"333333"] range:NSMakeRange(str1.length,str2.length)];
         [str addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"333333"] range:NSMakeRange(str1.length+str2.length, str4.length)];
         NSLog(@"str===============%@",str);
         CGSize size = [str boundingRectWithSize:CGSizeMake(DEVICE_WIDTH -64*WIDTH_SCALE-14*WIDTH_SCALE, 0) options:NSStringDrawingUsesLineFragmentOrigin context:nil].size;
         cell.pinglunlab.attributedText = str;
-        cell.pinglunlab.frame = CGRectMake(128/2*WIDTH_SCALE,  8*HEIGHT_SCALE, DEVICE_WIDTH -64*WIDTH_SCALE-14*WIDTH_SCALE, size.height);
+        cell.pinglunlab.frame = CGRectMake(128/2*WIDTH_SCALE+8,  8*HEIGHT_SCALE, DEVICE_WIDTH -64*WIDTH_SCALE-14*WIDTH_SCALE-8, size.height);
         cell.pinglunlab.font = [UIFont systemFontOfSize:14*FX];
     }
     else
     {
         NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@%@%@",str1,str2,str3,str4]];
-        [str addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"CDCDC7"] range:NSMakeRange(0,str1.length)];
+        [str addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"576b95"] range:NSMakeRange(0,str1.length)];
         [str addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"333333"] range:NSMakeRange(str1.length,str2.length)];
         
-        [str addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"CDCDC7"] range:NSMakeRange(str1.length+str2.length,str3.length)];
+        [str addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"576b95"] range:NSMakeRange(str1.length+str2.length,str3.length)];
         [str addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"333333"] range:NSMakeRange(str1.length+str2.length+str3.length,str4.length)];
         NSLog(@"str===============%@",str);
         CGSize size = [str boundingRectWithSize:CGSizeMake(DEVICE_WIDTH -64*WIDTH_SCALE-14*WIDTH_SCALE, 0) options:NSStringDrawingUsesLineFragmentOrigin context:nil].size;
         cell.pinglunlab.attributedText = str;
-        cell.pinglunlab.frame = CGRectMake(128/2*WIDTH_SCALE,  8*HEIGHT_SCALE, DEVICE_WIDTH -64*WIDTH_SCALE-14*WIDTH_SCALE, size.height);
+        cell.pinglunlab.frame = CGRectMake(128/2*WIDTH_SCALE+8,  8*HEIGHT_SCALE, DEVICE_WIDTH -64*WIDTH_SCALE-14*WIDTH_SCALE-8, size.height);
         cell.pinglunlab.font = [UIFont systemFontOfSize:14*FX];
     }
     cell.pinglunlab.numberOfLines = 0;
@@ -398,20 +424,13 @@ NSMutableArray * ymDataArray;
     if ([self isNullToString:str3]) {
         
         NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@%@",str1,str2,str4]];
-        [str addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"CDCDC7"] range:NSMakeRange(0,str1.length)];
-        [str addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"333333"] range:NSMakeRange(str1.length,str2.length)];
-        [str addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"333333"] range:NSMakeRange(str1.length+str2.length, str4.length)];
-        CGSize size = [str boundingRectWithSize:CGSizeMake(DEVICE_WIDTH -64*WIDTH_SCALE-14*WIDTH_SCALE, 0) options:NSStringDrawingUsesLineFragmentOrigin context:nil].size;
+        CGSize size = [str boundingRectWithSize:CGSizeMake(DEVICE_WIDTH -64*WIDTH_SCALE-14*WIDTH_SCALE-16, 0) options:NSStringDrawingUsesLineFragmentOrigin context:nil].size;
         return size.height + 16*HEIGHT_SCALE;
     }
     else
     {
         NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@%@%@",str1,str2,str3,str4]];
-        [str addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"CDCDC7"] range:NSMakeRange(0,str1.length)];
-        [str addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"333333"] range:NSMakeRange(str1.length,str2.length)];
-        [str addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"CDCDC7"] range:NSMakeRange(str1.length+str2.length,str3.length)];
-        [str addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"333333"] range:NSMakeRange(str1.length+str2.length+str3.length,str4.length)];
-        CGSize size = [str boundingRectWithSize:CGSizeMake(DEVICE_WIDTH -64*WIDTH_SCALE-14*WIDTH_SCALE, 0) options:NSStringDrawingUsesLineFragmentOrigin context:nil].size;
+        CGSize size = [str boundingRectWithSize:CGSizeMake(DEVICE_WIDTH -64*WIDTH_SCALE-14*WIDTH_SCALE-16, 0) options:NSStringDrawingUsesLineFragmentOrigin context:nil].size;
         return size.height + 16*HEIGHT_SCALE;
     }
     return 0;
@@ -459,7 +478,7 @@ NSMutableArray * ymDataArray;
     UIView *view=[[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, 14)];
     view.backgroundColor = [UIColor whiteColor];
     UIView *lineview = [[UIView alloc] initWithFrame:CGRectMake(0, 13, DEVICE_WIDTH, 0.7)];
-    lineview.backgroundColor = [UIColor wjColorFloat:@"C7C7CD"];
+    lineview.backgroundColor = [UIColor wjColorFloat:@"F5F5F5"];
     [view addSubview:lineview];
     return view;
 }
@@ -543,6 +562,7 @@ NSMutableArray * ymDataArray;
                 NSString *codestr = [infor objectForKey:@"code"];
                 if ([codestr intValue]==1) {
                     self.headview.dianzanbtn.zanimg.image = [UIImage imageNamed:@"点赞-拷贝"];
+                    self.headview.dianzanbtn.zanlab.textColor = [UIColor wjColorFloat:@"FF4444"];
                     [MBProgressHUD showSuccess:@"点赞"];
                     NSLog(@"成功");
                     self.headm.shifoudianzanstr = @"1";
@@ -609,6 +629,7 @@ NSMutableArray * ymDataArray;
                     NSDictionary *dianzandic = @{@"dianzanindex":self.dianzanindex,@"diansanstr":self.headm.shifoudianzanstr};
                     [[NSNotificationCenter defaultCenter]postNotificationName:@"shifoudiandankvo" object:dianzandic];
                     self.headview.dianzanbtn.zanimg.image = [UIImage imageNamed:@"点赞-"];
+                    self.headview.dianzanbtn.zanlab.textColor = [UIColor wjColorFloat:@"C7C7CD"];
                     [MBProgressHUD showSuccess:@"取消点赞"];
                     NSLog(@"成功");
                     
@@ -768,7 +789,7 @@ NSMutableArray * ymDataArray;
 
     }else
     {
-        [self.keyView.sendbtn setTitleColor:[UIColor blackColor] forState:normal];
+        [self.keyView.sendbtn setTitleColor:[UIColor wjColorFloat:@"FF4444"] forState:normal];
 
     }
 }
@@ -885,9 +906,7 @@ NSMutableArray * ymDataArray;
             [mutaArray addObject:self.detailsmodel];
             [mutaArray addObjectsFromArray:self.detalisarr];
             self.detalisarr = mutaArray;
-            
             [self.maintable reloadData];
-            
             //网络请求
             NSDictionary *para = @{@"token":[tokenstr tokenstrfrom],@"to_uid":@"0",@"object_id":self.headm.objectidstr,@"content":self.keyView.textview.text,@"pid":@"0"};
             
@@ -1100,7 +1119,7 @@ NSMutableArray * ymDataArray;
         if (content.length!=0&&urlstr.length!=0) {
             CGSize textSize = [self.headview.contentlab setText:self.headview.contentlab.text lines:QSTextDefaultLines andLineSpacing:QSTextLineSpacing constrainedToSize:CGSizeMake(DEVICE_WIDTH - 28*WIDTH_SCALE,MAXFLOAT)];
             
-            self.headview.contentlab.frame = CGRectMake(14*WIDTH_SCALE,  30*HEIGHT_SCALE+14*HEIGHT_SCALE, textSize.width, textSize.height);
+            self.headview.contentlab.frame = CGRectMake(14*WIDTH_SCALE,  30*HEIGHT_SCALE+12*HEIGHT_SCALE, textSize.width, textSize.height);
             [self.headview.headimg sd_setImageWithURL:[NSURL URLWithString:self.headm.imgurlstr] placeholderImage:[UIImage imageNamed:@"默认图"]];
             self.headview.headimg.frame =CGRectMake(14*WIDTH_SCALE, 30*HEIGHT_SCALE+textSize.height*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 200*HEIGHT_SCALE);
             self.headview.title.frame = CGRectMake(14*WIDTH_SCALE,  30*HEIGHT_SCALE+textSize.height*HEIGHT_SCALE+14*HEIGHT_SCALE+200*HEIGHT_SCALE+4*HEIGHT_SCALE+14*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 20*HEIGHT_SCALE);
@@ -1123,7 +1142,7 @@ NSMutableArray * ymDataArray;
         else if (content.length==0&&urlstr.length!=0)
         {
             [self.headview.headimg sd_setImageWithURL:[NSURL URLWithString:self.headm.imgurlstr] placeholderImage:[UIImage imageNamed:@"默认图"]];
-            self.headview.headimg.frame =CGRectMake(14*WIDTH_SCALE, 30*HEIGHT_SCALE+14*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 200*HEIGHT_SCALE);
+            self.headview.headimg.frame =CGRectMake(14*WIDTH_SCALE, 30*HEIGHT_SCALE+12*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 200*HEIGHT_SCALE);
             self.headview.title.frame = CGRectMake(14*WIDTH_SCALE,  30*HEIGHT_SCALE+200*HEIGHT_SCALE+4*HEIGHT_SCALE+14*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 20*HEIGHT_SCALE);
             self.headview.timelab.frame = CGRectMake(14*WIDTH_SCALE, 30*HEIGHT_SCALE+200*HEIGHT_SCALE+4*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE, 100*WIDTH_SCALE, 12*HEIGHT_SCALE);
             [self.headview.combtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -1142,7 +1161,7 @@ NSMutableArray * ymDataArray;
         }else
         {
             CGSize textSize = [self.headview.contentlab setText:self.headview.contentlab.text lines:QSTextDefaultLines andLineSpacing:QSTextLineSpacing constrainedToSize:CGSizeMake(DEVICE_WIDTH - 28*WIDTH_SCALE,MAXFLOAT)];
-            self.headview.contentlab.frame = CGRectMake(14*WIDTH_SCALE,  30*HEIGHT_SCALE+14*HEIGHT_SCALE, textSize.width, textSize.height);
+            self.headview.contentlab.frame = CGRectMake(14*WIDTH_SCALE,  30*HEIGHT_SCALE+12*HEIGHT_SCALE, textSize.width, textSize.height);
             self.headview.title.frame = CGRectMake(14*WIDTH_SCALE,  30*HEIGHT_SCALE+textSize.height*HEIGHT_SCALE+4*HEIGHT_SCALE+14*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 20*HEIGHT_SCALE);
             self.headview.timelab.frame = CGRectMake(14*WIDTH_SCALE, 30*HEIGHT_SCALE+textSize.height*HEIGHT_SCALE+4*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE, 100*WIDTH_SCALE, 12*HEIGHT_SCALE);
             [self.headview.combtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -1222,16 +1241,16 @@ NSMutableArray * ymDataArray;
         {
             CGSize textSize = [self.headview.contentlab setText:self.headview.contentlab.text lines:QSTextDefaultLines andLineSpacing:QSTextLineSpacing constrainedToSize:CGSizeMake(DEVICE_WIDTH - 28*WIDTH_SCALE,MAXFLOAT)];
             CGSize textsize2= [self.headview.thumlabel.text boundingRectWithSize:CGSizeMake(DEVICE_WIDTH-28*WIDTH_SCALE, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil].size;
-            self.headview.contentlab.frame = CGRectMake(14*WIDTH_SCALE,  30*HEIGHT_SCALE+14*HEIGHT_SCALE, textSize.width, textSize.height);
-            self.headview.title.frame = CGRectMake(14*WIDTH_SCALE,  30*HEIGHT_SCALE+textSize.height*HEIGHT_SCALE+4*HEIGHT_SCALE+14*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 20*HEIGHT_SCALE);
-            self.headview.timelab.frame = CGRectMake(14*WIDTH_SCALE, 30*HEIGHT_SCALE+textSize.height*HEIGHT_SCALE+4*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE, 100*WIDTH_SCALE, 12*HEIGHT_SCALE);
+            self.headview.contentlab.frame = CGRectMake(14*WIDTH_SCALE,  24*HEIGHT_SCALE+14*HEIGHT_SCALE, textSize.width, textSize.height);
+            self.headview.title.frame = CGRectMake(14*WIDTH_SCALE,  38*HEIGHT_SCALE+textSize.height*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 20*HEIGHT_SCALE);
+            self.headview.timelab.frame = CGRectMake(14*WIDTH_SCALE, 30*HEIGHT_SCALE+textSize.height*HEIGHT_SCALE+12*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE, 100*WIDTH_SCALE, 12*HEIGHT_SCALE);
             [self.headview.combtn mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.right.equalTo(self.headview).with.offset(-70*WIDTH_SCALE);
-                make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
             }];
             [self.headview.dianzanbtn mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.right.equalTo(self.headview).with.offset(-140*WIDTH_SCALE);
-                make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
             }];
             [self.headview.thumlabel mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.left.equalTo(self.headview).with.offset(14*WIDTH_SCALE);
@@ -1241,9 +1260,9 @@ NSMutableArray * ymDataArray;
             }];
             [self.headview.sharebtn mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
-                make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
             }];
-            _headview.frame = CGRectMake(0, 0, DEVICE_WIDTH, textSize.height+200*HEIGHT_SCALE+textsize2.height);
+            _headview.frame = CGRectMake(0, 0, DEVICE_WIDTH, textSize.height+180*HEIGHT_SCALE+textsize2.height);
         }
 
     }

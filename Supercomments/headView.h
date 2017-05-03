@@ -10,4 +10,5 @@
 
 @interface headView : UIView
 @property (nonatomic,strong) UIImageView *infoimg;
+@property (nonatomic,strong) UILabel *namelab;
 @end

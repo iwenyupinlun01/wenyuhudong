@@ -51,10 +51,7 @@ static NSString *hotidentfid = @"hotidentfid";
     // 3.2.上拉加载更多
     [self addFooter];
     [self.view addSubview:self.hottable];
-    
-    
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(kvcdianzan:) name:@"shifoudiandankvo" object:nil];
-    
 }
 
 #pragma mark - 刷新控件
@@ -90,10 +87,11 @@ static NSString *hotidentfid = @"hotidentfid";
     [self.imgarr removeAllObjects];
     
     NSString *strurl = [NSString stringWithFormat:newVCload,@"1",@"2",[tokenstr tokenstrfrom]];
-    [AFManager getReqURL:strurl block:^(id infor) {
-        NSLog(@"infor=====%@",infor);
+    
+    [CLNetworkingManager getNetworkRequestWithUrlString:strurl parameters:nil isCache:YES succeed:^(id data) {
+        NSLog(@"infor=====%@",data);
         NSLog(@"str====%@",strurl);
-        NSArray *dit = [infor objectForKey:@"info"];
+        NSArray *dit = [data objectForKey:@"info"];
         for (int i = 0; i<dit.count; i++) {
             NSDictionary *dicarr = [dit objectAtIndex:i];
             self.nmodel = [[newModel alloc] init];
@@ -116,8 +114,10 @@ static NSString *hotidentfid = @"hotidentfid";
         }
         [self.hottable.mj_header endRefreshing];
         [self.hottable reloadData];
-    } errorblock:^(NSError *error) {
+    } fail:^(NSError *error) {
         [self.hottable.mj_header endRefreshing];
+       // self.panduan404str = @"1";
+        [MBProgressHUD showError:@"没有网络"];
     }];
     
 }
@@ -125,10 +125,11 @@ static NSString *hotidentfid = @"hotidentfid";
     pn ++;
     NSString *pnstr = [NSString stringWithFormat:@"%d",pn];
     NSString *strurl = [NSString stringWithFormat:newVCload,pnstr,@"2",[tokenstr tokenstrfrom]];
-    [AFManager getReqURL:strurl block:^(id infor) {
-        NSLog(@"infor=====%@",infor);
+    
+    [CLNetworkingManager getNetworkRequestWithUrlString:strurl parameters:nil isCache:YES succeed:^(id data) {
+        NSLog(@"infor=====%@",data);
         NSLog(@"str====%@",strurl);
-        NSArray *dit = [infor objectForKey:@"info"];
+        NSArray *dit = [data objectForKey:@"info"];
         for (int i = 0; i<dit.count; i++) {
             NSDictionary *dicarr = [dit objectAtIndex:i];
             self.nmodel = [[newModel alloc] init];
@@ -144,17 +145,19 @@ static NSString *hotidentfid = @"hotidentfid";
             self.nmodel.typestr = dicarr[@"type"];
             self.nmodel.sifoudianzanstr = dicarr[@"is_support"];
             self.nmodel.weburlstr = dicarr[@"url"];
+            self.nmodel.ishot = dicarr[@"is_hot"];
             [self.dataSource addObject:self.nmodel.contentstr];
             [self.dataarr addObject:self.nmodel];
             [self.imgarr addObject:self.nmodel.imgurlstr];
         }
         [self.hottable.mj_footer endRefreshing];
-        
         [self.hottable reloadData];
-        
-    } errorblock:^(NSError *error) {
-        
+    } fail:^(NSError *error) {
+        [self.hottable.mj_footer endRefreshing];
+       // self.panduan404str = @"1";
+        [MBProgressHUD showError:@"没有网络"];
     }];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -193,13 +196,14 @@ static NSString *hotidentfid = @"hotidentfid";
 
 #pragma mark -UITableViewDataSource&&UITableViewDelegate
 
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     NSString *imgstr = [NSString stringWithFormat:@"%@",self.imgarr[indexPath.row]];
     NSString *contaststr = [NSString stringWithFormat:@"%@",self.dataSource[indexPath.row]];
     
     if (imgstr.length==0) {
-        return [newCell cellHeightWithText:self.dataSource[indexPath.row]]+(16+16+4+20+16+16+10)*HEIGHT_SCALE;
+        return [newCell cellHeightWithText:self.dataSource[indexPath.row]]+(16+16+4+20+16+16+8+16)*HEIGHT_SCALE;
     }
     else if(contaststr.length==0&&imgstr.length!=0)
     {
@@ -211,6 +215,7 @@ static NSString *hotidentfid = @"hotidentfid";
     }
     return 0;
 }
+
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -426,19 +431,11 @@ static NSString *hotidentfid = @"hotidentfid";
 #pragma mark - 加载失败
 
 - (UIImage *)imageForEmptyDataSet:(UIScrollView *)scrollView {
-    
     return [UIImage imageNamed:@"空的"];
 }
-
-
-- (void)emptyDataSet:(UIScrollView *)scrollView didTapButton:(UIButton *)button
+- (void)emptyDataSet:(UIScrollView *)scrollView didTapView:(UIView *)view
 {
-    NSLog(@"重新加载");
     [self addHeader];
-}
-- (void)emptyDataSetDidTapButton:(UIScrollView *)scrollView{
-    // Do something
-    
 }
 
 @end

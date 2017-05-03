@@ -101,7 +101,7 @@ static CGFloat const NAVI_HEIGHT = 0;
 - (UIProgressView*)loadingProgressView {
     if (!_loadingProgressView) {
         _loadingProgressView = [[UIProgressView alloc]initWithFrame:CGRectMake(0, NAVI_HEIGHT, self.view.bounds.size.width, 2)];
-        _loadingProgressView.progressTintColor = [UIColor greenColor];
+        _loadingProgressView.progressTintColor = [UIColor wjColorFloat:@"FF4444"];
     }
     return _loadingProgressView;
 }

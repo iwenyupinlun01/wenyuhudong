@@ -37,14 +37,15 @@
 -(void)layoutSubviews
 {
     [super layoutSubviews];
-    self.namelab.frame = CGRectMake(14*WIDTH_SCALE, 8*HEIGHT_SCALE, DEVICE_WIDTH/2-14*WIDTH_SCALE, 15*HEIGHT_SCALE);
-    self.fromlab.frame = CGRectMake(DEVICE_WIDTH-200*WIDTH_SCALE, 10*HEIGHT_SCALE, 185*WIDTH_SCALE, 14*HEIGHT_SCALE);
-    self.reimg.frame = CGRectMake(14*WIDTH_SCALE, self.frame.size.height-30*HEIGHT_SCALE, 24*WIDTH_SCALE, 18*HEIGHT_SCALE);
-    self.timelab.frame = CGRectMake(14*WIDTH_SCALE+30*WIDTH_SCALE, self.frame.size.height-30*HEIGHT_SCALE, 150*WIDTH_SCALE, 18*HEIGHT_SCALE);
-    self.timelab2.frame = CGRectMake(14*WIDTH_SCALE,self.frame.size.height-30*HEIGHT_SCALE, 150*WIDTH_SCALE, 18*HEIGHT_SCALE);
-    self.commbtn.frame = CGRectMake(DEVICE_WIDTH-60*WIDTH_SCALE, self.frame.size.height-30*HEIGHT_SCALE, 50*WIDTH_SCALE, 20*HEIGHT_SCALE);
-    self.zbtn.frame = CGRectMake(DEVICE_WIDTH-110*WIDTH_SCALE, self.frame.size.height-30*HEIGHT_SCALE, 50*WIDTH_SCALE, 20*HEIGHT_SCALE);
-    self.tiview.frame = CGRectMake(14*WIDTH_SCALE, self.frame.size.height-66*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 30*HEIGHT_SCALE);
+    
+    self.namelab.frame = CGRectMake(14*WIDTH_SCALE, 16*HEIGHT_SCALE, DEVICE_WIDTH/2-14*WIDTH_SCALE, 15*HEIGHT_SCALE);
+    self.fromlab.frame = CGRectMake(DEVICE_WIDTH-200*WIDTH_SCALE, 16*HEIGHT_SCALE, 185*WIDTH_SCALE, 14*HEIGHT_SCALE);
+    self.reimg.frame = CGRectMake(14*WIDTH_SCALE, self.frame.size.height-32*HEIGHT_SCALE, 24*WIDTH_SCALE, 16*HEIGHT_SCALE);
+    self.timelab.frame = CGRectMake(14*WIDTH_SCALE+30*WIDTH_SCALE, self.frame.size.height-32*HEIGHT_SCALE, 150*WIDTH_SCALE, 18*HEIGHT_SCALE);
+    self.timelab2.frame = CGRectMake(14*WIDTH_SCALE,self.frame.size.height-20*HEIGHT_SCALE, 150*WIDTH_SCALE, 18*HEIGHT_SCALE);
+    self.commbtn.frame = CGRectMake(DEVICE_WIDTH-60*WIDTH_SCALE, self.frame.size.height-34*HEIGHT_SCALE, 50*WIDTH_SCALE, 16*HEIGHT_SCALE);
+    self.zbtn.frame = CGRectMake(DEVICE_WIDTH-110*WIDTH_SCALE, self.frame.size.height-34*HEIGHT_SCALE, 50*WIDTH_SCALE, 16*HEIGHT_SCALE);
+    self.tiview.frame = CGRectMake(14*WIDTH_SCALE, self.frame.size.height-74*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 30*HEIGHT_SCALE);
     
 }
 
@@ -55,7 +56,7 @@
     if(!_namelab)
     {
         _namelab = [[UILabel alloc] init];
-        _namelab.textColor = [UIColor wjColorFloat:@"C7C7CD"];
+        _namelab.textColor = [UIColor wjColorFloat:@"666666"];
         _namelab.font = [UIFont systemFontOfSize:14*FX];
     }
     return _namelab;
@@ -188,17 +189,25 @@
     self.nmodel = model;
     self.namelab.text = model.namestr;
     self.contentlab.text = model.contentstr;
-    self.tiview.titlelab.text = [NSString stringWithFormat:@"%@%@",@"  标题: ",model.titlestr];
+    
+    NSString *str1 = @" 标题: ";
+    NSString *str2 = model.titlestr;
+    NSMutableAttributedString *strbut = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@",str1,str2]];
+    [strbut addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"333333"] range:NSMakeRange(0, str1.length)];
+    [strbut addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"576B95"] range:NSMakeRange(str1.length, str2.length)];
+    self.tiview.titlelab.attributedText = strbut;
     self.commbtn.textlab.text = model.pinglunstr;
     self.zbtn.zanlab.text = model.dianzanstr;
     self.timelab.text = [Timestr datetime:model.timestr];
     self.timelab2.text = [Timestr datetime:model.timestr];
     if ([model.sifoudianzanstr isEqualToString:@"0"]) {
         self.zbtn.zanimg.image = [UIImage imageNamed:@"点赞-"];
+        self.zbtn.zanlab.textColor = [UIColor wjColorFloat:@"C7C7CD"];
     }
     else
     {
         self.zbtn.zanimg.image = [UIImage imageNamed:@"点赞-拷贝"];
+        self.zbtn.zanlab.textColor = [UIColor wjColorFloat:@"FF4444"];
     }
     
     if ([model.typestr isEqualToString:@"1"]) {
@@ -224,7 +233,7 @@
     [Timestr datetime:str];
     
     CGSize textSize = [self.contentlab setText:model.contentstr lines:4 andLineSpacing:QSTextLineSpacing constrainedToSize:CGSizeMake(DEVICE_WIDTH-28*WIDTH_SCALE,MAXFLOAT)];
-    self.contentlab.frame = CGRectMake(14*WIDTH_SCALE,  30*HEIGHT_SCALE, DEVICE_WIDTH -28*WIDTH_SCALE, textSize.height);
+    self.contentlab.frame = CGRectMake(14*WIDTH_SCALE,  38*HEIGHT_SCALE, DEVICE_WIDTH -28*WIDTH_SCALE, textSize.height);
     
     CGFloat hei = textSize.height;
     

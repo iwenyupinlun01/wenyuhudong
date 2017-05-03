@@ -76,10 +76,10 @@
     {
         
         fanhuistr = [NSString stringWithFormat:@"%d%@%@",hours,@"小时",@"前"];
-    }else if(hours<1)
+    }else if(hours<1&&minutes>59)
     {
         fanhuistr = [NSString stringWithFormat:@"%d%@%@",minutes,@"分钟",@"前"];
-    }else
+    }else if(minutes<=1)
     {
         fanhuistr = @"刚刚";
     }

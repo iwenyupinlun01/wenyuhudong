@@ -34,17 +34,19 @@ static NSString *infocellidentfid = @"infocellidentfid";
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"返回.png"] style:UIBarButtonItemStylePlain target:self action:@selector(backAction)];
     self.navigationItem.leftBarButtonItem.tintColor = [UIColor wjColorFloat:@"333333"];
-    self.title = @"个人";
+    self.title = @"个人中心";
     self.navigationController.interactivePopGestureRecognizer.delegate = (id)self;
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor wjColorFloat:@"333333"]}];
+    
     [self.navigationController.navigationBar setShadowImage:[UIImage new]];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+    self.infotableview.tableFooterView = [UIView new];
     [self.view addSubview:self.infotableview];
     
 }
 -(void)viewWillAppear:(BOOL)animated{
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
-    self.navigationController.navigationBar.barTintColor = [UIColor wjColorFloat:@"F5F5F5"];
+    self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
     [self loaddatafromweb];
 }
 
@@ -111,11 +113,12 @@ static NSString *infocellidentfid = @"infocellidentfid";
 {
     if(!_infotableview)
     {
-        _infotableview = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT) style:UITableViewStyleGrouped];
+        _infotableview = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT) style:UITableViewStylePlain];
         _infotableview.dataSource = self;
         _infotableview.delegate = self;
         _infotableview.tableHeaderView = self.headview;
         //_infotableview.scrollEnabled = NO;
+        _infotableview.backgroundColor = [UIColor whiteColor];
     }
     return _infotableview;
 }
@@ -144,7 +147,7 @@ static NSString *infocellidentfid = @"infocellidentfid";
 {
     if(!_headview)
     {
-        _headview = [[headView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, 140)];
+        _headview = [[headView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, 142)];
         _headview.backgroundColor = [UIColor wjColorFloat:@"F5F5F5"];
         _headview.infoimg.userInteractionEnabled = YES;//打开用户交互
         //初始化一个手势
@@ -171,7 +174,14 @@ static NSString *infocellidentfid = @"infocellidentfid";
     if (indexPath.row==0) {
         [_cell.contentView addSubview:_cell.numlab];
         _cell.numlab.tag = 100;
+         _cell.leftimg.frame = CGRectMake(14*WIDTH_SCALE, 18*HEIGHT_SCALE, 20*WIDTH_SCALE, 22*WIDTH_SCALE);
        
+    }
+    if (indexPath.row==1) {
+         _cell.leftimg.frame = CGRectMake(14*WIDTH_SCALE, 20*HEIGHT_SCALE, 21*WIDTH_SCALE, 21*WIDTH_SCALE);
+    }
+    if (indexPath.row==2) {
+         _cell.leftimg.frame = CGRectMake(14*WIDTH_SCALE, 20*HEIGHT_SCALE, 21*WIDTH_SCALE, 21*WIDTH_SCALE);
     }
     //_cell.numlab.alpha = 0;
     _cell.leftimg.image = [UIImage imageNamed:self.imgarr[indexPath.row]];
