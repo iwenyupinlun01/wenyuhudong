@@ -63,6 +63,7 @@
         _numlab.layer.cornerRadius = 10;
         _numlab.textColor = [UIColor whiteColor];
         _numlab.alpha = 0;
+        _numlab.font = [UIFont systemFontOfSize:10];
         _numlab.textAlignment = NSTextAlignmentCenter;
     }
     return _numlab;

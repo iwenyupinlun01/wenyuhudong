@@ -15,6 +15,7 @@
 #import "SureWebViewController.h"
 #import "loginViewController.h"
 #import <DZNEmptyDataSet/UIScrollView+EmptyDataSet.h>
+#import "UIImageView+RotateImgV.h"
 @interface hotViewController ()<UITableViewDataSource,UITableViewDelegate,mycellVdelegate,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate>
 /** 用于加载下一页的参数(页码) */
 {
@@ -30,6 +31,8 @@
 
 
 @property (nonatomic, assign) UIEdgeInsets insets;
+
+@property (nonatomic,strong) UIButton *xuanzuanbtn;
 @end
 static NSString *hotidentfid = @"hotidentfid";
 @implementation hotViewController
@@ -56,6 +59,8 @@ static NSString *hotidentfid = @"hotidentfid";
     
     [self.view addSubview:self.hottable];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(kvcdianzan:) name:@"shifoudiandankvo2" object:nil];
+    
+    [self.view addSubview:self.xuanzuanbtn];
 }
 
 #pragma mark - 刷新控件
@@ -119,10 +124,12 @@ static NSString *hotidentfid = @"hotidentfid";
         }
         [self.hottable.mj_header endRefreshing];
         [self.hottable reloadData];
+        [self.xuanzuanbtn stopRotate];
     } fail:^(NSError *error) {
         [self.hottable.mj_header endRefreshing];
        // self.panduan404str = @"1";
         [MBProgressHUD showError:@"没有网络"];
+        [self.xuanzuanbtn stopRotate];
     }];
     
 }
@@ -159,6 +166,7 @@ static NSString *hotidentfid = @"hotidentfid";
         }
         [self.hottable.mj_footer endRefreshing];
         [self.hottable reloadData];
+        
     } fail:^(NSError *error) {
         [self.hottable.mj_footer endRefreshing];
        // self.panduan404str = @"1";
@@ -199,6 +207,26 @@ static NSString *hotidentfid = @"hotidentfid";
         _hottable.separatorColor = [UIColor wjColorFloat:@"F5F5F5"];
     }
     return _hottable;
+}
+-(UIButton *)xuanzuanbtn
+{
+    if(!_xuanzuanbtn)
+    {
+        _xuanzuanbtn = [[UIButton alloc] init];
+        _xuanzuanbtn.frame = CGRectMake(DEVICE_WIDTH-24*WIDTH_SCALE-32*WIDTH_SCALE, DEVICE_HEIGHT-64-32*WIDTH_SCALE-74*HEIGHT_SCALE, 44*WIDTH_SCALE, 44*WIDTH_SCALE);
+        [_xuanzuanbtn setImage:[UIImage imageNamed:@"矩形-36"] forState:normal];
+        [_xuanzuanbtn addTarget:self action:@selector(xuanzhuanbtnclick) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _xuanzuanbtn;
+}
+
+#pragma mark - 回到顶部
+
+-(void)xuanzhuanbtnclick
+{
+    [_hottable setContentOffset:CGPointMake(0,0) animated:NO];
+    [self.hottable.mj_header beginRefreshing];
+    [self.xuanzuanbtn rotate360DegreeWithImageView];
 }
 
 #pragma mark -UITableViewDataSource&&UITableViewDelegate

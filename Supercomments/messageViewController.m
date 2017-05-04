@@ -116,20 +116,44 @@ static NSString *messageidentfid = @"messageidentfid";
             {
                 lab.alpha = 0;
                 lab2.alpha = 1;
-                lab2.text = _num02;
+                if ([_num02 intValue]>99) {
+                    lab2.text = @"99+";
+                }else
+                {
+                    lab2.text = _num02;
+                }
+
             }
             else if (![_num01 isEqualToString:@"0"]&&[_num02 isEqualToString:@"0"])
             {
                 lab.alpha = 1;
                 lab2.alpha = 0;
-                lab.text = _num01;
+                if ([_num01 intValue]>99) {
+                    lab.text = @"99+";
+                }else
+                {
+                    lab.text = _num01;
+                }
+                //lab.text = _num01;
             }
             else
             {
                 lab.alpha = 1;
                 lab2.alpha = 1;
-                lab.text = _num01;
-                lab2.text = _num02;
+                if ([_num02 intValue]>99) {
+                    lab2.text = @"99+";
+                }else
+                {
+                    lab2.text = _num02;
+                }
+                if ([_num01 intValue]>99) {
+                    lab.text = @"99+";
+                }else
+                {
+                    lab.text = _num01;
+                }
+//                lab.text = _num01;
+//                lab2.text = _num02;
             }
             [self.messagetable reloadData];
             
@@ -191,6 +215,7 @@ static NSString *messageidentfid = @"messageidentfid";
     numlab.layer.cornerRadius = 10;
     numlab.textColor = [UIColor whiteColor];
     numlab.alpha = 0;
+    numlab.font = [UIFont systemFontOfSize:10];
     [cell.contentView addSubview:numlab];
    
     if (indexPath.row==0) {

@@ -121,6 +121,8 @@
         NSLog(@"infor=%@",data);
         if ([[data objectForKey:@"is_login"]intValue]!=1) {
             NSLog(@"未登录");
+            
+          
             self.denglustr = @"";
             [self.infobtn sd_setImageWithURL:[NSURL URLWithString:@""] forState:normal placeholderImage:[UIImage imageNamed:@"未登录"]];
             //[self.infobtn setImage:[UIImage imageNamed:@"未登录"] forState:normal];
@@ -129,9 +131,20 @@
         {
             NSLog(@"已经登陆");
             
+            
+            NSDictionary *dic = [data objectForKey:@"info"];
+            NSString *path = [dic objectForKey:@"headPath"];
+            NSString *namestr = [dic objectForKey:@"nickname"];
+            
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            [defaults setObject:path forKey:@"pathurlstr"];
+            [defaults setObject:namestr forKey:@"namestr"];
+            [defaults synchronize];
+            
+            
+            
             if ([self shijianjisuan]) {
                 //没有过期
-                
                 self.denglustr = @"denglu";
                 NSString *urlstr = [tokenstr userimgstrfrom];
                 [self.infobtn sd_setImageWithURL:[NSURL URLWithString:urlstr] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"头像默认图"]];

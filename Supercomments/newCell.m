@@ -202,7 +202,14 @@
     [strbut addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"576B95"] range:NSMakeRange(str1.length, str2.length)];
     self.tiview.titlelab.attributedText = strbut;
     self.commbtn.textlab.text = model.pinglunstr;
-    self.zbtn.zanlab.text = model.dianzanstr;
+    
+    if ([model.dianzanstr intValue]>999) {
+        self.zbtn.zanlab.text = @"999+";
+    }else
+    {
+        self.zbtn.zanlab.text = model.dianzanstr;
+    }
+    
     self.timelab.text = [Timestr datetime:model.timestr];
     self.timelab2.text = [Timestr datetime:model.timestr];
     if ([model.sifoudianzanstr isEqualToString:@"0"]) {
@@ -224,7 +231,6 @@
     }
     else if ([model.typestr isEqualToString:@"5"])
     {
-        //self.fromlab.text = [NSString stringWithFormat:@"%@%@%@",@"网易老司机已赞",model.fromstr,@"次"];
         self.fromlab.text = model.platformstr;
     }
     else
@@ -261,9 +267,10 @@
                 CGFloat width = image.size.width;
                 CGRect rect = CGRectMake(0, 0, width, 194*HEIGHT_SCALE);//创建矩形框
                 _infoimg.image = [UIImage imageWithCGImage:CGImageCreateWithImageInRect([image CGImage] ,rect)];
-                self.infoimg.frame =CGRectMake(14*WIDTH_SCALE, (16+14+14)*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 194*HEIGHT_SCALE);
+                self.infoimg.frame =CGRectMake(14*WIDTH_SCALE, (16+20)*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 194*HEIGHT_SCALE);
                 [self.infoimg setHidden:NO];
-
+                //self.infoimg.backgroundColor = [UIColor greenColor];
+                
             }
             else
             {

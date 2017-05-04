@@ -135,6 +135,7 @@ static NSString *newidentfid = @"newidentfid";
         [self.newtable.mj_header endRefreshing];
         self.panduan404str = @"1";
         [MBProgressHUD showError:@"没有网络"];
+        [self.xuanzuanbtn stopRotate];
     }];
     
 }
@@ -246,7 +247,7 @@ static NSString *newidentfid = @"newidentfid";
     }
     else if(contaststr.length==0&&imgstr.length!=0)
     {
-        return (16+16+4+20+16+16+196+20+14)*HEIGHT_SCALE;
+        return (16+16+4+20+16+16+194+20)*HEIGHT_SCALE;
     }
     else
     {

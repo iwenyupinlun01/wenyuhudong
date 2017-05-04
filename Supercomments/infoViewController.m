@@ -85,8 +85,13 @@ static NSString *infocellidentfid = @"infocellidentfid";
                 
                 namelab.alpha = 0;
                 NSString *textstr = [NSString stringWithFormat:@"%d",[inforstr intValue]+[system_inform intValue]];
-                namelab.text = textstr;
-                
+                if ([textstr intValue]>99) {
+                    namelab.text = @"99+";
+                }else
+                {
+                    namelab.text = textstr;
+                }
+                _cell.numlab.text = textstr;
                 [self.infotableview reloadData];
             }
             else
@@ -94,7 +99,14 @@ static NSString *infocellidentfid = @"infocellidentfid";
                 NSLog(@"提示操作");
                 namelab.alpha = 1;
                 NSString *textstr = [NSString stringWithFormat:@"%d",[inforstr intValue]+[system_inform intValue]];
-                namelab.text = textstr;
+                
+                if ([textstr intValue]>99) {
+                    namelab.text = @"99+";
+                }else
+                {
+                    namelab.text = textstr;
+                }
+               // namelab.text = textstr;
                 _cell.numlab.text = textstr;
                 //[_cell addSubview:namelab];
                 [self.infotableview reloadData];

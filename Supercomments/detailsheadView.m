@@ -13,7 +13,7 @@
 @interface detailsheadView()
 @property (nonatomic,strong) headModel *hmodel;
 
-@property (nonatomic,strong) UIView *lineview;
+
 @end
 
 @implementation detailsheadView
@@ -199,7 +199,5 @@
 //    NSLog(@"233333333");
 //    
 //}
-
-
 
 @end

@@ -177,16 +177,18 @@ NSMutableArray * ymDataArray;
         if ([self.headm.typefromstr isEqualToString:@"1"]) {
             self.headm.fromstr = [NSString stringWithFormat:@"%@%@%@",@"腾讯老司机已赞",[dic objectForKey:@"support_count"],@"次"];
         }
-        if ([self.headm.typefromstr isEqualToString:@"2"]) {
+        else if ([self.headm.typefromstr isEqualToString:@"2"]) {
             self.headm.fromstr = [NSString stringWithFormat:@"%@%@%@",@"网易老司机已赞",[dic objectForKey:@"support_count"],@"次"];
         }
-        if ([self.headm.typefromstr isEqualToString:@"5"]) {
-            self.headm.fromstr = [NSString stringWithFormat:@"%@%@%@",@"今日牛评老司机已赞",[dic objectForKey:@"support_count"],@"次"];
+        else if ([self.headm.typefromstr isEqualToString:@"5"]) {
+            self.headm.fromstr = [dic objectForKey:@"platform"];
+        }
+        else{
+             self.headm.fromstr = [NSString stringWithFormat:@"%@%@%@",@"今日牛评老司机已赞",[dic objectForKey:@"support_count"],@"次"];
         }
         
         
         self.headm.imgurlstr = [dic objectForKey:@"images"];
-        //self.headm.imgurlstr = @"http://img02.tooopen.com/images/20140127/sy_54827852166.jpg";
         self.headm.weburlstr = [dic objectForKey:@"url"];
         self.headm.objectidstr = [dic objectForKey:@"id"];
         self.headm.timestr = [Timestr datetime:[dic objectForKey:@"create_time"]];
@@ -196,6 +198,16 @@ NSMutableArray * ymDataArray;
         self.headview.timelab.text = self.headm.timestr;
         self.headview.fromlab.text = self.headm.fromstr;
         self.headview.numberlab.text = [NSString stringWithFormat:@"%@%@",[dic objectForKey:@"reply_num"],@"人评论"];
+        
+        if ([[dic objectForKey:@"reply_num"] isEqualToString:@"0"]) {
+            [self.headview.numberlab setHidden:YES];
+            [self.headview.lineview setHidden:YES];
+        }else
+        {
+            [self.headview.numberlab setHidden:NO];
+            [self.headview.lineview setHidden:NO];
+        }
+        
         self.headview.dianzanbtn.zanlab.text = [NSString stringWithFormat:@"%@",[dic objectForKey:@"support_num"]];
         self.headview.combtn.textlab.text = [NSString stringWithFormat:@"%@",[dic objectForKey:@"reply_num"]];
         self.headview.contentlab.text = [dic objectForKey:@"content"];
@@ -255,7 +267,7 @@ NSMutableArray * ymDataArray;
         [self.maintable reloadData];
     } errorblock:^(NSError *error) {
         [self.maintable.mj_header endRefreshing];
-        
+        [MBProgressHUD showSuccess:@"没有网络"];
     }];
     
 }
@@ -324,7 +336,7 @@ NSMutableArray * ymDataArray;
     if(!_maintable)
     {
         _maintable = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT-64-58)];
-        
+        //_maintable = [[UITableView alloc] initWithFrame:CGRectMake(0, -20, DEVICE_WIDTH, DEVICE_HEIGHT-64-58) style:UITableViewStyleGrouped];
         _maintable.dataSource = self;
         _maintable.delegate = self;
         _maintable.tableHeaderView = self.scrollView;
@@ -335,7 +347,6 @@ NSMutableArray * ymDataArray;
     }
     return _maintable;
 }
-
 
 //- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
 //    if (scrollView == self.maintable)
@@ -720,8 +731,10 @@ NSMutableArray * ymDataArray;
             
         }
         
-            [self.maintable reloadData];
-            
+        dispatch_async(dispatch_get_main_queue(), ^
+            {
+                [self.maintable reloadData];
+            });
         }
     }
 
@@ -1021,7 +1034,8 @@ NSMutableArray * ymDataArray;
                 self.detailsmodel  = self.detalisarr[self.keyView.index];
                 NSMutableArray *mutaArray = [[NSMutableArray alloc] init];
                 [mutaArray addObjectsFromArray:self.detailsmodel.pingarr];
-                NSDictionary *dit = @{@"content":self.keyView.textview.text,@"s_nickname":namestr,@"s_to_nickname":self.keyView.nickname};
+                 NSDictionary *dit = @{@"content":self.keyView.textview.text,@"s_nickname":namestr,@"s_to_nickname":self.keyView.nickname,@"to_uid":self.keyView.touidstr,@"pid":self.keyView.pidstr};
+                
                 [mutaArray addObject:dit];
                 self.detailsmodel.pingarr = mutaArray;
                 [self.maintable reloadData];
@@ -1049,7 +1063,11 @@ NSMutableArray * ymDataArray;
                 NSString *tonickname = self.detailsmodel.namestr;
                 NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                 NSString *namestr = [defaults objectForKey:@"namestr"];
-                NSDictionary *dit = @{@"content":self.keyView.textview.text,@"s_nickname":namestr,@"s_to_nickname":tonickname};
+//                NSDictionary *dit = @{@"content":self.keyView.textview.text,@"s_nickname":namestr,@"s_to_nickname":tonickname};
+                
+                NSDictionary *dit = @{@"content":self.keyView.textview.text,@"s_nickname":namestr,@"s_to_nickname":tonickname,@"to_uid":uidstr,@"pid":pidstr};
+                
+
                 [mutaArray addObject:dit];
                 self.detailsmodel.pingarr = mutaArray;
                 [self.maintable reloadData];
@@ -1075,11 +1093,19 @@ NSMutableArray * ymDataArray;
                 NSString *name = namestr;
                 NSString *nowtime = [Timestr getNowTimestamp];
                 NSString *content = self.keyView.textview.text;
-                NSString *imageurl = @"";
+                NSString *imageurl = [tokenstr userimgstrfrom];
+                NSString *pid = @"0";
+                NSString *to_uid = @"0";
+                
+                
                 self.detailsmodel.namestr = name;
                 self.detailsmodel.timestr = nowtime;
                 self.detailsmodel.contstr = content;
                 self.detailsmodel.imgurlstr = imageurl;
+                self.detailsmodel.touidstr = to_uid;
+                self.detailsmodel.idstr = pid;
+
+                
                 [mutaArray addObject:self.detailsmodel];
                 [mutaArray addObjectsFromArray:self.detalisarr];
                 self.detalisarr = mutaArray;

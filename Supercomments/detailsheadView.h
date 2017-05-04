@@ -31,7 +31,7 @@
 @property (nonatomic,strong) UIImageView *headimg;
 @property (nonatomic,strong) UILabel *thumlabel;
 
-
+@property (nonatomic,strong) UIView *lineview;
 -(CGFloat)setheadmodel:(headModel*)model;
 @end
 

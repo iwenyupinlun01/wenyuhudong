@@ -29,7 +29,7 @@ static NSString *setidentfid1 = @"setidentfid1";
     self.navigationController.interactivePopGestureRecognizer.delegate = (id)self;
     self.title = @"设置";
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor wjColorFloat:@"333333"]}];
-    self.navigationController.navigationBar.barTintColor = [UIColor wjColorFloat:@"F5F5F5"];
+    self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
     self.settableview.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.view addSubview:self.settableview];
     [self.view addSubview:self.gobackbtn];
