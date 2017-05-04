@@ -45,6 +45,9 @@
 
 @property (nonatomic,strong) UIView *bgview;
 
+
+@property (nonatomic,strong) UIScrollView* scrollView;
+
 @end
 
 
@@ -96,13 +99,26 @@ NSMutableArray * ymDataArray;
     self.cellcontarr = [NSMutableArray array];
     self.detalisarr = [NSMutableArray array];
     self.headm.thumarray = [NSMutableArray array];
+    
+    
+    
+    
+    
+    self.scrollView = [[UIScrollView alloc] init];
+    [self.scrollView flashScrollIndicators];
+    self.scrollView.directionalLockEnabled = YES;
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 1560)];
+    label.backgroundColor = [UIColor yellowColor];
+    label.text = @"学习scrolleview";
+
+    [self.view addSubview:self.maintable];
+    [self.view addSubview:self.keyView];
     // 3.1.下拉刷新
     [self addHeader];
     // 3.2.上拉加载更多
     [self addFooter];
-    [self.view addSubview:self.maintable];
-    [self.view addSubview:self.keyView];
     [self bgviewadd];
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -132,17 +148,14 @@ NSMutableArray * ymDataArray;
 
 - (void)addFooter
 {
-    self.maintable.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(refreshLoadMore)];
+    self.maintable.mj_footer = [MJRefreshBackFooter footerWithRefreshingTarget:self refreshingAction:@selector(refreshLoadMore)];
 }
 
 - (void)refreshAction {
-    
     [self headerRefreshEndAction];
-    
 }
 
 - (void)refreshLoadMore {
-    
     [self footerRefreshEndAction];
 }
 
@@ -213,9 +226,6 @@ NSMutableArray * ymDataArray;
             NSString *usernamestr = [bookdic objectForKey:@"user_nickname"];
             [self.usernamearr addObject:usernamestr];
         }
-        
-        //NSArray *goodArray = usernamearr;
-        //NSArray *goodArray = @[@"one",@"呵呵哒",@"呵呵",@"李白",@"呵呵",@"呵呵",@"呵呵",@"呵呵哒",@"项目需求",@"呵呵",@"呵呵哒",@"项目需求",@"呵呵",@"呵呵哒",@"项目需求",@"呵呵",@"呵呵哒",@"项目需求",@"呵呵",@"呵呵哒",@"项目需求",@"呵呵",@"呵呵哒",@"项目需求",@"呵呵",@"呵呵哒",@"项目需求",@"呵呵",@"呵呵哒",@"项目需求",@"呵呵",@"呵呵哒",@"项目需求"];
         
         
         [self headfromcontentstr:self.headm.contactstr andimageurl:self.headm.imgurlstr andgoodarr:self.usernamearr];
@@ -294,19 +304,18 @@ NSMutableArray * ymDataArray;
     if(!_headview)
     {
         _headview = [[detailsheadView alloc] init];
+        
         [_headview.sharebtn addTarget:self action:@selector(shareclick) forControlEvents:UIControlEventTouchUpInside];
         [_headview.dianzanbtn addTarget:self action:@selector(dianzanclick) forControlEvents:UIControlEventTouchUpInside];
         [_headview.combtn addTarget:self action:@selector(pinglunclick) forControlEvents:UIControlEventTouchUpInside];
-        
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(webimagego)];
         [_headview.title addGestureRecognizer:tap];
-        
         UITapGestureRecognizer *tap2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAction2)];
         [_headview.headimg addGestureRecognizer:tap2];
-        
     }
     return _headview;
 }
+
 
 
 
@@ -314,10 +323,11 @@ NSMutableArray * ymDataArray;
 {
     if(!_maintable)
     {
-        _maintable = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT-64-58) style:UITableViewStylePlain];
+        _maintable = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT-64-58)];
+        
         _maintable.dataSource = self;
         _maintable.delegate = self;
-        _maintable.tableHeaderView = self.headview;
+        _maintable.tableHeaderView = self.scrollView;
         _maintable.backgroundColor = [UIColor whiteColor];
         _maintable.emptyDataSetSource = self;
         _maintable.emptyDataSetDelegate = self;
@@ -327,17 +337,17 @@ NSMutableArray * ymDataArray;
 }
 
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    if (scrollView == self.maintable)
-    {
-        CGFloat sectionHeaderHeight = 40;
-        if (scrollView.contentOffset.y<=sectionHeaderHeight&&scrollView.contentOffset.y>=0) {
-            scrollView.contentInset = UIEdgeInsetsMake(-scrollView.contentOffset.y, 0, 0, 0);
-        } else if (scrollView.contentOffset.y>=sectionHeaderHeight) {
-            scrollView.contentInset = UIEdgeInsetsMake(-sectionHeaderHeight, 0, 0, 0);
-        }
-    }
-}
+//- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+//    if (scrollView == self.maintable)
+//    {
+//        CGFloat sectionHeaderHeight = 40;
+//        if (scrollView.contentOffset.y<=sectionHeaderHeight&&scrollView.contentOffset.y>=0) {
+//            scrollView.contentInset = UIEdgeInsetsMake(-scrollView.contentOffset.y, 0, 0, 0);
+//        } else if (scrollView.contentOffset.y>=sectionHeaderHeight) {
+//            scrollView.contentInset = UIEdgeInsetsMake(-sectionHeaderHeight, 0, 0, 0);
+//        }
+//    }
+//}
 
 -(keyboardView *)keyView
 {
@@ -584,11 +594,22 @@ NSMutableArray * ymDataArray;
                 if ([codestr intValue]==1) {
                     self.headview.dianzanbtn.zanimg.image = [UIImage imageNamed:@"点赞-拷贝"];
                     self.headview.dianzanbtn.zanlab.textColor = [UIColor wjColorFloat:@"FF4444"];
-                    [MBProgressHUD showSuccess:@"点赞"];
+                    [MBProgressHUD showSuccess:@"点赞+1"];
                     NSLog(@"成功");
+                    
+                    NSDictionary *dic = [infor objectForKey:@"info"];
+                    self.headview.dianzanbtn.zanlab.text = [NSString stringWithFormat:@"%@",[dic objectForKey:@"spportNum"]];
+                    
                     self.headm.shifoudianzanstr = @"1";
                     NSDictionary *dianzandic = @{@"dianzanindex":self.dianzanindex,@"diansanstr":self.headm.shifoudianzanstr};
-                    [[NSNotificationCenter defaultCenter]postNotificationName:@"shifoudiandankvo" object:dianzandic];
+                    
+                    if ([self.fromtypestr isEqualToString:@"newvc"]) {
+                        [[NSNotificationCenter defaultCenter]postNotificationName:@"shifoudiandankvo" object:dianzandic];
+                    }else
+                    {
+                        [[NSNotificationCenter defaultCenter]postNotificationName:@"shifoudiandankvo2" object:dianzandic];
+                    }
+                    
                     
                     
                     NSMutableArray *zongzhuanarr = [NSMutableArray array];
@@ -648,7 +669,18 @@ NSMutableArray * ymDataArray;
                 if ([codestr intValue]==1) {
                     self.headm.shifoudianzanstr = @"0";
                     NSDictionary *dianzandic = @{@"dianzanindex":self.dianzanindex,@"diansanstr":self.headm.shifoudianzanstr};
-                    [[NSNotificationCenter defaultCenter]postNotificationName:@"shifoudiandankvo" object:dianzandic];
+                    
+                    NSDictionary *dic = [data objectForKey:@"info"];
+                    self.headview.dianzanbtn.zanlab.text = [NSString stringWithFormat:@"%@",[dic objectForKey:@"spportNum"]];
+                    
+                    if ([self.fromtypestr isEqualToString:@"newvc"]) {
+                        [[NSNotificationCenter defaultCenter]postNotificationName:@"shifoudiandankvo" object:dianzandic];
+                    }else
+                    {
+                        [[NSNotificationCenter defaultCenter]postNotificationName:@"shifoudiandankvo2" object:dianzandic];
+                    }
+                    
+                    
                     self.headview.dianzanbtn.zanimg.image = [UIImage imageNamed:@"点赞-"];
                     self.headview.dianzanbtn.zanlab.textColor = [UIColor wjColorFloat:@"C7C7CD"];
                     [MBProgressHUD showSuccess:@"取消点赞"];
@@ -761,7 +793,7 @@ NSMutableArray * ymDataArray;
         self.keyView.tonickname = [_detailsmodel.pingarr[indexPath.row]objectForKey:@"s_to_nickname"];
         self.keyView.pidstr = [_detailsmodel.pingarr[indexPath.row]objectForKey:@"pid"];
         self.keyView.touidstr = [_detailsmodel.pingarr[indexPath.row]objectForKey:@"to_uid"];
-        _keyView.textview.customPlaceholder = [NSString stringWithFormat:@"%@%@",@"回复@",self.keyView.tonickname];
+        _keyView.textview.customPlaceholder = [NSString stringWithFormat:@"%@%@",@"回复@",self.keyView.nickname];
         
     }
     NSLog(@"点击cell");
@@ -1088,11 +1120,8 @@ NSMutableArray * ymDataArray;
     [view presentFromImageView:self.headview.headimg
                    toContainer:toView
                       animated:YES completion:nil];
-    NSLog(@"233333333");
     
 }
-
-
 
 #pragma mark - 判断字符串为空
 
@@ -1147,7 +1176,7 @@ NSMutableArray * ymDataArray;
     {
         NSArray *smallArray = [thumarr subarrayWithRange:NSMakeRange(0, 12)];
         NSString *goodTotalString2 = [smallArray componentsJoinedByString:@", "];
-        NSString *goodTotalString = [NSString stringWithFormat:@"%@%@%lu%@",goodTotalString2,@"等",(unsigned long)thumarr.count,@"人已赞"];
+        NSString *goodTotalString = [NSString stringWithFormat:@"%@%@%@%lu%@",goodTotalString2,@"等",@" ",(unsigned long)thumarr.count,@"人已赞"];
         NSMutableAttributedString *newGoodString = [[NSMutableAttributedString alloc] initWithString:goodTotalString];
         [newGoodString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:14] range:NSMakeRange(0, goodTotalString.length)];
         //设置行距 实际开发中间距为0太丑了，根据项目需求自己把握
@@ -1163,6 +1192,9 @@ NSMutableArray * ymDataArray;
         // 创建带有图片的富文本
         NSAttributedString *string = [NSAttributedString attributedStringWithAttachment:attch];
         [newGoodString insertAttributedString:string atIndex:0];
+        NSMutableAttributedString
+        * attStr = [[NSMutableAttributedString alloc]initWithString:@" "];
+        [newGoodString insertAttributedString:attStr atIndex:1];
         self.headview.thumlabel.attributedText = newGoodString;
         self.headview.thumlabel.numberOfLines = 0;
         //设置UILable自适
@@ -1177,7 +1209,17 @@ NSMutableArray * ymDataArray;
             CGSize textSize = [self.headview.contentlab setText:self.headview.contentlab.text lines:QSTextDefaultLines andLineSpacing:QSTextLineSpacing constrainedToSize:CGSizeMake(DEVICE_WIDTH - 28*WIDTH_SCALE,MAXFLOAT)];
             
             self.headview.contentlab.frame = CGRectMake(14*WIDTH_SCALE,  24*HEIGHT_SCALE+14*HEIGHT_SCALE, textSize.width, textSize.height);
-            [self.headview.headimg sd_setImageWithURL:[NSURL URLWithString:self.headm.imgurlstr] placeholderImage:[UIImage imageNamed:@"默认图"]];
+
+            [[SDWebImageDownloader sharedDownloader]downloadImageWithURL:[NSURL URLWithString:self.headm.imgurlstr] options:SDWebImageDownloaderUseNSURLCache progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+                
+            } completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished) {
+                
+                CGFloat width = image.size.width;
+                CGRect rect = CGRectMake(0, 0, width, 194*HEIGHT_SCALE);//创建矩形框
+                self.headview.headimg.image = [UIImage imageWithCGImage:CGImageCreateWithImageInRect([image CGImage] ,rect)];
+                
+            }];
+         
             self.headview.headimg.frame =CGRectMake(14*WIDTH_SCALE, 30*HEIGHT_SCALE+14*HEIGHT_SCALE+textSize.height, DEVICE_WIDTH-28*WIDTH_SCALE, 194*HEIGHT_SCALE);
             self.headview.title.frame = CGRectMake(14*WIDTH_SCALE,  38*HEIGHT_SCALE+textSize.height*HEIGHT_SCALE+200*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 20*HEIGHT_SCALE);
             self.headview.timelab.frame = CGRectMake(14*WIDTH_SCALE, 30*HEIGHT_SCALE+textSize.height*HEIGHT_SCALE+12*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+196, 100*WIDTH_SCALE, 12*HEIGHT_SCALE);
@@ -1199,13 +1241,30 @@ NSMutableArray * ymDataArray;
                 make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
             }];
             _headview.frame = CGRectMake(0, 0, DEVICE_WIDTH, textSize.height+340*HEIGHT_SCALE);
-
+            CGFloat hei222 = _headview.frame.size.height;
+            if (hei222>DEVICE_HEIGHT-64-58) {
+                self.scrollView.frame = CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT-64-58);
+            }else
+            {
+                self.scrollView.frame = CGRectMake(0, 0, DEVICE_WIDTH, _headview.frame.size.height);
+            }
             
-            //_headview.frame = CGRectMake(0, 0, DEVICE_WIDTH, textSize.height+380*HEIGHT_SCALE);
+            self.scrollView.contentSize = CGSizeMake(DEVICE_WIDTH, _headview.frame.size.height);
+            [self.scrollView addSubview:_headview];
         }
         else if (content.length==0&&urlstr.length!=0)
         {
-            [self.headview.headimg sd_setImageWithURL:[NSURL URLWithString:self.headm.imgurlstr] placeholderImage:[UIImage imageNamed:@"默认图"]];
+            [[SDWebImageDownloader sharedDownloader]downloadImageWithURL:[NSURL URLWithString:self.headm.imgurlstr] options:SDWebImageDownloaderUseNSURLCache progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+                
+            } completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished) {
+                
+                CGFloat width = image.size.width;
+                CGRect rect = CGRectMake(0, 0, width, 194*HEIGHT_SCALE);//创建矩形框
+                self.headview.headimg.image = [UIImage imageWithCGImage:CGImageCreateWithImageInRect([image CGImage] ,rect)];
+                
+            }];
+            
+            
             self.headview.headimg.frame =CGRectMake(14*WIDTH_SCALE, 30*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 200*HEIGHT_SCALE);
             self.headview.title.frame = CGRectMake(14*WIDTH_SCALE,  30*HEIGHT_SCALE+200*HEIGHT_SCALE+4*HEIGHT_SCALE+14*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 20*HEIGHT_SCALE);
             self.headview.timelab.frame = CGRectMake(14*WIDTH_SCALE, 30*HEIGHT_SCALE+200*HEIGHT_SCALE+4*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE, 100*WIDTH_SCALE, 12*HEIGHT_SCALE);
@@ -1222,6 +1281,16 @@ NSMutableArray * ymDataArray;
                 make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
             }];
             _headview.frame = CGRectMake(0, 0, DEVICE_WIDTH, 380*HEIGHT_SCALE);
+            CGFloat hei222 = _headview.frame.size.height;
+            if (hei222>DEVICE_HEIGHT-64-58) {
+                self.scrollView.frame = CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT-64-58);
+            }else
+            {
+                self.scrollView.frame = CGRectMake(0, 0, DEVICE_WIDTH, _headview.frame.size.height);
+            }
+            
+            self.scrollView.contentSize = CGSizeMake(DEVICE_WIDTH, _headview.frame.size.height);
+            [self.scrollView addSubview:_headview];
         }else
         {
            
@@ -1248,9 +1317,16 @@ NSMutableArray * ymDataArray;
                 make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
             }];
             _headview.frame = CGRectMake(0, 0, DEVICE_WIDTH, textSize.height+160*HEIGHT_SCALE);
+            CGFloat hei222 = _headview.frame.size.height;
+            if (hei222>DEVICE_HEIGHT-64-58) {
+                self.scrollView.frame = CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT-64-58);
+            }else
+            {
+                self.scrollView.frame = CGRectMake(0, 0, DEVICE_WIDTH, _headview.frame.size.height);
+            }
             
-            
-        }
+            self.scrollView.contentSize = CGSizeMake(DEVICE_WIDTH, _headview.frame.size.height);
+            [self.scrollView addSubview:_headview];        }
 
     }else
     {
@@ -1261,7 +1337,20 @@ NSMutableArray * ymDataArray;
             
             
             self.headview.contentlab.frame = CGRectMake(14*WIDTH_SCALE,  24*HEIGHT_SCALE+14*HEIGHT_SCALE, textSize.width, textSize.height);
-            [self.headview.headimg sd_setImageWithURL:[NSURL URLWithString:self.headm.imgurlstr] placeholderImage:[UIImage imageNamed:@"默认图"]];
+            
+            
+            [[SDWebImageDownloader sharedDownloader]downloadImageWithURL:[NSURL URLWithString:self.headm.imgurlstr] options:SDWebImageDownloaderUseNSURLCache progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+                
+            } completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished) {
+                
+                CGFloat width = image.size.width;
+                CGRect rect = CGRectMake(0, 0, width, 194*HEIGHT_SCALE);//创建矩形框
+                self.headview.headimg.image = [UIImage imageWithCGImage:CGImageCreateWithImageInRect([image CGImage] ,rect)];
+                
+            }];
+            
+            
+            
             self.headview.headimg.frame =CGRectMake(14*WIDTH_SCALE, 30*HEIGHT_SCALE+14*HEIGHT_SCALE+textSize.height, DEVICE_WIDTH-28*WIDTH_SCALE, 194*HEIGHT_SCALE);
             self.headview.title.frame = CGRectMake(14*WIDTH_SCALE,  38*HEIGHT_SCALE+textSize.height*HEIGHT_SCALE+200*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 20*HEIGHT_SCALE);
             self.headview.timelab.frame = CGRectMake(14*WIDTH_SCALE, 30*HEIGHT_SCALE+textSize.height*HEIGHT_SCALE+12*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+196, 100*WIDTH_SCALE, 12*HEIGHT_SCALE);
@@ -1283,11 +1372,33 @@ NSMutableArray * ymDataArray;
                 make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
             }];
             _headview.frame = CGRectMake(0, 0, DEVICE_WIDTH, textSize.height+360*HEIGHT_SCALE+textsize2.height);
+            CGFloat hei222 = _headview.frame.size.height;
+            if (hei222>DEVICE_HEIGHT-64-58) {
+                self.scrollView.frame = CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT-64-58);
+            }else
+            {
+                self.scrollView.frame = CGRectMake(0, 0, DEVICE_WIDTH, _headview.frame.size.height);
+            }
+            
+            self.scrollView.contentSize = CGSizeMake(DEVICE_WIDTH, _headview.frame.size.height);
+            [self.scrollView addSubview:_headview];
         }
         else if (content.length==0&&urlstr.length!=0)
         {
             CGSize textsize2= [self.headview.thumlabel.text boundingRectWithSize:CGSizeMake(DEVICE_WIDTH-28*WIDTH_SCALE, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil].size;
-            [self.headview.headimg sd_setImageWithURL:[NSURL URLWithString:self.headm.imgurlstr] placeholderImage:[UIImage imageNamed:@"默认图"]];
+            
+            [[SDWebImageDownloader sharedDownloader]downloadImageWithURL:[NSURL URLWithString:self.headm.imgurlstr] options:SDWebImageDownloaderUseNSURLCache progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+                
+            } completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished) {
+                
+                CGFloat width = image.size.width;
+                CGRect rect = CGRectMake(0, 0, width, 194*HEIGHT_SCALE);//创建矩形框
+                self.headview.headimg.image = [UIImage imageWithCGImage:CGImageCreateWithImageInRect([image CGImage] ,rect)];
+                
+            }];
+            
+            
+            
             self.headview.headimg.frame =CGRectMake(14*WIDTH_SCALE, 30*HEIGHT_SCALE+14*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 200*HEIGHT_SCALE);
             self.headview.title.frame = CGRectMake(14*WIDTH_SCALE,  30*HEIGHT_SCALE+200*HEIGHT_SCALE+4*HEIGHT_SCALE+14*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 20*HEIGHT_SCALE);
             self.headview.timelab.frame = CGRectMake(14*WIDTH_SCALE, 30*HEIGHT_SCALE+200*HEIGHT_SCALE+4*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE, 100*WIDTH_SCALE, 12*HEIGHT_SCALE);
@@ -1310,6 +1421,16 @@ NSMutableArray * ymDataArray;
                 make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
             }];
             _headview.frame = CGRectMake(0, 0, DEVICE_WIDTH, 400*HEIGHT_SCALE+textsize2.height);
+            CGFloat hei222 = _headview.frame.size.height;
+            if (hei222>DEVICE_HEIGHT-64-58) {
+                self.scrollView.frame = CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT-64-58);
+            }else
+            {
+                self.scrollView.frame = CGRectMake(0, 0, DEVICE_WIDTH, _headview.frame.size.height);
+            }
+            
+            self.scrollView.contentSize = CGSizeMake(DEVICE_WIDTH, _headview.frame.size.height);
+            [self.scrollView addSubview:_headview];
         }else
         {
             CGSize textSize = [self.headview.contentlab setText:self.headview.contentlab.text lines:QSTextDefaultLines andLineSpacing:QSTextLineSpacing constrainedToSize:CGSizeMake(DEVICE_WIDTH - 28*WIDTH_SCALE,MAXFLOAT)];
@@ -1335,12 +1456,21 @@ NSMutableArray * ymDataArray;
                 make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
                 make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
             }];
+            
+            
             _headview.frame = CGRectMake(0, 0, DEVICE_WIDTH, textSize.height+180*HEIGHT_SCALE+textsize2.height);
             
+            CGFloat hei222 = _headview.frame.size.height;
+            if (hei222>DEVICE_HEIGHT-64-58) {
+                 self.scrollView.frame = CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT-64-58);
+            }else
+            {
+                 self.scrollView.frame = CGRectMake(0, 0, DEVICE_WIDTH, _headview.frame.size.height);
+            }
+            self.scrollView.contentSize = CGSizeMake(DEVICE_WIDTH, _headview.frame.size.height);
+            [self.scrollView addSubview:_headview];
         }
-
     }
-    
 }
 
 @end

@@ -28,7 +28,6 @@
 @property (nonatomic,strong) zanBtn *dianzanbtn;
 @property (nonatomic,strong) commentsBtn *combtn;
 @property (nonatomic,strong) UIButton *sharebtn;
-
 @property (nonatomic,strong) UIImageView *headimg;
 @property (nonatomic,strong) UILabel *thumlabel;
 

@@ -56,7 +56,7 @@ static NSString *messageidentfid = @"messageidentfid";
     self.messagetable.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
     [self.view addSubview:self.messagetable];
-    self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
+ 
     UINavigationBar *navigationBar = self.navigationController.navigationBar;
     [navigationBar setBackgroundImage:[[UIImage alloc] init]
                        forBarPosition:UIBarPositionAny
@@ -73,8 +73,10 @@ static NSString *messageidentfid = @"messageidentfid";
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
     [self loaddatafromweb];
+    
 }
 
 -(void)viewWillDisappear:(BOOL)animated

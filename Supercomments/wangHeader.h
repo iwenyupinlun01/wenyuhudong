@@ -39,6 +39,7 @@
 #define xitongtongzhi @"http://np.iwenyu.cn/forum/user/systemInform.html?token=%@&page=%@"
 //看完消息后返回
 #define kanwanxiaoxi @"http://np.iwenyu.cn/forum/user/returnMsg.html?token=%@&id=%@"
+
 //删除消息通知
 #define shanchuxiaoxi @"http://np.iwenyu.cn/forum/user/removeInform.html?token=%@&type=%@&id=%@"
 //意见反馈

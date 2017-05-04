@@ -55,7 +55,7 @@ static NSString *hotidentfid = @"hotidentfid";
     self.insets = UIEdgeInsetsMake(0, 14, 0, 14);
     
     [self.view addSubview:self.hottable];
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(kvcdianzan:) name:@"shifoudiandankvo1" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(kvcdianzan:) name:@"shifoudiandankvo2" object:nil];
 }
 
 #pragma mark - 刷新控件
@@ -250,6 +250,7 @@ static NSString *hotidentfid = @"hotidentfid";
     NSLog(@"str======%@",str);
     detailsViewController *detailsvc = [[detailsViewController alloc] init];
     detailsvc.detalisidstr = str;
+    detailsvc.fromtypestr = @"hotvc";
     detailsvc.dianzanindex = [NSString stringWithFormat:@"%ld",(long)indexPath.row];
     [self.navigationController pushViewController:detailsvc animated:YES];
     
@@ -285,11 +286,10 @@ static NSString *hotidentfid = @"hotidentfid";
                 NSLog(@"infor-------%@",infor);
                 NSString *code = [infor objectForKey:@"code"];
                 if ([code intValue]==1) {
-                    [MBProgressHUD showSuccess:@"点赞"];
+                    [MBProgressHUD showSuccess:@"点赞+1"];
                     NSLog(@"成功");
                     self.nmodel = [[newModel alloc] init];
                     self.nmodel = self.dataarr[index.row];
-                    
                     NSDictionary *dic = [infor objectForKey:@"info"];
                     self.nmodel.dianzanstr = [dic objectForKey:@"spportNum"];
                     dispatch_async(dispatch_get_main_queue(), ^{
@@ -388,6 +388,7 @@ static NSString *hotidentfid = @"hotidentfid";
     NSLog(@"str======%@",str);
     detailsViewController *detailsvc = [[detailsViewController alloc] init];
     detailsvc.detalisidstr = str;
+    detailsvc.fromtypestr = @"hotvc";
     [self.navigationController pushViewController:detailsvc animated:YES];
     
 }

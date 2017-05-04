@@ -29,6 +29,8 @@
 @property (nonatomic,strong) NSString *panduan404str;
 
 @property (nonatomic, assign) UIEdgeInsets insets;
+
+@property (nonatomic,strong) UIButton *xuanzuanbtn;
 @end
 static NSString *newidentfid = @"newidentfid";
 @implementation newViewController
@@ -55,6 +57,8 @@ static NSString *newidentfid = @"newidentfid";
     [self.view addSubview:self.newtable];
     
      [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(kvcdianzan:) name:@"shifoudiandankvo" object:nil];
+    
+    [self.view addSubview:self.xuanzuanbtn];
 }
 
 #pragma mark - 刷新控件
@@ -198,6 +202,39 @@ static NSString *newidentfid = @"newidentfid";
     return _newtable;
 }
 
+-(UIButton *)xuanzuanbtn
+{
+    if(!_xuanzuanbtn)
+    {
+        _xuanzuanbtn = [[UIButton alloc] init];
+        _xuanzuanbtn.frame = CGRectMake(DEVICE_WIDTH-24*WIDTH_SCALE-32*WIDTH_SCALE, DEVICE_HEIGHT-64-32*WIDTH_SCALE-74*HEIGHT_SCALE, 32*WIDTH_SCALE, 32*WIDTH_SCALE);
+        [_xuanzuanbtn setImage:[UIImage imageNamed:@"矩形-36"] forState:normal];
+        [_xuanzuanbtn addTarget:self action:@selector(xuanzhuanbtnclick) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _xuanzuanbtn;
+}
+
+#pragma mark - 回到顶部
+
+-(void)xuanzhuanbtnclick
+{
+    [_newtable setContentOffset:CGPointMake(0,0) animated:NO];
+    [self.newtable.mj_header beginRefreshing];
+    [UIView animateWithDuration:2 animations:^{
+        /*
+         以下三点结论基于未旋转的情况：
+         1.当参数x>0 && x<=M_PI时,为顺时针
+         2.当参数x>-M_PI && x<0时,为逆时针
+         3.若参数x<M_PI || x>2.0*M_PI时,则旋转方向等同于x%2的旋转方向
+         总结：旋转方向就是向最短路径方向旋转
+         */
+        self.xuanzuanbtn.transform = CGAffineTransformMakeRotation(M_PI);// 顺时针旋转360度
+        
+        
+    }];
+}
+
+
 #pragma mark -UITableViewDataSource&&UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -252,6 +289,7 @@ static NSString *newidentfid = @"newidentfid";
     detailsViewController *detailsvc = [[detailsViewController alloc] init];
     detailsvc.detalisidstr = str;
     detailsvc.dianzanindex = [NSString stringWithFormat:@"%ld",(long)indexPath.row];
+    detailsvc.fromtypestr = @"newvc";
     [self.navigationController pushViewController:detailsvc animated:YES];
     
 }
@@ -287,7 +325,7 @@ static NSString *newidentfid = @"newidentfid";
                 NSLog(@"infor-------%@",infor);
                 NSString *code = [infor objectForKey:@"code"];
                 if ([code intValue]==1) {
-                    [MBProgressHUD showSuccess:@"点赞"];
+                    [MBProgressHUD showSuccess:@"点赞+1"];
                     NSLog(@"成功");
                     self.nmodel = [[newModel alloc] init];
                     self.nmodel = self.dataarr[index.row];
@@ -295,7 +333,7 @@ static NSString *newidentfid = @"newidentfid";
                     NSDictionary *dic = [infor objectForKey:@"info"];
                     self.nmodel.dianzanstr = [dic objectForKey:@"spportNum"];
                     dispatch_async(dispatch_get_main_queue(), ^{
-                          [self.newtable reloadData];
+                        [self.newtable reloadData];
                     });
                 }
                 else if ([code intValue]==0)
@@ -343,7 +381,6 @@ static NSString *newidentfid = @"newidentfid";
                 if ([code intValue]==1) {
                     [MBProgressHUD showSuccess:@"取消点赞"];
                     NSLog(@"成功");
-                    
                     self.nmodel = [[newModel alloc] init];
                     self.nmodel = self.dataarr[index.row];
                     NSDictionary *dic = [infor objectForKey:@"info"];
@@ -390,11 +427,12 @@ static NSString *newidentfid = @"newidentfid";
     NSLog(@"str======%@",str);
     detailsViewController *detailsvc = [[detailsViewController alloc] init];
     detailsvc.detalisidstr = str;
+    detailsvc.fromtypestr = @"newvc";
     [self.navigationController pushViewController:detailsvc animated:YES];
-    
 }
 
 //跳转网页
+
 -(void)myTabVClick3:(UITableViewCell *)cell
 {
     NSIndexPath *index = [self.newtable indexPathForCell:cell];

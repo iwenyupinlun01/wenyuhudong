@@ -11,6 +11,7 @@
 #import "newModel.h"
 #import "YYPhotoGroupView.h"
 #import "Timestr.h"
+
 @interface newCell()
 
 @property (nonatomic,strong) newModel *nmodel;
@@ -188,7 +189,21 @@
 {
     self.nmodel = model;
     self.namelab.text = model.namestr;
+    
+   
+    
+    CGSize textSize = [self.contentlab setText:model.contentstr lines:4 andLineSpacing:QSTextLineSpacing constrainedToSize:CGSizeMake(DEVICE_WIDTH-28*WIDTH_SCALE,MAXFLOAT)];
+    self.contentlab.frame = CGRectMake(14*WIDTH_SCALE,  38*HEIGHT_SCALE, DEVICE_WIDTH -28*WIDTH_SCALE, textSize.height);
+    
+    
+    
+  
+    
+    
     self.contentlab.text = model.contentstr;
+   
+    
+    
     
     NSString *str1 = @" 标题: ";
     NSString *str2 = model.titlestr;
@@ -232,8 +247,7 @@
     NSString *str=model.timestr;//时间戳
     [Timestr datetime:str];
     
-    CGSize textSize = [self.contentlab setText:model.contentstr lines:4 andLineSpacing:QSTextLineSpacing constrainedToSize:CGSizeMake(DEVICE_WIDTH-28*WIDTH_SCALE,MAXFLOAT)];
-    self.contentlab.frame = CGRectMake(14*WIDTH_SCALE,  38*HEIGHT_SCALE, DEVICE_WIDTH -28*WIDTH_SCALE, textSize.height);
+   
     
     CGFloat hei = textSize.height;
     
@@ -249,29 +263,21 @@
             else if(self.nmodel.contentstr.length==0&&self.nmodel.imgurlstr.length!=0)
             {
                 CGFloat width = image.size.width;
-                CGRect rect = CGRectMake(14*WIDTH_SCALE, (16+14+textSize.height+16)*HEIGHT_SCALE, width, 194*HEIGHT_SCALE);//创建矩形框
-                
+                CGRect rect = CGRectMake(0, 0, width, 194*HEIGHT_SCALE);//创建矩形框
                 _infoimg.image = [UIImage imageWithCGImage:CGImageCreateWithImageInRect([image CGImage] ,rect)];
-                
-                //self.infoimg.image = image;
-                [self.infoimg sd_setImageWithURL:[NSURL URLWithString:self.nmodel.imgurlstr] placeholderImage:[UIImage imageNamed:@"默认图"]];
-                
-                self.infoimg.frame =CGRectMake(14*WIDTH_SCALE, (16+14+14)*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 196*HEIGHT_SCALE);
-                
+                self.infoimg.frame =CGRectMake(14*WIDTH_SCALE, (16+14+14)*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 194*HEIGHT_SCALE);
                 [self.infoimg setHidden:NO];
+
             }
             else
             {
                 CGFloat width = image.size.width;
-                CGRect rect = CGRectMake(14*WIDTH_SCALE, (16+14+textSize.height+16)*HEIGHT_SCALE, width, 194*HEIGHT_SCALE);//创建矩形框
-                
+                CGRect rect = CGRectMake(0, 0, width, 194*HEIGHT_SCALE);//创建矩形框
                 _infoimg.image = [UIImage imageWithCGImage:CGImageCreateWithImageInRect([image CGImage] ,rect)];
-                [self.infoimg sd_setImageWithURL:[NSURL URLWithString:self.nmodel.imgurlstr] placeholderImage:[UIImage imageNamed:@"默认图"]];
-                self.infoimg.frame =CGRectMake(14*WIDTH_SCALE, (16+14+hei+14)*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 196*HEIGHT_SCALE);
-                
+                self.infoimg.frame =CGRectMake(14*WIDTH_SCALE, (16+14+hei+14)*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 194*HEIGHT_SCALE);
                 [self.infoimg setHidden:NO];
+                
             }
-            
     }];
     
 }

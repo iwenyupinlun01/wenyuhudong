@@ -34,11 +34,10 @@ static NSString * const kShowTextCellReuseIdentifier = @"QSShowTextCell";
     self.navigationItem.leftBarButtonItem.tintColor = [UIColor wjColorFloat:@"333333"];
     self.navigationController.interactivePopGestureRecognizer.delegate = (id)self;
     self.title = @"系统通知";
-//    self.messagetable.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-//    [self.view addSubview:self.messagetable];
-    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor wjColorFloat:@"333333"]}];
 
-    self.navigationController.navigationBar.barTintColor = [UIColor wjColorFloat:@"F5F5F5"];
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor wjColorFloat:@"333333"]}];
+    
+    self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
     pn=1;
     self.dataSource = [NSMutableArray array];
     self.xitongarr = [NSMutableArray array];
@@ -360,6 +359,6 @@ static NSString * const kShowTextCellReuseIdentifier = @"QSShowTextCell";
 #pragma mark - 加载失败
 
 - (UIImage *)imageForEmptyDataSet:(UIScrollView *)scrollView {
-    return [UIImage imageNamed:@"加载失败"];
+    return [UIImage imageNamed:@"空的"];
 }
 @end

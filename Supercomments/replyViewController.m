@@ -36,14 +36,11 @@ static NSString *replyidentfid = @"replyidentfid";
     pn=1;
     self.replyarr = [NSMutableArray array];
     
-    // 3.1.下拉刷新
-    [self addHeader];
-    // 3.2.上拉加载更多
-    [self addFooter];
+
     //[self datafromweb];
     self.replytable.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 
-    self.navigationController.navigationBar.barTintColor = [UIColor wjColorFloat:@"F5F5F5"];
+    self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
     [self.view addSubview:self.replytable];
     
 }
@@ -51,6 +48,10 @@ static NSString *replyidentfid = @"replyidentfid";
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    // 3.1.下拉刷新
+    [self addHeader];
+    // 3.2.上拉加载更多
+    [self addFooter];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -107,6 +108,7 @@ static NSString *replyidentfid = @"replyidentfid";
                 self.rmodel.replytimestr = dit[@"pubtime"];
                 self.rmodel.obj_id = dit[@"object_id"];
                 self.rmodel.is_checkstr = dit[@"is_check"];
+                self.rmodel.replyidstr = dit[@"id"];
                 [self.replyarr addObject:self.rmodel];
             }
         }
@@ -253,11 +255,18 @@ static NSString *replyidentfid = @"replyidentfid";
     detalsVC.detalisidstr = idstr;
     [self.navigationController pushViewController:detalsVC animated:YES];
     NSLog(@"%ld",(long)indexPath.row);
+    
+    [AFManager getReqURL:[NSString stringWithFormat:kanwanxiaoxi,[tokenstr tokenstrfrom],self.rmodel.replyidstr] block:^(id infor) {
+        NSLog(@"infor-----%@",infor);
+    } errorblock:^(NSError *error) {
+        
+    }];
 }
 
 #pragma mark - 加载失败
 
 - (UIImage *)imageForEmptyDataSet:(UIScrollView *)scrollView {
-    return [UIImage imageNamed:@"加载失败"];
+    return [UIImage imageNamed:@"空的"];
 }
+
 @end
