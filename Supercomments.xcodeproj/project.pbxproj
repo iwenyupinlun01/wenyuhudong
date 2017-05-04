@@ -35,6 +35,7 @@
 		53619ED71E98B89D007CC7AC /* titleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 53619ED61E98B89D007CC7AC /* titleView.m */; };
 		53619EDE1E98D283007CC7AC /* detailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 53619EDD1E98D283007CC7AC /* detailsViewController.m */; };
 		53619EE41E98E0C7007CC7AC /* detailsheadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 53619EE31E98E0C7007CC7AC /* detailsheadView.m */; };
+		537303161EBB303A00D5C7C5 /* UIImageView+RotateImgV.m in Sources */ = {isa = PBXBuildFile; fileRef = 537303151EBB303A00D5C7C5 /* UIImageView+RotateImgV.m */; };
 		5387A7B71EAB4F720057B518 /* SureWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5387A7B61EAB4F720057B518 /* SureWebViewController.m */; };
 		5387A7BA1EAB68900057B518 /* MBProgressHUD+XMG.m in Sources */ = {isa = PBXBuildFile; fileRef = 5387A7B91EAB68900057B518 /* MBProgressHUD+XMG.m */; };
 		538D53C41EAEECD700E2DCAF /* strisNull.m in Sources */ = {isa = PBXBuildFile; fileRef = 538D53C31EAEECD700E2DCAF /* strisNull.m */; };
@@ -173,6 +174,8 @@
 		53619EDD1E98D283007CC7AC /* detailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = detailsViewController.m; sourceTree = "<group>"; };
 		53619EE21E98E0C7007CC7AC /* detailsheadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = detailsheadView.h; sourceTree = "<group>"; };
 		53619EE31E98E0C7007CC7AC /* detailsheadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = detailsheadView.m; sourceTree = "<group>"; };
+		537303141EBB303A00D5C7C5 /* UIImageView+RotateImgV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+RotateImgV.h"; sourceTree = "<group>"; };
+		537303151EBB303A00D5C7C5 /* UIImageView+RotateImgV.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+RotateImgV.m"; sourceTree = "<group>"; };
 		5387A7B51EAB4F720057B518 /* SureWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SureWebViewController.h; sourceTree = "<group>"; };
 		5387A7B61EAB4F720057B518 /* SureWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SureWebViewController.m; sourceTree = "<group>"; };
 		5387A7B81EAB68900057B518 /* MBProgressHUD+XMG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD+XMG.h"; sourceTree = "<group>"; };
@@ -621,6 +624,8 @@
 		539550E31EA0C623001A268C /* utlis */ = {
 			isa = PBXGroup;
 			children = (
+				537303141EBB303A00D5C7C5 /* UIImageView+RotateImgV.h */,
+				537303151EBB303A00D5C7C5 /* UIImageView+RotateImgV.m */,
 				53DF54A91EB9D10600AF6248 /* MBManager */,
 				53C40EBB1EB8227F0052CEB9 /* kvc */,
 				53E5C0721EB083EE008B1F22 /* utlimodel */,
@@ -1240,6 +1245,7 @@
 				53E412F01EAA1C8E00EBC0CE /* xitongModel.m in Sources */,
 				53619EE41E98E0C7007CC7AC /* detailsheadView.m in Sources */,
 				53D48A831EA4D52F00E5ADA3 /* headModel.m in Sources */,
+				537303161EBB303A00D5C7C5 /* UIImageView+RotateImgV.m in Sources */,
 				53E863CA1EAD99B0001F6FD8 /* keyboardView.m in Sources */,
 				53E587871EA7672A004CB302 /* pinglunCell.m in Sources */,
 				53619EC51E9778E9007CC7AC /* newCell.m in Sources */,

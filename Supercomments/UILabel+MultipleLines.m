@@ -41,7 +41,11 @@
     NSMutableParagraphStyle * paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     [paragraphStyle setLineSpacing:lineSpacing];
     paragraphStyle.lineBreakMode = NSLineBreakByTruncatingTail;//结尾部分的内容以……方式省略
+    
     [attributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [text length])];
+    
+    
+    
     
     [self setAttributedText:attributedString];
     self.bounds = CGRectMake(0, 0, self.lbTextSize.width, self.lbTextSize.height);

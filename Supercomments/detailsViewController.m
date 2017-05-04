@@ -810,7 +810,6 @@ NSMutableArray * ymDataArray;
     NSValue *aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
     CGRect keyboardRect = [aValue CGRectValue];
     int height = keyboardRect.size.height;
-//    self.keyView.textview.customPlaceholder = [NSString stringWithFormat:@"%@%@",@"评论@",self.headm.namestr];
     [UIView animateWithDuration:[aNotification.userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue] animations:^{
         self.keyView.transform=CGAffineTransformMakeTranslation(0, -height);
         self.bgview.alpha = 0.6;
@@ -835,8 +834,7 @@ NSMutableArray * ymDataArray;
         self.bgview.frame = CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT);
         self.bgview.alpha = 1;
         self.keyView.textview.text=@"";
-        self.keyView.touidstr = @"";
-        self.keyView.pidstr = @"";
+        _fromkeyboard = @"";
         _keyView.textview.customPlaceholder = @"写评论";
         
     }];
@@ -908,13 +906,15 @@ NSMutableArray * ymDataArray;
             self.detailsmodel  = self.detalisarr[self.keyView.index];
             NSMutableArray *mutaArray = [[NSMutableArray alloc] init];
             [mutaArray addObjectsFromArray:self.detailsmodel.pingarr];
-            NSDictionary *dit = @{@"content":self.keyView.textview.text,@"s_nickname":namestr,@"s_to_nickname":self.keyView.nickname};
+            NSDictionary *dit = @{@"content":self.keyView.textview.text,@"s_nickname":namestr,@"s_to_nickname":self.keyView.nickname,@"to_uid":self.keyView.touidstr,@"pid":self.keyView.pidstr};
             [mutaArray addObject:dit];
+            
             self.detailsmodel.pingarr = mutaArray;
             
             [self.maintable reloadData];
             
             //网络请求
+            
             NSDictionary *para = @{@"token":[tokenstr tokenstrfrom],@"to_uid":self.keyView.touidstr,@"object_id":self.headm.objectidstr,@"content":self.keyView.textview.text,@"pid":self.keyView.pidstr};
             
             [CLNetworkingManager postCacheRequestWithUrlString:pinglunhuifu parameters:para cacheTime:YES succeed:^(id data) {
@@ -923,6 +923,7 @@ NSMutableArray * ymDataArray;
             } fail:^(NSError *error) {
                 
             }];
+            
             
         }else if([_fromkeyboard isEqualToString:@"section"])
         {
@@ -936,7 +937,9 @@ NSMutableArray * ymDataArray;
             NSString *tonickname = self.detailsmodel.namestr;
             NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
             NSString *namestr = [defaults objectForKey:@"namestr"];
-            NSDictionary *dit = @{@"content":self.keyView.textview.text,@"s_nickname":namestr,@"s_to_nickname":tonickname};
+   
+            NSDictionary *dit = @{@"content":self.keyView.textview.text,@"s_nickname":namestr,@"s_to_nickname":tonickname,@"to_uid":uidstr,@"pid":pidstr};
+            
             [mutaArray addObject:dit];
             self.detailsmodel.pingarr = mutaArray;
             [self.maintable reloadData];
@@ -953,7 +956,7 @@ NSMutableArray * ymDataArray;
         }
         else
         {
-            //                一级评论
+            //一级评论
             self.detailsmodel = [[detailcellmodel alloc] init];
             NSMutableArray *mutaArray = [[NSMutableArray alloc] init];
             
@@ -962,11 +965,19 @@ NSMutableArray * ymDataArray;
             NSString *name = namestr;
             NSString *nowtime = [Timestr getNowTimestamp];
             NSString *content = self.keyView.textview.text;
-            NSString *imageurl = @"";
+            NSString *imageurl = [tokenstr userimgstrfrom];
+            NSString *pid = @"1";
+            NSString *to_uid = @"1";
+            
+            
             self.detailsmodel.namestr = name;
             self.detailsmodel.timestr = nowtime;
             self.detailsmodel.contstr = content;
             self.detailsmodel.imgurlstr = imageurl;
+            self.detailsmodel.touidstr = to_uid;
+            self.detailsmodel.idstr = pid;
+            
+            
             [mutaArray addObject:self.detailsmodel];
             [mutaArray addObjectsFromArray:self.detalisarr];
             self.detalisarr = mutaArray;

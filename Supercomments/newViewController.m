@@ -15,10 +15,14 @@
 #import "SureWebViewController.h"
 #import "loginViewController.h"
 #import <DZNEmptyDataSet/UIScrollView+EmptyDataSet.h>
+
+#import "UIImageView+RotateImgV.h"
+
 @interface newViewController ()<UITableViewDataSource,UITableViewDelegate,mycellVdelegate,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate>
 /** 用于加载下一页的参数(页码) */
 {
     int pn;
+    double angle;
 }
 @property (nonatomic,strong) UITableView *newtable;
 @property (nonatomic,strong) UIImageView *demoimg;
@@ -31,6 +35,7 @@
 @property (nonatomic, assign) UIEdgeInsets insets;
 
 @property (nonatomic,strong) UIButton *xuanzuanbtn;
+
 @end
 static NSString *newidentfid = @"newidentfid";
 @implementation newViewController
@@ -59,7 +64,10 @@ static NSString *newidentfid = @"newidentfid";
      [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(kvcdianzan:) name:@"shifoudiandankvo" object:nil];
     
     [self.view addSubview:self.xuanzuanbtn];
+
 }
+
+
 
 #pragma mark - 刷新控件
 
@@ -115,12 +123,14 @@ static NSString *newidentfid = @"newidentfid";
             self.nmodel.sifoudianzanstr = dicarr[@"is_support"];
             self.nmodel.weburlstr = dicarr[@"url"];
             self.nmodel.ishot = dicarr[@"is_hot"];
+            self.nmodel.platformstr = dicarr[@"platform"];
             [self.dataSource addObject:self.nmodel.contentstr];
             [self.dataarr addObject:self.nmodel];
             [self.imgarr addObject:self.nmodel.imgurlstr];
         }
         [self.newtable.mj_header endRefreshing];
         [self.newtable reloadData];
+        [self.xuanzuanbtn stopRotate];
     } fail:^(NSError *error) {
         [self.newtable.mj_header endRefreshing];
         self.panduan404str = @"1";
@@ -153,6 +163,7 @@ static NSString *newidentfid = @"newidentfid";
             self.nmodel.sifoudianzanstr = dicarr[@"is_support"];
             self.nmodel.weburlstr = dicarr[@"url"];
             self.nmodel.ishot = dicarr[@"is_hot"];
+            self.nmodel.platformstr = dicarr[@"platform"];
             [self.dataSource addObject:self.nmodel.contentstr];
             [self.dataarr addObject:self.nmodel];
             [self.imgarr addObject:self.nmodel.imgurlstr];
@@ -207,7 +218,7 @@ static NSString *newidentfid = @"newidentfid";
     if(!_xuanzuanbtn)
     {
         _xuanzuanbtn = [[UIButton alloc] init];
-        _xuanzuanbtn.frame = CGRectMake(DEVICE_WIDTH-24*WIDTH_SCALE-32*WIDTH_SCALE, DEVICE_HEIGHT-64-32*WIDTH_SCALE-74*HEIGHT_SCALE, 32*WIDTH_SCALE, 32*WIDTH_SCALE);
+        _xuanzuanbtn.frame = CGRectMake(DEVICE_WIDTH-24*WIDTH_SCALE-32*WIDTH_SCALE, DEVICE_HEIGHT-64-32*WIDTH_SCALE-74*HEIGHT_SCALE, 44*WIDTH_SCALE, 44*WIDTH_SCALE);
         [_xuanzuanbtn setImage:[UIImage imageNamed:@"矩形-36"] forState:normal];
         [_xuanzuanbtn addTarget:self action:@selector(xuanzhuanbtnclick) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -220,20 +231,8 @@ static NSString *newidentfid = @"newidentfid";
 {
     [_newtable setContentOffset:CGPointMake(0,0) animated:NO];
     [self.newtable.mj_header beginRefreshing];
-    [UIView animateWithDuration:2 animations:^{
-        /*
-         以下三点结论基于未旋转的情况：
-         1.当参数x>0 && x<=M_PI时,为顺时针
-         2.当参数x>-M_PI && x<0时,为逆时针
-         3.若参数x<M_PI || x>2.0*M_PI时,则旋转方向等同于x%2的旋转方向
-         总结：旋转方向就是向最短路径方向旋转
-         */
-        self.xuanzuanbtn.transform = CGAffineTransformMakeRotation(M_PI);// 顺时针旋转360度
-        
-        
-    }];
+    [self.xuanzuanbtn rotate360DegreeWithImageView];
 }
-
 
 #pragma mark -UITableViewDataSource&&UITableViewDelegate
 

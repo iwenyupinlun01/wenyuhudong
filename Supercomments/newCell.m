@@ -11,6 +11,7 @@
 #import "newModel.h"
 #import "YYPhotoGroupView.h"
 #import "Timestr.h"
+#import "YYKit.h"
 
 @interface newCell()
 
@@ -74,7 +75,6 @@
     }
     return _fromlab;
 }
-
 
 -(UILabel *)contentlab
 {
@@ -190,21 +190,11 @@
     self.nmodel = model;
     self.namelab.text = model.namestr;
     
-   
-    
     CGSize textSize = [self.contentlab setText:model.contentstr lines:4 andLineSpacing:QSTextLineSpacing constrainedToSize:CGSizeMake(DEVICE_WIDTH-28*WIDTH_SCALE,MAXFLOAT)];
     self.contentlab.frame = CGRectMake(14*WIDTH_SCALE,  38*HEIGHT_SCALE, DEVICE_WIDTH -28*WIDTH_SCALE, textSize.height);
     
-    
-    
-  
-    
-    
     self.contentlab.text = model.contentstr;
    
-    
-    
-    
     NSString *str1 = @" 标题: ";
     NSString *str2 = model.titlestr;
     NSMutableAttributedString *strbut = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@",str1,str2]];
@@ -231,7 +221,13 @@
     {
         self.fromlab.text = [NSString stringWithFormat:@"%@%@%@",@"网易老司机已赞",model.fromstr,@"次"];
 
-    }else
+    }
+    else if ([model.typestr isEqualToString:@"5"])
+    {
+        //self.fromlab.text = [NSString stringWithFormat:@"%@%@%@",@"网易老司机已赞",model.fromstr,@"次"];
+        self.fromlab.text = model.platformstr;
+    }
+    else
     {
         self.fromlab.text = [NSString stringWithFormat:@"%@%@%@",@"今日牛评老司机已赞",model.fromstr,@"次"];
         

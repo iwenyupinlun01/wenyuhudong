@@ -11,7 +11,7 @@
 #import "commentsBtn.h"
 #import "zanBtn.h"
 #import "titleView.h"
-
+#import "YYKit.h"
 @class newModel;
 //创建一个代理
 @protocol mycellVdelegate <NSObject>
