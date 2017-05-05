@@ -21,6 +21,10 @@
 #import <ShareSDKUI/ShareSDK+SSUI.h>
 #import "AppDelegate.h"
 #import "YYPhotoGroupView.h"
+
+#import <ShareSDK/ShareSDK.h>
+#import <ShareSDKConnector/ShareSDKConnector.h>
+
 @interface detailsViewController ()<UITableViewDataSource,UITableViewDelegate,UITextViewDelegate,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate,UIScrollViewDelegate>
 {
     int pn;
@@ -181,7 +185,8 @@ NSMutableArray * ymDataArray;
             self.headm.fromstr = [NSString stringWithFormat:@"%@%@%@",@"网易老司机已赞",[dic objectForKey:@"support_count"],@"次"];
         }
         else if ([self.headm.typefromstr isEqualToString:@"5"]) {
-            self.headm.fromstr = [dic objectForKey:@"platform"];
+            //self.headm.fromstr = [dic objectForKey:@"platform"];
+            self.headm.fromstr = [NSString stringWithFormat:@"%@%@%@%@",[dic objectForKey:@"platform"],@"已赞",[dic objectForKey:@"support_count"],@"次"];
         }
         else{
              self.headm.fromstr = [NSString stringWithFormat:@"%@%@%@",@"今日牛评老司机已赞",[dic objectForKey:@"support_count"],@"次"];
@@ -426,7 +431,7 @@ NSMutableArray * ymDataArray;
         cell.pinglunlab.attributedText = str;
         NSString *newstr = [str string];
         CGSize size2 = [cell.pinglunlab setText:newstr lines:0 andLineSpacing:4 constrainedToSize:CGSizeMake(DEVICE_WIDTH -64*WIDTH_SCALE-14*WIDTH_SCALE-16*WIDTH_SCALE,MAXFLOAT)];
-        cell.pinglunlab.frame = CGRectMake(128/2*WIDTH_SCALE+8,  8*HEIGHT_SCALE, DEVICE_WIDTH -64*WIDTH_SCALE-14*WIDTH_SCALE-8, size2.height);
+        cell.pinglunlab.frame = CGRectMake(62*WIDTH_SCALE+4*WIDTH_SCALE,  8*HEIGHT_SCALE, DEVICE_WIDTH -64*WIDTH_SCALE-14*WIDTH_SCALE-8, size2.height);
         cell.pinglunlab.font = [UIFont systemFontOfSize:14*FX];
     }
     else
@@ -441,7 +446,7 @@ NSMutableArray * ymDataArray;
         NSString *newstr = [str string];
         CGSize size2 = [cell.pinglunlab setText:newstr lines:0 andLineSpacing:4 constrainedToSize:CGSizeMake(DEVICE_WIDTH -64*WIDTH_SCALE-14*WIDTH_SCALE-16*WIDTH_SCALE,MAXFLOAT)];
         cell.pinglunlab.attributedText = str;
-        cell.pinglunlab.frame = CGRectMake(128/2*WIDTH_SCALE+8,  8*HEIGHT_SCALE, size2.width, size2.height);
+        cell.pinglunlab.frame = CGRectMake(62*WIDTH_SCALE+4*WIDTH_SCALE,  8*HEIGHT_SCALE, size2.width, size2.height);
         cell.pinglunlab.font = [UIFont systemFontOfSize:14*FX];
     }
     cell.pinglunlab.numberOfLines = 0;
@@ -519,7 +524,7 @@ NSMutableArray * ymDataArray;
 {
     UIView *view=[[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, 14)];
     view.backgroundColor = [UIColor whiteColor];
-    UIView *lineview = [[UIView alloc] initWithFrame:CGRectMake(64, 13, DEVICE_WIDTH-64-14, 0.7)];
+    UIView *lineview = [[UIView alloc] initWithFrame:CGRectMake(59*WIDTH_SCALE, 13, DEVICE_WIDTH-64-14, 0.7)];
     lineview.backgroundColor = [UIColor wjColorFloat:@"F5F5F5"];
     [view addSubview:lineview];
     return view;
@@ -532,20 +537,26 @@ NSMutableArray * ymDataArray;
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+
+
+
 -(void)shareclick
 {
     NSLog(@"分享");
     //1、创建分享参数
-    NSArray* imageArray = @[[UIImage imageNamed:@"牛评"]];
+    NSArray* imageArray = @[[UIImage imageNamed:@"牛评分享下载.jpg"]];
     
     //（注意：图片必须要在Xcode左边目录里面，名称必须要传正确，如果要分享网络图片，可以这样传iamge参数 images:@[@"http://mob.com/Assets/images/logo.png?v=20150320"]）
     if (imageArray) {
         NSMutableDictionary *shareParams = [NSMutableDictionary dictionary];
-        [shareParams SSDKSetupShareParamsByText:@"分享内容"
-                                         images:imageArray
-                                            url:[NSURL URLWithString:@"http://mob.com"]
-                                          title:@"分享标题"
-                                           type:SSDKContentTypeAuto];
+//        [shareParams SSDKSetupShareParamsByText:@"分享内容"
+//                                         images:imageArray
+//                                            url:[NSURL URLWithString:@"http://mob.com"]
+//                                          title:@"分享标题"
+//                                           type:SSDKContentTypeAuto];
+        
+        [shareParams SSDKSetupShareParamsByText:@"" images:imageArray url:[NSURL URLWithString:@""] title:@"" type:SSDKContentTypeImage];
+        
         //有的平台要客户端分享需要加此方法，例如微博
         [shareParams SSDKEnableUseClientShare];
         //2、分享（可以弹出我们的分享菜单和编辑界面）

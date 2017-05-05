@@ -30,7 +30,8 @@
 -(void)layoutSubviews
 {
     [super layoutSubviews];
-    self.bgview.frame = CGRectMake(128/2*WIDTH_SCALE, 0, DEVICE_WIDTH-64*WIDTH_SCALE-14*WIDTH_SCALE, self.frame.size.height);
+    self.bgview.frame = CGRectMake(59*WIDTH_SCALE, 0, DEVICE_WIDTH-64*WIDTH_SCALE-14*WIDTH_SCALE, self.frame.size.height);
+    
 }
 
 -(void)setcelldata:(detailcellmodel *)model
@@ -46,7 +47,7 @@
     if(!_bgview)
     {
         _bgview = [[UIView alloc] init];
-        _bgview.backgroundColor = [UIColor wjColorFloat:@"F4F5F6"];
+        _bgview.backgroundColor = [UIColor wjColorFloat:@"F5F5F5"];
     }
     return _bgview;
 }

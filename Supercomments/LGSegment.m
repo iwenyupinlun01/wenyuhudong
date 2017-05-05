@@ -133,7 +133,7 @@
     
     UIButton *bt1 = (UIButton *)[self viewWithTag:1];
     UIButton *bt2 = (UIButton *)[self viewWithTag:2];
-    UIButton *bt3 = (UIButton *)[self viewWithTag:3];
+   // UIButton *bt3 = (UIButton *)[self viewWithTag:3];
     
     CGFloat bannerX = btn.center.x;
     
@@ -148,10 +148,10 @@
             [self didSelectButton:bt2];
             [self.delegate scrollToPage:1];
             break;
-        case 3:
-            [self didSelectButton:bt3];
-            [self.delegate scrollToPage:2];
-            break;
+//        case 3:
+//            [self didSelectButton:bt3];
+//            [self.delegate scrollToPage:2];
+//            break;
             
         default:
             break;
@@ -177,9 +177,10 @@
         [self didSelectButton:bt1];
     }else if (bannerX == bt2.center.x) {
         [self didSelectButton:bt2];
-    }else if (bannerX == bt3.center.x){
-        [self didSelectButton:bt3];
     }
+//    else if (bannerX == bt3.center.x){
+//        [self didSelectButton:bt3];
+//    }
     
 }
 
@@ -230,14 +231,14 @@
             [bt3 setTitleColor:[UIColor wjColorFloat:@"F5F5F5"] forState:UIControlStateNormal];
              bt3.titleLabel.font = [UIFont systemFontOfSize:18];
             break;
-        case 3:
-            [bt1 setTitleColor:[UIColor wjColorFloat:@"F5F5F5"] forState:UIControlStateNormal];
-             bt1.titleLabel.font = [UIFont systemFontOfSize:16];
-            [bt2 setTitleColor:[UIColor wjColorFloat:@"F5F5F5"] forState:UIControlStateNormal];
-             bt2.titleLabel.font = [UIFont systemFontOfSize:16];
-            [bt3 setTitleColor:[UIColor wjColorFloat:@"FFFFFF"] forState:UIControlStateNormal];
-             bt3.titleLabel.font = [UIFont systemFontOfSize:18];
-            break;
+//        case 3:
+//            [bt1 setTitleColor:[UIColor wjColorFloat:@"F5F5F5"] forState:UIControlStateNormal];
+//             bt1.titleLabel.font = [UIFont systemFontOfSize:16];
+//            [bt2 setTitleColor:[UIColor wjColorFloat:@"F5F5F5"] forState:UIControlStateNormal];
+//             bt2.titleLabel.font = [UIFont systemFontOfSize:16];
+//            [bt3 setTitleColor:[UIColor wjColorFloat:@"FFFFFF"] forState:UIControlStateNormal];
+//             bt3.titleLabel.font = [UIFont systemFontOfSize:18];
+//            break;
             
         default:
             break;

@@ -130,7 +130,10 @@ static NSString *newidentfid = @"newidentfid";
         }
         [self.newtable.mj_header endRefreshing];
         [self.newtable reloadData];
-        [self.xuanzuanbtn stopRotate];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.xuanzuanbtn stopRotate];
+        });
+        
     } fail:^(NSError *error) {
         [self.newtable.mj_header endRefreshing];
         self.panduan404str = @"1";
@@ -188,7 +191,7 @@ static NSString *newidentfid = @"newidentfid";
 {
     [super viewWillAppear:animated];
     self.newtable.frame = CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT-64);
-    //[self headerRefreshEndAction];
+
 }
 
 #pragma mark - getters
@@ -231,8 +234,12 @@ static NSString *newidentfid = @"newidentfid";
 -(void)xuanzhuanbtnclick
 {
     [_newtable setContentOffset:CGPointMake(0,0) animated:NO];
-    [self.newtable.mj_header beginRefreshing];
-    [self.xuanzuanbtn rotate360DegreeWithImageView];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.xuanzuanbtn rotate360DegreeWithImageView];
+        [self.newtable.mj_header beginRefreshing];
+    });
+    
 }
 
 #pragma mark -UITableViewDataSource&&UITableViewDelegate
@@ -357,8 +364,9 @@ static NSString *newidentfid = @"newidentfid";
                 }
 
             }];
-
-            [self.newtable reloadData];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.newtable reloadData];
+            });
         }
         
     }
@@ -409,8 +417,9 @@ static NSString *newidentfid = @"newidentfid";
                     NSLog(@"系统繁忙，请稍后再试");
                 }
             }];
-        
-            [self.newtable reloadData];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.newtable reloadData];
+            });
         }
     }
 }

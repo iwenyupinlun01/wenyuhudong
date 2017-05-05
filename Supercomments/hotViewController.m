@@ -225,8 +225,10 @@ static NSString *hotidentfid = @"hotidentfid";
 -(void)xuanzhuanbtnclick
 {
     [_hottable setContentOffset:CGPointMake(0,0) animated:NO];
-    [self.hottable.mj_header beginRefreshing];
-    [self.xuanzuanbtn rotate360DegreeWithImageView];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.xuanzuanbtn rotate360DegreeWithImageView];
+        [self.hottable.mj_header beginRefreshing];
+    });
 }
 
 #pragma mark -UITableViewDataSource&&UITableViewDelegate

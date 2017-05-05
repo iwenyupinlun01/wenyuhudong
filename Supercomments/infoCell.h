@@ -12,4 +12,5 @@
 @property (nonatomic,strong) UIImageView *leftimg;
 @property (nonatomic,strong) UILabel *textlab;
 @property (nonatomic,strong) UILabel *numlab;
+@property (nonatomic,strong) UIImageView *rightimg;
 @end

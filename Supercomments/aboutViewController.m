@@ -94,7 +94,7 @@
     if(!_namelab)
     {
         _namelab = [[UILabel alloc] init];
-        _namelab.text = @"今日牛评";
+        //_namelab.text = @"今日牛评";
         _namelab.textAlignment = NSTextAlignmentCenter;
         _namelab.textColor = [UIColor wjColorFloat:@"333333"];
     }
@@ -106,7 +106,7 @@
     if(!_versionlab)
     {
         _versionlab = [[UILabel alloc] init];
-        _versionlab.text = @"V1.0";
+        //_versionlab.text = @"V1.0";
         _versionlab.textColor = [UIColor wjColorFloat:@"999999"];
         _versionlab.textAlignment = NSTextAlignmentCenter;
         _versionlab.adjustsFontSizeToFitWidth = YES;
@@ -134,7 +134,7 @@
         _urllab = [[UILabel alloc] init];
         _urllab.textAlignment = NSTextAlignmentCenter;
         _urllab.textColor = [UIColor wjColorFloat:@"333333"];
-        _urllab.text = @"官网 : www.iwenyu.cn";
+        //_urllab.text = @"官网 : www.iwenyu.cn";
         _urllab.font = [UIFont systemFontOfSize:15];
     }
     return _urllab;

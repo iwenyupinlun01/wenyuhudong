@@ -22,7 +22,7 @@
 
 @property (nonatomic,strong) infoCell *cell;
 
-
+@property (nonatomic, assign) UIEdgeInsets insets;
 @end
 static NSString *infocellidentfid = @"infocellidentfid";
 
@@ -41,6 +41,9 @@ static NSString *infocellidentfid = @"infocellidentfid";
     [self.navigationController.navigationBar setShadowImage:[UIImage new]];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
     self.infotableview.tableFooterView = [UIView new];
+    
+    self.insets = UIEdgeInsetsMake(0, 64, 0, 14);
+
     [self.view addSubview:self.infotableview];
     
 }
@@ -129,6 +132,7 @@ static NSString *infocellidentfid = @"infocellidentfid";
         _infotableview.dataSource = self;
         _infotableview.delegate = self;
         _infotableview.tableHeaderView = self.headview;
+        _infotableview.separatorColor = [UIColor wjColorFloat:@"F5F5F5"];
         _infotableview.backgroundColor = [UIColor whiteColor];
     }
     return _infotableview;
@@ -195,9 +199,10 @@ static NSString *infocellidentfid = @"infocellidentfid";
          _cell.leftimg.frame = CGRectMake(14*WIDTH_SCALE, 20*HEIGHT_SCALE, 21*WIDTH_SCALE, 21*WIDTH_SCALE);
     }
     //_cell.numlab.alpha = 0;
+    [_cell setSeparatorInset:UIEdgeInsetsZero];
     _cell.leftimg.image = [UIImage imageNamed:self.imgarr[indexPath.row]];
     _cell.textlab.text = self.textarr[indexPath.row];
-    _cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
+    //_cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
    // _cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return _cell;
 }
@@ -254,6 +259,24 @@ static NSString *infocellidentfid = @"infocellidentfid";
     
     myinfoViewController *myinfovc = [[myinfoViewController alloc] init];
     [self.navigationController pushViewController:myinfovc animated:YES];
+}
+#pragma mark 用于将cell分割线补全
+-(void)viewDidLayoutSubviews {
+    if ([self.infotableview respondsToSelector:@selector(setSeparatorInset:)]) {
+        [self.infotableview setSeparatorInset:self.insets];
+    }
+    if ([self.infotableview respondsToSelector:@selector(setLayoutMargins:)])  {
+        [self.infotableview setLayoutMargins:self.insets];
+    }
+}
+
+-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath*)indexPath{
+    if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
+        [cell setLayoutMargins:self.insets];
+    }
+    if ([cell respondsToSelector:@selector(setSeparatorInset:)]){
+        [cell setSeparatorInset:self.insets];
+    }
 }
 
 @end

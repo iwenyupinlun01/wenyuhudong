@@ -30,7 +30,7 @@
 {
     [super layoutSubviews];
     self.leftimg.frame = CGRectMake(5*WIDTH_SCALE, 2*HEIGHT_SCALE, 16*WIDTH_SCALE, 16*WIDTH_SCALE);
-    self.textlab.frame = CGRectMake(16*WIDTH_SCALE, 2*HEIGHT_SCALE, 40*WIDTH_SCALE, 20*HEIGHT_SCALE);
+    self.textlab.frame = CGRectMake(16*WIDTH_SCALE, 2*HEIGHT_SCALE, 30*WIDTH_SCALE, 20*HEIGHT_SCALE);
     
 }
 
@@ -52,7 +52,7 @@
     {
         _textlab = [[UILabel alloc] init];
         _textlab.textColor = [UIColor wjColorFloat:@"C7C7CD"];
-        _textlab.textAlignment = NSTextAlignmentCenter;
+        _textlab.textAlignment = NSTextAlignmentRight;
         _textlab.font = [UIFont systemFontOfSize:13];
     }
     return _textlab;

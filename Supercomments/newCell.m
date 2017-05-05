@@ -14,7 +14,6 @@
 #import "YYKit.h"
 
 @interface newCell()
-
 @property (nonatomic,strong) newModel *nmodel;
 @end
 
@@ -46,7 +45,7 @@
     self.timelab.frame = CGRectMake(14*WIDTH_SCALE+30*WIDTH_SCALE, self.frame.size.height-32*HEIGHT_SCALE, 150*WIDTH_SCALE, 18*HEIGHT_SCALE);
     self.timelab2.frame = CGRectMake(14*WIDTH_SCALE,self.frame.size.height-32*HEIGHT_SCALE, 150*WIDTH_SCALE, 18*HEIGHT_SCALE);
     self.commbtn.frame = CGRectMake(DEVICE_WIDTH-60*WIDTH_SCALE, self.frame.size.height-34*HEIGHT_SCALE, 50*WIDTH_SCALE, 16*HEIGHT_SCALE);
-    self.zbtn.frame = CGRectMake(DEVICE_WIDTH-110*WIDTH_SCALE, self.frame.size.height-34*HEIGHT_SCALE, 50*WIDTH_SCALE, 16*HEIGHT_SCALE);
+    self.zbtn.frame = CGRectMake(DEVICE_WIDTH-130*WIDTH_SCALE, self.frame.size.height-34*HEIGHT_SCALE, 50*WIDTH_SCALE, 16*HEIGHT_SCALE);
     self.tiview.frame = CGRectMake(14*WIDTH_SCALE, self.frame.size.height-74*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 30*HEIGHT_SCALE);
     
 }
@@ -231,7 +230,7 @@
     }
     else if ([model.typestr isEqualToString:@"5"])
     {
-        self.fromlab.text = model.platformstr;
+        self.fromlab.text = [NSString stringWithFormat:@"%@%@%@%@",model.platformstr,@"已赞",model.fromstr,@"次"];
     }
     else
     {
@@ -294,8 +293,8 @@
         [view presentFromImageView:_infoimg
                        toContainer:toView
                           animated:YES completion:nil];
-    NSLog(@"122212");
     
+        
 }
 
 //按钮事件

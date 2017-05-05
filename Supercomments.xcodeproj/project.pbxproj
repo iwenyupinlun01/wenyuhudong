@@ -36,6 +36,7 @@
 		53619EDE1E98D283007CC7AC /* detailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 53619EDD1E98D283007CC7AC /* detailsViewController.m */; };
 		53619EE41E98E0C7007CC7AC /* detailsheadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 53619EE31E98E0C7007CC7AC /* detailsheadView.m */; };
 		537303161EBB303A00D5C7C5 /* UIImageView+RotateImgV.m in Sources */ = {isa = PBXBuildFile; fileRef = 537303151EBB303A00D5C7C5 /* UIImageView+RotateImgV.m */; };
+		537303181EBB506700D5C7C5 /* 牛评分享下载.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 537303171EBB506700D5C7C5 /* 牛评分享下载.jpg */; };
 		5387A7B71EAB4F720057B518 /* SureWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5387A7B61EAB4F720057B518 /* SureWebViewController.m */; };
 		5387A7BA1EAB68900057B518 /* MBProgressHUD+XMG.m in Sources */ = {isa = PBXBuildFile; fileRef = 5387A7B91EAB68900057B518 /* MBProgressHUD+XMG.m */; };
 		538D53C41EAEECD700E2DCAF /* strisNull.m in Sources */ = {isa = PBXBuildFile; fileRef = 538D53C31EAEECD700E2DCAF /* strisNull.m */; };
@@ -176,6 +177,7 @@
 		53619EE31E98E0C7007CC7AC /* detailsheadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = detailsheadView.m; sourceTree = "<group>"; };
 		537303141EBB303A00D5C7C5 /* UIImageView+RotateImgV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+RotateImgV.h"; sourceTree = "<group>"; };
 		537303151EBB303A00D5C7C5 /* UIImageView+RotateImgV.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+RotateImgV.m"; sourceTree = "<group>"; };
+		537303171EBB506700D5C7C5 /* 牛评分享下载.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "牛评分享下载.jpg"; sourceTree = "<group>"; };
 		5387A7B51EAB4F720057B518 /* SureWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SureWebViewController.h; sourceTree = "<group>"; };
 		5387A7B61EAB4F720057B518 /* SureWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SureWebViewController.m; sourceTree = "<group>"; };
 		5387A7B81EAB68900057B518 /* MBProgressHUD+XMG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD+XMG.h"; sourceTree = "<group>"; };
@@ -553,6 +555,7 @@
 		53619EDA1E98D25C007CC7AC /* view */ = {
 			isa = PBXGroup;
 			children = (
+				537303171EBB506700D5C7C5 /* 牛评分享下载.jpg */,
 				53E587851EA7672A004CB302 /* pinglunCell.h */,
 				53E587861EA7672A004CB302 /* pinglunCell.m */,
 				53619EE21E98E0C7007CC7AC /* detailsheadView.h */,
@@ -1174,6 +1177,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				53F9CB6D1E9B53B200C1F3A7 /* TencentOpenApi_IOS_Bundle.bundle in Resources */,
+				537303181EBB506700D5C7C5 /* 牛评分享下载.jpg in Resources */,
 				53F9CB721E9B53B200C1F3A7 /* README.txt in Resources */,
 				53E863CC1EADADB4001F6FD8 /* 牛评用户协议.jpg in Resources */,
 				53F9CB641E9B53B200C1F3A7 /* ShareSDKConfigFile.bundle in Resources */,

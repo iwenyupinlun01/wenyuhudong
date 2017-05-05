@@ -53,7 +53,10 @@
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
     self.logoimg.frame = CGRectMake(283/2*WIDTH_SCALE, 264/2*HEIGHT_SCALE, (DEVICE_WIDTH/2-283/2*WIDTH_SCALE)*2, (DEVICE_WIDTH/2-283/2*WIDTH_SCALE)*2);
     self.namelab.frame = CGRectMake(100*WIDTH_SCALE,  264/2*HEIGHT_SCALE+(DEVICE_WIDTH/2-283/2*WIDTH_SCALE)*2, DEVICE_WIDTH-200*WIDTH_SCALE, 30);
-    self.gobackbtn.frame = CGRectMake(DEVICE_WIDTH-60-50, 120, 60, 60);
+    
+    self.gobackbtn.frame = CGRectMake(DEVICE_WIDTH-24-40, 40, 60, 60);
+    
+    
     self.loginbtn.frame = CGRectMake(20*WIDTH_SCALE, DEVICE_HEIGHT-140*HEIGHT_SCALE, DEVICE_WIDTH-40*WIDTH_SCALE, 40*HEIGHT_SCALE);
     self.zhijiebtn.frame = CGRectMake(DEVICE_WIDTH-50*WIDTH_SCALE-20*WIDTH_SCALE, DEVICE_HEIGHT-24*WIDTH_SCALE-12*WIDTH_SCALE, 50*WIDTH_SCALE, 12*HEIGHT_SCALE);
     self.aggrentlab.frame = CGRectMake(20*WIDTH_SCALE, DEVICE_HEIGHT-24*HEIGHT_SCALE-12*HEIGHT_SCALE, DEVICE_WIDTH-40*WIDTH_SCALE, 12*HEIGHT_SCALE);
@@ -95,7 +98,7 @@
     if(!_gobackbtn)
     {
         _gobackbtn = [[UIButton alloc] init];
-        [_gobackbtn setImage:[UIImage imageNamed:@"矩形-228-拷贝"] forState:normal];
+        [_gobackbtn setImage:[UIImage imageNamed:@"矩形-413-拷贝-3"] forState:normal];
         [_gobackbtn addTarget:self action:@selector(gobackbtnclick) forControlEvents:UIControlEventTouchUpInside];
     }
     return _gobackbtn;

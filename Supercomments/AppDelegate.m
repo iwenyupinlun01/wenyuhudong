@@ -211,6 +211,8 @@
 }
 
 
+
+
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary*)options{
     
     [WXApi handleOpenURL:url delegate:self];

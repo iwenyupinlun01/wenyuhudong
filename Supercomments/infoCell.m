@@ -17,6 +17,7 @@
     {
         [self.contentView addSubview:self.leftimg];
         [self.contentView addSubview:self.textlab];
+        [self.contentView addSubview:self.rightimg];
         
     }
     return self;
@@ -28,6 +29,8 @@
 //    self.leftimg.frame = CGRectMake(14*WIDTH_SCALE, 20*HEIGHT_SCALE, 20*WIDTH_SCALE, 22*WIDTH_SCALE);
     self.textlab.frame = CGRectMake(60*WIDTH_SCALE, 20*HEIGHT_SCALE, 100*WIDTH_SCALE, 20*HEIGHT_SCALE);
     self.numlab.frame = CGRectMake(DEVICE_WIDTH-60, 20, 20, 20);
+    self.rightimg.frame = CGRectMake(DEVICE_WIDTH-30, 22.5, 10, 15);
+    
 }
 
 #pragma mark - getters
@@ -68,6 +71,17 @@
     }
     return _numlab;
 }
+
+-(UIImageView *)rightimg
+{
+    if(!_rightimg)
+    {
+        _rightimg = [[UIImageView alloc] init];
+        _rightimg.image = [UIImage imageNamed:@"矩形-38-拷贝"];
+    }
+    return _rightimg;
+}
+
 
 
 
