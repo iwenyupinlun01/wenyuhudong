@@ -146,6 +146,7 @@ static NSString *replyidentfid = @"replyidentfid";
                 self.rmodel.replytimestr = dit[@"pubtime"];
                 self.rmodel.obj_id = dit[@"object_id"];
                 self.rmodel.is_checkstr = dit[@"is_check"];
+                self.rmodel.replyidstr = dit[@"id"];
                 [self.replyarr addObject:self.rmodel];
             }
         }
@@ -216,10 +217,25 @@ static NSString *replyidentfid = @"replyidentfid";
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         
-        // 删除数据源的数据,self.cellData是你自己的数据
-        [self.replyarr removeObjectAtIndex:indexPath.row];
-         //删除列表中数据
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        self.rmodel = self.replyarr[indexPath.row];
+        NSString* objid =   self.rmodel.replyidstr;
+        
+        [AFManager getReqURL:[NSString stringWithFormat:shanchuxiaoxi,[tokenstr tokenstrfrom],@"1",objid] block:^(id infor) {
+            NSLog(@"infor=====%@",infor);
+            
+            if ([[infor objectForKey:@"code"] intValue]==1) {
+                [MBProgressHUD showSuccess:@"删除成功"];
+                // 删除数据源的数据,self.cellData是你自己的数据
+                [self.replyarr removeObjectAtIndex:indexPath.row];
+                //删除列表中数据
+                [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+
+            }
+            
+        } errorblock:^(NSError *error) {
+            
+        }];
+       
     }
     
 }

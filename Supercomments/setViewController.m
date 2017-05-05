@@ -173,7 +173,7 @@ static NSString *setidentfid1 = @"setidentfid1";
        
     }];
     UIAlertAction *action1 = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [CLNetworkingManager postNetworkRequestWithUrlString:tuichudenglu parameters:@{@"token":[tokenstr tokenstrfrom]} isCache:YES succeed:^(id data) {
+        [CLNetworkingManager postNetworkRequestWithUrlString:tuichudenglu parameters:@{@"token":[tokenstr tokenstrfrom]} isCache:NO succeed:^(id data) {
             NSLog(@"data===%@",data);
             if ([[data objectForKey:@"code"] intValue]==1) {
                 NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -181,6 +181,10 @@ static NSString *setidentfid1 = @"setidentfid1";
                 [defaults removeObjectForKey:@"access_token"];
                 [defaults removeObjectForKey:@"namestr"];
                 [defaults removeObjectForKey:@"pathurlstr"];
+                [MBProgressHUD showSuccess:@"退出成功"];
+                homeViewController *viewCtl = self.navigationController.viewControllers[0];
+                [self.navigationController popToViewController:viewCtl animated:YES];
+                
             }
             else if([[data objectForKey:@"code"] intValue]==-2)
             {
@@ -198,8 +202,7 @@ static NSString *setidentfid1 = @"setidentfid1";
         } fail:^(NSError *error) {
             
         }];
-        homeViewController *viewCtl = self.navigationController.viewControllers[0];
-        [self.navigationController popToViewController:viewCtl animated:YES];
+       
 
     }];
     [control addAction:action0];

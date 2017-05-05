@@ -152,8 +152,6 @@ static NSString *messageidentfid = @"messageidentfid";
                 {
                     lab.text = _num01;
                 }
-//                lab.text = _num01;
-//                lab2.text = _num02;
             }
             [self.messagetable reloadData];
             

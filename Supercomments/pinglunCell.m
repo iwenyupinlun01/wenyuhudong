@@ -37,8 +37,7 @@
 -(void)setcelldata:(detailcellmodel *)model
 {
     self.detalmodel = model;
-    //CGSize textSize = [self.pinglunlab setText:model.contstr lines:QSTextDefaultLines2 andLineSpacing:QSTextLineSpacing constrainedToSize:CGSizeMake(DEVICE_WIDTH,MAXFLOAT)];
-    //self.pinglunlab.frame = CGRectMake(128/2*WIDTH_SCALE,  14*HEIGHT_SCALE, DEVICE_WIDTH -64*WIDTH_SCALE, textSize.height);
+
     
 }
 

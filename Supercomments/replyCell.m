@@ -22,11 +22,11 @@
     {
         [self.contentView addSubview:self.picimage];
         [self.contentView addSubview:self.namelab];
-       // [self.contentView addSubview:self.rightimage];
+
         [self.contentView addSubview:self.textlab];
         [self.contentView addSubview:self.timelab];
         [self.contentView addSubview:self.btn];
-        [self.contentView addSubview:self.rightlab];
+//        [self.contentView addSubview:self.rightlab];
     }
     return self;
 }

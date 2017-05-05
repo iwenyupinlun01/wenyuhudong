@@ -9,7 +9,7 @@
 #import "commentsBtn.h"
 
 @interface commentsBtn()
-@property (nonatomic,strong) UIImageView *leftimg;
+
 
 @end
 
@@ -31,7 +31,6 @@
     [super layoutSubviews];
     self.leftimg.frame = CGRectMake(5*WIDTH_SCALE, 2*HEIGHT_SCALE, 16*WIDTH_SCALE, 16*WIDTH_SCALE);
     self.textlab.frame = CGRectMake(16*WIDTH_SCALE, 2*HEIGHT_SCALE, 30*WIDTH_SCALE, 20*HEIGHT_SCALE);
-    
 }
 
 #pragma mark - getters

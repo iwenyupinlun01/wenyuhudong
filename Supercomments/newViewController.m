@@ -114,13 +114,15 @@ static NSString *newidentfid = @"newidentfid";
             self.nmodel.timestr = dicarr[@"create_time"];
             self.nmodel.imgurlstr = dicarr[@"images"];
             self.nmodel.namestr = dicarr[@"name"];
-            self.nmodel.dianzanstr = dicarr[@"support_num"];
+            //self.nmodel.dianzanstr = dicarr[@"support_num"];
+            self.nmodel.dianzanstr = [NSString stringWithFormat:@"%@",dicarr[@"support_num"]];
             self.nmodel.pinglunstr = dicarr[@"reply_num"];
             self.nmodel.newidstr = dicarr[@"id"];
             self.nmodel.titlestr = dicarr[@"title"];
             self.nmodel.fromstr =dicarr[@"support_count"];
             self.nmodel.typestr = dicarr[@"type"];
-            self.nmodel.sifoudianzanstr = dicarr[@"is_support"];
+//            self.nmodel.sifoudianzanstr = dicarr[@"is_support"];
+            self.nmodel.sifoudianzanstr = [NSString stringWithFormat:@"%@",dicarr[@"is_support"]];
             self.nmodel.weburlstr = dicarr[@"url"];
             self.nmodel.ishot = dicarr[@"is_hot"];
             self.nmodel.platformstr = dicarr[@"platform"];
@@ -278,6 +280,8 @@ static NSString *newidentfid = @"newidentfid";
     cell.delegate = self;
     [cell setSeparatorInset:UIEdgeInsetsZero];
     [cell setcelldata:self.dataarr[indexPath.row]];
+    
+
     
     return cell;
 }
@@ -458,17 +462,41 @@ static NSString *newidentfid = @"newidentfid";
 
 #pragma mark - kvo
 
+//-(void)kvcdianzan:(NSNotification *)notifocation
+//{
+//    NSDictionary *dic = [notifocation object];
+//    //NSString *dianzanstr = (NSString *)[notifocation object];
+//    NSLog(@"dianzanstr---------%@",dic);
+//    NSInteger index = [[dic objectForKey:@"dianzanindex"] intValue];
+//    self.nmodel = self.dataarr[index];
+//    self.nmodel.sifoudianzanstr = [dic objectForKey:@"diansanstr"];
+//    self.nmodel.dianzanstr = [dic objectForKey:@"dianzannum"];
+//    [self.dataarr replaceObjectAtIndex:index withObject:self.nmodel];
+//    [self.newtable reloadData];
+//}
+
 -(void)kvcdianzan:(NSNotification *)notifocation
 {
     NSDictionary *dic = [notifocation object];
-    //NSString *dianzanstr = (NSString *)[notifocation object];
+    //    NSString *dianzanstr = (NSString *)[notifocation object];
     NSLog(@"dianzanstr---------%@",dic);
     NSInteger index = [[dic objectForKey:@"dianzanindex"] intValue];
-    self.nmodel = self.dataarr[index];
-    self.nmodel.sifoudianzanstr = [dic objectForKey:@"diansanstr"];
-    [self.dataarr replaceObjectAtIndex:index withObject:self.nmodel];
+    if (self.dataarr.count==0) {
+        self.nmodel = [[newModel alloc] init];
+        self.nmodel.sifoudianzanstr = [dic objectForKey:@"diansanstr"];
+        self.nmodel.dianzanstr = [dic objectForKey:@"dianzannum"];
+        [self.dataarr addObject:self.nmodel];
+    }else
+    {
+        self.nmodel = self.dataarr[index];
+        self.nmodel.sifoudianzanstr = [dic objectForKey:@"diansanstr"];
+        self.nmodel.dianzanstr = [dic objectForKey:@"dianzannum"];
+        [self.dataarr replaceObjectAtIndex:index withObject:self.nmodel];
+    }
+    
     [self.newtable reloadData];
 }
+
 
 - (void)dealloc{
     //[super dealloc];

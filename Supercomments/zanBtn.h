@@ -11,5 +11,6 @@
 @interface zanBtn : UIButton
 @property (nonatomic,strong) UIImageView *zanimg;
 @property (nonatomic,strong) UILabel *zanlab;
+@property (nonatomic,strong) NSString *zannumberstr;
 
 @end

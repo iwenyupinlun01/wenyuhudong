@@ -195,7 +195,8 @@ NSMutableArray * ymDataArray;
         
         self.headm.imgurlstr = [dic objectForKey:@"images"];
         self.headm.weburlstr = [dic objectForKey:@"url"];
-        self.headm.objectidstr = [dic objectForKey:@"id"];
+        //self.headm.objectidstr = [dic objectForKey:@"id"];
+        self.headm.objectidstr = [NSString stringWithFormat:@"%@",[dic objectForKey:@"id"]];
         self.headm.timestr = [Timestr datetime:[dic objectForKey:@"create_time"]];
         self.headm.shifoudianzanstr = [dic objectForKey:@"is_support"];
         
@@ -353,17 +354,6 @@ NSMutableArray * ymDataArray;
     return _maintable;
 }
 
-//- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-//    if (scrollView == self.maintable)
-//    {
-//        CGFloat sectionHeaderHeight = 40;
-//        if (scrollView.contentOffset.y<=sectionHeaderHeight&&scrollView.contentOffset.y>=0) {
-//            scrollView.contentInset = UIEdgeInsetsMake(-scrollView.contentOffset.y, 0, 0, 0);
-//        } else if (scrollView.contentOffset.y>=sectionHeaderHeight) {
-//            scrollView.contentInset = UIEdgeInsetsMake(-sectionHeaderHeight, 0, 0, 0);
-//        }
-//    }
-//}
 
 -(keyboardView *)keyView
 {
@@ -417,25 +407,9 @@ NSMutableArray * ymDataArray;
     // 取第indexPath.row这行对应的品牌名称
     NSString *str4 = [NSString stringWithFormat:@"%@%@",@":", [_detailsmodel.pingarr[indexPath.row] objectForKey:@"content"]];
     NSString *str1 = [_detailsmodel.pingarr[indexPath.row]objectForKey:@"s_nickname"];
-    //NSString *str1 = [NSString stringWithFormat:@"%@%@",@"  ",[_detailsmodel.pingarr[indexPath.row]objectForKey:@"s_nickname"]];
     NSString *str3 = [_detailsmodel.pingarr[indexPath.row]objectForKey:@"s_to_nickname"];
     NSString *str2 = @"回复";
     
-    
-    if ([self isNullToString:str3]) {
-        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@%@",str1,str2,str4]];
-        [str addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"576b95"] range:NSMakeRange(0,str1.length)];
-        [str addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"333333"] range:NSMakeRange(str1.length,str2.length)];
-        [str addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"333333"] range:NSMakeRange(str1.length+str2.length, str4.length)];
-        NSLog(@"str===============%@",str);
-        cell.pinglunlab.attributedText = str;
-        NSString *newstr = [str string];
-        CGSize size2 = [cell.pinglunlab setText:newstr lines:0 andLineSpacing:4 constrainedToSize:CGSizeMake(DEVICE_WIDTH -64*WIDTH_SCALE-14*WIDTH_SCALE-16*WIDTH_SCALE,MAXFLOAT)];
-        cell.pinglunlab.frame = CGRectMake(62*WIDTH_SCALE+4*WIDTH_SCALE,  8*HEIGHT_SCALE, DEVICE_WIDTH -64*WIDTH_SCALE-14*WIDTH_SCALE-8, size2.height);
-        cell.pinglunlab.font = [UIFont systemFontOfSize:14*FX];
-    }
-    else
-    {
         NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@%@%@",str1,str2,str3,str4]];
         [str addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"576b95"] range:NSMakeRange(0,str1.length)];
         [str addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"333333"] range:NSMakeRange(str1.length,str2.length)];
@@ -447,8 +421,8 @@ NSMutableArray * ymDataArray;
         CGSize size2 = [cell.pinglunlab setText:newstr lines:0 andLineSpacing:4 constrainedToSize:CGSizeMake(DEVICE_WIDTH -64*WIDTH_SCALE-14*WIDTH_SCALE-16*WIDTH_SCALE,MAXFLOAT)];
         cell.pinglunlab.attributedText = str;
         cell.pinglunlab.frame = CGRectMake(62*WIDTH_SCALE+4*WIDTH_SCALE,  8*HEIGHT_SCALE, size2.width, size2.height);
-        cell.pinglunlab.font = [UIFont systemFontOfSize:14*FX];
-    }
+        cell.pinglunlab.font = [UIFont systemFontOfSize:14];
+    
     cell.pinglunlab.numberOfLines = 0;
     [cell.pinglunlab sizeToFit];
     return cell;
@@ -469,29 +443,21 @@ NSMutableArray * ymDataArray;
     NSString *str3 = [_detailsmodel.pingarr[indexPath.row]objectForKey:@"s_to_nickname"];
     NSString *str2 = @"回复: ";
     
-    if ([self isNullToString:str3]) {
-        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@%@",str1,str2,str4]];
+    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@%@%@",str1,str2,str3,str4]];
         NSString *newstr = [str string];
-        return [pinglunCell cellHeightWithText:newstr]+16;
-    }
-    else
-    {
-        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@%@%@",str1,str2,str3,str4]];
-        NSString *newstr = [str string];
-        return [pinglunCell cellHeightWithText:newstr]+16;
-    }
-    return 0;
+    return [pinglunCell cellHeightWithText:newstr]+16*HEIGHT_SCALE;
+    
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     self.detailsmodel = self.detalisarr[section];
-    return  [sectionView cellHeightWithText:self.detailsmodel.contstr]+70;
+    return  [sectionView cellHeightWithText:self.detailsmodel.contstr]+70*HEIGHT_SCALE;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return 14;
+    return 14*HEIGHT_SCALE;
 }
 
 - (nullable UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -623,7 +589,7 @@ NSMutableArray * ymDataArray;
                     self.headview.dianzanbtn.zanlab.text = [NSString stringWithFormat:@"%@",[dic objectForKey:@"spportNum"]];
                     
                     self.headm.shifoudianzanstr = @"1";
-                    NSDictionary *dianzandic = @{@"dianzanindex":self.dianzanindex,@"diansanstr":self.headm.shifoudianzanstr};
+                    NSDictionary *dianzandic = @{@"dianzanindex":self.dianzanindex,@"diansanstr":self.headm.shifoudianzanstr,@"dianzannum":self.headview.dianzanbtn.zanlab.text};
                     
                     if ([self.fromtypestr isEqualToString:@"newvc"]) {
                         [[NSNotificationCenter defaultCenter]postNotificationName:@"shifoudiandankvo" object:dianzandic];
@@ -632,8 +598,7 @@ NSMutableArray * ymDataArray;
                         [[NSNotificationCenter defaultCenter]postNotificationName:@"shifoudiandankvo2" object:dianzandic];
                     }
                     
-                    
-                    
+                
                     NSMutableArray *zongzhuanarr = [NSMutableArray array];
                     [zongzhuanarr addObject:[tokenstr nicknamestrfrom]];
                     [zongzhuanarr addObjectsFromArray:self.usernamearr];
@@ -690,25 +655,22 @@ NSMutableArray * ymDataArray;
                 NSString *codestr = [data objectForKey:@"code"];
                 if ([codestr intValue]==1) {
                     self.headm.shifoudianzanstr = @"0";
-                    NSDictionary *dianzandic = @{@"dianzanindex":self.dianzanindex,@"diansanstr":self.headm.shifoudianzanstr};
-                    
                     NSDictionary *dic = [data objectForKey:@"info"];
                     self.headview.dianzanbtn.zanlab.text = [NSString stringWithFormat:@"%@",[dic objectForKey:@"spportNum"]];
-                    
+                    NSDictionary *dianzandic = @{@"dianzanindex":self.dianzanindex,@"diansanstr":self.headm.shifoudianzanstr,@"dianzannum":self.headview.dianzanbtn.zanlab.text};
                     if ([self.fromtypestr isEqualToString:@"newvc"]) {
                         [[NSNotificationCenter defaultCenter]postNotificationName:@"shifoudiandankvo" object:dianzandic];
                     }else
                     {
                         [[NSNotificationCenter defaultCenter]postNotificationName:@"shifoudiandankvo2" object:dianzandic];
                     }
-                    
-                    
                     self.headview.dianzanbtn.zanimg.image = [UIImage imageNamed:@"点赞-"];
                     self.headview.dianzanbtn.zanlab.textColor = [UIColor wjColorFloat:@"C7C7CD"];
                     [MBProgressHUD showSuccess:@"取消点赞"];
                     NSLog(@"成功");
                     
                     [self.usernamearr removeObjectAtIndex:0];
+                    
                     dispatch_async(dispatch_get_main_queue(), ^
                     {
                         // 更UI
@@ -816,7 +778,7 @@ NSMutableArray * ymDataArray;
         self.keyView.nickname = [_detailsmodel.pingarr[indexPath.row]objectForKey:@"s_nickname"];
         self.keyView.tonickname = [_detailsmodel.pingarr[indexPath.row]objectForKey:@"s_to_nickname"];
         self.keyView.pidstr = [_detailsmodel.pingarr[indexPath.row]objectForKey:@"pid"];
-        self.keyView.touidstr = [_detailsmodel.pingarr[indexPath.row]objectForKey:@"to_uid"];
+        self.keyView.touidstr = [_detailsmodel.pingarr[indexPath.row]objectForKey:@"uid"];
         _keyView.textview.customPlaceholder = [NSString stringWithFormat:@"%@%@",@"回复@",self.keyView.nickname];
         
     }
@@ -844,7 +806,6 @@ NSMutableArray * ymDataArray;
     }];
 }
 
-
 //当键退出时调用
 
 - (void)keyboardWillHide:(NSNotification *)aNotification
@@ -871,7 +832,7 @@ NSMutableArray * ymDataArray;
         
     }else
     {
-        [self.keyView.sendbtn setTitleColor:[UIColor wjColorFloat:@"FF4444"] forState:normal];
+        [self.keyView.sendbtn setTitleColor:[UIColor wjColorFloat:@"576b95"] forState:normal];
 
     }
 }
@@ -923,26 +884,12 @@ NSMutableArray * ymDataArray;
         [self.keyView.textview resignFirstResponder];
         //三级评论
         if ([_fromkeyboard isEqualToString:@"cellpinglun"]) {
-            
-            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-            NSString *namestr = [defaults objectForKey:@"namestr"];
-            
-            self.detailsmodel  = self.detalisarr[self.keyView.index];
-            NSMutableArray *mutaArray = [[NSMutableArray alloc] init];
-            [mutaArray addObjectsFromArray:self.detailsmodel.pingarr];
-            NSDictionary *dit = @{@"content":self.keyView.textview.text,@"s_nickname":namestr,@"s_to_nickname":self.keyView.nickname,@"to_uid":self.keyView.touidstr,@"pid":self.keyView.pidstr};
-            [mutaArray addObject:dit];
-            
-            self.detailsmodel.pingarr = mutaArray;
-            
-            [self.maintable reloadData];
-            
-            //网络请求
-            
             NSDictionary *para = @{@"token":[tokenstr tokenstrfrom],@"to_uid":self.keyView.touidstr,@"object_id":self.headm.objectidstr,@"content":self.keyView.textview.text,@"pid":self.keyView.pidstr};
             
-            [CLNetworkingManager postCacheRequestWithUrlString:pinglunhuifu parameters:para cacheTime:YES succeed:^(id data) {
+            [CLNetworkingManager postCacheRequestWithUrlString:pinglunhuifu parameters:para cacheTime:NO succeed:^(id data) {
                 NSLog(@"data-------%@",data);
+                
+                [self headerRefreshEndAction];
                 
             } fail:^(NSError *error) {
                 
@@ -956,24 +903,13 @@ NSMutableArray * ymDataArray;
             NSString *pidstr = self.detailsmodel.idstr;
             NSString *uidstr = self.detailsmodel.touidstr;
             
-            NSMutableArray *mutaArray = [[NSMutableArray alloc] init];
-            [mutaArray addObjectsFromArray:self.detailsmodel.pingarr];
-            NSString *tonickname = self.detailsmodel.namestr;
-            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-            NSString *namestr = [defaults objectForKey:@"namestr"];
-   
-            NSDictionary *dit = @{@"content":self.keyView.textview.text,@"s_nickname":namestr,@"s_to_nickname":tonickname,@"to_uid":uidstr,@"pid":pidstr};
-            
-            [mutaArray addObject:dit];
-            self.detailsmodel.pingarr = mutaArray;
-            [self.maintable reloadData];
             
             //网络请求
             NSDictionary *para = @{@"token":[tokenstr tokenstrfrom],@"to_uid":uidstr,@"object_id":self.headm.objectidstr,@"content":self.keyView.textview.text,@"pid":pidstr};
             
-            [CLNetworkingManager postCacheRequestWithUrlString:pinglunhuifu parameters:para cacheTime:YES succeed:^(id data) {
+            [CLNetworkingManager postCacheRequestWithUrlString:pinglunhuifu parameters:para cacheTime:NO succeed:^(id data) {
                 NSLog(@"data-------%@",data);
-                
+                [self headerRefreshEndAction];
             } fail:^(NSError *error) {
                 
             }];
@@ -982,36 +918,13 @@ NSMutableArray * ymDataArray;
         {
             //一级评论
             self.detailsmodel = [[detailcellmodel alloc] init];
-            NSMutableArray *mutaArray = [[NSMutableArray alloc] init];
-            
-            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-            NSString *namestr = [defaults objectForKey:@"namestr"];
-            NSString *name = namestr;
-            NSString *nowtime = [Timestr getNowTimestamp];
-            NSString *content = self.keyView.textview.text;
-            NSString *imageurl = [tokenstr userimgstrfrom];
-            NSString *pid = @"1";
-            NSString *to_uid = @"1";
-            
-            
-            self.detailsmodel.namestr = name;
-            self.detailsmodel.timestr = nowtime;
-            self.detailsmodel.contstr = content;
-            self.detailsmodel.imgurlstr = imageurl;
-            self.detailsmodel.touidstr = to_uid;
-            self.detailsmodel.idstr = pid;
-            
-            
-            [mutaArray addObject:self.detailsmodel];
-            [mutaArray addObjectsFromArray:self.detalisarr];
-            self.detalisarr = mutaArray;
-            [self.maintable reloadData];
+
             //网络请求
             NSDictionary *para = @{@"token":[tokenstr tokenstrfrom],@"to_uid":@"0",@"object_id":self.headm.objectidstr,@"content":self.keyView.textview.text,@"pid":@"0"};
             
-            [CLNetworkingManager postCacheRequestWithUrlString:pinglunhuifu parameters:para cacheTime:YES succeed:^(id data) {
+            [CLNetworkingManager postCacheRequestWithUrlString:pinglunhuifu parameters:para cacheTime:NO succeed:^(id data) {
                 NSLog(@"data-------%@",data);
-                
+                [self headerRefreshEndAction];
             } fail:^(NSError *error) {
                 
             }];
@@ -1038,24 +951,12 @@ NSMutableArray * ymDataArray;
         {
             //三级评论
             if ([_fromkeyboard isEqualToString:@"cellpinglun"]) {
-                
-                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-                NSString *namestr = [defaults objectForKey:@"namestr"];
-                
-                self.detailsmodel  = self.detalisarr[self.keyView.index];
-                NSMutableArray *mutaArray = [[NSMutableArray alloc] init];
-                [mutaArray addObjectsFromArray:self.detailsmodel.pingarr];
-                 NSDictionary *dit = @{@"content":self.keyView.textview.text,@"s_nickname":namestr,@"s_to_nickname":self.keyView.nickname,@"to_uid":self.keyView.touidstr,@"pid":self.keyView.pidstr};
-                
-                [mutaArray addObject:dit];
-                self.detailsmodel.pingarr = mutaArray;
-                [self.maintable reloadData];
-                
-                //网络请求
                 NSDictionary *para = @{@"token":[tokenstr tokenstrfrom],@"to_uid":self.keyView.touidstr,@"object_id":self.headm.objectidstr,@"content":self.keyView.textview.text,@"pid":self.keyView.pidstr};
                 
-                [CLNetworkingManager postCacheRequestWithUrlString:pinglunhuifu parameters:para cacheTime:YES succeed:^(id data) {
+                [CLNetworkingManager postCacheRequestWithUrlString:pinglunhuifu parameters:para cacheTime:NO succeed:^(id data) {
                     NSLog(@"data-------%@",data);
+                    
+                    [self headerRefreshEndAction];
                     
                 } fail:^(NSError *error) {
                     
@@ -1069,79 +970,40 @@ NSMutableArray * ymDataArray;
                 NSString *pidstr = self.detailsmodel.idstr;
                 NSString *uidstr = self.detailsmodel.touidstr;
                 
-                NSMutableArray *mutaArray = [[NSMutableArray alloc] init];
-                [mutaArray addObjectsFromArray:self.detailsmodel.pingarr];
-                NSString *tonickname = self.detailsmodel.namestr;
-                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-                NSString *namestr = [defaults objectForKey:@"namestr"];
-//                NSDictionary *dit = @{@"content":self.keyView.textview.text,@"s_nickname":namestr,@"s_to_nickname":tonickname};
-                
-                NSDictionary *dit = @{@"content":self.keyView.textview.text,@"s_nickname":namestr,@"s_to_nickname":tonickname,@"to_uid":uidstr,@"pid":pidstr};
-                
-
-                [mutaArray addObject:dit];
-                self.detailsmodel.pingarr = mutaArray;
-                [self.maintable reloadData];
                 
                 //网络请求
                 NSDictionary *para = @{@"token":[tokenstr tokenstrfrom],@"to_uid":uidstr,@"object_id":self.headm.objectidstr,@"content":self.keyView.textview.text,@"pid":pidstr};
                 
-                [CLNetworkingManager postCacheRequestWithUrlString:pinglunhuifu parameters:para cacheTime:YES succeed:^(id data) {
+                [CLNetworkingManager postCacheRequestWithUrlString:pinglunhuifu parameters:para cacheTime:NO succeed:^(id data) {
                     NSLog(@"data-------%@",data);
-                    
+                    [self headerRefreshEndAction];
                 } fail:^(NSError *error) {
                     
                 }];
             }
             else
             {
-//                一级评论
+                //一级评论
                 self.detailsmodel = [[detailcellmodel alloc] init];
-                NSMutableArray *mutaArray = [[NSMutableArray alloc] init];
-                
-                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-                NSString *namestr = [defaults objectForKey:@"namestr"];
-                NSString *name = namestr;
-                NSString *nowtime = [Timestr getNowTimestamp];
-                NSString *content = self.keyView.textview.text;
-                NSString *imageurl = [tokenstr userimgstrfrom];
-                NSString *pid = @"0";
-                NSString *to_uid = @"0";
-                
-                
-                self.detailsmodel.namestr = name;
-                self.detailsmodel.timestr = nowtime;
-                self.detailsmodel.contstr = content;
-                self.detailsmodel.imgurlstr = imageurl;
-                self.detailsmodel.touidstr = to_uid;
-                self.detailsmodel.idstr = pid;
-
-                
-                [mutaArray addObject:self.detailsmodel];
-                [mutaArray addObjectsFromArray:self.detalisarr];
-                self.detalisarr = mutaArray;
-                
-                [self.maintable reloadData];
                 
                 //网络请求
                 NSDictionary *para = @{@"token":[tokenstr tokenstrfrom],@"to_uid":@"0",@"object_id":self.headm.objectidstr,@"content":self.keyView.textview.text,@"pid":@"0"};
                 
-                [CLNetworkingManager postCacheRequestWithUrlString:pinglunhuifu parameters:para cacheTime:YES succeed:^(id data) {
+                [CLNetworkingManager postCacheRequestWithUrlString:pinglunhuifu parameters:para cacheTime:NO succeed:^(id data) {
                     NSLog(@"data-------%@",data);
-                    
+                    [self headerRefreshEndAction];
                 } fail:^(NSError *error) {
                     
                 }];
-
+                
             }
+ 
         }
     
         return NO; //这里返回NO，就代表return键值失效，即页面上按下return，不会出现换行，如果为yes，则输入页面会换行
     }
     return YES;
-
 }
-
 
 #pragma mark - 地址跳转方法
 
@@ -1401,7 +1263,7 @@ NSMutableArray * ymDataArray;
             
             self.headview.headimg.frame =CGRectMake(14*WIDTH_SCALE, 30*HEIGHT_SCALE+14*HEIGHT_SCALE+textSize.height, DEVICE_WIDTH-28*WIDTH_SCALE, 194*HEIGHT_SCALE);
             self.headview.title.frame = CGRectMake(14*WIDTH_SCALE,  38*HEIGHT_SCALE+textSize.height*HEIGHT_SCALE+200*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 20*HEIGHT_SCALE);
-            self.headview.timelab.frame = CGRectMake(14*WIDTH_SCALE, 30*HEIGHT_SCALE+textSize.height*HEIGHT_SCALE+12*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+196, 100*WIDTH_SCALE, 12*HEIGHT_SCALE);
+            self.headview.timelab.frame = CGRectMake(14*WIDTH_SCALE, 30*HEIGHT_SCALE+textSize.height*HEIGHT_SCALE+12*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+196*HEIGHT_SCALE, 100*WIDTH_SCALE, 12*HEIGHT_SCALE);
             [self.headview.combtn mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.right.equalTo(self.headview).with.offset(-70*WIDTH_SCALE);
                 make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);

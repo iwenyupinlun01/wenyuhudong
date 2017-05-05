@@ -25,7 +25,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         //_imageArray = [@[@"闪屏1.png",@"闪屏2.png", @"闪屏3.png",@"闪屏4.png"]mutableCopy];
-        _imageArray = [@[@"640-1",@"640-2"]mutableCopy];
+        _imageArray = [@[@"750引导页1",@"750引导页2"]mutableCopy];
 
         //        _imageArray = [NSMutableArray arrayWithObjects:@"闪屏1.png",@"闪屏2.png", @"闪屏3.png",@"闪屏4.png", nil];
         

@@ -52,8 +52,9 @@
         _textview.returnKeyType=UIReturnKeySend;
         _textview.enablesReturnKeyAutomatically = YES;
         [_textview setFont:[UIFont systemFontOfSize:15]];
-        [_textview setTintColor:[UIColor wjColorFloat:@"FF4444"]];
+        [_textview setTintColor:[UIColor wjColorFloat:@"576b95"]];
        // _textview.backgroundColor = [UIColor greenColor];
+        
     }
     return _textview;
 }

@@ -1,9 +1,9 @@
 //
-//  UIImageView+RotateImgV.h
-//  RotateImgV
+//  strisNull.h
+//  Supercomments
 //
-//  Created by Ashen on 15/11/10.
-//  Copyright © 2015年 Ashen. All rights reserved.
+//  Created by 王俊钢 on 2017/4/25.
+//  Copyright © 2017年 wangjungang. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

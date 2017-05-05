@@ -53,7 +53,7 @@
     if(!_rightimg)
     {
         _rightimg = [[UIImageView alloc] init];
-        _rightimg.image = [UIImage imageNamed:@"评"];
+        _rightimg.image = [UIImage imageNamed:@"回复"];
     }
     return _rightimg;
 }

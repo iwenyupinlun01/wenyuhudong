@@ -15,7 +15,6 @@
 
 +(BOOL)datetime:(NSString *)datestr
 {
-    
     NSString*  format = @"YYYY-MM-dd HH:mm:ss";
     NSInteger timeinter = [datestr intValue];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];

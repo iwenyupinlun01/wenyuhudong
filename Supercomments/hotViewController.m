@@ -445,17 +445,19 @@ static NSString *hotidentfid = @"hotidentfid";
 -(void)kvcdianzan:(NSNotification *)notifocation
 {
     NSDictionary *dic = [notifocation object];
-    //NSString *dianzanstr = (NSString *)[notifocation object];
+//    NSString *dianzanstr = (NSString *)[notifocation object];
     NSLog(@"dianzanstr---------%@",dic);
     NSInteger index = [[dic objectForKey:@"dianzanindex"] intValue];
     if (self.dataarr.count==0) {
         self.nmodel = [[newModel alloc] init];
         self.nmodel.sifoudianzanstr = [dic objectForKey:@"diansanstr"];
+        self.nmodel.dianzanstr = [dic objectForKey:@"dianzannum"];
         [self.dataarr addObject:self.nmodel];
     }else
     {
         self.nmodel = self.dataarr[index];
         self.nmodel.sifoudianzanstr = [dic objectForKey:@"diansanstr"];
+        self.nmodel.dianzanstr = [dic objectForKey:@"dianzannum"];
         [self.dataarr replaceObjectAtIndex:index withObject:self.nmodel];
     }
 

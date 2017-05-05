@@ -64,7 +64,7 @@
         
     }else if (days<2&&days>=1)
     {
-        //前天
+        //昨天
         //实例化一个NSDateFormatter对象
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         //设定时间格式,这里可以设置成自己需要的格式

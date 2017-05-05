@@ -39,13 +39,13 @@
 {
     [super layoutSubviews];
     
+    self.commbtn.frame = CGRectMake(DEVICE_WIDTH-90*WIDTH_SCALE, self.frame.size.height-34*HEIGHT_SCALE, 66*WIDTH_SCALE, 16*HEIGHT_SCALE);
+    self.zbtn.frame = CGRectMake(160*WIDTH_SCALE, self.frame.size.height-34*HEIGHT_SCALE, 100*WIDTH_SCALE, 20*HEIGHT_SCALE);
     self.namelab.frame = CGRectMake(14*WIDTH_SCALE, 16*HEIGHT_SCALE, DEVICE_WIDTH/2-14*WIDTH_SCALE, 15*HEIGHT_SCALE);
     self.fromlab.frame = CGRectMake(DEVICE_WIDTH-200*WIDTH_SCALE, 16*HEIGHT_SCALE, 185*WIDTH_SCALE, 14*HEIGHT_SCALE);
     self.reimg.frame = CGRectMake(14*WIDTH_SCALE, self.frame.size.height-32*HEIGHT_SCALE, 24*WIDTH_SCALE, 16*HEIGHT_SCALE);
     self.timelab.frame = CGRectMake(14*WIDTH_SCALE+30*WIDTH_SCALE, self.frame.size.height-32*HEIGHT_SCALE, 150*WIDTH_SCALE, 18*HEIGHT_SCALE);
     self.timelab2.frame = CGRectMake(14*WIDTH_SCALE,self.frame.size.height-32*HEIGHT_SCALE, 150*WIDTH_SCALE, 18*HEIGHT_SCALE);
-    self.commbtn.frame = CGRectMake(DEVICE_WIDTH-60*WIDTH_SCALE, self.frame.size.height-34*HEIGHT_SCALE, 50*WIDTH_SCALE, 16*HEIGHT_SCALE);
-    self.zbtn.frame = CGRectMake(DEVICE_WIDTH-130*WIDTH_SCALE, self.frame.size.height-34*HEIGHT_SCALE, 50*WIDTH_SCALE, 16*HEIGHT_SCALE);
     self.tiview.frame = CGRectMake(14*WIDTH_SCALE, self.frame.size.height-74*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 30*HEIGHT_SCALE);
     
 }
@@ -92,7 +92,6 @@
     if(!_timelab)
     {
         _timelab = [[UILabel alloc] init];
-        //_timelab.text = @"十分钟前";
         _timelab.textColor = [UIColor wjColorFloat:@"C7C7CD"];
         _timelab.font = [UIFont systemFontOfSize:12*FX];
         
@@ -172,28 +171,18 @@
     CGSize textSize = [UILabel sizeWithText:text
                                       lines:4
                                        font:[UIFont systemFontOfSize:17*FX]
-                             andLineSpacing:QSTextLineSpacing
+                             andLineSpacing:QSTextLineSpacing*HEIGHT_SCALE
                           constrainedToSize:CGSizeMake(DEVICE_WIDTH - 28*WIDTH_SCALE,MAXFLOAT)];
-    
     return textSize.height;
-    
-}
-
-+(CGFloat)cellimagehti:(NSString *)imgstr
-{
-    return 200;
 }
 
 -(void)setcelldata:(newModel *)model
 {
     self.nmodel = model;
     self.namelab.text = model.namestr;
-    
-    CGSize textSize = [self.contentlab setText:model.contentstr lines:4 andLineSpacing:QSTextLineSpacing constrainedToSize:CGSizeMake(DEVICE_WIDTH-28*WIDTH_SCALE,MAXFLOAT)];
+    CGSize textSize = [self.contentlab setText:model.contentstr lines:4 andLineSpacing:QSTextLineSpacing*HEIGHT_SCALE constrainedToSize:CGSizeMake(DEVICE_WIDTH-28*WIDTH_SCALE,MAXFLOAT)];
     self.contentlab.frame = CGRectMake(14*WIDTH_SCALE,  38*HEIGHT_SCALE, DEVICE_WIDTH -28*WIDTH_SCALE, textSize.height);
-    
     self.contentlab.text = model.contentstr;
-   
     NSString *str1 = @" 标题: ";
     NSString *str2 = model.titlestr;
     NSMutableAttributedString *strbut = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@",str1,str2]];
@@ -202,13 +191,25 @@
     self.tiview.titlelab.attributedText = strbut;
     self.commbtn.textlab.text = model.pinglunstr;
     
+    
     if ([model.dianzanstr intValue]>999) {
         self.zbtn.zanlab.text = @"999+";
     }else
     {
         self.zbtn.zanlab.text = model.dianzanstr;
     }
+    if ([model.pinglunstr intValue]>999) {
+        self.commbtn.textlab.text = @"999+";
+    }else
+    {
+        self.commbtn.textlab.text = model.pinglunstr;
+    }
     
+    self.zbtn.zanlab.frame = CGRectMake(100*WIDTH_SCALE-self.zbtn.zanlab.text.length*10*FX, 2*HEIGHT_SCALE, self.zbtn.zanlab.text.length*10*FX, 20*HEIGHT_SCALE);
+    self.zbtn.zanimg.frame = CGRectMake(100*WIDTH_SCALE-self.zbtn.zanlab.text.length*10*FX-16*WIDTH_SCALE, 2*HEIGHT_SCALE, 16*WIDTH_SCALE, 16*WIDTH_SCALE);   
+    self.commbtn.textlab.frame = CGRectMake(66*WIDTH_SCALE-self.commbtn.textlab.text.length*10*FX, 2*HEIGHT_SCALE, self.commbtn.textlab.text.length*10*FX, 20*HEIGHT_SCALE);
+    self.commbtn.leftimg.frame = CGRectMake(66*WIDTH_SCALE-self.commbtn.textlab.text.length*10*FX-16*WIDTH_SCALE, 2*HEIGHT_SCALE, 16*WIDTH_SCALE, 16*WIDTH_SCALE);
+
     self.timelab.text = [Timestr datetime:model.timestr];
     self.timelab2.text = [Timestr datetime:model.timestr];
     if ([model.sifoudianzanstr isEqualToString:@"0"]) {
@@ -220,7 +221,6 @@
         self.zbtn.zanimg.image = [UIImage imageNamed:@"点赞-拷贝"];
         self.zbtn.zanlab.textColor = [UIColor wjColorFloat:@"FF4444"];
     }
-    
     if ([model.typestr isEqualToString:@"1"]) {
         self.fromlab.text = [NSString stringWithFormat:@"%@%@%@",@"腾讯老司机已赞",model.fromstr,@"次"];
     }else if ([model.typestr isEqualToString:@"2"])
@@ -247,8 +247,6 @@
     
     NSString *str=model.timestr;//时间戳
     [Timestr datetime:str];
-    
-   
     
     CGFloat hei = textSize.height;
     

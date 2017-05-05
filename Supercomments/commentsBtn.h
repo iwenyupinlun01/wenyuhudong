@@ -9,5 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface commentsBtn : UIButton
+@property (nonatomic,strong) UIImageView *leftimg;
 @property (nonatomic,strong) UILabel *textlab;
+@property (nonatomic,strong) NSString *commentnumberstr;
+-(void)commentframedata:(NSString *)commnumber;
 @end

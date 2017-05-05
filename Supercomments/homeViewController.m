@@ -46,7 +46,7 @@
     [super viewWillAppear:animated];
     [self.navigationController.navigationBar setHidden:YES];
     [self islogin];
-    [self tokentihuanfrom];
+    //[self tokentihuanfrom];
     [self loaddatafromweb];
 }
 
@@ -77,61 +77,21 @@
 
 -(void)islogin
 {
-//    [AFManager getReqURL:[NSString stringWithFormat:loginbool,[tokenstr tokenstrfrom]] block:^(id infor) {
-//        NSLog(@"infor=%@",infor);
-//        if ([[infor objectForKey:@"is_login"]intValue]!=1) {
-//            NSLog(@"未登录");
-//            self.denglustr = @"";
-//            [self.infobtn sd_setImageWithURL:[NSURL URLWithString:@""] forState:normal placeholderImage:[UIImage imageNamed:@"未登录"]];
-//            //[self.infobtn setImage:[UIImage imageNamed:@"未登录"] forState:normal];
-//            
-//        }else
-//        {
-//            NSLog(@"已经登陆");
-//            
-//            if ([self shijianjisuan]) {
-//                //没有过期
-//                
-//                self.denglustr = @"denglu";
-//                NSString *urlstr = [tokenstr userimgstrfrom];
-//                [self.infobtn sd_setImageWithURL:[NSURL URLWithString:urlstr] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"头像默认图"]];
-//                
-//            }else
-//            {
-//                //登陆过期
-//                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-//                [defaults removeObjectForKey:@"tokenuser"];
-//                [defaults removeObjectForKey:@"access_token"];
-//                [defaults removeObjectForKey:@"namestr"];
-//                [defaults removeObjectForKey:@"pathurlstr"];
-//                
-//            }
-//
-//            
-//
-//        }
-//        
-//    } errorblock:^(NSError *error) {
-//        
-//    }];
-//    
-    [CLNetworkingManager getNetworkRequestWithUrlString:[NSString stringWithFormat:loginbool,[tokenstr tokenstrfrom]] parameters:nil isCache:YES succeed:^(id data) {
+
+    [CLNetworkingManager getNetworkRequestWithUrlString:[NSString stringWithFormat:loginbool,[tokenstr tokenstrfrom]] parameters:nil isCache:NO succeed:^(id data) {
         
         
         NSLog(@"infor=%@",data);
         if ([[data objectForKey:@"is_login"]intValue]!=1) {
             NSLog(@"未登录");
-            
-          
             self.denglustr = @"";
             [self.infobtn sd_setImageWithURL:[NSURL URLWithString:@""] forState:normal placeholderImage:[UIImage imageNamed:@"未登录"]];
-            //[self.infobtn setImage:[UIImage imageNamed:@"未登录"] forState:normal];
+            
+            [self.xiaohongdianview removeFromSuperview];
             
         }else
         {
             NSLog(@"已经登陆");
-            
-            
             NSDictionary *dic = [data objectForKey:@"info"];
             NSString *path = [dic objectForKey:@"headPath"];
             NSString *namestr = [dic objectForKey:@"nickname"];
@@ -159,11 +119,7 @@
                 [defaults removeObjectForKey:@"pathurlstr"];
                 
             }
-            
-            
-            
         }
-
         
     } fail:^(NSError *error) {
         
@@ -173,6 +129,9 @@
 
 -(void)loaddatafromweb
 {
+    NSString *tokenstr2 = [tokenstr tokenstrfrom];
+    NSLog(@"%@",tokenstr2);
+    
     if ([tokenstr tokenstrfrom].length!=0) {
         [AFManager getReqURL:[NSString stringWithFormat:tongzhixianxishuliang,[tokenstr tokenstrfrom]] block:^(id infor) {
             NSLog(@"info---------%@",infor);
@@ -184,7 +143,7 @@
                 system_inform = [dic objectForKey:@"system_inform"];
             }
             if ([inforstr isEqualToString:@"0"]&&[system_inform isEqualToString:@"0"]) {
-                
+                [self.xiaohongdianview setHidden:YES];
             }
             else
             {
@@ -192,21 +151,18 @@
             }
             
         } errorblock:^(NSError *error) {
-            //[MBProgressHUD showSuccess:@"请检查网络"];
+            [MBProgressHUD showSuccess:@"请检查网络"];
         }];
-        
-        
-        
 
     }else
     {
-        
+
     }
 }
 
 -(void)tokentihuanfrom
 {
-    [CLNetworkingManager postNetworkRequestWithUrlString:tokentihuan parameters:@{@"token":[tokenstr tokenstrfrom]} isCache:YES succeed:^(id data) {
+    [CLNetworkingManager postNetworkRequestWithUrlString:tokentihuan parameters:@{@"token":[tokenstr tokenstrfrom]} isCache:NO succeed:^(id data) {
         NSLog(@"data===%@",data);
         if ([[data objectForKey:@"code"] intValue]==1) {
             NSString *newtoken = [data objectForKey:@"token"];

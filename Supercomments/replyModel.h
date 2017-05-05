@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface replyModel : NSObject
+
 @property (nonatomic,strong) NSString *replyurl;
 @property (nonatomic,strong) NSString *replyname;
 @property (nonatomic,strong) NSString *replytext;
