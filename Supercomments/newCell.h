@@ -21,7 +21,7 @@
 -(void)myTabVClick3:(UITableViewCell *)cell;
 @end
 
-
+static NSString *newidentfid = @"newidentfid";
 @interface newCell : SWTableViewCell
 
 @property (nonatomic,strong) UILabel *namelab;
@@ -37,12 +37,15 @@
 @property (nonatomic,strong) UILabel *timelab2;
 @property (nonatomic,strong) UIImageView *infoimg;
 
+
+@property (nonatomic,assign) CGFloat texthei;
+
 @property(assign,nonatomic)id<mycellVdelegate>delegate;
 
 
--(void)setcelldata:(newModel *)model;
+-(CGFloat)setcelldata:(newModel *)model;
 
-//- (void)layoutSubviewsWithText:(NSString *)text;
+
 
 + (CGFloat)cellHeightWithText:(NSString *)text;
 

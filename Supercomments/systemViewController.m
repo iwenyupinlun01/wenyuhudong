@@ -249,7 +249,7 @@ static NSString * const kShowTextCellReuseIdentifier = @"QSShowTextCell";
     NSMutableArray *rightUtilityButtons = [NSMutableArray new];
     [rightUtilityButtons sw_addUtilityButtonWithColor:
      [UIColor colorWithRed:1.0f green:0.231f blue:0.188 alpha:1.0f]
-                                                title:@"Delete"];
+                                                title:@"删除"];
     return rightUtilityButtons;
 }
 
@@ -348,6 +348,7 @@ static NSString * const kShowTextCellReuseIdentifier = @"QSShowTextCell";
     NSLog(@"row = %ld,section = %ld",indexPath.row,indexPath.section);
     [self.dataSource removeObjectAtIndex:indexPath.row];
 }
+
 
 #pragma mark - 实现方法
 

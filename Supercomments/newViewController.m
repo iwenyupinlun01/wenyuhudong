@@ -36,8 +36,12 @@
 
 @property (nonatomic,strong) UIButton *xuanzuanbtn;
 
+@property (nonatomic,strong) NSMutableArray *textheiarr;
+
+@property (nonatomic,strong) newCell *cell;
+
 @end
-static NSString *newidentfid = @"newidentfid";
+
 @implementation newViewController
 
 - (void)viewDidLoad {
@@ -52,6 +56,7 @@ static NSString *newidentfid = @"newidentfid";
     self.dataSource = [NSMutableArray array];
     self.dataarr = [NSMutableArray array];
     self.imgarr = [NSMutableArray array];
+    self.textheiarr = [NSMutableArray array];
     self.panduan404str = @"0";
     // 3.1.下拉刷新
     [self addHeader];
@@ -100,7 +105,7 @@ static NSString *newidentfid = @"newidentfid";
     [self.dataSource removeAllObjects];
     [self.dataarr removeAllObjects];
     [self.imgarr removeAllObjects];
-    
+    [self.textheiarr removeAllObjects];
     NSString *strurl = [NSString stringWithFormat:newVCload,@"1",@"1",[tokenstr tokenstrfrom]];
     
     [CLNetworkingManager getNetworkRequestWithUrlString:strurl parameters:nil isCache:YES succeed:^(id data) {
@@ -114,33 +119,38 @@ static NSString *newidentfid = @"newidentfid";
             self.nmodel.timestr = dicarr[@"create_time"];
             self.nmodel.imgurlstr = dicarr[@"images"];
             self.nmodel.namestr = dicarr[@"name"];
-            //self.nmodel.dianzanstr = dicarr[@"support_num"];
             self.nmodel.dianzanstr = [NSString stringWithFormat:@"%@",dicarr[@"support_num"]];
             self.nmodel.pinglunstr = dicarr[@"reply_num"];
             self.nmodel.newidstr = dicarr[@"id"];
             self.nmodel.titlestr = dicarr[@"title"];
             self.nmodel.fromstr =dicarr[@"support_count"];
             self.nmodel.typestr = dicarr[@"type"];
-//            self.nmodel.sifoudianzanstr = dicarr[@"is_support"];
             self.nmodel.sifoudianzanstr = [NSString stringWithFormat:@"%@",dicarr[@"is_support"]];
             self.nmodel.weburlstr = dicarr[@"url"];
-            self.nmodel.ishot = dicarr[@"is_hot"];
+            self.nmodel.ishot = [NSString stringWithFormat:@"%@",dicarr[@"is_hot"]];
             self.nmodel.platformstr = dicarr[@"platform"];
+            self.nmodel.small_imagesstrl = dicarr[@"small_images"];
+            self.nmodel.textheightstr = @"";
+            
             [self.dataSource addObject:self.nmodel.contentstr];
             [self.dataarr addObject:self.nmodel];
             [self.imgarr addObject:self.nmodel.imgurlstr];
         }
-        [self.newtable.mj_header endRefreshing];
-        [self.newtable reloadData];
+   
         dispatch_async(dispatch_get_main_queue(), ^{
+            [self.newtable.mj_header endRefreshing];
+            [self.newtable reloadData];
             [self.xuanzuanbtn stopRotate];
         });
         
     } fail:^(NSError *error) {
-        [self.newtable.mj_header endRefreshing];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.newtable.mj_header endRefreshing];
+            [self.xuanzuanbtn stopRotate];
+            [MBProgressHUD showError:@"没有网络"];
+        });
         self.panduan404str = @"1";
-        [MBProgressHUD showError:@"没有网络"];
-        [self.xuanzuanbtn stopRotate];
     }];
     
 }
@@ -170,16 +180,23 @@ static NSString *newidentfid = @"newidentfid";
             self.nmodel.weburlstr = dicarr[@"url"];
             self.nmodel.ishot = dicarr[@"is_hot"];
             self.nmodel.platformstr = dicarr[@"platform"];
+            self.nmodel.small_imagesstrl = dicarr[@"small_images"];
             [self.dataSource addObject:self.nmodel.contentstr];
             [self.dataarr addObject:self.nmodel];
             [self.imgarr addObject:self.nmodel.imgurlstr];
         }
-        [self.newtable.mj_footer endRefreshing];
-        [self.newtable reloadData];
-    } fail:^(NSError *error) {
-        [self.newtable.mj_footer endRefreshing];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.newtable.mj_footer endRefreshing];
+            [self.newtable reloadData];
+
+        });
+        
+        } fail:^(NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.newtable.mj_footer endRefreshing];
+            [MBProgressHUD showError:@"没有网络"];
+        });
         self.panduan404str = @"1";
-        [MBProgressHUD showError:@"没有网络"];
     }];
 
 }
@@ -214,7 +231,9 @@ static NSString *newidentfid = @"newidentfid";
         _newtable = [[UITableView alloc] init];
         _newtable.dataSource = self;
         _newtable.delegate = self;
+        _newtable.rowHeight = UITableViewAutomaticDimension;
         _newtable.separatorColor = [UIColor wjColorFloat:@"F5F5F5"];
+        _newtable.estimatedRowHeight = 200;
     }
     return _newtable;
 }
@@ -247,22 +266,8 @@ static NSString *newidentfid = @"newidentfid";
 #pragma mark -UITableViewDataSource&&UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    NSString *imgstr = [NSString stringWithFormat:@"%@",self.imgarr[indexPath.row]];
-    NSString *contaststr = [NSString stringWithFormat:@"%@",self.dataSource[indexPath.row]];
-    
-    if (imgstr.length==0) {
-        return [newCell cellHeightWithText:self.dataSource[indexPath.row]]+(16+16+4+20+16+16+8+16)*HEIGHT_SCALE;
-    }
-    else if(contaststr.length==0&&imgstr.length!=0)
-    {
-        return (16+16+4+20+16+16+194+20)*HEIGHT_SCALE;
-    }
-    else
-    {
-         return [newCell cellHeightWithText:self.dataSource[indexPath.row]]+(16+16+4+20+16+16+14+196+16)*HEIGHT_SCALE;
-    }
-    return 0;
+    newModel *homeModel=self.dataarr[indexPath.row];
+    return homeModel.cellHeight;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -273,21 +278,18 @@ static NSString *newidentfid = @"newidentfid";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     newCell *cell = [tableView dequeueReusableCellWithIdentifier:newidentfid];
-//    if (!cell) {
-        cell = [[newCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:newidentfid];
-//    }
+
+    cell = [[newCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:newidentfid];
+
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.delegate = self;
     [cell setSeparatorInset:UIEdgeInsetsZero];
     [cell setcelldata:self.dataarr[indexPath.row]];
-    
-
-    
+   
     return cell;
 }
 
 - (NSString *)p_textAtIndexPath:(NSIndexPath *)indexPath{
-    
     return [self.dataSource objectAtIndex:indexPath.row];
 }
 
@@ -302,7 +304,6 @@ static NSString *newidentfid = @"newidentfid";
     detailsvc.dianzanindex = [NSString stringWithFormat:@"%ld",(long)indexPath.row];
     detailsvc.fromtypestr = @"newvc";
     [self.navigationController pushViewController:detailsvc animated:YES];
-    
 }
 
 //点赞
@@ -310,16 +311,11 @@ static NSString *newidentfid = @"newidentfid";
 {
     NSIndexPath *index = [self.newtable indexPathForCell:cell];
     NSLog(@"333===%ld   点赞",index.row);
-    
-    
     self.nmodel = [[newModel alloc] init];
     self.nmodel = self.dataarr[index.row];
-    
     NSString *dianzanstr = self.nmodel.sifoudianzanstr;
     NSLog(@"dianzanstr--------%@",dianzanstr);
-    
     if ([dianzanstr isEqualToString:@"0"]) {
-        
         if ([tokenstr tokenstrfrom].length==0) {
             loginViewController *loginvc = [[loginViewController alloc] init];
             loginvc.jinru = @"jinru";
@@ -331,7 +327,6 @@ static NSString *newidentfid = @"newidentfid";
             //点赞
             self.nmodel.sifoudianzanstr = @"1";
             NSDictionary *reqdic = @{@"token":[tokenstr tokenstrfrom],@"object_id":self.nmodel.newidstr,@"status":@"1",@"type":@"1"};
-            
             [AFManager postReqURL:qudianzan reqBody:reqdic block:^(id infor) {
                 NSLog(@"infor-------%@",infor);
                 NSString *code = [infor objectForKey:@"code"];
@@ -340,7 +335,6 @@ static NSString *newidentfid = @"newidentfid";
                     NSLog(@"成功");
                     self.nmodel = [[newModel alloc] init];
                     self.nmodel = self.dataarr[index.row];
-                    
                     NSDictionary *dic = [infor objectForKey:@"info"];
                     self.nmodel.dianzanstr = [dic objectForKey:@"spportNum"];
                     dispatch_async(dispatch_get_main_queue(), ^{
@@ -366,13 +360,11 @@ static NSString *newidentfid = @"newidentfid";
                     [MBProgressHUD showSuccess:@"系统繁忙，请稍后再试"];
                     NSLog(@"系统繁忙，请稍后再试");
                 }
-
             }];
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.newtable reloadData];
             });
         }
-        
     }
     else
     {
@@ -462,19 +454,6 @@ static NSString *newidentfid = @"newidentfid";
 
 #pragma mark - kvo
 
-//-(void)kvcdianzan:(NSNotification *)notifocation
-//{
-//    NSDictionary *dic = [notifocation object];
-//    //NSString *dianzanstr = (NSString *)[notifocation object];
-//    NSLog(@"dianzanstr---------%@",dic);
-//    NSInteger index = [[dic objectForKey:@"dianzanindex"] intValue];
-//    self.nmodel = self.dataarr[index];
-//    self.nmodel.sifoudianzanstr = [dic objectForKey:@"diansanstr"];
-//    self.nmodel.dianzanstr = [dic objectForKey:@"dianzannum"];
-//    [self.dataarr replaceObjectAtIndex:index withObject:self.nmodel];
-//    [self.newtable reloadData];
-//}
-
 -(void)kvcdianzan:(NSNotification *)notifocation
 {
     NSDictionary *dic = [notifocation object];
@@ -496,7 +475,6 @@ static NSString *newidentfid = @"newidentfid";
     
     [self.newtable reloadData];
 }
-
 
 - (void)dealloc{
     //[super dealloc];

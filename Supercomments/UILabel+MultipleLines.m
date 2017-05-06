@@ -62,6 +62,7 @@
     CGFloat oneLineHeight = font.lineHeight;
     CGSize textSize = [text boundingRectWithSize:cSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:font} context:nil].size;
     
+    
     CGFloat rows = textSize.height / oneLineHeight;
     CGFloat realHeight = oneLineHeight;
     // 0 不限制行数

@@ -24,9 +24,12 @@
 @property (nonatomic,strong) NSString *weburlstr;
 
 @property (nonatomic,strong) NSString *platformstr;
- 
 
-
+@property (nonatomic,strong) NSString *small_imagesstrl;
 @property (nonatomic,strong) NSString *ishot;
 
+@property (nonatomic,strong) NSString *textheightstr;
+
+//单元格的高度
+@property (nonatomic,assign) CGFloat cellHeight;
 @end

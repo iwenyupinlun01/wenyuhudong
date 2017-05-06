@@ -15,6 +15,7 @@
 
 @interface newCell()
 @property (nonatomic,strong) newModel *nmodel;
+
 @end
 
 @implementation newCell
@@ -31,23 +32,50 @@
         [self.contentView addSubview:self.commbtn];
         [self.contentView addSubview:self.zbtn];;
         [self.contentView addSubview:self.infoimg];
+        [self.contentView addSubview:self.reimg];
+        [self.contentView addSubview:self.timelab];
+        [self.contentView addSubview:self.timelab2];
+        [self setupmas];
     }
     return self;
 }
 
--(void)layoutSubviews
+-(void)setupmas
 {
-    [super layoutSubviews];
+    __weak typeof (self) weakSelf = self;
+    [_namelab mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(weakSelf).with.offset(14*WIDTH_SCALE);
+        make.height.mas_equalTo(15*HEIGHT_SCALE);
+        make.width.mas_equalTo( DEVICE_WIDTH/2-14*WIDTH_SCALE);
+        make.top.equalTo(weakSelf).with.offset(16*HEIGHT_SCALE);
+    }];
+    [_fromlab mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(weakSelf).with.offset(-14*WIDTH_SCALE);
+        make.top.equalTo(weakSelf).with.offset(16*HEIGHT_SCALE);
+        make.width.mas_equalTo(185*WIDTH_SCALE);
+        make.height.mas_equalTo(14*HEIGHT_SCALE);
+        
+    }];
     
-    self.commbtn.frame = CGRectMake(DEVICE_WIDTH-90*WIDTH_SCALE, self.frame.size.height-34*HEIGHT_SCALE, 66*WIDTH_SCALE, 16*HEIGHT_SCALE);
-    self.zbtn.frame = CGRectMake(160*WIDTH_SCALE, self.frame.size.height-34*HEIGHT_SCALE, 100*WIDTH_SCALE, 20*HEIGHT_SCALE);
-    self.namelab.frame = CGRectMake(14*WIDTH_SCALE, 16*HEIGHT_SCALE, DEVICE_WIDTH/2-14*WIDTH_SCALE, 15*HEIGHT_SCALE);
-    self.fromlab.frame = CGRectMake(DEVICE_WIDTH-200*WIDTH_SCALE, 16*HEIGHT_SCALE, 185*WIDTH_SCALE, 14*HEIGHT_SCALE);
-    self.reimg.frame = CGRectMake(14*WIDTH_SCALE, self.frame.size.height-32*HEIGHT_SCALE, 24*WIDTH_SCALE, 16*HEIGHT_SCALE);
-    self.timelab.frame = CGRectMake(14*WIDTH_SCALE+30*WIDTH_SCALE, self.frame.size.height-32*HEIGHT_SCALE, 150*WIDTH_SCALE, 18*HEIGHT_SCALE);
-    self.timelab2.frame = CGRectMake(14*WIDTH_SCALE,self.frame.size.height-32*HEIGHT_SCALE, 150*WIDTH_SCALE, 18*HEIGHT_SCALE);
-    self.tiview.frame = CGRectMake(14*WIDTH_SCALE, self.frame.size.height-74*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 30*HEIGHT_SCALE);
+    [_contentlab mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self).with.offset(14*WIDTH_SCALE);
+        make.right.equalTo(self).with.offset(-14*WIDTH_SCALE);
+        make.top.equalTo(self.namelab.mas_bottom).with.offset(8*HEIGHT_SCALE);
+        
+    }];
     
+    [_infoimg mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(weakSelf).with.offset(-14*WIDTH_SCALE);
+        make.left.equalTo(weakSelf).with.offset(14*WIDTH_SCALE);
+        make.height.mas_equalTo(192*HEIGHT_SCALE);
+        make.top.equalTo(weakSelf.contentlab.mas_bottom).with.offset(8*HEIGHT_SCALE);
+    }];
+    
+    [_tiview mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self).with.offset(14*WIDTH_SCALE);
+        make.right.equalTo(self).with.offset(-14*WIDTH_SCALE);
+        make.top.equalTo(self.infoimg.mas_bottom).with.offset(2*HEIGHT_SCALE);
+    }];
 }
 
 #pragma mark - getters
@@ -80,9 +108,7 @@
     if(!_contentlab)
     {
         _contentlab = [[UILabel alloc] init];
-        
         _contentlab.textColor = [UIColor wjColorFloat:@"333333"];
-        
     }
     return _contentlab;
 }
@@ -130,7 +156,6 @@
     return _commbtn;
 }
 
-
 -(zanBtn *)zbtn
 {
     if(!_zbtn)
@@ -140,7 +165,6 @@
     }
     return _zbtn;
 }
-
 
 -(titleView *)tiview
 {
@@ -152,7 +176,6 @@
     }
     return _tiview;
 }
-
 
 -(UIImageView *)infoimg
 {
@@ -166,52 +189,72 @@
     return _infoimg;
 }
 
-+ (CGFloat)cellHeightWithText:(NSString *)text{
+
++(CGFloat)cellHeightWithText:(NSString *)text{
     
     CGSize textSize = [UILabel sizeWithText:text
                                       lines:4
                                        font:[UIFont systemFontOfSize:17*FX]
-                             andLineSpacing:QSTextLineSpacing*HEIGHT_SCALE
+                             andLineSpacing:QSTextLineSpacing
                           constrainedToSize:CGSizeMake(DEVICE_WIDTH - 28*WIDTH_SCALE,MAXFLOAT)];
     return textSize.height;
+ 
 }
 
--(void)setcelldata:(newModel *)model
+-(CGFloat)setcelldata:(newModel *)model
 {
+    CGFloat imghei ;
+    
     self.nmodel = model;
     self.namelab.text = model.namestr;
-    CGSize textSize = [self.contentlab setText:model.contentstr lines:4 andLineSpacing:QSTextLineSpacing*HEIGHT_SCALE constrainedToSize:CGSizeMake(DEVICE_WIDTH-28*WIDTH_SCALE,MAXFLOAT)];
-    self.contentlab.frame = CGRectMake(14*WIDTH_SCALE,  38*HEIGHT_SCALE, DEVICE_WIDTH -28*WIDTH_SCALE, textSize.height);
-    self.contentlab.text = model.contentstr;
+
+    
     NSString *str1 = @" 标题: ";
     NSString *str2 = model.titlestr;
     NSMutableAttributedString *strbut = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@",str1,str2]];
     [strbut addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"333333"] range:NSMakeRange(0, str1.length)];
     [strbut addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"576B95"] range:NSMakeRange(str1.length, str2.length)];
     self.tiview.titlelab.attributedText = strbut;
-    self.commbtn.textlab.text = model.pinglunstr;
-    
-    
-    if ([model.dianzanstr intValue]>999) {
-        self.zbtn.zanlab.text = @"999+";
-    }else
-    {
-        self.zbtn.zanlab.text = model.dianzanstr;
-    }
-    if ([model.pinglunstr intValue]>999) {
-        self.commbtn.textlab.text = @"999+";
-    }else
-    {
-        self.commbtn.textlab.text = model.pinglunstr;
-    }
-    
-    self.zbtn.zanlab.frame = CGRectMake(100*WIDTH_SCALE-self.zbtn.zanlab.text.length*10*FX, 2*HEIGHT_SCALE, self.zbtn.zanlab.text.length*10*FX, 20*HEIGHT_SCALE);
-    self.zbtn.zanimg.frame = CGRectMake(100*WIDTH_SCALE-self.zbtn.zanlab.text.length*10*FX-16*WIDTH_SCALE, 2*HEIGHT_SCALE, 16*WIDTH_SCALE, 16*WIDTH_SCALE);   
-    self.commbtn.textlab.frame = CGRectMake(66*WIDTH_SCALE-self.commbtn.textlab.text.length*10*FX, 2*HEIGHT_SCALE, self.commbtn.textlab.text.length*10*FX, 20*HEIGHT_SCALE);
-    self.commbtn.leftimg.frame = CGRectMake(66*WIDTH_SCALE-self.commbtn.textlab.text.length*10*FX-16*WIDTH_SCALE, 2*HEIGHT_SCALE, 16*WIDTH_SCALE, 16*WIDTH_SCALE);
-
     self.timelab.text = [Timestr datetime:model.timestr];
     self.timelab2.text = [Timestr datetime:model.timestr];
+    self.contentlab.numberOfLines = 4;
+    self.contentlab.lineBreakMode = NSLineBreakByTruncatingTail;
+    self.contentlab.text = model.contentstr;
+    [self.contentlab setText:model.contentstr lines:4 andLineSpacing:4 constrainedToSize:CGSizeMake(DEVICE_WIDTH-28*WIDTH_SCALE, 0)];
+    [self.contentlab sizeToFit];
+    self.texthei = self.contentlab.frame.size.height;
+    
+    [self.contentlab mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_equalTo(self.texthei);
+    }];
+    
+    if (model.contentstr.length!=0&&model.imgurlstr.length!=0) {
+         [self.infoimg sd_setImageWithURL:[NSURL URLWithString:model.small_imagesstrl] placeholderImage:[UIImage imageNamed:@"默认图"]];
+        
+        [self.contentlab mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.height.mas_equalTo(self.texthei);
+        }];
+        
+        imghei = 194*HEIGHT_SCALE;
+    }else if (model.contentstr.length==0&&model.imgurlstr.length!=0)
+    {
+        [self.infoimg sd_setImageWithURL:[NSURL URLWithString:model.small_imagesstrl] placeholderImage:[UIImage imageNamed:@"默认图"]];
+        
+        [self.infoimg mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.namelab.mas_bottom).with.offset(12*HEIGHT_SCALE);
+        }];
+        [self.tiview mas_makeConstraints:^(MASConstraintMaker *make) {
+
+            make.top.equalTo(self.infoimg.mas_bottom).with.offset(2*HEIGHT_SCALE);
+        }];
+        imghei = 194*HEIGHT_SCALE;
+    }else
+    {
+        [self.tiview mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.contentlab.mas_bottom).with.offset(2*HEIGHT_SCALE);
+        }];
+        imghei = 0;
+    }
     if ([model.sifoudianzanstr isEqualToString:@"0"]) {
         self.zbtn.zanimg.image = [UIImage imageNamed:@"点赞-"];
         self.zbtn.zanlab.textColor = [UIColor wjColorFloat:@"C7C7CD"];
@@ -235,50 +278,82 @@
     else
     {
         self.fromlab.text = [NSString stringWithFormat:@"%@%@%@",@"今日牛评老司机已赞",model.fromstr,@"次"];
-        
     }
     if ([model.ishot isEqualToString:@"1"]) {
-        [self.contentView addSubview:self.reimg];
-        [self.contentView addSubview:self.timelab];
+        
+        [_reimg mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self).with.offset(14*WIDTH_SCALE);
+            make.height.mas_equalTo(16*HEIGHT_SCALE);
+            make.width.mas_equalTo(24*WIDTH_SCALE);
+            make.top.equalTo(self.tiview.mas_bottom).with.offset(36*HEIGHT_SCALE);
+        }];
+        
+        [_timelab mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.reimg.mas_right).with.offset(4*WIDTH_SCALE);
+            make.top.equalTo(self.tiview.mas_bottom).with.offset(36*HEIGHT_SCALE);
+            make.height.mas_equalTo(20*HEIGHT_SCALE);
+        }];
+        
     }else
     {
-        [self.contentView addSubview:self.timelab2];
+        
+        [_timelab2 mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.tiview.mas_bottom).with.offset(36*HEIGHT_SCALE);
+            make.left.equalTo(self).with.offset(14*WIDTH_SCALE);
+            make.height.mas_equalTo(20*HEIGHT_SCALE);
+        }];
     }
+    
+    
+    if ([model.dianzanstr intValue]>999) {
+        self.zbtn.zanlab.text = @"999+";
+    }else
+    {
+        self.zbtn.zanlab.text = model.dianzanstr;
+    }
+    if ([model.pinglunstr intValue]>999) {
+        self.commbtn.textlab.text = @"999+";
+    }else
+    {
+        self.commbtn.textlab.text = model.pinglunstr;
+    }
+    
+    [self.commbtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.tiview.mas_bottom).with.offset(36*HEIGHT_SCALE);
+        make.right.equalTo(self).with.offset(-14*WIDTH_SCALE);
+        make.height.mas_equalTo(20*HEIGHT_SCALE);
+        make.width.mas_equalTo(120*WIDTH_SCALE);
+        
+        [self.commbtn.textlab mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.tiview.mas_bottom).with.offset(36*HEIGHT_SCALE);
+            make.right.equalTo(self).with.offset(-14*WIDTH_SCALE);
+            make.height.mas_equalTo(20*HEIGHT_SCALE);
+            
+        }];
+        [self.commbtn.leftimg mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.tiview.mas_bottom).with.offset(36*HEIGHT_SCALE);
+            make.right.equalTo(self.commbtn.textlab.mas_left).with.offset(-2*WIDTH_SCALE);
+            make.height.mas_equalTo(20*WIDTH_SCALE);
+            make.width.mas_equalTo(20*WIDTH_SCALE);
+            
+        }];
+    }];
+    
+    
     
     NSString *str=model.timestr;//时间戳
     [Timestr datetime:str];
-    
-    CGFloat hei = textSize.height;
-    
-    [[SDWebImageDownloader sharedDownloader]downloadImageWithURL:[NSURL URLWithString:model.imgurlstr] options:SDWebImageDownloaderUseNSURLCache progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-            
-        } completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished) {
-            //这边就能拿到图片了
-            
-            if (model.imgurlstr.length==0) {
-                
-                 [self.infoimg setHidden:YES];
-            }
-            else if(self.nmodel.contentstr.length==0&&self.nmodel.imgurlstr.length!=0)
-            {
-                CGFloat width = image.size.width;
-                CGRect rect = CGRectMake(0, 0, width, 194*HEIGHT_SCALE);//创建矩形框
-                _infoimg.image = [UIImage imageWithCGImage:CGImageCreateWithImageInRect([image CGImage] ,rect)];
-                self.infoimg.frame =CGRectMake(14*WIDTH_SCALE, (16+20)*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 194*HEIGHT_SCALE);
-                [self.infoimg setHidden:NO];
-                //self.infoimg.backgroundColor = [UIColor greenColor];
-                
-            }
-            else
-            {
-                CGFloat width = image.size.width;
-                CGRect rect = CGRectMake(0, 0, width, 194*HEIGHT_SCALE);//创建矩形框
-                _infoimg.image = [UIImage imageWithCGImage:CGImageCreateWithImageInRect([image CGImage] ,rect)];
-                self.infoimg.frame =CGRectMake(14*WIDTH_SCALE, (16+14+hei+14)*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 194*HEIGHT_SCALE);
-                [self.infoimg setHidden:NO];
-                
-            }
-    }];
+    [self layoutIfNeeded];
+
+    if (model.contentstr.length!=0&&model.imgurlstr.length!=0) {
+        return _texthei+imghei+130*HEIGHT_SCALE;
+    }else if (model.contentstr.length==0&&model.imgurlstr.length!=0)
+    {
+        return imghei +114*HEIGHT_SCALE;
+    }else
+    {
+        return imghei+114*HEIGHT_SCALE+_texthei;
+    }
     
 }
 
@@ -291,8 +366,6 @@
         [view presentFromImageView:_infoimg
                        toContainer:toView
                           animated:YES completion:nil];
-    
-        
 }
 
 //按钮事件
@@ -315,6 +388,5 @@
 {
     [self.delegate myTabVClick3:self];
 }
-
 
 @end
