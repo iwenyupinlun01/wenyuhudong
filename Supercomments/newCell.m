@@ -207,7 +207,6 @@
     
     self.nmodel = model;
     self.namelab.text = model.namestr;
-
     
     NSString *str1 = @" 标题: ";
     NSString *str2 = model.titlestr;
@@ -217,10 +216,12 @@
     self.tiview.titlelab.attributedText = strbut;
     self.timelab.text = [Timestr datetime:model.timestr];
     self.timelab2.text = [Timestr datetime:model.timestr];
-    self.contentlab.numberOfLines = 4;
+    
+    self.contentlab.numberOfLines = 0;
     self.contentlab.lineBreakMode = NSLineBreakByTruncatingTail;
     self.contentlab.text = model.contentstr;
     [self.contentlab setText:model.contentstr lines:4 andLineSpacing:4 constrainedToSize:CGSizeMake(DEVICE_WIDTH-28*WIDTH_SCALE, 0)];
+   
     [self.contentlab sizeToFit];
     self.texthei = self.contentlab.frame.size.height;
     
@@ -239,12 +240,10 @@
     }else if (model.contentstr.length==0&&model.imgurlstr.length!=0)
     {
         [self.infoimg sd_setImageWithURL:[NSURL URLWithString:model.small_imagesstrl] placeholderImage:[UIImage imageNamed:@"默认图"]];
-        
         [self.infoimg mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.namelab.mas_bottom).with.offset(12*HEIGHT_SCALE);
         }];
         [self.tiview mas_makeConstraints:^(MASConstraintMaker *make) {
-
             make.top.equalTo(self.infoimg.mas_bottom).with.offset(2*HEIGHT_SCALE);
         }];
         imghei = 194*HEIGHT_SCALE;
@@ -325,21 +324,40 @@
         make.width.mas_equalTo(120*WIDTH_SCALE);
         
         [self.commbtn.textlab mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.tiview.mas_bottom).with.offset(36*HEIGHT_SCALE);
+            make.top.equalTo(self.tiview.mas_bottom).with.offset(34*HEIGHT_SCALE);
             make.right.equalTo(self).with.offset(-14*WIDTH_SCALE);
             make.height.mas_equalTo(20*HEIGHT_SCALE);
             
         }];
         [self.commbtn.leftimg mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.tiview.mas_bottom).with.offset(36*HEIGHT_SCALE);
-            make.right.equalTo(self.commbtn.textlab.mas_left).with.offset(-2*WIDTH_SCALE);
-            make.height.mas_equalTo(20*WIDTH_SCALE);
-            make.width.mas_equalTo(20*WIDTH_SCALE);
+            make.right.equalTo(self.commbtn.textlab.mas_left).with.offset(-4*WIDTH_SCALE);
+            make.height.mas_equalTo(16*WIDTH_SCALE);
+            make.width.mas_equalTo(16*WIDTH_SCALE);
             
         }];
     }];
     
-    
+    [self.zbtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.tiview.mas_bottom).with.offset(36*HEIGHT_SCALE);
+        make.right.equalTo(self.commbtn).with.offset(-60*WIDTH_SCALE);
+        make.height.mas_equalTo(20*HEIGHT_SCALE);
+        make.width.mas_equalTo(120*WIDTH_SCALE);
+        
+        [self.zbtn.zanlab mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.tiview.mas_bottom).with.offset(34*HEIGHT_SCALE);
+            make.right.equalTo(self.commbtn).with.offset(-60*WIDTH_SCALE);
+            make.height.mas_equalTo(20*HEIGHT_SCALE);
+            
+        }];
+        [self.zbtn.zanimg mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.tiview.mas_bottom).with.offset(36*HEIGHT_SCALE);
+            make.right.equalTo(self.zbtn.zanlab.mas_left).with.offset(-4*WIDTH_SCALE);
+            make.height.mas_equalTo(16*WIDTH_SCALE);
+            make.width.mas_equalTo(16*WIDTH_SCALE);
+            
+        }];
+    }];
     
     NSString *str=model.timestr;//时间戳
     [Timestr datetime:str];
@@ -354,7 +372,6 @@
     {
         return imghei+114*HEIGHT_SCALE+_texthei;
     }
-    
 }
 
 - (void)tapAction{

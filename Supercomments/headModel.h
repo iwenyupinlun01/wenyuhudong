@@ -12,7 +12,7 @@
 @property (nonatomic,strong) NSString *imgurlstr;
 @property (nonatomic,strong) NSString *timestr;
 @property (nonatomic,strong) NSString *namestr;
-
+@property (nonatomic,strong) NSString *small_imgurlstr;
 @property (nonatomic,strong) NSString *contactstr;
 @property (nonatomic,strong) NSMutableArray *dianzaiarr;
 @property (nonatomic,strong) NSString *fromstr;

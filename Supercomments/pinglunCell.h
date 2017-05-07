@@ -10,6 +10,6 @@
 @class detailcellmodel;
 @interface pinglunCell : UITableViewCell
 @property (nonatomic,strong) UILabel *pinglunlab;
--(void)setcelldata:(detailcellmodel *)model;
+-(CGFloat)setcelldata:(detailcellmodel *)model andindexrow:(NSInteger )indexstr;
 + (CGFloat)cellHeightWithText:(NSString *)text;
 @end

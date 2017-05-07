@@ -66,8 +66,7 @@
      self.insets = UIEdgeInsetsMake(0, 14, 0, 14);
     [self.view addSubview:self.newtable];
     
-     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(kvcdianzan:) name:@"shifoudiandankvo" object:nil];
-    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(kvcdianzan:) name:@"shifoudiandankvo" object:nil];
     [self.view addSubview:self.xuanzuanbtn];
 
 }
@@ -149,6 +148,7 @@
             [self.newtable.mj_header endRefreshing];
             [self.xuanzuanbtn stopRotate];
             [MBProgressHUD showError:@"没有网络"];
+
         });
         self.panduan404str = @"1";
     }];
@@ -196,7 +196,8 @@
             [self.newtable.mj_footer endRefreshing];
             [MBProgressHUD showError:@"没有网络"];
         });
-        self.panduan404str = @"1";
+
+            
     }];
 
 }
@@ -214,6 +215,8 @@
 }
 
 #pragma mark - getters
+
+
 
 -(UIImageView *)demoimg
 {

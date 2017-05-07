@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		531CF9761EBF5EF7009F5DFB /* setCell2.m in Sources */ = {isa = PBXBuildFile; fileRef = 531CF9751EBF5EF7009F5DFB /* setCell2.m */; };
+		531F94491EBE3B2400769399 /* HelpTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 531F94461EBE3B2400769399 /* HelpTool.m */; };
+		531F944A1EBE3B2400769399 /* UILabel+textOfNumberLines.m in Sources */ = {isa = PBXBuildFile; fileRef = 531F94481EBE3B2400769399 /* UILabel+textOfNumberLines.m */; };
+		531F944E1EBE44F900769399 /* XSNoDataView.m in Sources */ = {isa = PBXBuildFile; fileRef = 531F944D1EBE44F900769399 /* XSNoDataView.m */; };
 		53314A4B1EA1DE35009773F0 /* YYPhotoGroupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 53314A4A1EA1DE35009773F0 /* YYPhotoGroupView.m */; };
 		53619E431E95EEDB007CC7AC /* headView.m in Sources */ = {isa = PBXBuildFile; fileRef = 53619E421E95EEDB007CC7AC /* headView.m */; };
 		53619E521E960164007CC7AC /* messageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 53619E511E960164007CC7AC /* messageViewController.m */; };
@@ -119,6 +123,14 @@
 
 /* Begin PBXFileReference section */
 		199683D136C99C557085109D /* Pods-Supercomments.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Supercomments.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Supercomments/Pods-Supercomments.debug.xcconfig"; sourceTree = "<group>"; };
+		531CF9741EBF5EF7009F5DFB /* setCell2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = setCell2.h; sourceTree = "<group>"; };
+		531CF9751EBF5EF7009F5DFB /* setCell2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = setCell2.m; sourceTree = "<group>"; };
+		531F94451EBE3B2400769399 /* HelpTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpTool.h; sourceTree = "<group>"; };
+		531F94461EBE3B2400769399 /* HelpTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpTool.m; sourceTree = "<group>"; };
+		531F94471EBE3B2400769399 /* UILabel+textOfNumberLines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+textOfNumberLines.h"; sourceTree = "<group>"; };
+		531F94481EBE3B2400769399 /* UILabel+textOfNumberLines.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+textOfNumberLines.m"; sourceTree = "<group>"; };
+		531F944C1EBE44F900769399 /* XSNoDataView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XSNoDataView.h; sourceTree = "<group>"; };
+		531F944D1EBE44F900769399 /* XSNoDataView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XSNoDataView.m; sourceTree = "<group>"; };
 		53314A491EA1DE35009773F0 /* YYPhotoGroupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYPhotoGroupView.h; sourceTree = "<group>"; };
 		53314A4A1EA1DE35009773F0 /* YYPhotoGroupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYPhotoGroupView.m; sourceTree = "<group>"; };
 		53619E411E95EEDB007CC7AC /* headView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = headView.h; sourceTree = "<group>"; };
@@ -358,6 +370,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		531F94441EBE3B2400769399 /* HelpTool */ = {
+			isa = PBXGroup;
+			children = (
+				531F94451EBE3B2400769399 /* HelpTool.h */,
+				531F94461EBE3B2400769399 /* HelpTool.m */,
+				531F94471EBE3B2400769399 /* UILabel+textOfNumberLines.h */,
+				531F94481EBE3B2400769399 /* UILabel+textOfNumberLines.m */,
+			);
+			path = HelpTool;
+			sourceTree = "<group>";
+		};
+		531F944B1EBE44D100769399 /* errorView */ = {
+			isa = PBXGroup;
+			children = (
+				531F944C1EBE44F900769399 /* XSNoDataView.h */,
+				531F944D1EBE44F900769399 /* XSNoDataView.m */,
+			);
+			name = errorView;
+			sourceTree = "<group>";
+		};
 		53314A481EA1CE02009773F0 /* utlis */ = {
 			isa = PBXGroup;
 			children = (
@@ -479,6 +511,8 @@
 			children = (
 				53619E691E962093007CC7AC /* setCell.h */,
 				53619E6A1E962093007CC7AC /* setCell.m */,
+				531CF9741EBF5EF7009F5DFB /* setCell2.h */,
+				531CF9751EBF5EF7009F5DFB /* setCell2.m */,
 			);
 			name = view;
 			sourceTree = "<group>";
@@ -627,6 +661,8 @@
 		539550E31EA0C623001A268C /* utlis */ = {
 			isa = PBXGroup;
 			children = (
+				531F944B1EBE44D100769399 /* errorView */,
+				531F94441EBE3B2400769399 /* HelpTool */,
 				537303141EBB303A00D5C7C5 /* UIImageView+RotateImgV.h */,
 				537303151EBB303A00D5C7C5 /* UIImageView+RotateImgV.m */,
 				53DF54A91EB9D10600AF6248 /* MBManager */,
@@ -1252,6 +1288,7 @@
 				537303161EBB303A00D5C7C5 /* UIImageView+RotateImgV.m in Sources */,
 				53E863CA1EAD99B0001F6FD8 /* keyboardView.m in Sources */,
 				53E587871EA7672A004CB302 /* pinglunCell.m in Sources */,
+				531F944E1EBE44F900769399 /* XSNoDataView.m in Sources */,
 				53619EC51E9778E9007CC7AC /* newCell.m in Sources */,
 				53619EA61E963508007CC7AC /* nicknameViewController.m in Sources */,
 				53AEBE551E94C9FF00280F70 /* LGSegment.m in Sources */,
@@ -1272,6 +1309,7 @@
 				53AEBE5C1E94CDBD00280F70 /* infoViewController.m in Sources */,
 				538D53DF1EAF14BB00E2DCAF /* NSString+Cache.m in Sources */,
 				53619EAC1E964925007CC7AC /* systemViewController.m in Sources */,
+				531F94491EBE3B2400769399 /* HelpTool.m in Sources */,
 				53AEBE721E95014B00280F70 /* infoCell.m in Sources */,
 				538D53D01EAF09E800E2DCAF /* tokenstr.m in Sources */,
 				538D53E01EAF14BB00E2DCAF /* NSString+CLTools.m in Sources */,
@@ -1291,6 +1329,7 @@
 				53619E5F1E96055E007CC7AC /* myinfoViewController.m in Sources */,
 				53AEBE6F1E94F80400280F70 /* loginViewController.m in Sources */,
 				53E587841EA7651D004CB302 /* detailcellmodel.m in Sources */,
+				531F944A1EBE3B2400769399 /* UILabel+textOfNumberLines.m in Sources */,
 				53AEBE491E94910700280F70 /* UIView+ViewController.m in Sources */,
 				53AEBE451E94910700280F70 /* MLMSegmentHead.m in Sources */,
 				53E5C0781EB1D802008B1F22 /* bannerLab.m in Sources */,
@@ -1300,6 +1339,7 @@
 				53619EC11E976EBB007CC7AC /* UILabel+MultipleLines.m in Sources */,
 				53619EA01E9634AE007CC7AC /* SZKCleanCache.m in Sources */,
 				53619EB21E964A45007CC7AC /* systemCell.m in Sources */,
+				531CF9761EBF5EF7009F5DFB /* setCell2.m in Sources */,
 				53AEBE381E948D6500280F70 /* UIColor+WJColor.m in Sources */,
 				53AEBE471E94910700280F70 /* MLMSegmentScroll.m in Sources */,
 				53619E581E9601B1007CC7AC /* setViewController.m in Sources */,

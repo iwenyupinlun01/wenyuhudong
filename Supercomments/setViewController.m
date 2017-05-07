@@ -12,12 +12,16 @@
 #import "SZKCleanCache.h"
 #import "loginViewController.h"
 #import "homeViewController.h"
+#import "setCell2.h"
 @interface setViewController ()<UITableViewDataSource,UITableViewDelegate>
 @property (nonatomic,strong) UITableView *settableview;
 @property (nonatomic,strong) UIButton *gobackbtn;
 @end
 static NSString *setidentfid0 = @"setidentfid0";
 static NSString *setidentfid1 = @"setidentfid1";
+static NSString *setidentfid2 = @"setidentfid2";
+static NSString *setidentfid3 = @"setidentfid3";
+
 @implementation setViewController
 
 - (void)viewDidLoad {
@@ -32,7 +36,7 @@ static NSString *setidentfid1 = @"setidentfid1";
     self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
     self.settableview.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.view addSubview:self.settableview];
-    [self.view addSubview:self.gobackbtn];
+    //[self.view addSubview:self.gobackbtn];
     
 }
 
@@ -45,7 +49,7 @@ static NSString *setidentfid1 = @"setidentfid1";
 -(void)viewWillAppear:(BOOL)animated{
     
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
-    self.gobackbtn.frame = CGRectMake(30*WIDTH_SCALE, DEVICE_HEIGHT/2-20*HEIGHT_SCALE, DEVICE_WIDTH-60*WIDTH_SCALE, 40*HEIGHT_SCALE);
+//    self.gobackbtn.frame = CGRectMake(30*WIDTH_SCALE, DEVICE_HEIGHT/2-20*HEIGHT_SCALE, DEVICE_WIDTH-60*WIDTH_SCALE, 40*HEIGHT_SCALE);
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -64,7 +68,7 @@ static NSString *setidentfid1 = @"setidentfid1";
         _settableview = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT-64)];
         _settableview.dataSource = self;
         _settableview.delegate = self;
-        
+        [_settableview setSeparatorColor:[UIColor wjColorFloat:@"F5F5F5"]];
     }
     return _settableview;
 }
@@ -89,7 +93,7 @@ static NSString *setidentfid1 = @"setidentfid1";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 3;
+    return 4;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -108,8 +112,7 @@ static NSString *setidentfid1 = @"setidentfid1";
         cell.rightlab.text = str;
         return cell;
     }
-    else
-    {
+    else if (indexPath.row==1) {
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:setidentfid1];
         if (!cell) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:setidentfid1];
@@ -118,21 +121,49 @@ static NSString *setidentfid1 = @"setidentfid1";
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         [cell setSeparatorInset:UIEdgeInsetsZero];
         cell.backgroundColor = [UIColor wjColorFloat:@"FEFFFF"];
-        if (indexPath.row==1) {
-            cell.textLabel.text = @"去评分";
-            cell.textLabel.textColor = [UIColor wjColorFloat:@"333333"];
-        }
-        if (indexPath.row==2) {
-            cell.textLabel.text = @"关于";
-            cell.textLabel.textColor = [UIColor wjColorFloat:@"333333"];
-        }
+        cell.textLabel.text = @"去评分";
+        cell.textLabel.textColor = [UIColor wjColorFloat:@"333333"];
         return cell;
     }
+    else if (indexPath.row==2) {
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:setidentfid2];
+        if (!cell) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:setidentfid2];
+        }
+        cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        [cell setSeparatorInset:UIEdgeInsetsZero];
+        cell.backgroundColor = [UIColor wjColorFloat:@"FEFFFF"];
+        cell.textLabel.text = @"关于";
+        cell.textLabel.textColor = [UIColor wjColorFloat:@"333333"];
+        return cell;
+    }
+    else {
+        setCell2 *cell = [tableView dequeueReusableCellWithIdentifier:setidentfid3];
+        cell = [[setCell2 alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:setidentfid3];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        [cell setSeparatorInset:UIEdgeInsetsZero];
+        [cell.gobackbtn addTarget:self action:@selector(gobackbtnclick) forControlEvents:UIControlEventTouchUpInside];
+        return cell;
+    }
+    return nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 60*HEIGHT_SCALE;
+    if (indexPath.row==0) {
+        return 60*HEIGHT_SCALE;
+    }
+    if (indexPath.row==1) {
+        return 60*HEIGHT_SCALE;
+    }
+    if (indexPath.row==2) {
+        return 60*HEIGHT_SCALE;
+    }
+    if (indexPath.row==3) {
+        return 160*HEIGHT_SCALE;
+    }
+    return 0;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

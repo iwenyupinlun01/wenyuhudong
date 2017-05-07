@@ -59,10 +59,8 @@
 
 -(void)loaddatafromweb
 {
-    [AFManager getReqURL:guanyujiemian block:^(id infor) {
-        NSLog(@"infor------%@",infor);
-        
-        NSDictionary *dit = [infor objectForKey:@"info"];
+    [CLNetworkingManager getNetworkRequestWithUrlString:guanyujiemian parameters:nil isCache:YES succeed:^(id data) {
+        NSDictionary *dit = [data objectForKey:@"info"];
         NSString *infro = [dit objectForKey:@"intro"];
         NSString *logo = [dit objectForKey:@"logo"];
         NSString *version = [dit objectForKey:@"version"];
@@ -71,9 +69,8 @@
         [self.logoimg sd_setImageWithURL:[NSURL URLWithString:logo]];
         self.versionlab.text = version;
         self.urllab.text = [NSString stringWithFormat:@"%@%@",@"官网: ",web];
-    } errorblock:^(NSError *error) {
+    } fail:^(NSError *error) {
         [MBProgressHUD showSuccess:@"请检查网络"];
-        
     }];
 }
 

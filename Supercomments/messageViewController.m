@@ -187,7 +187,7 @@ static NSString *messageidentfid = @"messageidentfid";
         _messagetable.dataSource = self;
         _messagetable.delegate = self;
         //_messagetable.scrollEnabled = NO;
-        
+        [_messagetable setSeparatorColor:[UIColor wjColorFloat:@"F5F5F5"]];
     }
     return _messagetable;
 }
@@ -222,8 +222,7 @@ static NSString *messageidentfid = @"messageidentfid";
     if (indexPath.row==1) {
          numlab.tag = 202;
     }
-
-    
+    [cell setSeparatorInset:UIEdgeInsetsZero];
     cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.textLabel.text = self.messagearr[indexPath.row];

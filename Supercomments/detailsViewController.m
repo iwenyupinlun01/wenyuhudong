@@ -195,7 +195,8 @@ NSMutableArray * ymDataArray;
         
         self.headm.imgurlstr = [dic objectForKey:@"images"];
         self.headm.weburlstr = [dic objectForKey:@"url"];
-        //self.headm.objectidstr = [dic objectForKey:@"id"];
+        self.headm.small_imgurlstr = [dic objectForKey:@"images"];
+        
         self.headm.objectidstr = [NSString stringWithFormat:@"%@",[dic objectForKey:@"id"]];
         self.headm.timestr = [Timestr datetime:[dic objectForKey:@"create_time"]];
         self.headm.shifoudianzanstr = [dic objectForKey:@"is_support"];
@@ -246,7 +247,7 @@ NSMutableArray * ymDataArray;
         }
         
         
-        [self headfromcontentstr:self.headm.contactstr andimageurl:self.headm.imgurlstr andgoodarr:self.usernamearr];
+        [self headfromcontentstr:self.headm.contactstr andimageurl:self.headm.small_imgurlstr andgoodarr:self.usernamearr];
         //cell部分
         
         //section
@@ -335,8 +336,6 @@ NSMutableArray * ymDataArray;
 }
 
 
-
-
 -(UITableView *)maintable
 {
     if(!_maintable)
@@ -350,10 +349,12 @@ NSMutableArray * ymDataArray;
         _maintable.emptyDataSetSource = self;
         _maintable.emptyDataSetDelegate = self;
         _maintable.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+        _maintable.rowHeight = UITableViewAutomaticDimension;
+        _maintable.estimatedRowHeight = 200;
+        [_maintable registerClass:[pinglunCell class] forCellReuseIdentifier:detailsidentfid];
     }
     return _maintable;
 }
-
 
 -(keyboardView *)keyView
 {
@@ -397,34 +398,13 @@ NSMutableArray * ymDataArray;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     pinglunCell *cell = [tableView dequeueReusableCellWithIdentifier:detailsidentfid];
-    if (!cell) {
-        cell = [[pinglunCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:detailsidentfid];
-    }
+
+    cell = [[pinglunCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:detailsidentfid];
+
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     _detailsmodel  = self.detalisarr[indexPath.section];
-    
-    // 取第indexPath.row这行对应的品牌名称
-    NSString *str4 = [NSString stringWithFormat:@"%@%@",@":", [_detailsmodel.pingarr[indexPath.row] objectForKey:@"content"]];
-    NSString *str1 = [_detailsmodel.pingarr[indexPath.row]objectForKey:@"s_nickname"];
-    NSString *str3 = [_detailsmodel.pingarr[indexPath.row]objectForKey:@"s_to_nickname"];
-    NSString *str2 = @"回复";
-    
-        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@%@%@",str1,str2,str3,str4]];
-        [str addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"576b95"] range:NSMakeRange(0,str1.length)];
-        [str addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"333333"] range:NSMakeRange(str1.length,str2.length)];
-        
-        [str addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"576b95"] range:NSMakeRange(str1.length+str2.length,str3.length)];
-        [str addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"333333"] range:NSMakeRange(str1.length+str2.length+str3.length,str4.length)];
-        NSLog(@"str===============%@",str);
-        NSString *newstr = [str string];
-        CGSize size2 = [cell.pinglunlab setText:newstr lines:0 andLineSpacing:4 constrainedToSize:CGSizeMake(DEVICE_WIDTH -64*WIDTH_SCALE-14*WIDTH_SCALE-16*WIDTH_SCALE,MAXFLOAT)];
-        cell.pinglunlab.attributedText = str;
-        cell.pinglunlab.frame = CGRectMake(62*WIDTH_SCALE+4*WIDTH_SCALE,  8*HEIGHT_SCALE, size2.width, size2.height);
-        cell.pinglunlab.font = [UIFont systemFontOfSize:14];
-    
-    cell.pinglunlab.numberOfLines = 0;
-    [cell.pinglunlab sizeToFit];
+    [cell setcelldata:self.detalisarr[indexPath.section] andindexrow:indexPath.row];
     return cell;
 }
 
@@ -436,17 +416,9 @@ NSMutableArray * ymDataArray;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     _detailsmodel  = self.detalisarr[indexPath.section];
-    // 取车第indexPath.row这行对应的名称
-    
-    NSString *str4 = [_detailsmodel.pingarr[indexPath.row] objectForKey:@"content"];
-    NSString *str1 = [_detailsmodel.pingarr[indexPath.row]objectForKey:@"s_nickname"];
-    NSString *str3 = [_detailsmodel.pingarr[indexPath.row]objectForKey:@"s_to_nickname"];
-    NSString *str2 = @"回复: ";
-    
-    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@%@%@",str1,str2,str3,str4]];
-        NSString *newstr = [str string];
-    return [pinglunCell cellHeightWithText:newstr]+16*HEIGHT_SCALE;
-    
+    //return 150;
+    return _detailsmodel.cellHeight;
+    //return [pinglunCell cellHeightWithText:newstr]+16*HEIGHT_SCALE;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -502,8 +474,6 @@ NSMutableArray * ymDataArray;
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
-
-
 
 
 -(void)shareclick
@@ -1071,7 +1041,6 @@ NSMutableArray * ymDataArray;
         NSAttributedString *string = [NSAttributedString attributedStringWithAttachment:attch];
         [newGoodString insertAttributedString:string atIndex:0];
         
-        
         NSMutableAttributedString
         * attStr = [[NSMutableAttributedString alloc]initWithString:@" "];
         [newGoodString insertAttributedString:attStr atIndex:1];
@@ -1119,28 +1088,28 @@ NSMutableArray * ymDataArray;
             CGSize textSize = [self.headview.contentlab setText:self.headview.contentlab.text lines:QSTextDefaultLines andLineSpacing:QSTextLineSpacing constrainedToSize:CGSizeMake(DEVICE_WIDTH - 28*WIDTH_SCALE,MAXFLOAT)];
             
             self.headview.contentlab.frame = CGRectMake(14*WIDTH_SCALE,  24*HEIGHT_SCALE+14*HEIGHT_SCALE, textSize.width, textSize.height);
+            
+            
+            [self.headview.headimg sd_setImageWithURL:[NSURL URLWithString:self.headm.small_imgurlstr] placeholderImage:[UIImage imageNamed:@"默认图"]];
+            
+        
+            [self.headview.headimg mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.top.equalTo(self.headview.contentlab.mas_bottom).with.offset(12*HEIGHT_SCALE);
+                make.left.equalTo(self.headview).with.offset(14*WIDTH_SCALE);
+                make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
+                make.height.mas_equalTo(192*HEIGHT_SCALE);
+            }];
+            [self.headview.title mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(self.headview).with.offset(14*WIDTH_SCALE);
+                make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
+                make.top.equalTo(self.headview.headimg.mas_bottom).with.offset(2*HEIGHT_SCALE);
+            }];
+            [self.headview.timelab mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(self.headview).with.offset(14*WIDTH_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
+            }];
 
-            [[SDWebImageDownloader sharedDownloader]downloadImageWithURL:[NSURL URLWithString:self.headm.imgurlstr] options:SDWebImageDownloaderUseNSURLCache progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-                
-            } completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished) {
-                
-                CGFloat width = image.size.width;
-                CGRect rect = CGRectMake(0, 0, width, 194*HEIGHT_SCALE);//创建矩形框
-                self.headview.headimg.image = [UIImage imageWithCGImage:CGImageCreateWithImageInRect([image CGImage] ,rect)];
-                
-            }];
-         
-            self.headview.headimg.frame =CGRectMake(14*WIDTH_SCALE, 30*HEIGHT_SCALE+14*HEIGHT_SCALE+textSize.height, DEVICE_WIDTH-28*WIDTH_SCALE, 194*HEIGHT_SCALE);
-            self.headview.title.frame = CGRectMake(14*WIDTH_SCALE,  38*HEIGHT_SCALE+textSize.height*HEIGHT_SCALE+200*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 20*HEIGHT_SCALE);
-            self.headview.timelab.frame = CGRectMake(14*WIDTH_SCALE, 30*HEIGHT_SCALE+textSize.height*HEIGHT_SCALE+12*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+196, 100*WIDTH_SCALE, 12*HEIGHT_SCALE);
-            [self.headview.combtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.right.equalTo(self.headview).with.offset(-70*WIDTH_SCALE);
-                make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
-            }];
-            [self.headview.dianzanbtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.right.equalTo(self.headview).with.offset(-140*WIDTH_SCALE);
-                make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
-            }];
+            
             [self.headview.thumlabel mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.left.equalTo(self.headview).with.offset(14*WIDTH_SCALE);
                 make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
@@ -1150,6 +1119,39 @@ NSMutableArray * ymDataArray;
                 make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
                 make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
             }];
+            [self.headview.combtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.right.equalTo(self.headview).with.offset(-70*WIDTH_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
+                [self.headview.combtn.textlab mas_makeConstraints:^(MASConstraintMaker *make) {
+                    make.top.equalTo(self.headview.title).with.offset(45*HEIGHT_SCALE);
+                    make.right.equalTo(self.headview.sharebtn).with.offset(-40*WIDTH_SCALE);
+                    make.height.mas_equalTo(20*HEIGHT_SCALE);
+                }];
+                [self.headview.combtn.leftimg mas_makeConstraints:^(MASConstraintMaker *make) {
+                    make.top.equalTo(self.headview.title).with.offset(45*HEIGHT_SCALE);
+                    make.right.equalTo(self.headview.combtn.textlab.mas_left).with.offset(-4*WIDTH_SCALE);
+                    make.height.mas_equalTo(16*WIDTH_SCALE);
+                    make.width.mas_equalTo(16*WIDTH_SCALE);
+                }];
+                
+            }];
+            [self.headview.dianzanbtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.right.equalTo(self.headview).with.offset(-70*WIDTH_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
+                
+                [self.headview.dianzanbtn.zanlab mas_makeConstraints:^(MASConstraintMaker *make) {
+                    make.top.equalTo(self.headview.title).with.offset(45*HEIGHT_SCALE);
+                    make.right.equalTo(self.headview.combtn).with.offset(-40*WIDTH_SCALE);
+                    make.height.mas_equalTo(20*HEIGHT_SCALE);
+                }];
+                [self.headview.dianzanbtn.zanimg mas_makeConstraints:^(MASConstraintMaker *make) {
+                    make.top.equalTo(self.headview.title).with.offset(45*HEIGHT_SCALE);
+                    make.right.equalTo(self.headview.dianzanbtn.zanlab.mas_left).with.offset(-4*WIDTH_SCALE);
+                    make.height.mas_equalTo(16*WIDTH_SCALE);
+                    make.width.mas_equalTo(16*WIDTH_SCALE);
+                }];
+            }];
+
             _headview.frame = CGRectMake(0, 0, DEVICE_WIDTH, textSize.height+340*HEIGHT_SCALE);
             CGFloat hei222 = _headview.frame.size.height;
             if (hei222>DEVICE_HEIGHT-64-58) {
@@ -1164,32 +1166,59 @@ NSMutableArray * ymDataArray;
         }
         else if (content.length==0&&urlstr.length!=0)
         {
-            [[SDWebImageDownloader sharedDownloader]downloadImageWithURL:[NSURL URLWithString:self.headm.imgurlstr] options:SDWebImageDownloaderUseNSURLCache progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-                
-            } completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished) {
-                
-                CGFloat width = image.size.width;
-                CGRect rect = CGRectMake(0, 0, width, 194*HEIGHT_SCALE);//创建矩形框
-                self.headview.headimg.image = [UIImage imageWithCGImage:CGImageCreateWithImageInRect([image CGImage] ,rect)];
-                
+            [self.headview.headimg sd_setImageWithURL:[NSURL URLWithString:self.headm.small_imgurlstr] placeholderImage:[UIImage imageNamed:@"默认图"]];
+            [self.headview.headimg mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.top.equalTo(self.headview.namelab.mas_bottom).with.offset(14*HEIGHT_SCALE);
+                make.left.equalTo(self.headview).with.offset(14*WIDTH_SCALE);
+                make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
+                make.height.mas_equalTo(192*HEIGHT_SCALE);
             }];
-            
-            
-            self.headview.headimg.frame =CGRectMake(14*WIDTH_SCALE, 30*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 200*HEIGHT_SCALE);
-            self.headview.title.frame = CGRectMake(14*WIDTH_SCALE,  30*HEIGHT_SCALE+200*HEIGHT_SCALE+4*HEIGHT_SCALE+14*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 20*HEIGHT_SCALE);
-            self.headview.timelab.frame = CGRectMake(14*WIDTH_SCALE, 30*HEIGHT_SCALE+200*HEIGHT_SCALE+4*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE, 100*WIDTH_SCALE, 12*HEIGHT_SCALE);
-            [self.headview.combtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.right.equalTo(self.headview).with.offset(-70*WIDTH_SCALE);
-                make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
+            [self.headview.title mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(self.headview).with.offset(14*WIDTH_SCALE);
+                make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
+                make.top.equalTo(self.headview.headimg.mas_bottom).with.offset(2*HEIGHT_SCALE);
             }];
-            [self.headview.dianzanbtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.right.equalTo(self.headview).with.offset(-140*WIDTH_SCALE);
-                make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
+            [self.headview.timelab mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(self.headview).with.offset(14*WIDTH_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
             }];
             [self.headview.sharebtn mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
-                make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
             }];
+            [self.headview.combtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.right.equalTo(self.headview).with.offset(-70*WIDTH_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
+                [self.headview.combtn.textlab mas_makeConstraints:^(MASConstraintMaker *make) {
+                    make.top.equalTo(self.headview.title).with.offset(45*HEIGHT_SCALE);
+                    make.right.equalTo(self.headview.sharebtn).with.offset(-40*WIDTH_SCALE);
+                    make.height.mas_equalTo(20*HEIGHT_SCALE);
+                }];
+                [self.headview.combtn.leftimg mas_makeConstraints:^(MASConstraintMaker *make) {
+                    make.top.equalTo(self.headview.title).with.offset(45*HEIGHT_SCALE);
+                    make.right.equalTo(self.headview.combtn.textlab.mas_left).with.offset(-4*WIDTH_SCALE);
+                    make.height.mas_equalTo(16*WIDTH_SCALE);
+                    make.width.mas_equalTo(16*WIDTH_SCALE);
+                }];
+                
+            }];
+            [self.headview.dianzanbtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.right.equalTo(self.headview).with.offset(-70*WIDTH_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
+                
+                [self.headview.dianzanbtn.zanlab mas_makeConstraints:^(MASConstraintMaker *make) {
+                    make.top.equalTo(self.headview.title).with.offset(45*HEIGHT_SCALE);
+                    make.right.equalTo(self.headview.combtn).with.offset(-40*WIDTH_SCALE);
+                    make.height.mas_equalTo(20*HEIGHT_SCALE);
+                }];
+                [self.headview.dianzanbtn.zanimg mas_makeConstraints:^(MASConstraintMaker *make) {
+                    make.top.equalTo(self.headview.title).with.offset(45*HEIGHT_SCALE);
+                    make.right.equalTo(self.headview.dianzanbtn.zanlab.mas_left).with.offset(-4*WIDTH_SCALE);
+                    make.height.mas_equalTo(16*WIDTH_SCALE);
+                    make.width.mas_equalTo(16*WIDTH_SCALE);
+                }];
+            }];
+
             _headview.frame = CGRectMake(0, 0, DEVICE_WIDTH, 380*HEIGHT_SCALE);
             CGFloat hei222 = _headview.frame.size.height;
             if (hei222>DEVICE_HEIGHT-64-58) {
@@ -1206,16 +1235,17 @@ NSMutableArray * ymDataArray;
            
             CGSize textSize = [self.headview.contentlab setText:self.headview.contentlab.text lines:QSTextDefaultLines andLineSpacing:QSTextLineSpacing constrainedToSize:CGSizeMake(DEVICE_WIDTH - 28*WIDTH_SCALE,MAXFLOAT)];
             self.headview.contentlab.frame = CGRectMake(14*WIDTH_SCALE,  24*HEIGHT_SCALE+14*HEIGHT_SCALE, textSize.width, textSize.height);
-            self.headview.title.frame = CGRectMake(14*WIDTH_SCALE,  38*HEIGHT_SCALE+textSize.height*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 20*HEIGHT_SCALE);
-            self.headview.timelab.frame = CGRectMake(14*WIDTH_SCALE, 30*HEIGHT_SCALE+textSize.height*HEIGHT_SCALE+12*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE, 100*WIDTH_SCALE, 12*HEIGHT_SCALE);
-            [self.headview.combtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.right.equalTo(self.headview).with.offset(-70*WIDTH_SCALE);
+            
+            [self.headview.title mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(self.headview).with.offset(14*WIDTH_SCALE);
+                make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
+                make.top.equalTo(self.headview.contentlab.mas_bottom).with.offset(2*HEIGHT_SCALE);
+            }];
+            [self.headview.timelab mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(self.headview).with.offset(14*WIDTH_SCALE);
                 make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
             }];
-            [self.headview.dianzanbtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.right.equalTo(self.headview).with.offset(-140*WIDTH_SCALE);
-                make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
-            }];
+            
             [self.headview.thumlabel mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.left.equalTo(self.headview).with.offset(14*WIDTH_SCALE);
                 make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
@@ -1226,6 +1256,39 @@ NSMutableArray * ymDataArray;
                 make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
                 make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
             }];
+            [self.headview.combtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.right.equalTo(self.headview).with.offset(-70*WIDTH_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
+                [self.headview.combtn.textlab mas_makeConstraints:^(MASConstraintMaker *make) {
+                    make.top.equalTo(self.headview.title).with.offset(45*HEIGHT_SCALE);
+                    make.right.equalTo(self.headview.sharebtn).with.offset(-40*WIDTH_SCALE);
+                    make.height.mas_equalTo(20*HEIGHT_SCALE);
+                }];
+                [self.headview.combtn.leftimg mas_makeConstraints:^(MASConstraintMaker *make) {
+                    make.top.equalTo(self.headview.title).with.offset(45*HEIGHT_SCALE);
+                    make.right.equalTo(self.headview.combtn.textlab.mas_left).with.offset(-4*WIDTH_SCALE);
+                    make.height.mas_equalTo(16*WIDTH_SCALE);
+                    make.width.mas_equalTo(16*WIDTH_SCALE);
+                }];
+                
+            }];
+            [self.headview.dianzanbtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.right.equalTo(self.headview).with.offset(-70*WIDTH_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
+                
+                [self.headview.dianzanbtn.zanlab mas_makeConstraints:^(MASConstraintMaker *make) {
+                    make.top.equalTo(self.headview.title).with.offset(45*HEIGHT_SCALE);
+                    make.right.equalTo(self.headview.combtn).with.offset(-40*WIDTH_SCALE);
+                    make.height.mas_equalTo(20*HEIGHT_SCALE);
+                }];
+                [self.headview.dianzanbtn.zanimg mas_makeConstraints:^(MASConstraintMaker *make) {
+                    make.top.equalTo(self.headview.title).with.offset(45*HEIGHT_SCALE);
+                    make.right.equalTo(self.headview.dianzanbtn.zanlab.mas_left).with.offset(-4*WIDTH_SCALE);
+                    make.height.mas_equalTo(16*WIDTH_SCALE);
+                    make.width.mas_equalTo(16*WIDTH_SCALE);
+                }];
+            }];
+
             _headview.frame = CGRectMake(0, 0, DEVICE_WIDTH, textSize.height+160*HEIGHT_SCALE);
             CGFloat hei222 = _headview.frame.size.height;
             if (hei222>DEVICE_HEIGHT-64-58) {
@@ -1234,7 +1297,6 @@ NSMutableArray * ymDataArray;
             {
                 self.scrollView.frame = CGRectMake(0, 0, DEVICE_WIDTH, _headview.frame.size.height);
             }
-            
             self.scrollView.contentSize = CGSizeMake(DEVICE_WIDTH, _headview.frame.size.height);
             [self.scrollView addSubview:_headview];        }
 
@@ -1247,39 +1309,72 @@ NSMutableArray * ymDataArray;
             
             self.headview.contentlab.frame = CGRectMake(14*WIDTH_SCALE,  24*HEIGHT_SCALE+14*HEIGHT_SCALE, textSize.width, textSize.height);
             
+            [self.headview.headimg sd_setImageWithURL:[NSURL URLWithString:self.headm.small_imgurlstr] placeholderImage:[UIImage imageNamed:@"默认图"]];
             
-            [[SDWebImageDownloader sharedDownloader]downloadImageWithURL:[NSURL URLWithString:self.headm.imgurlstr] options:SDWebImageDownloaderUseNSURLCache progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-                
-            } completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished) {
-                
-                CGFloat width = image.size.width;
-                CGRect rect = CGRectMake(0, 0, width, 194*HEIGHT_SCALE);//创建矩形框
-                self.headview.headimg.image = [UIImage imageWithCGImage:CGImageCreateWithImageInRect([image CGImage] ,rect)];
+            [self.headview.headimg mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(self.headview).with.offset(14*WIDTH_SCALE);
+                make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
+                make.top.equalTo(self.headview.contentlab.mas_bottom).with.offset(12*HEIGHT_SCALE);
+                make.height.mas_equalTo(192*WIDTH_SCALE);
+            }];
+            
+            [self.headview.title mas_makeConstraints:^(MASConstraintMaker *make) {
+                 make.left.equalTo(self.headview).with.offset(14*WIDTH_SCALE);
+                 make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
+                 make.top.equalTo(self.headview.headimg.mas_bottom).with.offset(2*HEIGHT_SCALE);
+            }];
+            
+            [self.headview.timelab mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(self.headview).with.offset(14*WIDTH_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(45*HEIGHT_SCALE);
                 
             }];
             
-            
-            
-            self.headview.headimg.frame =CGRectMake(14*WIDTH_SCALE, 30*HEIGHT_SCALE+14*HEIGHT_SCALE+textSize.height, DEVICE_WIDTH-28*WIDTH_SCALE, 194*HEIGHT_SCALE);
-            self.headview.title.frame = CGRectMake(14*WIDTH_SCALE,  38*HEIGHT_SCALE+textSize.height*HEIGHT_SCALE+200*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 20*HEIGHT_SCALE);
-            self.headview.timelab.frame = CGRectMake(14*WIDTH_SCALE, 30*HEIGHT_SCALE+textSize.height*HEIGHT_SCALE+12*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+196*HEIGHT_SCALE, 100*WIDTH_SCALE, 12*HEIGHT_SCALE);
-            [self.headview.combtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.right.equalTo(self.headview).with.offset(-70*WIDTH_SCALE);
-                make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
-            }];
-            [self.headview.dianzanbtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.right.equalTo(self.headview).with.offset(-140*WIDTH_SCALE);
-                make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
-            }];
             [self.headview.thumlabel mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.left.equalTo(self.headview).with.offset(14*WIDTH_SCALE);
                 make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
                 make.top.equalTo(self.headview.timelab).with.offset(33*HEIGHT_SCALE);
             }];
+            
             [self.headview.sharebtn mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
                 make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
             }];
+            
+            [self.headview.combtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.right.equalTo(self.headview).with.offset(-70*WIDTH_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
+                [self.headview.combtn.textlab mas_makeConstraints:^(MASConstraintMaker *make) {
+                    make.top.equalTo(self.headview.title).with.offset(45*HEIGHT_SCALE);
+                    make.right.equalTo(self.headview.sharebtn).with.offset(-40*WIDTH_SCALE);
+                    make.height.mas_equalTo(20*HEIGHT_SCALE);
+                }];
+                [self.headview.combtn.leftimg mas_makeConstraints:^(MASConstraintMaker *make) {
+                    make.top.equalTo(self.headview.title).with.offset(45*HEIGHT_SCALE);
+                    make.right.equalTo(self.headview.combtn.textlab.mas_left).with.offset(-4*WIDTH_SCALE);
+                    make.height.mas_equalTo(16*WIDTH_SCALE);
+                    make.width.mas_equalTo(16*WIDTH_SCALE);
+                }];
+                
+            }];
+            [self.headview.dianzanbtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.right.equalTo(self.headview).with.offset(-70*WIDTH_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
+                
+                [self.headview.dianzanbtn.zanlab mas_makeConstraints:^(MASConstraintMaker *make) {
+                    make.top.equalTo(self.headview.title).with.offset(45*HEIGHT_SCALE);
+                    make.right.equalTo(self.headview.combtn).with.offset(-40*WIDTH_SCALE);
+                    make.height.mas_equalTo(20*HEIGHT_SCALE);
+                }];
+                [self.headview.dianzanbtn.zanimg mas_makeConstraints:^(MASConstraintMaker *make) {
+                    make.top.equalTo(self.headview.title).with.offset(45*HEIGHT_SCALE);
+                    make.right.equalTo(self.headview.dianzanbtn.zanlab.mas_left).with.offset(-4*WIDTH_SCALE);
+                    make.height.mas_equalTo(16*WIDTH_SCALE);
+                    make.width.mas_equalTo(16*WIDTH_SCALE);
+                }];
+            }];
+
+            
             _headview.frame = CGRectMake(0, 0, DEVICE_WIDTH, textSize.height+360*HEIGHT_SCALE+textsize2.height);
             CGFloat hei222 = _headview.frame.size.height;
             if (hei222>DEVICE_HEIGHT-64-58) {
@@ -1296,29 +1391,27 @@ NSMutableArray * ymDataArray;
         {
             CGSize textsize2= [self.headview.thumlabel.text boundingRectWithSize:CGSizeMake(DEVICE_WIDTH-28*WIDTH_SCALE, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil].size;
             
-            [[SDWebImageDownloader sharedDownloader]downloadImageWithURL:[NSURL URLWithString:self.headm.imgurlstr] options:SDWebImageDownloaderUseNSURLCache progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-                
-            } completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished) {
-                
-                CGFloat width = image.size.width;
-                CGRect rect = CGRectMake(0, 0, width, 194*HEIGHT_SCALE);//创建矩形框
-                self.headview.headimg.image = [UIImage imageWithCGImage:CGImageCreateWithImageInRect([image CGImage] ,rect)];
+            [self.headview.headimg sd_setImageWithURL:[NSURL URLWithString:self.headm.small_imgurlstr] placeholderImage:[UIImage imageNamed:@"默认图"]];
+            
+            [self.headview.headimg mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(self.headview).with.offset(14*WIDTH_SCALE);
+                make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
+                make.top.equalTo(self.headview.namelab.mas_bottom).with.offset(12*HEIGHT_SCALE);
+                make.height.mas_equalTo(192*WIDTH_SCALE);
+            }];
+            
+            [self.headview.title mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(self.headview).with.offset(14*WIDTH_SCALE);
+                make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
+                make.top.equalTo(self.headview.headimg.mas_bottom).with.offset(2*HEIGHT_SCALE);
+            }];
+            
+            [self.headview.timelab mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(self.headview).with.offset(14*WIDTH_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(45*HEIGHT_SCALE);
                 
             }];
             
-            
-            
-            self.headview.headimg.frame =CGRectMake(14*WIDTH_SCALE, 30*HEIGHT_SCALE+14*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 200*HEIGHT_SCALE);
-            self.headview.title.frame = CGRectMake(14*WIDTH_SCALE,  30*HEIGHT_SCALE+200*HEIGHT_SCALE+4*HEIGHT_SCALE+14*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 20*HEIGHT_SCALE);
-            self.headview.timelab.frame = CGRectMake(14*WIDTH_SCALE, 30*HEIGHT_SCALE+200*HEIGHT_SCALE+4*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE, 100*WIDTH_SCALE, 12*HEIGHT_SCALE);
-            [self.headview.combtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.right.equalTo(self.headview).with.offset(-70*WIDTH_SCALE);
-                make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
-            }];
-            [self.headview.dianzanbtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.right.equalTo(self.headview).with.offset(-140*WIDTH_SCALE);
-                make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
-            }];
             [self.headview.thumlabel mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.left.equalTo(self.headview).with.offset(14*WIDTH_SCALE);
                 make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
@@ -1327,7 +1420,39 @@ NSMutableArray * ymDataArray;
             }];
             [self.headview.sharebtn mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
-                make.top.equalTo(self.headview.title).with.offset(15*HEIGHT_SCALE+20*HEIGHT_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(42*HEIGHT_SCALE);
+            }];
+            [self.headview.combtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.right.equalTo(self.headview).with.offset(-70*WIDTH_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
+                [self.headview.combtn.textlab mas_makeConstraints:^(MASConstraintMaker *make) {
+                    make.top.equalTo(self.headview.title).with.offset(45*HEIGHT_SCALE);
+                    make.right.equalTo(self.headview.sharebtn).with.offset(-40*WIDTH_SCALE);
+                    make.height.mas_equalTo(20*HEIGHT_SCALE);
+                }];
+                [self.headview.combtn.leftimg mas_makeConstraints:^(MASConstraintMaker *make) {
+                    make.top.equalTo(self.headview.title).with.offset(45*HEIGHT_SCALE);
+                    make.right.equalTo(self.headview.combtn.textlab.mas_left).with.offset(-4*WIDTH_SCALE);
+                    make.height.mas_equalTo(16*WIDTH_SCALE);
+                    make.width.mas_equalTo(16*WIDTH_SCALE);
+                }];
+                
+            }];
+            [self.headview.dianzanbtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.right.equalTo(self.headview).with.offset(-70*WIDTH_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
+                
+                [self.headview.dianzanbtn.zanlab mas_makeConstraints:^(MASConstraintMaker *make) {
+                    make.top.equalTo(self.headview.title).with.offset(45*HEIGHT_SCALE);
+                    make.right.equalTo(self.headview.combtn).with.offset(-40*WIDTH_SCALE);
+                    make.height.mas_equalTo(20*HEIGHT_SCALE);
+                }];
+                [self.headview.dianzanbtn.zanimg mas_makeConstraints:^(MASConstraintMaker *make) {
+                    make.top.equalTo(self.headview.title).with.offset(45*HEIGHT_SCALE);
+                    make.right.equalTo(self.headview.dianzanbtn.zanlab.mas_left).with.offset(-4*WIDTH_SCALE);
+                    make.height.mas_equalTo(16*WIDTH_SCALE);
+                    make.width.mas_equalTo(16*WIDTH_SCALE);
+                }];
             }];
             _headview.frame = CGRectMake(0, 0, DEVICE_WIDTH, 400*HEIGHT_SCALE+textsize2.height);
             CGFloat hei222 = _headview.frame.size.height;
@@ -1345,16 +1470,19 @@ NSMutableArray * ymDataArray;
             CGSize textSize = [self.headview.contentlab setText:self.headview.contentlab.text lines:QSTextDefaultLines andLineSpacing:QSTextLineSpacing constrainedToSize:CGSizeMake(DEVICE_WIDTH - 28*WIDTH_SCALE,MAXFLOAT)];
             CGSize textsize2= [self.headview.thumlabel.text boundingRectWithSize:CGSizeMake(DEVICE_WIDTH-28*WIDTH_SCALE, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil].size;
             self.headview.contentlab.frame = CGRectMake(14*WIDTH_SCALE,  24*HEIGHT_SCALE+14*HEIGHT_SCALE, textSize.width, textSize.height);
-            self.headview.title.frame = CGRectMake(14*WIDTH_SCALE,  38*HEIGHT_SCALE+textSize.height*HEIGHT_SCALE, DEVICE_WIDTH-28*WIDTH_SCALE, 20*HEIGHT_SCALE);
-            self.headview.timelab.frame = CGRectMake(14*WIDTH_SCALE, 30*HEIGHT_SCALE+textSize.height*HEIGHT_SCALE+12*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE+14*HEIGHT_SCALE, 100*WIDTH_SCALE, 12*HEIGHT_SCALE);
-            [self.headview.combtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.right.equalTo(self.headview).with.offset(-70*WIDTH_SCALE);
-                make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
+            
+            [self.headview.title mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(self.headview).with.offset(14*WIDTH_SCALE);
+                make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
+                make.top.equalTo(self.headview.contentlab).with.offset(2*HEIGHT_SCALE);
             }];
-            [self.headview.dianzanbtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.right.equalTo(self.headview).with.offset(-140*WIDTH_SCALE);
-                make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
+            
+            [self.headview.timelab mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(self.headview).with.offset(14*WIDTH_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(45*HEIGHT_SCALE);
+                
             }];
+            
             [self.headview.thumlabel mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.left.equalTo(self.headview).with.offset(14*WIDTH_SCALE);
                 make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
@@ -1365,7 +1493,38 @@ NSMutableArray * ymDataArray;
                 make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
                 make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
             }];
-            
+            [self.headview.combtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.right.equalTo(self.headview).with.offset(-70*WIDTH_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
+                [self.headview.combtn.textlab mas_makeConstraints:^(MASConstraintMaker *make) {
+                    make.top.equalTo(self.headview.title).with.offset(45*HEIGHT_SCALE);
+                    make.right.equalTo(self.headview.sharebtn).with.offset(-40*WIDTH_SCALE);
+                    make.height.mas_equalTo(20*HEIGHT_SCALE);
+                }];
+                [self.headview.combtn.leftimg mas_makeConstraints:^(MASConstraintMaker *make) {
+                    make.top.equalTo(self.headview.title).with.offset(45*HEIGHT_SCALE);
+                    make.right.equalTo(self.headview.combtn.textlab.mas_left).with.offset(-4*WIDTH_SCALE);
+                    make.height.mas_equalTo(16*WIDTH_SCALE);
+                    make.width.mas_equalTo(16*WIDTH_SCALE);
+                }];
+                
+            }];
+            [self.headview.dianzanbtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.right.equalTo(self.headview).with.offset(-70*WIDTH_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
+                
+                [self.headview.dianzanbtn.zanlab mas_makeConstraints:^(MASConstraintMaker *make) {
+                    make.top.equalTo(self.headview.title).with.offset(45*HEIGHT_SCALE);
+                    make.right.equalTo(self.headview.combtn).with.offset(-40*WIDTH_SCALE);
+                    make.height.mas_equalTo(20*HEIGHT_SCALE);
+                }];
+                [self.headview.dianzanbtn.zanimg mas_makeConstraints:^(MASConstraintMaker *make) {
+                    make.top.equalTo(self.headview.title).with.offset(45*HEIGHT_SCALE);
+                    make.right.equalTo(self.headview.dianzanbtn.zanlab.mas_left).with.offset(-4*WIDTH_SCALE);
+                    make.height.mas_equalTo(16*WIDTH_SCALE);
+                    make.width.mas_equalTo(16*WIDTH_SCALE);
+                }];
+            }];
             _headview.frame = CGRectMake(0, 0, DEVICE_WIDTH, textSize.height+180*HEIGHT_SCALE+textsize2.height);
             
             CGFloat hei222 = _headview.frame.size.height;

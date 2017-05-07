@@ -24,9 +24,6 @@
         [self addSubview:self.namelab];
         [self addSubview:self.timelab];
         [self addSubview:self.contentlab];
-        
-    
-        
     }
     return self;
 }
@@ -65,7 +62,6 @@
     if(!_picimg)
     {
         _picimg = [[UIImageView alloc] init];
-       // _picimg.backgroundColor = [UIColor orangeColor];
         _picimg.layer.masksToBounds = YES;
         _picimg.layer.cornerRadius = 16*WIDTH_SCALE;
     }
@@ -77,7 +73,6 @@
     if(!_namelab)
     {
         _namelab = [[UILabel alloc] init];
-        //_namelab.text = @"姓名姓名";
         _namelab.textColor = [UIColor wjColorFloat:@"576b95"];
         _namelab.font = [UIFont systemFontOfSize:14*FX];
     }
@@ -89,7 +84,6 @@
     if(!_timelab)
     {
         _timelab = [[UILabel alloc] init];
-        //_timelab.text = @"12:00";
         _timelab.textColor = [UIColor wjColorFloat:@"CDCDC7"];
         _timelab.font = [UIFont systemFontOfSize:11*FX];
     }

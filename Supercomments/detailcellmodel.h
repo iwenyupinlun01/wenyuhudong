@@ -25,4 +25,7 @@
 @property (nonatomic,strong) NSMutableArray *idarr02;
 
 @property (nonatomic,assign) CGFloat sectionhei;
+
+//单元格的高度
+@property (nonatomic,assign) CGFloat cellHeight;
 @end
