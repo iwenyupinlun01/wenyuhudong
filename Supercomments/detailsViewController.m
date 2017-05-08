@@ -110,7 +110,7 @@ NSMutableArray * ymDataArray;
     [self.scrollView flashScrollIndicators];
     self.scrollView.directionalLockEnabled = YES;
     
-
+    
     [self.view addSubview:self.maintable];
     [self.view addSubview:self.keyView];
     // 3.1.下拉刷新
@@ -129,7 +129,7 @@ NSMutableArray * ymDataArray;
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-     _maintable.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _maintable.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -191,7 +191,7 @@ NSMutableArray * ymDataArray;
             self.headm.fromstr = [NSString stringWithFormat:@"%@%@%@%@",[dic objectForKey:@"platform"],@"已赞",[dic objectForKey:@"support_count"],@"次"];
         }
         else{
-             self.headm.fromstr = [NSString stringWithFormat:@"%@%@%@",@"今日牛评老司机已赞",[dic objectForKey:@"support_count"],@"次"];
+            self.headm.fromstr = [NSString stringWithFormat:@"%@%@%@",@"今日牛评老司机已赞",[dic objectForKey:@"support_count"],@"次"];
         }
         
         self.headm.imgurlstr = [dic objectForKey:@"images"];
@@ -386,7 +386,7 @@ NSMutableArray * ymDataArray;
                                                    object:nil];
         
         
-     
+        
         
         _keyView.textview.delegate = self;
         [_keyView.sendbtn addTarget:self action:@selector(sendbtnclick) forControlEvents:UIControlEventTouchUpInside];
@@ -409,7 +409,7 @@ NSMutableArray * ymDataArray;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     pinglunCell *cell = [tableView dequeueReusableCellWithIdentifier:detailsidentfid];
-
+    
     cell = [[pinglunCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:detailsidentfid];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     _detailsmodel  = self.detalisarr[indexPath.section];
@@ -470,7 +470,7 @@ NSMutableArray * ymDataArray;
     UIView *lineview = [[UIView alloc] initWithFrame:CGRectMake(59*WIDTH_SCALE, 13, DEVICE_WIDTH-64-14, 0.7)];
     lineview.backgroundColor = [UIColor wjColorFloat:@"F5F5F5"];
     [view addSubview:lineview];
-//    view.backgroundColor = [UIColor greenColor];
+    //    view.backgroundColor = [UIColor greenColor];
     return view;
 }
 
@@ -486,18 +486,18 @@ NSMutableArray * ymDataArray;
     NSLog(@"分享");
     //1、创建分享参数
     //NSArray* imageArray = @[[UIImage imageNamed:@"牛评分享下载.jpg"]];
-     NSString *urlstr = @"http://www.np.iwenyu.cn/Public/images/share.jpg";
+    NSString *urlstr = @"http://www.np.iwenyu.cn/Public/images/share.jpg";
     
-     NSArray* imageArray = @[[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:urlstr]]]];
+    NSArray* imageArray = @[[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:urlstr]]]];
     
     //（注意：图片必须要在Xcode左边目录里面，名称必须要传正确，如果要分享网络图片，可以这样传iamge参数 images:@[@"http://mob.com/Assets/images/logo.png?v=20150320"]）
     if (imageArray) {
         NSMutableDictionary *shareParams = [NSMutableDictionary dictionary];
-//        [shareParams SSDKSetupShareParamsByText:@"分享内容"
-//                                         images:imageArray
-//                                            url:[NSURL URLWithString:@"http://mob.com"]
-//                                          title:@"分享标题"
-//                                           type:SSDKContentTypeAuto];
+        //        [shareParams SSDKSetupShareParamsByText:@"分享内容"
+        //                                         images:imageArray
+        //                                            url:[NSURL URLWithString:@"http://mob.com"]
+        //                                          title:@"分享标题"
+        //                                           type:SSDKContentTypeAuto];
         
         [shareParams SSDKSetupShareParamsByText:@"" images:imageArray url:[NSURL URLWithString:@""] title:@"" type:SSDKContentTypeImage];
         
@@ -544,7 +544,7 @@ NSMutableArray * ymDataArray;
     NSLog(@"点赞");
     
     if ([self.headm.shifoudianzanstr isEqualToString:@"0"]) {
-       
+        
         if ([tokenstr tokenstrfrom].length==0) {
             NSLog(@"请登陆");
             loginViewController *loginvc = [[loginViewController alloc] init];
@@ -586,11 +586,11 @@ NSMutableArray * ymDataArray;
                     
                     [self headerRefreshEndAction];
                     
-//                    dispatch_async(dispatch_get_main_queue(), ^
-//                    {
-//                        // 更UI
-//                        [self headfromcontentstr:self.headm.contactstr andimageurl:self.headm.imgurlstr andgoodarr:self.usernamearr];
-//                    });
+                    //                    dispatch_async(dispatch_get_main_queue(), ^
+                    //                    {
+                    //                        // 更UI
+                    //                        [self headfromcontentstr:self.headm.contactstr andimageurl:self.headm.imgurlstr andgoodarr:self.usernamearr];
+                    //                    });
                 }
                 else if ([codestr intValue]==0)
                 {
@@ -611,13 +611,13 @@ NSMutableArray * ymDataArray;
                     [MBProgressHUD showSuccess:@"系统繁忙，请稍后再试"];
                     NSLog(@"系统繁忙，请稍后再试");
                 }
-
+                
             }];
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.maintable reloadData];
             });
         }
-
+        
     }else
     {
         if ([tokenstr tokenstrfrom].length==0) {
@@ -652,14 +652,14 @@ NSMutableArray * ymDataArray;
                     [self.usernamearr removeObjectAtIndex:0];
                     
                     [self headerRefreshEndAction];
-
-
-//                    dispatch_async(dispatch_get_main_queue(), ^
-//                    {
-//                        // 更UI
-//                         [self headfromcontentstr:self.headm.contactstr andimageurl:self.headm.imgurlstr andgoodarr:self.usernamearr];
-//                    });
-                  
+                    
+                    
+                    //                    dispatch_async(dispatch_get_main_queue(), ^
+                    //                    {
+                    //                        // 更UI
+                    //                         [self headfromcontentstr:self.headm.contactstr andimageurl:self.headm.imgurlstr andgoodarr:self.usernamearr];
+                    //                    });
+                    
                 }
                 else if ([codestr intValue]==0)
                 {
@@ -687,19 +687,19 @@ NSMutableArray * ymDataArray;
             
         }
         
-            dispatch_async(dispatch_get_main_queue(), ^
-            {
-                [self.maintable reloadData];
-            });
-        }
+        dispatch_async(dispatch_get_main_queue(), ^
+                       {
+                           [self.maintable reloadData];
+                       });
     }
+}
 
 #pragma mark - 评论方法
 //一级评论
 -(void)pinglunclick
 {
     NSLog(@"评论");
-  
+    
     if ([tokenstr tokenstrfrom].length==0) {
         NSLog(@"请登陆");
         loginViewController *logvc = [[loginViewController alloc] init];
@@ -714,12 +714,12 @@ NSMutableArray * ymDataArray;
         _keyView.textview.customPlaceholder = [NSString stringWithFormat:@"%@%@",@"评论@", self.headm.namestr];
         [self.keyView.textview becomeFirstResponder];
     }
-
+    
 }
 //二级评论
 - (void)buttonPress:(UIButton *)sender {
-  
-
+    
+    
     if ([tokenstr tokenstrfrom].length==0) {
         NSLog(@"请登陆");
         loginViewController *logvc = [[loginViewController alloc] init];
@@ -816,7 +816,7 @@ NSMutableArray * ymDataArray;
     }else
     {
         [self.keyView.sendbtn setTitleColor:[UIColor wjColorFloat:@"576b95"] forState:normal];
-
+        
     }
 }
 
@@ -836,7 +836,7 @@ NSMutableArray * ymDataArray;
     
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     [delegate.window addSubview:self.bgview];
-
+    
 }
 
 -(void)backgroundTapped:(UIGestureRecognizer *)tgp
@@ -896,7 +896,7 @@ NSMutableArray * ymDataArray;
                 } fail:^(NSError *error) {
                     [MBProgressHUD showSuccess:@"没有网络"];
                 }];
-
+                
                 
             }
             
@@ -911,33 +911,33 @@ NSMutableArray * ymDataArray;
             NSString *uidstr = self.detailsmodel.touidstr;
             
             
-             if ([tokenstr tokenstrfrom].length!=0&&uidstr.length!=0&&self.objidstr.length!=0&&pidstr.length!=0&&self.keyView.textview.text.length!=0) {
-                 
-                 //网络请求
-                 NSDictionary *para = @{@"token":[tokenstr tokenstrfrom],@"to_uid":uidstr,@"object_id":self.objidstr,@"content":self.keyView.textview.text,@"pid":pidstr};
-                 
-                 [CLNetworkingManager postCacheRequestWithUrlString:pinglunhuifu parameters:para cacheTime:NO succeed:^(id data) {
-                     NSLog(@"data-------%@",data);
-                     if ([[data objectForKey:@"code"] intValue]==1) {
-                         NSString *pinglunnum = [data objectForKey:@"comment_num"];
-                         self.headview.combtn.textlab.text = pinglunnum;
-                         [self headerRefreshEndAction];
-                         
-                         [MBProgressHUD showSuccess:@"评论成功"];
-                         
-                         NSDictionary *dianzandic = @{@"dianzanindex":self.dianzanindex,@"pinglunstr":self.headview.combtn.textlab.text};
-                         if ([self.fromtypestr isEqualToString:@"newvc"]) {
-                             [[NSNotificationCenter defaultCenter]postNotificationName:@"pinglunkvo" object:dianzandic];
-                         }else
-                         {
-                             [[NSNotificationCenter defaultCenter]postNotificationName:@"pinglunkvo2" object:dianzandic];
-                         }
-                     }
-                     
-                 } fail:^(NSError *error) {
-                     [MBProgressHUD showSuccess:@"没有网络"];
-                 }];
-             }
+            if ([tokenstr tokenstrfrom].length!=0&&uidstr.length!=0&&self.objidstr.length!=0&&pidstr.length!=0&&self.keyView.textview.text.length!=0) {
+                
+                //网络请求
+                NSDictionary *para = @{@"token":[tokenstr tokenstrfrom],@"to_uid":uidstr,@"object_id":self.objidstr,@"content":self.keyView.textview.text,@"pid":pidstr};
+                
+                [CLNetworkingManager postCacheRequestWithUrlString:pinglunhuifu parameters:para cacheTime:NO succeed:^(id data) {
+                    NSLog(@"data-------%@",data);
+                    if ([[data objectForKey:@"code"] intValue]==1) {
+                        NSString *pinglunnum = [data objectForKey:@"comment_num"];
+                        self.headview.combtn.textlab.text = pinglunnum;
+                        [self headerRefreshEndAction];
+                        
+                        [MBProgressHUD showSuccess:@"评论成功"];
+                        
+                        NSDictionary *dianzandic = @{@"dianzanindex":self.dianzanindex,@"pinglunstr":self.headview.combtn.textlab.text};
+                        if ([self.fromtypestr isEqualToString:@"newvc"]) {
+                            [[NSNotificationCenter defaultCenter]postNotificationName:@"pinglunkvo" object:dianzandic];
+                        }else
+                        {
+                            [[NSNotificationCenter defaultCenter]postNotificationName:@"pinglunkvo2" object:dianzandic];
+                        }
+                    }
+                    
+                } fail:^(NSError *error) {
+                    [MBProgressHUD showSuccess:@"没有网络"];
+                }];
+            }
             
         }
         else
@@ -981,7 +981,7 @@ NSMutableArray * ymDataArray;
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
     if ([text isEqualToString:@"\n"])
     {           //判断输入的字是否是回车，即按下return
-                //在这里做你响应return键的代码
+        //在这里做你响应return键的代码
         NSLog(@"return");
         [textView resignFirstResponder];
         
@@ -1053,8 +1053,8 @@ NSMutableArray * ymDataArray;
                         [MBProgressHUD showSuccess:@"没有网络"];
                     }];
                 }
-
-               
+                
+                
             }
             else
             {
@@ -1086,9 +1086,8 @@ NSMutableArray * ymDataArray;
                     
                 }
             }
- 
+            
         }
-    
         return NO; //这里返回NO，就代表return键值失效，即页面上按下return，不会出现换行，如果为yes，则输入页面会换行
     }
     return YES;
@@ -1203,6 +1202,7 @@ NSMutableArray * ymDataArray;
     
     if (thumarr.count==0) {
         [self.headview.thumlabel setHidden:YES];
+        
         if (content.length!=0&&urlstr.length!=0) {
             CGSize textSize = [self.headview.contentlab setText:self.headview.contentlab.text lines:QSTextDefaultLines andLineSpacing:QSTextLineSpacing constrainedToSize:CGSizeMake(DEVICE_WIDTH - 28*WIDTH_SCALE,MAXFLOAT)];
             
@@ -1218,12 +1218,13 @@ NSMutableArray * ymDataArray;
                 make.left.equalTo(self.headview).with.offset(14*WIDTH_SCALE);
                 make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
                 make.top.equalTo(self.headview.headimg.mas_bottom).with.offset(2*HEIGHT_SCALE);
+                make.height.mas_equalTo(20*HEIGHT_SCALE);
             }];
             [self.headview.timelab mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.left.equalTo(self.headview).with.offset(14*WIDTH_SCALE);
                 make.top.equalTo(self.headview.title).with.offset(45*HEIGHT_SCALE);
             }];
-
+            
             
             [self.headview.thumlabel mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.left.equalTo(self.headview).with.offset(14*WIDTH_SCALE);
@@ -1251,12 +1252,12 @@ NSMutableArray * ymDataArray;
                 
             }];
             [self.headview.dianzanbtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.right.equalTo(self.headview).with.offset(-70*WIDTH_SCALE);
+                make.right.equalTo(self.headview.combtn).with.offset(-50*WIDTH_SCALE);
                 make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
                 make.width.mas_equalTo(64*WIDTH_SCALE);
                 [self.headview.dianzanbtn.zanlab mas_makeConstraints:^(MASConstraintMaker *make) {
                     make.top.equalTo(self.headview.title).with.offset(45*HEIGHT_SCALE);
-                    make.right.equalTo(self.headview.combtn).with.offset(-40*WIDTH_SCALE);
+                    make.right.equalTo(self.headview.combtn.leftimg).with.offset(-40*WIDTH_SCALE);
                     make.height.mas_equalTo(20*HEIGHT_SCALE);
                 }];
                 [self.headview.dianzanbtn.zanimg mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -1266,7 +1267,7 @@ NSMutableArray * ymDataArray;
                     make.width.mas_equalTo(16*WIDTH_SCALE);
                 }];
             }];
-
+            
             _headview.frame = CGRectMake(0, 0, DEVICE_WIDTH, textSize.height+340*HEIGHT_SCALE);
             CGFloat hei222 = _headview.frame.size.height;
             if (hei222>DEVICE_HEIGHT-64-58) {
@@ -1292,6 +1293,7 @@ NSMutableArray * ymDataArray;
                 make.left.equalTo(self.headview).with.offset(14*WIDTH_SCALE);
                 make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
                 make.top.equalTo(self.headview.headimg.mas_bottom).with.offset(2*HEIGHT_SCALE);
+                make.height.mas_equalTo(20*HEIGHT_SCALE);
             }];
             [self.headview.timelab mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.left.equalTo(self.headview).with.offset(14*WIDTH_SCALE);
@@ -1318,12 +1320,12 @@ NSMutableArray * ymDataArray;
                 
             }];
             [self.headview.dianzanbtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.right.equalTo(self.headview).with.offset(-70*WIDTH_SCALE);
+                make.right.equalTo(self.headview.combtn).with.offset(-50*WIDTH_SCALE);
                 make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
                 make.width.mas_equalTo(64*WIDTH_SCALE);
                 [self.headview.dianzanbtn.zanlab mas_makeConstraints:^(MASConstraintMaker *make) {
                     make.top.equalTo(self.headview.title).with.offset(45*HEIGHT_SCALE);
-                    make.right.equalTo(self.headview.combtn).with.offset(-40*WIDTH_SCALE);
+                    make.right.equalTo(self.headview.combtn.leftimg).with.offset(-40*WIDTH_SCALE);
                     make.height.mas_equalTo(20*HEIGHT_SCALE);
                 }];
                 [self.headview.dianzanbtn.zanimg mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -1333,7 +1335,7 @@ NSMutableArray * ymDataArray;
                     make.width.mas_equalTo(16*WIDTH_SCALE);
                 }];
             }];
-
+            
             _headview.frame = CGRectMake(0, 0, DEVICE_WIDTH, 380*HEIGHT_SCALE);
             CGFloat hei222 = _headview.frame.size.height;
             if (hei222>DEVICE_HEIGHT-64-58) {
@@ -1347,7 +1349,7 @@ NSMutableArray * ymDataArray;
             [self.scrollView addSubview:_headview];
         }else
         {
-           
+            
             CGSize textSize = [self.headview.contentlab setText:self.headview.contentlab.text lines:QSTextDefaultLines andLineSpacing:QSTextLineSpacing constrainedToSize:CGSizeMake(DEVICE_WIDTH - 28*WIDTH_SCALE,MAXFLOAT)];
             self.headview.contentlab.frame = CGRectMake(14*WIDTH_SCALE,  24*HEIGHT_SCALE+14*HEIGHT_SCALE, textSize.width, textSize.height);
             
@@ -1355,6 +1357,7 @@ NSMutableArray * ymDataArray;
                 make.left.equalTo(self.headview).with.offset(14*WIDTH_SCALE);
                 make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
                 make.top.equalTo(self.headview.contentlab.mas_bottom).with.offset(2*HEIGHT_SCALE);
+                make.height.mas_equalTo(20*HEIGHT_SCALE);
             }];
             [self.headview.timelab mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.left.equalTo(self.headview).with.offset(14*WIDTH_SCALE);
@@ -1388,12 +1391,12 @@ NSMutableArray * ymDataArray;
                 
             }];
             [self.headview.dianzanbtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.right.equalTo(self.headview).with.offset(-70*WIDTH_SCALE);
+                make.right.equalTo(self.headview.combtn).with.offset(-50*WIDTH_SCALE);
                 make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
                 make.width.mas_equalTo(64*WIDTH_SCALE);
                 [self.headview.dianzanbtn.zanlab mas_makeConstraints:^(MASConstraintMaker *make) {
                     make.top.equalTo(self.headview.title).with.offset(45*HEIGHT_SCALE);
-                    make.right.equalTo(self.headview.combtn).with.offset(-40*WIDTH_SCALE);
+                    make.right.equalTo(self.headview.combtn.leftimg).with.offset(-40*WIDTH_SCALE);
                     make.height.mas_equalTo(20*HEIGHT_SCALE);
                 }];
                 [self.headview.dianzanbtn.zanimg mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -1403,7 +1406,7 @@ NSMutableArray * ymDataArray;
                     make.width.mas_equalTo(16*WIDTH_SCALE);
                 }];
             }];
-
+            
             _headview.frame = CGRectMake(0, 0, DEVICE_WIDTH, textSize.height+160*HEIGHT_SCALE);
             CGFloat hei222 = _headview.frame.size.height;
             if (hei222>DEVICE_HEIGHT-64-58) {
@@ -1414,7 +1417,7 @@ NSMutableArray * ymDataArray;
             }
             self.scrollView.contentSize = CGSizeMake(DEVICE_WIDTH, _headview.frame.size.height);
             [self.scrollView addSubview:_headview];        }
-
+        
     }else
     {
         [self.headview.thumlabel setHidden:NO];
@@ -1434,9 +1437,10 @@ NSMutableArray * ymDataArray;
             }];
             
             [self.headview.title mas_makeConstraints:^(MASConstraintMaker *make) {
-                 make.left.equalTo(self.headview).with.offset(14*WIDTH_SCALE);
-                 make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
-                 make.top.equalTo(self.headview.headimg.mas_bottom).with.offset(2*HEIGHT_SCALE);
+                make.left.equalTo(self.headview).with.offset(14*WIDTH_SCALE);
+                make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
+                make.top.equalTo(self.headview.headimg.mas_bottom).with.offset(2*HEIGHT_SCALE);
+                make.height.mas_equalTo(20*HEIGHT_SCALE);
             }];
             
             [self.headview.timelab mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -1473,12 +1477,12 @@ NSMutableArray * ymDataArray;
                 
             }];
             [self.headview.dianzanbtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.right.equalTo(self.headview).with.offset(-70*WIDTH_SCALE);
+                make.right.equalTo(self.headview.combtn).with.offset(-50*WIDTH_SCALE);
                 make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
                 make.width.mas_equalTo(64*WIDTH_SCALE);
                 [self.headview.dianzanbtn.zanlab mas_makeConstraints:^(MASConstraintMaker *make) {
                     make.top.equalTo(self.headview.title).with.offset(45*HEIGHT_SCALE);
-                    make.right.equalTo(self.headview.combtn).with.offset(-40*WIDTH_SCALE);
+                    make.right.equalTo(self.headview.combtn.leftimg).with.offset(-40*WIDTH_SCALE);
                     make.height.mas_equalTo(20*HEIGHT_SCALE);
                 }];
                 [self.headview.dianzanbtn.zanimg mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -1488,7 +1492,7 @@ NSMutableArray * ymDataArray;
                     make.width.mas_equalTo(16*WIDTH_SCALE);
                 }];
             }];
-
+            
             
             _headview.frame = CGRectMake(0, 0, DEVICE_WIDTH, textSize.height+380*HEIGHT_SCALE+textsize2.height);
             CGFloat hei222 = _headview.frame.size.height;
@@ -1519,6 +1523,7 @@ NSMutableArray * ymDataArray;
                 make.left.equalTo(self.headview).with.offset(14*WIDTH_SCALE);
                 make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
                 make.top.equalTo(self.headview.headimg.mas_bottom).with.offset(2*HEIGHT_SCALE);
+                make.height.mas_equalTo(20*HEIGHT_SCALE);
             }];
             
             [self.headview.timelab mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -1554,12 +1559,12 @@ NSMutableArray * ymDataArray;
                 
             }];
             [self.headview.dianzanbtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.right.equalTo(self.headview).with.offset(-70*WIDTH_SCALE);
+                make.right.equalTo(self.headview.combtn).with.offset(-50*WIDTH_SCALE);
                 make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
                 make.width.mas_equalTo(64*WIDTH_SCALE);
                 [self.headview.dianzanbtn.zanlab mas_makeConstraints:^(MASConstraintMaker *make) {
                     make.top.equalTo(self.headview.title).with.offset(45*HEIGHT_SCALE);
-                    make.right.equalTo(self.headview.combtn).with.offset(-40*WIDTH_SCALE);
+                    make.right.equalTo(self.headview.combtn.leftimg).with.offset(-40*WIDTH_SCALE);
                     make.height.mas_equalTo(20*HEIGHT_SCALE);
                     
                 }];
@@ -1589,6 +1594,7 @@ NSMutableArray * ymDataArray;
             [self.headview.title mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.left.equalTo(self.headview).with.offset(14*WIDTH_SCALE);
                 make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
+                make.height.mas_equalTo(20*HEIGHT_SCALE);
                 make.top.equalTo(self.headview.contentlab.mas_bottom).with.offset(2*HEIGHT_SCALE);
             }];
             [self.headview.timelab mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -1621,12 +1627,12 @@ NSMutableArray * ymDataArray;
                 
             }];
             [self.headview.dianzanbtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.right.equalTo(self.headview).with.offset(-70*WIDTH_SCALE);
+                make.right.equalTo(self.headview.combtn).with.offset(-50*WIDTH_SCALE);
                 make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
                 make.width.mas_equalTo(64*WIDTH_SCALE);
                 [self.headview.dianzanbtn.zanlab mas_makeConstraints:^(MASConstraintMaker *make) {
                     make.top.equalTo(self.headview.title).with.offset(45*HEIGHT_SCALE);
-                    make.right.equalTo(self.headview.combtn).with.offset(-40*WIDTH_SCALE);
+                    make.right.equalTo(self.headview.combtn.leftimg).with.offset(-40*WIDTH_SCALE);
                     make.height.mas_equalTo(20*HEIGHT_SCALE);
                 }];
                 [self.headview.dianzanbtn.zanimg mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -1639,10 +1645,10 @@ NSMutableArray * ymDataArray;
             _headview.frame = CGRectMake(0, 0, DEVICE_WIDTH, textSize.height+180*HEIGHT_SCALE+textsize2.height);
             CGFloat hei222 = _headview.frame.size.height;
             if (hei222>DEVICE_HEIGHT-64-58) {
-                 self.scrollView.frame = CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT-64-58);
+                self.scrollView.frame = CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT-64-58);
             }else
             {
-                 self.scrollView.frame = CGRectMake(0, 0, DEVICE_WIDTH, _headview.frame.size.height);
+                self.scrollView.frame = CGRectMake(0, 0, DEVICE_WIDTH, _headview.frame.size.height);
             }
             self.scrollView.contentSize = CGSizeMake(DEVICE_WIDTH, _headview.frame.size.height);
             [self.scrollView addSubview:_headview];
