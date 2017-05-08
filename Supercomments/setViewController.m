@@ -13,6 +13,27 @@
 #import "loginViewController.h"
 #import "homeViewController.h"
 #import "setCell2.h"
+
+@implementation UIImage (ColorImage)
+
++ (UIImage *)imageWithColor:(UIColor *)color
+{
+    CGRect rect = CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+    
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return image;
+}
+
+@end
+
+
 @interface setViewController ()<UITableViewDataSource,UITableViewDelegate>
 @property (nonatomic,strong) UITableView *settableview;
 @property (nonatomic,strong) UIButton *gobackbtn;
@@ -36,7 +57,13 @@ static NSString *setidentfid3 = @"setidentfid3";
     self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
     self.settableview.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.view addSubview:self.settableview];
-    //[self.view addSubview:self.gobackbtn];
+    
+    UINavigationBar *navigationBar = self.navigationController.navigationBar;
+    [navigationBar setBackgroundImage:[[UIImage alloc] init]
+                       forBarPosition:UIBarPositionAny
+                           barMetrics:UIBarMetricsDefault];
+    //此处使底部线条颜色为F5F5F5
+    [navigationBar setShadowImage:[UIImage imageWithColor:[UIColor wjColorFloat:@"F5F5F5"]]];
     
 }
 

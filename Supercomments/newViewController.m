@@ -31,15 +31,10 @@
 @property (nonatomic,strong) newModel *nmodel;
 @property (nonatomic,strong) NSMutableArray *imgarr;
 @property (nonatomic,strong) NSString *panduan404str;
-
 @property (nonatomic, assign) UIEdgeInsets insets;
-
 @property (nonatomic,strong) UIButton *xuanzuanbtn;
-
 @property (nonatomic,strong) NSMutableArray *textheiarr;
-
 @property (nonatomic,strong) newCell *cell;
-
 @end
 
 @implementation newViewController
@@ -491,18 +486,12 @@
 #pragma mark - 加载失败
 
 - (UIImage *)imageForEmptyDataSet:(UIScrollView *)scrollView {
-    
-    if ([_panduan404str isEqualToString:@"1"]) {
-        return [UIImage imageNamed:@"加载失败"];
-    }else
-    {
-        return [UIImage imageNamed:@"空的"];
-    }
-    return nil;
+    return [UIImage imageNamed:@"空的"];
 }
+
 - (void)emptyDataSet:(UIScrollView *)scrollView didTapView:(UIView *)view
 {
-      [self addHeader];
+    [self addHeader];
 }
 
 #pragma mark 用于将cell分割线补全

@@ -7,10 +7,10 @@
 //
 
 #import "hotViewController.h"
-#import "newCell.h"
+#import "hotCell.h"
 #import "detailsViewController.h"
 #import "XWScanImage.h"
-#import "newModel.h"
+#import "hotModel.h"
 #import "YYPhotoGroupView.h"
 #import "SureWebViewController.h"
 #import "loginViewController.h"
@@ -26,7 +26,7 @@
 @property (nonatomic,strong) UIImageView *demoimg;
 @property (nonatomic,strong) NSMutableArray *dataSource;
 @property (nonatomic,strong) NSMutableArray *dataarr;
-@property (nonatomic,strong) newModel *nmodel;
+@property (nonatomic,strong) hotModel *hmodel;
 @property (nonatomic,strong) NSMutableArray *imgarr;
 
 
@@ -34,7 +34,7 @@
 
 @property (nonatomic,strong) UIButton *xuanzuanbtn;
 @end
-static NSString *hotidentfid = @"hotidentfid";
+
 @implementation hotViewController
 
 
@@ -54,12 +54,9 @@ static NSString *hotidentfid = @"hotidentfid";
     [self addHeader];
     // 3.2.上拉加载更多
     [self addFooter];
-    
     self.insets = UIEdgeInsetsMake(0, 14, 0, 14);
-    
     [self.view addSubview:self.hottable];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(kvcdianzan:) name:@"shifoudiandankvo2" object:nil];
-    
     [self.view addSubview:self.xuanzuanbtn];
 }
 
@@ -103,25 +100,25 @@ static NSString *hotidentfid = @"hotidentfid";
         NSArray *dit = [data objectForKey:@"info"];
         for (int i = 0; i<dit.count; i++) {
             NSDictionary *dicarr = [dit objectAtIndex:i];
-            self.nmodel = [[newModel alloc] init];
-            self.nmodel.contentstr = dicarr[@"content"];
-            self.nmodel.timestr = dicarr[@"create_time"];
-            self.nmodel.imgurlstr = dicarr[@"images"];
-            self.nmodel.namestr = dicarr[@"name"];
-            self.nmodel.dianzanstr = dicarr[@"support_num"];
-            self.nmodel.pinglunstr = dicarr[@"reply_num"];
-            self.nmodel.newidstr = dicarr[@"id"];
-            self.nmodel.titlestr = dicarr[@"title"];
-            self.nmodel.fromstr =dicarr[@"support_count"];
-            self.nmodel.typestr = dicarr[@"type"];
-            self.nmodel.sifoudianzanstr = dicarr[@"is_support"];
-            self.nmodel.weburlstr = dicarr[@"url"];
-            self.nmodel.ishot = dicarr[@"is_hot"];
-            self.nmodel.platformstr = dicarr[@"platform"];
-            self.nmodel.small_imagesstrl = dicarr[@"small_images"];
-            [self.dataSource addObject:self.nmodel.contentstr];
-            [self.dataarr addObject:self.nmodel];
-            [self.imgarr addObject:self.nmodel.imgurlstr];
+            self.hmodel = [[hotModel alloc] init];
+            self.hmodel.contentstr = dicarr[@"content"];
+            self.hmodel.timestr = dicarr[@"create_time"];
+            self.hmodel.imgurlstr = dicarr[@"images"];
+            self.hmodel.namestr = dicarr[@"name"];
+            self.hmodel.dianzanstr = dicarr[@"support_num"];
+            self.hmodel.pinglunstr = dicarr[@"reply_num"];
+            self.hmodel.newidstr = dicarr[@"id"];
+            self.hmodel.titlestr = dicarr[@"title"];
+            self.hmodel.fromstr =dicarr[@"support_count"];
+            self.hmodel.typestr = dicarr[@"type"];
+            self.hmodel.sifoudianzanstr = dicarr[@"is_support"];
+            self.hmodel.weburlstr = dicarr[@"url"];
+            self.hmodel.ishot = dicarr[@"is_hot"];
+            self.hmodel.platformstr = dicarr[@"platform"];
+            self.hmodel.small_imagesstrl = dicarr[@"small_images"];
+            [self.dataSource addObject:self.hmodel.contentstr];
+            [self.dataarr addObject:self.hmodel];
+            [self.imgarr addObject:self.hmodel.imgurlstr];
         }
         [self.hottable.mj_header endRefreshing];
         [self.hottable reloadData];
@@ -146,25 +143,25 @@ static NSString *hotidentfid = @"hotidentfid";
         NSArray *dit = [data objectForKey:@"info"];
         for (int i = 0; i<dit.count; i++) {
             NSDictionary *dicarr = [dit objectAtIndex:i];
-            self.nmodel = [[newModel alloc] init];
-            self.nmodel.contentstr = dicarr[@"content"];
-            self.nmodel.timestr = dicarr[@"create_time"];
-            self.nmodel.imgurlstr = dicarr[@"images"];
-            self.nmodel.namestr = dicarr[@"name"];
-            self.nmodel.dianzanstr = dicarr[@"support_num"];
-            self.nmodel.pinglunstr = dicarr[@"reply_num"];
-            self.nmodel.newidstr = dicarr[@"id"];
-            self.nmodel.titlestr = dicarr[@"title"];
-            self.nmodel.fromstr =dicarr[@"support_count"];
-            self.nmodel.typestr = dicarr[@"type"];
-            self.nmodel.sifoudianzanstr = dicarr[@"is_support"];
-            self.nmodel.weburlstr = dicarr[@"url"];
-            self.nmodel.ishot = dicarr[@"is_hot"];
-            self.nmodel.platformstr = dicarr[@"platform"];
-            self.nmodel.small_imagesstrl = dicarr[@"small_images"];
-            [self.dataSource addObject:self.nmodel.contentstr];
-            [self.dataarr addObject:self.nmodel];
-            [self.imgarr addObject:self.nmodel.imgurlstr];
+            self.hmodel = [[hotModel alloc] init];
+            self.hmodel.contentstr = dicarr[@"content"];
+            self.hmodel.timestr = dicarr[@"create_time"];
+            self.hmodel.imgurlstr = dicarr[@"images"];
+            self.hmodel.namestr = dicarr[@"name"];
+            self.hmodel.dianzanstr = dicarr[@"support_num"];
+            self.hmodel.pinglunstr = dicarr[@"reply_num"];
+            self.hmodel.newidstr = dicarr[@"id"];
+            self.hmodel.titlestr = dicarr[@"title"];
+            self.hmodel.fromstr =dicarr[@"support_count"];
+            self.hmodel.typestr = dicarr[@"type"];
+            self.hmodel.sifoudianzanstr = dicarr[@"is_support"];
+            self.hmodel.weburlstr = dicarr[@"url"];
+            self.hmodel.ishot = dicarr[@"is_hot"];
+            self.hmodel.platformstr = dicarr[@"platform"];
+            self.hmodel.small_imagesstrl = dicarr[@"small_images"];
+            [self.dataSource addObject:self.hmodel.contentstr];
+            [self.dataarr addObject:self.hmodel];
+            [self.imgarr addObject:self.hmodel.imgurlstr];
         }
         [self.hottable.mj_footer endRefreshing];
         [self.hottable reloadData];
@@ -236,22 +233,8 @@ static NSString *hotidentfid = @"hotidentfid";
 #pragma mark -UITableViewDataSource&&UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    NSString *imgstr = [NSString stringWithFormat:@"%@",self.imgarr[indexPath.row]];
-    NSString *contaststr = [NSString stringWithFormat:@"%@",self.dataSource[indexPath.row]];
-    
-    if (imgstr.length==0) {
-        return [newCell cellHeightWithText:self.dataSource[indexPath.row]]+(16+16+4+20+16+16+8+16)*HEIGHT_SCALE;
-    }
-    else if(contaststr.length==0&&imgstr.length!=0)
-    {
-        return (16+16+4+20+16+16+196+10)*HEIGHT_SCALE;
-    }
-    else
-    {
-        return [newCell cellHeightWithText:self.dataSource[indexPath.row]]+(16+16+4+20+16+16+14+196+10)*HEIGHT_SCALE;
-    }
-    return 0;
+    hotModel *homeModel=self.dataarr[indexPath.row];
+    return homeModel.cellHeight;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -261,10 +244,8 @@ static NSString *hotidentfid = @"hotidentfid";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    newCell *cell = [tableView dequeueReusableCellWithIdentifier:hotidentfid];
-    //    if (!cell) {
-    cell = [[newCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:hotidentfid];
-    //    }
+    hotCell *cell = [tableView dequeueReusableCellWithIdentifier:hotidentfid];
+    cell = [[hotCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:hotidentfid];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.delegate = self;
     [cell setcelldata:self.dataarr[indexPath.row]];
@@ -278,16 +259,15 @@ static NSString *hotidentfid = @"hotidentfid";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    self.nmodel = [[newModel alloc] init];
-    self.nmodel = self.dataarr[indexPath.row];
-    NSString *str = self.nmodel.newidstr;
+    self.hmodel = [[hotModel alloc] init];
+    self.hmodel = self.dataarr[indexPath.row];
+    NSString *str = self.hmodel.newidstr;
     NSLog(@"str======%@",str);
     detailsViewController *detailsvc = [[detailsViewController alloc] init];
     detailsvc.detalisidstr = str;
     detailsvc.fromtypestr = @"hotvc";
     detailsvc.dianzanindex = [NSString stringWithFormat:@"%ld",(long)indexPath.row];
     [self.navigationController pushViewController:detailsvc animated:YES];
-    
 }
 
 //点赞
@@ -295,15 +275,12 @@ static NSString *hotidentfid = @"hotidentfid";
 {
     NSIndexPath *index = [self.hottable indexPathForCell:cell];
     NSLog(@"333===%ld   点赞",index.row);
-    
-    self.nmodel = [[newModel alloc] init];
-    self.nmodel = self.dataarr[index.row];
-    
-    NSString *dianzanstr = self.nmodel.sifoudianzanstr;
+    self.hmodel = [[hotModel alloc] init];
+    self.hmodel = self.dataarr[index.row];
+    NSString *dianzanstr = self.hmodel.sifoudianzanstr;
     NSLog(@"dianzanstr--------%@",dianzanstr);
     
     if ([dianzanstr isEqualToString:@"0"]) {
-        
         if ([tokenstr tokenstrfrom].length==0) {
             loginViewController *loginvc = [[loginViewController alloc] init];
             loginvc.jinru = @"jinru";
@@ -313,19 +290,19 @@ static NSString *hotidentfid = @"hotidentfid";
         else
         {
             //点赞
-            self.nmodel.sifoudianzanstr = @"1";
-            NSDictionary *reqdic = @{@"token":[tokenstr tokenstrfrom],@"object_id":self.nmodel.newidstr,@"status":@"1",@"type":@"1"};
+            NSDictionary *reqdic = @{@"token":[tokenstr tokenstrfrom],@"object_id":self.hmodel.newidstr,@"status":@"1",@"type":@"1"};
             
-            [AFManager postReqURL:qudianzan reqBody:reqdic block:^(id infor) {
-                NSLog(@"infor-------%@",infor);
-                NSString *code = [infor objectForKey:@"code"];
+            [CLNetworkingManager postNetworkRequestWithUrlString:qudianzan parameters:reqdic isCache:NO succeed:^(id data) {
+                NSLog(@"infor-------%@",data);
+                NSString *code = [data objectForKey:@"code"];
                 if ([code intValue]==1) {
+                    self.hmodel.sifoudianzanstr = @"1";
                     [MBProgressHUD showSuccess:@"点赞+1"];
                     NSLog(@"成功");
-                    self.nmodel = [[newModel alloc] init];
-                    self.nmodel = self.dataarr[index.row];
-                    NSDictionary *dic = [infor objectForKey:@"info"];
-                    self.nmodel.dianzanstr = [dic objectForKey:@"spportNum"];
+                    self.hmodel = [[hotModel alloc] init];
+                    self.hmodel = self.dataarr[index.row];
+                    NSDictionary *dic = [data objectForKey:@"info"];
+                    self.hmodel.dianzanstr = [dic objectForKey:@"spportNum"];
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [self.hottable reloadData];
                     });
@@ -349,10 +326,14 @@ static NSString *hotidentfid = @"hotidentfid";
                     [MBProgressHUD showSuccess:@"系统繁忙，请稍后再试"];
                     NSLog(@"系统繁忙，请稍后再试");
                 }
-                
+
+            } fail:^(NSError *error) {
+                [MBProgressHUD showSuccess:@"没有网络"];
             }];
             
-            [self.hottable reloadData];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.hottable reloadData];
+            });
         }
         
     }
@@ -367,19 +348,18 @@ static NSString *hotidentfid = @"hotidentfid";
         else
         {
             //取消点赞
-            self.nmodel.sifoudianzanstr = @"0";
-            NSDictionary *reqdic = @{@"token":[tokenstr tokenstrfrom],@"object_id":self.nmodel.newidstr,@"status":@"0",@"type":@"1"};
-            [AFManager postReqURL:qudianzan reqBody:reqdic block:^(id infor) {
-                NSLog(@"infor-------%@",infor);
-                NSString *code = [infor objectForKey:@"code"];
+            self.hmodel.sifoudianzanstr = @"0";
+            NSDictionary *reqdic = @{@"token":[tokenstr tokenstrfrom],@"object_id":self.hmodel.newidstr,@"status":@"0",@"type":@"1"};
+            [CLNetworkingManager postNetworkRequestWithUrlString:qudianzan parameters:reqdic isCache:NO succeed:^(id data) {
+                NSLog(@"infor-------%@",data);
+                NSString *code = [data objectForKey:@"code"];
                 if ([code intValue]==1) {
                     [MBProgressHUD showSuccess:@"取消点赞"];
                     NSLog(@"成功");
-                    
-                    self.nmodel = [[newModel alloc] init];
-                    self.nmodel = self.dataarr[index.row];
-                    NSDictionary *dic = [infor objectForKey:@"info"];
-                    self.nmodel.dianzanstr = [dic objectForKey:@"spportNum"];
+                    self.hmodel = [[hotModel alloc] init];
+                    self.hmodel = self.dataarr[index.row];
+                    NSDictionary *dic = [data objectForKey:@"info"];
+                    self.hmodel.dianzanstr = [dic objectForKey:@"spportNum"];
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [self.hottable reloadData];
                     });
@@ -403,9 +383,14 @@ static NSString *hotidentfid = @"hotidentfid";
                     [MBProgressHUD showSuccess:@"系统繁忙，请稍后再试"];
                     NSLog(@"系统繁忙，请稍后再试");
                 }
+            } fail:^(NSError *error) {
+                [MBProgressHUD showSuccess:@"没有网络"];
             }];
             
-            [self.hottable reloadData];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.hottable reloadData];
+            });
+            
         }
     }
 }
@@ -416,9 +401,9 @@ static NSString *hotidentfid = @"hotidentfid";
 {
     NSIndexPath *index = [self.hottable indexPathForCell:cell];
     NSLog(@"333===%ld   回复",index.row);
-    self.nmodel = [[newModel alloc] init];
-    self.nmodel = self.dataarr[index.row];
-    NSString *str = self.nmodel.newidstr;
+    self.hmodel = [[hotModel alloc] init];
+    self.hmodel = self.dataarr[index.row];
+    NSString *str = self.hmodel.newidstr;
     NSLog(@"str======%@",str);
     detailsViewController *detailsvc = [[detailsViewController alloc] init];
     detailsvc.detalisidstr = str;
@@ -432,9 +417,9 @@ static NSString *hotidentfid = @"hotidentfid";
 {
     NSIndexPath *index = [self.hottable indexPathForCell:cell];
     NSLog(@"333===%ld   跳转网页",index.row);
-    self.nmodel = [[newModel alloc] init];
-    self.nmodel = self.dataarr[index.row];
-    NSString *urlstr = self.nmodel.weburlstr;
+    self.hmodel = [[hotModel alloc] init];
+    self.hmodel = self.dataarr[index.row];
+    NSString *urlstr = self.hmodel.weburlstr;
     NSLog(@"urlstr------%@",urlstr);
     SureWebViewController *surevc = [[SureWebViewController alloc]init];
     surevc.url = urlstr;
@@ -451,16 +436,16 @@ static NSString *hotidentfid = @"hotidentfid";
     NSLog(@"dianzanstr---------%@",dic);
     NSInteger index = [[dic objectForKey:@"dianzanindex"] intValue];
     if (self.dataarr.count==0) {
-        self.nmodel = [[newModel alloc] init];
-        self.nmodel.sifoudianzanstr = [dic objectForKey:@"diansanstr"];
-        self.nmodel.dianzanstr = [dic objectForKey:@"dianzannum"];
-        [self.dataarr addObject:self.nmodel];
+        self.hmodel = [[hotModel alloc] init];
+        self.hmodel.sifoudianzanstr = [dic objectForKey:@"diansanstr"];
+        self.hmodel.dianzanstr = [dic objectForKey:@"dianzannum"];
+        [self.dataarr addObject:self.hmodel];
     }else
     {
-        self.nmodel = self.dataarr[index];
-        self.nmodel.sifoudianzanstr = [dic objectForKey:@"diansanstr"];
-        self.nmodel.dianzanstr = [dic objectForKey:@"dianzannum"];
-        [self.dataarr replaceObjectAtIndex:index withObject:self.nmodel];
+        self.hmodel = self.dataarr[index];
+        self.hmodel.sifoudianzanstr = [dic objectForKey:@"diansanstr"];
+        self.hmodel.dianzanstr = [dic objectForKey:@"dianzannum"];
+        [self.dataarr replaceObjectAtIndex:index withObject:self.hmodel];
     }
 
     [self.hottable reloadData];
@@ -483,7 +468,6 @@ static NSString *hotidentfid = @"hotidentfid";
 {
     [self addHeader];
 }
-
 
 #pragma mark 用于将cell分割线补全
 -(void)viewDidLayoutSubviews {

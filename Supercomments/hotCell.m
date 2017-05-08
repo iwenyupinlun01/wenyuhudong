@@ -1,24 +1,23 @@
 //
-//  newCell.m
+//  hotCell.m
 //  Supercomments
 //
-//  Created by 王俊钢 on 2017/4/7.
+//  Created by 王俊钢 on 2017/5/8.
 //  Copyright © 2017年 wangjungang. All rights reserved.
 //
 
-#import "newCell.h"
+#import "hotCell.h"
 #import "UILabel+MultipleLines.h"
-#import "newModel.h"
+#import "hotModel.h"
 #import "YYPhotoGroupView.h"
 #import "Timestr.h"
 #import "YYKit.h"
 
-@interface newCell()
-@property (nonatomic,strong) newModel *nmodel;
-
+@interface hotCell()
+@property (nonatomic,strong) hotModel *hmodel;
 @end
 
-@implementation newCell
+@implementation hotCell
 
 -(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -190,11 +189,12 @@
 }
 
 
--(CGFloat)setcelldata:(newModel *)model
+-(CGFloat)setcelldata:(hotModel *)model
 {
     CGFloat imghei ;
     
-    self.nmodel = model;
+    self.hmodel = model;
+    
     self.namelab.text = model.namestr;
     
     NSString *str1 = @" 标题: ";
@@ -210,7 +210,7 @@
     self.contentlab.lineBreakMode = NSLineBreakByTruncatingTail;
     self.contentlab.text = model.contentstr;
     [self.contentlab setText:model.contentstr lines:4 andLineSpacing:4 constrainedToSize:CGSizeMake(DEVICE_WIDTH-28*WIDTH_SCALE, 0)];
-   
+    
     [self.contentlab sizeToFit];
     self.texthei = self.contentlab.frame.size.height;
     
@@ -219,7 +219,7 @@
     }];
     
     if (model.contentstr.length!=0&&model.imgurlstr.length!=0) {
-         [self.infoimg sd_setImageWithURL:[NSURL URLWithString:model.small_imagesstrl] placeholderImage:[UIImage imageNamed:@"默认图"]];
+        [self.infoimg sd_setImageWithURL:[NSURL URLWithString:model.small_imagesstrl] placeholderImage:[UIImage imageNamed:@"默认图"]];
         
         [self.contentlab mas_makeConstraints:^(MASConstraintMaker *make) {
             make.height.mas_equalTo(self.texthei);
@@ -257,7 +257,7 @@
     }else if ([model.typestr isEqualToString:@"2"])
     {
         self.fromlab.text = [NSString stringWithFormat:@"%@%@%@",@"网易老司机已赞",model.fromstr,@"次"];
-
+        
     }
     else if ([model.typestr isEqualToString:@"5"])
     {
@@ -267,8 +267,8 @@
     {
         self.fromlab.text = [NSString stringWithFormat:@"%@%@%@",@"今日牛评老司机已赞",model.fromstr,@"次"];
     }
-    
     if ([model.ishot isEqualToString:@"1"]) {
+        
         [_reimg mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self).with.offset(14*WIDTH_SCALE);
             make.height.mas_equalTo(16*HEIGHT_SCALE);
@@ -286,11 +286,12 @@
     {
         
         [_timelab2 mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.tiview.mas_bottom).with.offset(40*HEIGHT_SCALE);
+            make.top.equalTo(self.tiview.mas_bottom).with.offset(36*HEIGHT_SCALE);
             make.left.equalTo(self).with.offset(14*WIDTH_SCALE);
             make.height.mas_equalTo(20*HEIGHT_SCALE);
         }];
     }
+    
     
     if ([model.dianzanstr intValue]>999) {
         self.zbtn.zanlab.text = @"999+";
@@ -350,7 +351,7 @@
     NSString *str=model.timestr;//时间戳
     [Timestr datetime:str];
     [self layoutIfNeeded];
-
+    
     if (model.contentstr.length!=0&&model.imgurlstr.length!=0) {
         return _texthei+imghei+120*HEIGHT_SCALE;
     }else if (model.contentstr.length==0&&model.imgurlstr.length!=0)
@@ -363,14 +364,14 @@
 }
 
 - (void)tapAction{
-        YYPhotoGroupItem *item = [YYPhotoGroupItem new];
-        item.thumbView         = _infoimg;
-        item.largeImageURL     = [NSURL URLWithString:self.nmodel.imgurlstr];
-        YYPhotoGroupView *view = [[YYPhotoGroupView alloc] initWithGroupItems:@[item]];
-        UIView *toView         = [UIApplication sharedApplication].keyWindow.rootViewController.view;
-        [view presentFromImageView:_infoimg
-                       toContainer:toView
-                          animated:YES completion:nil];
+    YYPhotoGroupItem *item = [YYPhotoGroupItem new];
+    item.thumbView         = _infoimg;
+    item.largeImageURL     = [NSURL URLWithString:self.hmodel.imgurlstr];
+    YYPhotoGroupView *view = [[YYPhotoGroupView alloc] initWithGroupItems:@[item]];
+    UIView *toView         = [UIApplication sharedApplication].keyWindow.rootViewController.view;
+    [view presentFromImageView:_infoimg
+                   toContainer:toView
+                      animated:YES completion:nil];
 }
 
 //按钮事件
@@ -385,7 +386,7 @@
 //回复
 -(void)test2:(UIButton *)sender
 {
-
+    
     [self.delegate myTabVClick2:self];
 }
 

@@ -105,9 +105,6 @@ NSMutableArray * ymDataArray;
     self.headm.thumarray = [NSMutableArray array];
     
     
-    
-    
-    
     self.scrollView = [[UIScrollView alloc] init];
     [self.scrollView flashScrollIndicators];
     self.scrollView.directionalLockEnabled = YES;
@@ -128,6 +125,12 @@ NSMutableArray * ymDataArray;
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+     _maintable.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -347,6 +350,8 @@ NSMutableArray * ymDataArray;
         _maintable.tableHeaderView = self.scrollView;
         _maintable.backgroundColor = [UIColor whiteColor];
         _maintable.emptyDataSetSource = self;
+        _maintable.separatorStyle = NO;
+//        [_maintable setSeparatorColor:[UIColor wjColorFloat:@"F5F5F5"]];
         _maintable.emptyDataSetDelegate = self;
         _maintable.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
         _maintable.rowHeight = UITableViewAutomaticDimension;
@@ -400,8 +405,6 @@ NSMutableArray * ymDataArray;
     pinglunCell *cell = [tableView dequeueReusableCellWithIdentifier:detailsidentfid];
 
     cell = [[pinglunCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:detailsidentfid];
-
-    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     _detailsmodel  = self.detalisarr[indexPath.section];
     [cell setcelldata:self.detalisarr[indexPath.section] andindexrow:indexPath.row];
@@ -416,9 +419,7 @@ NSMutableArray * ymDataArray;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     _detailsmodel  = self.detalisarr[indexPath.section];
-    //return 150;
     return _detailsmodel.cellHeight;
-    //return [pinglunCell cellHeightWithText:newstr]+16*HEIGHT_SCALE;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -438,7 +439,6 @@ NSMutableArray * ymDataArray;
     self.secview.backgroundColor = [UIColor whiteColor];
     [self.secview setcelldata:self.detalisarr[section]];
     self.secview.layer.masksToBounds = YES;
-
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     [button setFrame:CGRectMake(0, 0, self.view.frame.size.width, 64)];
     [button setTag:section+1];
@@ -474,7 +474,6 @@ NSMutableArray * ymDataArray;
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
-
 
 -(void)shareclick
 {
@@ -602,10 +601,9 @@ NSMutableArray * ymDataArray;
                 }
 
             }];
-
-            
-          
-            [self.maintable reloadData];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.maintable reloadData];
+            });
         }
 
     }else
@@ -669,12 +667,12 @@ NSMutableArray * ymDataArray;
                 }
                 
             } fail:^(NSError *error) {
-                
+                [MBProgressHUD showSuccess:@"没有网络"];
             }];
             
         }
         
-        dispatch_async(dispatch_get_main_queue(), ^
+            dispatch_async(dispatch_get_main_queue(), ^
             {
                 [self.maintable reloadData];
             });
@@ -1106,7 +1104,7 @@ NSMutableArray * ymDataArray;
             }];
             [self.headview.timelab mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.left.equalTo(self.headview).with.offset(14*WIDTH_SCALE);
-                make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(45*HEIGHT_SCALE);
             }];
 
             
@@ -1138,7 +1136,7 @@ NSMutableArray * ymDataArray;
             [self.headview.dianzanbtn mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.right.equalTo(self.headview).with.offset(-70*WIDTH_SCALE);
                 make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
-                
+                make.width.mas_equalTo(64*WIDTH_SCALE);
                 [self.headview.dianzanbtn.zanlab mas_makeConstraints:^(MASConstraintMaker *make) {
                     make.top.equalTo(self.headview.title).with.offset(45*HEIGHT_SCALE);
                     make.right.equalTo(self.headview.combtn).with.offset(-40*WIDTH_SCALE);
@@ -1180,7 +1178,7 @@ NSMutableArray * ymDataArray;
             }];
             [self.headview.timelab mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.left.equalTo(self.headview).with.offset(14*WIDTH_SCALE);
-                make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(45*HEIGHT_SCALE);
             }];
             [self.headview.sharebtn mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
@@ -1205,7 +1203,7 @@ NSMutableArray * ymDataArray;
             [self.headview.dianzanbtn mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.right.equalTo(self.headview).with.offset(-70*WIDTH_SCALE);
                 make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
-                
+                make.width.mas_equalTo(64*WIDTH_SCALE);
                 [self.headview.dianzanbtn.zanlab mas_makeConstraints:^(MASConstraintMaker *make) {
                     make.top.equalTo(self.headview.title).with.offset(45*HEIGHT_SCALE);
                     make.right.equalTo(self.headview.combtn).with.offset(-40*WIDTH_SCALE);
@@ -1243,7 +1241,7 @@ NSMutableArray * ymDataArray;
             }];
             [self.headview.timelab mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.left.equalTo(self.headview).with.offset(14*WIDTH_SCALE);
-                make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
+                make.top.equalTo(self.headview.title).with.offset(45*HEIGHT_SCALE);
             }];
             
             [self.headview.thumlabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -1275,7 +1273,7 @@ NSMutableArray * ymDataArray;
             [self.headview.dianzanbtn mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.right.equalTo(self.headview).with.offset(-70*WIDTH_SCALE);
                 make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
-                
+                make.width.mas_equalTo(64*WIDTH_SCALE);
                 [self.headview.dianzanbtn.zanlab mas_makeConstraints:^(MASConstraintMaker *make) {
                     make.top.equalTo(self.headview.title).with.offset(45*HEIGHT_SCALE);
                     make.right.equalTo(self.headview.combtn).with.offset(-40*WIDTH_SCALE);
@@ -1360,7 +1358,7 @@ NSMutableArray * ymDataArray;
             [self.headview.dianzanbtn mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.right.equalTo(self.headview).with.offset(-70*WIDTH_SCALE);
                 make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
-                
+                make.width.mas_equalTo(64*WIDTH_SCALE);
                 [self.headview.dianzanbtn.zanlab mas_makeConstraints:^(MASConstraintMaker *make) {
                     make.top.equalTo(self.headview.title).with.offset(45*HEIGHT_SCALE);
                     make.right.equalTo(self.headview.combtn).with.offset(-40*WIDTH_SCALE);
@@ -1375,7 +1373,7 @@ NSMutableArray * ymDataArray;
             }];
 
             
-            _headview.frame = CGRectMake(0, 0, DEVICE_WIDTH, textSize.height+360*HEIGHT_SCALE+textsize2.height);
+            _headview.frame = CGRectMake(0, 0, DEVICE_WIDTH, textSize.height+380*HEIGHT_SCALE+textsize2.height);
             CGFloat hei222 = _headview.frame.size.height;
             if (hei222>DEVICE_HEIGHT-64-58) {
                 self.scrollView.frame = CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT-64-58);
@@ -1441,11 +1439,12 @@ NSMutableArray * ymDataArray;
             [self.headview.dianzanbtn mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.right.equalTo(self.headview).with.offset(-70*WIDTH_SCALE);
                 make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
-                
+                make.width.mas_equalTo(64*WIDTH_SCALE);
                 [self.headview.dianzanbtn.zanlab mas_makeConstraints:^(MASConstraintMaker *make) {
                     make.top.equalTo(self.headview.title).with.offset(45*HEIGHT_SCALE);
                     make.right.equalTo(self.headview.combtn).with.offset(-40*WIDTH_SCALE);
                     make.height.mas_equalTo(20*HEIGHT_SCALE);
+                    
                 }];
                 [self.headview.dianzanbtn.zanimg mas_makeConstraints:^(MASConstraintMaker *make) {
                     make.top.equalTo(self.headview.title).with.offset(45*HEIGHT_SCALE);
@@ -1470,24 +1469,19 @@ NSMutableArray * ymDataArray;
             CGSize textSize = [self.headview.contentlab setText:self.headview.contentlab.text lines:QSTextDefaultLines andLineSpacing:QSTextLineSpacing constrainedToSize:CGSizeMake(DEVICE_WIDTH - 28*WIDTH_SCALE,MAXFLOAT)];
             CGSize textsize2= [self.headview.thumlabel.text boundingRectWithSize:CGSizeMake(DEVICE_WIDTH-28*WIDTH_SCALE, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil].size;
             self.headview.contentlab.frame = CGRectMake(14*WIDTH_SCALE,  24*HEIGHT_SCALE+14*HEIGHT_SCALE, textSize.width, textSize.height);
-            
             [self.headview.title mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.left.equalTo(self.headview).with.offset(14*WIDTH_SCALE);
                 make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
-                make.top.equalTo(self.headview.contentlab).with.offset(2*HEIGHT_SCALE);
+                make.top.equalTo(self.headview.contentlab.mas_bottom).with.offset(2*HEIGHT_SCALE);
             }];
-            
             [self.headview.timelab mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.left.equalTo(self.headview).with.offset(14*WIDTH_SCALE);
                 make.top.equalTo(self.headview.title).with.offset(45*HEIGHT_SCALE);
-                
             }];
-            
             [self.headview.thumlabel mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.left.equalTo(self.headview).with.offset(14*WIDTH_SCALE);
                 make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
                 make.top.equalTo(self.headview.timelab).with.offset(33*HEIGHT_SCALE);
-                
             }];
             [self.headview.sharebtn mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.right.equalTo(self.headview).with.offset(-14*WIDTH_SCALE);
@@ -1512,7 +1506,7 @@ NSMutableArray * ymDataArray;
             [self.headview.dianzanbtn mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.right.equalTo(self.headview).with.offset(-70*WIDTH_SCALE);
                 make.top.equalTo(self.headview.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
-                
+                make.width.mas_equalTo(64*WIDTH_SCALE);
                 [self.headview.dianzanbtn.zanlab mas_makeConstraints:^(MASConstraintMaker *make) {
                     make.top.equalTo(self.headview.title).with.offset(45*HEIGHT_SCALE);
                     make.right.equalTo(self.headview.combtn).with.offset(-40*WIDTH_SCALE);
@@ -1526,7 +1520,6 @@ NSMutableArray * ymDataArray;
                 }];
             }];
             _headview.frame = CGRectMake(0, 0, DEVICE_WIDTH, textSize.height+180*HEIGHT_SCALE+textsize2.height);
-            
             CGFloat hei222 = _headview.frame.size.height;
             if (hei222>DEVICE_HEIGHT-64-58) {
                  self.scrollView.frame = CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT-64-58);

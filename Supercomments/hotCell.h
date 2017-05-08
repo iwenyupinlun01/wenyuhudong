@@ -1,8 +1,8 @@
 //
-//  newCell.h
+//  hotCell.h
 //  Supercomments
 //
-//  Created by 王俊钢 on 2017/4/7.
+//  Created by 王俊钢 on 2017/5/8.
 //  Copyright © 2017年 wangjungang. All rights reserved.
 //
 
@@ -12,7 +12,9 @@
 #import "zanBtn.h"
 #import "titleView.h"
 #import "YYKit.h"
-@class newModel;
+
+@class hotModel;
+
 //创建一个代理
 @protocol mycellVdelegate <NSObject>
 
@@ -20,10 +22,8 @@
 -(void)myTabVClick2:(UITableViewCell *)cell;
 -(void)myTabVClick3:(UITableViewCell *)cell;
 @end
-
-static NSString *newidentfid = @"newidentfid";
-
-@interface newCell : SWTableViewCell
+static NSString *hotidentfid = @"hotidentfid";
+@interface hotCell : UITableViewCell
 @property (nonatomic,strong) UILabel *namelab;
 @property (nonatomic,strong) UILabel *fromlab;
 @property (nonatomic,strong) UILabel *contentlab;
@@ -38,6 +38,5 @@ static NSString *newidentfid = @"newidentfid";
 @property (nonatomic,assign) CGFloat texthei;
 @property(assign,nonatomic)id<mycellVdelegate>delegate;
 
--(CGFloat)setcelldata:(newModel *)model;
-
+-(CGFloat)setcelldata:(hotModel *)model;
 @end

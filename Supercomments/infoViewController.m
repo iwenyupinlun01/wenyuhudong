@@ -14,14 +14,15 @@
 #import "setViewController.h"
 #import "myinfoViewController.h"
 
+
+
+
 @interface infoViewController ()<UITableViewDataSource,UITableViewDelegate,MBProgressHUDDelegate>
 @property (nonatomic,strong) UITableView *infotableview;
 @property (nonatomic,strong) NSArray *imgarr;
 @property (nonatomic,strong) NSArray *textarr;
 @property (nonatomic,strong) headView *headview;
-
 @property (nonatomic,strong) infoCell *cell;
-
 @property (nonatomic, assign) UIEdgeInsets insets;
 @end
 static NSString *infocellidentfid = @"infocellidentfid";

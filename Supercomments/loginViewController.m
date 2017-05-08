@@ -53,7 +53,7 @@
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
     self.logoimg.frame = CGRectMake(283/2*WIDTH_SCALE, 264/2*HEIGHT_SCALE, (DEVICE_WIDTH/2-283/2*WIDTH_SCALE)*2, (DEVICE_WIDTH/2-283/2*WIDTH_SCALE)*2);
     self.namelab.frame = CGRectMake(100*WIDTH_SCALE,  264/2*HEIGHT_SCALE+(DEVICE_WIDTH/2-283/2*WIDTH_SCALE)*2, DEVICE_WIDTH-200*WIDTH_SCALE, 30);
-    self.gobackbtn.frame = CGRectMake(DEVICE_WIDTH-24-40, 40, 60, 60);
+    self.gobackbtn.frame = CGRectMake(DEVICE_WIDTH-24-40, 20, 60, 60);
     self.loginbtn.frame = CGRectMake(20*WIDTH_SCALE, DEVICE_HEIGHT-140*HEIGHT_SCALE, DEVICE_WIDTH-40*WIDTH_SCALE, 40*HEIGHT_SCALE);
     self.zhijiebtn.frame = CGRectMake(DEVICE_WIDTH-50*WIDTH_SCALE-20*WIDTH_SCALE, DEVICE_HEIGHT-24*WIDTH_SCALE-12*WIDTH_SCALE, 50*WIDTH_SCALE, 12*HEIGHT_SCALE);
     self.aggrentlab.frame = CGRectMake(20*WIDTH_SCALE, DEVICE_HEIGHT-24*HEIGHT_SCALE-12*HEIGHT_SCALE, DEVICE_WIDTH-40*WIDTH_SCALE, 12*HEIGHT_SCALE);
@@ -219,15 +219,12 @@
     NSString *path = [dic objectForKey:@"headimgurl"];
     NSString *openid = [dic objectForKey:@"openid"];
     
-    
     NSLog(@"openid---------%@",openid);
     NSDictionary *para = @{@"login_type":@"quickLogin",@"openid":openid,@"token_key":tokenkey,@"nickname":nickname,@"type":@"4",@"path":path};
-    
-    [AFManager postReqURL:denglu reqBody:para block:^(id infor) {
-        NSLog(@"infor---------%@",infor);
-        if ([[infor objectForKey:@"code"] intValue]==1) {
-            NSString *token = [infor objectForKey:@"token"];
-            NSString *uid = [infor objectForKey:@"uid"];
+    [CLNetworkingManager postNetworkRequestWithUrlString:denglu parameters:para isCache:NO succeed:^(id data) {
+        if ([[data objectForKey:@"code"] intValue]==1) {
+            NSString *token = [data objectForKey:@"token"];
+            NSString *uid = [data objectForKey:@"uid"];
             NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
             [userdefat setObject:token forKey:@"tokenuser"];
             [userdefat setObject:uid forKey:@"uid"];
@@ -238,8 +235,10 @@
         }
         else
         {
-            [MBProgressHUD showSuccess:@"状态异常，请稍后再试"];
+            [MBProgressHUD showSuccess:@"网络异常"];
         }
+    } fail:^(NSError *error) {
+        [MBProgressHUD showSuccess:@"状态异常，请稍后再试"];
     }];
 }
 

@@ -11,6 +11,21 @@
 #import "myinfoCell1.h"
 #import "nicknameViewController.h"
 #import "MBManager.h"
+
+@implementation UIImage (ColorImage)
++ (UIImage *)imageWithColor:(UIColor *)color
+{
+    CGRect rect = CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return image;
+}
+@end
+
 @interface myinfoViewController ()<UITableViewDataSource,UITableViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 
 @property (nonatomic,strong) UITableView *myinfotable;
@@ -34,14 +49,22 @@ static NSString *myinfoidentfid1 = @"myidentfid1";
     self.title = @"个人中心";
     
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor wjColorFloat:@"333333"]}];
-    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+
     self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
     
     self.myinfotable.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 
     [self.view addSubview:self.myinfotable];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(nameasd:) name:@"usernamexiugai" object:nil];
+    
+    
+    UINavigationBar *navigationBar = self.navigationController.navigationBar;
+    [navigationBar setBackgroundImage:[[UIImage alloc] init]
+                       forBarPosition:UIBarPositionAny
+                           barMetrics:UIBarMetricsDefault];
+    //此处使底部线条颜色为F5F5F5
+    [navigationBar setShadowImage:[UIImage imageWithColor:[UIColor wjColorFloat:@"F5F5F5"]]];
+
     
 }
 
@@ -104,7 +127,7 @@ static NSString *myinfoidentfid1 = @"myidentfid1";
         _myinfotable = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT-64)];
         _myinfotable.dataSource = self;
         _myinfotable.delegate = self;
-        _myinfotable.scrollEnabled = NO;
+        [_myinfotable setSeparatorColor:[UIColor wjColorFloat:@"F5F5F5"]];
     }
     return _myinfotable;
 }
@@ -127,12 +150,8 @@ static NSString *myinfoidentfid1 = @"myidentfid1";
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         [cell setSeparatorInset:UIEdgeInsetsZero];
         cell.infoimage.tag = 200;
-        
-//        NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
-//        NSString *path2 = [userdefat objectForKey:@"pathurlstr"];
         NSString *path = [tokenstr userimgstrfrom];
         NSLog(@"path-%@",path);
-
         [cell.infoimage sd_setImageWithURL:[NSURL URLWithString:path] placeholderImage:[UIImage imageNamed:@"头像默认图"]];
         return cell;
         
@@ -290,7 +309,7 @@ static NSString *myinfoidentfid1 = @"myidentfid1";
      [MBManager showLoadingInView:self.view];
     
         //对话框显示时需要执行的操作
-        [AFManager postReqURL:touxiang reqBody:@{@"token":[tokenstr tokenstrfrom],@"str":base64str} block:^(id infor) {
+    [AFManager postReqURL:touxiang reqBody:@{@"token":[tokenstr tokenstrfrom],@"str":base64str} block:^(id infor) {
             NSLog(@"infor-------%@",infor);
             if ([[infor objectForKey:@"code"] intValue]==1) {
                 NSString *urlstr = [infor objectForKey:@"newIcon"];
@@ -302,8 +321,7 @@ static NSString *myinfoidentfid1 = @"myidentfid1";
             }
             [MBManager hideAlert];
             [MBProgressHUD showSuccess:@"更改成功"];
-        }];
-        
+    }];
     
 }
 

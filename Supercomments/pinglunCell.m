@@ -34,17 +34,17 @@
 -(void)layoutSubviews
 {
     [super layoutSubviews];
-    //self.bgview.frame = CGRectMake(59*WIDTH_SCALE, 0, DEVICE_WIDTH-64*WIDTH_SCALE-14*WIDTH_SCALE, self.frame.size.height);
+    self.bgview.frame = CGRectMake(59*WIDTH_SCALE, 0, DEVICE_WIDTH-64*WIDTH_SCALE-14*WIDTH_SCALE, self.frame.size.height);
 }
 
 -(void)setuplayout
 {
-    [self.bgview mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self).with.offset(0);
-        make.right.equalTo(self).with.offset(-14*WIDTH_SCALE);
-        make.left.equalTo(self).with.offset(64*WIDTH_SCALE);
-        make.bottom.equalTo(self).with.offset(0);
-    }];
+//    [self.bgview mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self).with.offset(0);
+//        make.right.equalTo(self).with.offset(-14*WIDTH_SCALE);
+//        make.left.equalTo(self).with.offset(62*WIDTH_SCALE);
+//        make.bottom.equalTo(self).with.offset(0);
+//    }];
     
     [self.pinglunlab mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self).with.offset(8*HEIGHT_SCALE);
@@ -56,7 +56,6 @@
 -(CGFloat )setcelldata:(detailcellmodel *)model andindexrow:(NSInteger )indexstr
 {
     self.detalmodel = model;
- 
     NSString *str4 = [NSString stringWithFormat:@"%@%@",@":", [[model.pingarr objectAtIndex:indexstr] objectForKey:@"content"]];
     NSString *str1 = [[model.pingarr objectAtIndex:indexstr] objectForKey:@"s_nickname"];
     NSString *str3 = [[model.pingarr objectAtIndex:indexstr] objectForKey:@"s_to_nickname"];
@@ -70,8 +69,6 @@
     NSString *newstr = [str string];
     
     self.pinglunlab.attributedText = str;
-    //self.pinglunlab.text = newstr;
-    //self.pinglunlab.backgroundColor = [UIColor redColor];
     CGSize titleSize = [newstr boundingRectWithSize:CGSizeMake(DEVICE_WIDTH -64*WIDTH_SCALE-14*WIDTH_SCALE-10*WIDTH_SCALE, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil].size;
     
     [self.pinglunlab mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -79,17 +76,10 @@
     }];
     self.pinglunlab.font = [UIFont systemFontOfSize:14];
     [self.pinglunlab sizeToFit];
-    
-    model.cellHeight = titleSize.height+12*HEIGHT_SCALE;
-    
+    model.cellHeight = titleSize.height+16*HEIGHT_SCALE;
     [self layoutIfNeeded];
-    
     return model.cellHeight;
 }
-
-
-
-
 
 -(UIView *)bgview
 {
@@ -106,7 +96,6 @@
     if(!_pinglunlab)
     {
         _pinglunlab = [[UILabel alloc] init];
-       // _pinglunlab.textAlignment = NSTextAlignmentLeft;
         _pinglunlab.numberOfLines = 0;
     }
     return _pinglunlab;
@@ -120,7 +109,6 @@
                              andLineSpacing:4
                           constrainedToSize:CGSizeMake(DEVICE_WIDTH -64*WIDTH_SCALE-14*WIDTH_SCALE-16*WIDTH_SCALE,MAXFLOAT)];
     return textSize.height;
-    
 }
 
 @end

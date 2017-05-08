@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5301DD9E1EC0162A00A68CB6 /* hotModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5301DD9D1EC0162A00A68CB6 /* hotModel.m */; };
+		5301DDA11EC0163A00A68CB6 /* hotCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5301DDA01EC0163A00A68CB6 /* hotCell.m */; };
 		531CF9761EBF5EF7009F5DFB /* setCell2.m in Sources */ = {isa = PBXBuildFile; fileRef = 531CF9751EBF5EF7009F5DFB /* setCell2.m */; };
 		531F94491EBE3B2400769399 /* HelpTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 531F94461EBE3B2400769399 /* HelpTool.m */; };
 		531F944A1EBE3B2400769399 /* UILabel+textOfNumberLines.m in Sources */ = {isa = PBXBuildFile; fileRef = 531F94481EBE3B2400769399 /* UILabel+textOfNumberLines.m */; };
@@ -75,7 +77,6 @@
 		53AEBE721E95014B00280F70 /* infoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 53AEBE711E95014B00280F70 /* infoCell.m */; };
 		53C40EBE1EB8227F0052CEB9 /* NSObject+XWAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = 53C40EBD1EB8227F0052CEB9 /* NSObject+XWAdd.m */; };
 		53D48A831EA4D52F00E5ADA3 /* headModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 53D48A821EA4D52F00E5ADA3 /* headModel.m */; };
-		53DF54A81EB9AC9E00AF6248 /* ColorImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 53DF54A71EB9AC9E00AF6248 /* ColorImage.m */; };
 		53DF54AC1EB9D10600AF6248 /* MBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 53DF54AB1EB9D10600AF6248 /* MBManager.m */; };
 		53E2944C1E9F72930034D4E7 /* XWScanImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 53E2944B1E9F72930034D4E7 /* XWScanImage.m */; };
 		53E412F01EAA1C8E00EBC0CE /* xitongModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 53E412EF1EAA1C8E00EBC0CE /* xitongModel.m */; };
@@ -123,6 +124,10 @@
 
 /* Begin PBXFileReference section */
 		199683D136C99C557085109D /* Pods-Supercomments.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Supercomments.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Supercomments/Pods-Supercomments.debug.xcconfig"; sourceTree = "<group>"; };
+		5301DD9C1EC0162A00A68CB6 /* hotModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hotModel.h; sourceTree = "<group>"; };
+		5301DD9D1EC0162A00A68CB6 /* hotModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = hotModel.m; sourceTree = "<group>"; };
+		5301DD9F1EC0163A00A68CB6 /* hotCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hotCell.h; sourceTree = "<group>"; };
+		5301DDA01EC0163A00A68CB6 /* hotCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = hotCell.m; sourceTree = "<group>"; };
 		531CF9741EBF5EF7009F5DFB /* setCell2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = setCell2.h; sourceTree = "<group>"; };
 		531CF9751EBF5EF7009F5DFB /* setCell2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = setCell2.m; sourceTree = "<group>"; };
 		531F94451EBE3B2400769399 /* HelpTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpTool.h; sourceTree = "<group>"; };
@@ -262,8 +267,6 @@
 		53C40EBD1EB8227F0052CEB9 /* NSObject+XWAdd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+XWAdd.m"; sourceTree = "<group>"; };
 		53D48A811EA4D52F00E5ADA3 /* headModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = headModel.h; sourceTree = "<group>"; };
 		53D48A821EA4D52F00E5ADA3 /* headModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = headModel.m; sourceTree = "<group>"; };
-		53DF54A61EB9AC9E00AF6248 /* ColorImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorImage.h; sourceTree = "<group>"; };
-		53DF54A71EB9AC9E00AF6248 /* ColorImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorImage.m; sourceTree = "<group>"; };
 		53DF54AA1EB9D10600AF6248 /* MBManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBManager.h; sourceTree = "<group>"; };
 		53DF54AB1EB9D10600AF6248 /* MBManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBManager.m; sourceTree = "<group>"; };
 		53E2944A1E9F72930034D4E7 /* XWScanImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XWScanImage.h; sourceTree = "<group>"; };
@@ -675,8 +678,6 @@
 				539550E41EA0C638001A268C /* navViewController.h */,
 				539550E51EA0C638001A268C /* navViewController.m */,
 				539550EB1EA0D9CB001A268C /* wangHeader.h */,
-				53DF54A61EB9AC9E00AF6248 /* ColorImage.h */,
-				53DF54A71EB9AC9E00AF6248 /* ColorImage.m */,
 			);
 			name = utlis;
 			sourceTree = "<group>";
@@ -941,6 +942,8 @@
 		53AEBE631E94D88E00280F70 /* view */ = {
 			isa = PBXGroup;
 			children = (
+				5301DD9F1EC0163A00A68CB6 /* hotCell.h */,
+				5301DDA01EC0163A00A68CB6 /* hotCell.m */,
 			);
 			name = view;
 			sourceTree = "<group>";
@@ -948,6 +951,8 @@
 		53AEBE641E94D88F00280F70 /* model */ = {
 			isa = PBXGroup;
 			children = (
+				5301DD9C1EC0162A00A68CB6 /* hotModel.h */,
+				5301DD9D1EC0162A00A68CB6 /* hotModel.m */,
 			);
 			name = model;
 			sourceTree = "<group>";
@@ -1295,6 +1300,7 @@
 				538D53DE1EAF14BB00E2DCAF /* CLImageModel.m in Sources */,
 				53AEBE521E9496FF00280F70 /* homeViewController.m in Sources */,
 				53AEBE221E948A2500280F70 /* ViewController.m in Sources */,
+				5301DD9E1EC0162A00A68CB6 /* hotModel.m in Sources */,
 				53619E681E961CD2007CC7AC /* WJGtextView.m in Sources */,
 				53E5C0711EB08182008B1F22 /* xieyiScrollView.m in Sources */,
 				53FE161C1E9C89D000585111 /* sectionView.m in Sources */,
@@ -1316,7 +1322,6 @@
 				53619E521E960164007CC7AC /* messageViewController.m in Sources */,
 				53619ED11E988A01007CC7AC /* setbtn.m in Sources */,
 				53619EC01E976EBB007CC7AC /* UIColor+BgColor.m in Sources */,
-				53DF54A81EB9AC9E00AF6248 /* ColorImage.m in Sources */,
 				53AEBE1F1E948A2500280F70 /* AppDelegate.m in Sources */,
 				53314A4B1EA1DE35009773F0 /* YYPhotoGroupView.m in Sources */,
 				53AEBE671E94D8A100280F70 /* newViewController.m in Sources */,
@@ -1331,6 +1336,7 @@
 				53E587841EA7651D004CB302 /* detailcellmodel.m in Sources */,
 				531F944A1EBE3B2400769399 /* UILabel+textOfNumberLines.m in Sources */,
 				53AEBE491E94910700280F70 /* UIView+ViewController.m in Sources */,
+				5301DDA11EC0163A00A68CB6 /* hotCell.m in Sources */,
 				53AEBE451E94910700280F70 /* MLMSegmentHead.m in Sources */,
 				53E5C0781EB1D802008B1F22 /* bannerLab.m in Sources */,
 				53E2944C1E9F72930034D4E7 /* XWScanImage.m in Sources */,
