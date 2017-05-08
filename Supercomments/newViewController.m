@@ -281,14 +281,11 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     newCell *cell = [tableView dequeueReusableCellWithIdentifier:newidentfid];
-
     cell = [[newCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:newidentfid];
-
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.delegate = self;
     [cell setSeparatorInset:UIEdgeInsetsZero];
     [cell setcelldata:self.dataarr[indexPath.row]];
-   
     return cell;
 }
 
@@ -328,17 +325,17 @@
         else
         {
             //点赞
-            self.nmodel.sifoudianzanstr = @"1";
             NSDictionary *reqdic = @{@"token":[tokenstr tokenstrfrom],@"object_id":self.nmodel.newidstr,@"status":@"1",@"type":@"1"};
-            [AFManager postReqURL:qudianzan reqBody:reqdic block:^(id infor) {
-                NSLog(@"infor-------%@",infor);
-                NSString *code = [infor objectForKey:@"code"];
+            [CLNetworkingManager postNetworkRequestWithUrlString:qudianzan parameters:reqdic isCache:NO succeed:^(id data) {
+                NSLog(@"infor-------%@",data);
+                NSString *code = [data objectForKey:@"code"];
                 if ([code intValue]==1) {
                     [MBProgressHUD showSuccess:@"点赞+1"];
+                    self.nmodel.sifoudianzanstr = @"1";
                     NSLog(@"成功");
                     self.nmodel = [[newModel alloc] init];
                     self.nmodel = self.dataarr[index.row];
-                    NSDictionary *dic = [infor objectForKey:@"info"];
+                    NSDictionary *dic = [data objectForKey:@"info"];
                     self.nmodel.dianzanstr = [dic objectForKey:@"spportNum"];
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [self.newtable reloadData];
@@ -363,7 +360,10 @@
                     [MBProgressHUD showSuccess:@"系统繁忙，请稍后再试"];
                     NSLog(@"系统繁忙，请稍后再试");
                 }
+            } fail:^(NSError *error) {
+                [MBProgressHUD showSuccess:@"没有网络"];
             }];
+            
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.newtable reloadData];
             });
@@ -380,17 +380,17 @@
         else
         {
             //取消点赞
-            self.nmodel.sifoudianzanstr = @"0";
             NSDictionary *reqdic = @{@"token":[tokenstr tokenstrfrom],@"object_id":self.nmodel.newidstr,@"status":@"0",@"type":@"1"};
-            [AFManager postReqURL:qudianzan reqBody:reqdic block:^(id infor) {
-                NSLog(@"infor-------%@",infor);
-                NSString *code = [infor objectForKey:@"code"];
+            [CLNetworkingManager postNetworkRequestWithUrlString:qudianzan parameters:reqdic isCache:NO succeed:^(id data) {
+                NSLog(@"infor-------%@",data);
+                NSString *code = [data objectForKey:@"code"];
                 if ([code intValue]==1) {
+                    self.nmodel.sifoudianzanstr = @"0";
                     [MBProgressHUD showSuccess:@"取消点赞"];
                     NSLog(@"成功");
                     self.nmodel = [[newModel alloc] init];
                     self.nmodel = self.dataarr[index.row];
-                    NSDictionary *dic = [infor objectForKey:@"info"];
+                    NSDictionary *dic = [data objectForKey:@"info"];
                     self.nmodel.dianzanstr = [dic objectForKey:@"spportNum"];
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [self.newtable reloadData];
@@ -415,6 +415,8 @@
                     [MBProgressHUD showSuccess:@"系统繁忙，请稍后再试"];
                     NSLog(@"系统繁忙，请稍后再试");
                 }
+            } fail:^(NSError *error) {
+                [MBProgressHUD showSuccess:@"没有网络"];
             }];
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.newtable reloadData];

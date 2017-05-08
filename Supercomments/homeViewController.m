@@ -122,7 +122,8 @@
         }
         
     } fail:^(NSError *error) {
-        
+        NSString *urlstr = [tokenstr userimgstrfrom];
+        [self.infobtn sd_setImageWithURL:[NSURL URLWithString:urlstr] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"头像默认图"]];
     }];
     
 }
