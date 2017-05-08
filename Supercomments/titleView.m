@@ -48,7 +48,6 @@
     if(!_titlelab)
     {
         _titlelab = [[UILabel alloc] init];
-        //_titlelab.textColor = [UIColor wjColorFloat:@"576B95"];
         _titlelab.backgroundColor = [UIColor wjColorFloat:@"F5F5F5"];
         _titlelab.font = [UIFont systemFontOfSize:13*FX];
     }

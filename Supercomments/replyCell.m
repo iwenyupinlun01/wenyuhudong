@@ -37,11 +37,14 @@
     self.picimage.frame = CGRectMake(14*WIDTH_SCALE, 16*HEIGHT_SCALE, 36*WIDTH_SCALE, 36*WIDTH_SCALE);
     self.namelab.frame = CGRectMake(28*WIDTH_SCALE+36*WIDTH_SCALE, 20*HEIGHT_SCALE, 100*WIDTH_SCALE, 10*HEIGHT_SCALE);
     self.rightimage.frame = CGRectMake(DEVICE_WIDTH-14*WIDTH_SCALE-50*WIDTH_SCALE, 16*HEIGHT_SCALE, 50*WIDTH_SCALE, 50*WIDTH_SCALE);
-    self.textlab.frame = CGRectMake(128/2*WIDTH_SCALE, 94/2*HEIGHT_SCALE, DEVICE_WIDTH-128/2*WIDTH_SCALE-148/2*WIDTH_SCALE, (248/2-94/2-44)*HEIGHT_SCALE);
-    self.timelab.frame = CGRectMake(130/2*WIDTH_SCALE, (self.frame.size.height-16-15)*HEIGHT_SCALE, 80*WIDTH_SCALE, 15*HEIGHT_SCALE);
-    self.btn.frame = CGRectMake(DEVICE_WIDTH-12*WIDTH_SCALE-40*WIDTH_SCALE, self.frame.size.height-16*HEIGHT_SCALE-40/3*HEIGHT_SCALE, 40*WIDTH_SCALE, 40/3*HEIGHT_SCALE);
+    self.textlab.frame = CGRectMake(128/2*WIDTH_SCALE, 94/2*HEIGHT_SCALE-12*HEIGHT_SCALE, DEVICE_WIDTH-128/2*WIDTH_SCALE-148/2*WIDTH_SCALE, (248/2-94/2-44)*HEIGHT_SCALE);
+    self.timelab.frame = CGRectMake(130/2*WIDTH_SCALE, self.frame.size.height-16*HEIGHT_SCALE-40/3*HEIGHT_SCALE+10*HEIGHT_SCALE, 80*WIDTH_SCALE, 15*HEIGHT_SCALE);
+    self.btn.frame = CGRectMake(DEVICE_WIDTH-12*WIDTH_SCALE-40*WIDTH_SCALE, self.frame.size.height-16*HEIGHT_SCALE-40/3*HEIGHT_SCALE+10*HEIGHT_SCALE, 40*WIDTH_SCALE, 40/3*HEIGHT_SCALE);
     self.rightlab.frame = CGRectMake(DEVICE_WIDTH-14*WIDTH_SCALE-50*WIDTH_SCALE, 16*HEIGHT_SCALE, 50*WIDTH_SCALE, 50*WIDTH_SCALE);
+    
 }
+
+
 
 -(void)setdata:(replyModel *)repmodel
 {
@@ -115,11 +118,8 @@
     if(!_textlab)
     {
         _textlab = [[UILabel alloc] init];
-        //NSString *str = @"无尽火域，炎帝执掌，无尽火域，炎帝执掌，无尽火域，炎帝执掌，无尽火域，炎帝执掌，无尽火域，炎帝执掌，";
-        //_textlab.backgroundColor = [UIColor redColor];
-        _textlab.font = [UIFont systemFontOfSize:13];
+        _textlab.font = [UIFont systemFontOfSize:17];
         _textlab.numberOfLines = 0;//多行显示，计算高度
-        //_textlab.text = str;
         [_textlab sizeToFit];
     }
     return _textlab;
@@ -130,7 +130,6 @@
     if(!_timelab)
     {
         _timelab = [[UILabel alloc] init];
-        //_timelab.text = @"13:40";
         _timelab.textColor = [UIColor wjColorFloat:@"999999"];
         _timelab.font = [UIFont systemFontOfSize:11];
     }
@@ -143,7 +142,8 @@
     {
         _rightlab = [[UILabel alloc] init];
         _rightlab.numberOfLines = 0;
-        _rightlab.font = [UIFont systemFontOfSize:12];
+        _rightlab.backgroundColor = [UIColor wjColorFloat:@"E8E8E8"];
+        _rightlab.font = [UIFont systemFontOfSize:14];
         _rightlab.textColor = [UIColor wjColorFloat:@"333333"];
         [_rightlab sizeToFit];
     }

@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-typedef void (^ButtonBlock) (id sender);
-@interface XSNoDataView : UIView
 
-- (void)addButtonAction:(ButtonBlock)block;
+@interface XSNoDataView : UIView
+@property (nonatomic,strong)    UIButton *refreshBTN;
+
 @end

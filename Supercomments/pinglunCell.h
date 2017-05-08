@@ -11,5 +11,5 @@
 @interface pinglunCell : UITableViewCell
 @property (nonatomic,strong) UILabel *pinglunlab;
 -(CGFloat)setcelldata:(detailcellmodel *)model andindexrow:(NSInteger )indexstr;
-+ (CGFloat)cellHeightWithText:(NSString *)text;
+//+ (CGFloat)cellHeightWithText:(NSString *)text;
 @end

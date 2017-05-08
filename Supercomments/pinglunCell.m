@@ -39,16 +39,10 @@
 
 -(void)setuplayout
 {
-//    [self.bgview mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(self).with.offset(0);
-//        make.right.equalTo(self).with.offset(-14*WIDTH_SCALE);
-//        make.left.equalTo(self).with.offset(62*WIDTH_SCALE);
-//        make.bottom.equalTo(self).with.offset(0);
-//    }];
-    
+
     [self.pinglunlab mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self).with.offset(8*HEIGHT_SCALE);
-        make.right.equalTo(self).with.offset(-14*WIDTH_SCALE);
+        make.right.equalTo(self).with.offset(-18*WIDTH_SCALE);
         make.left.equalTo(self).with.offset(64*WIDTH_SCALE+6*WIDTH_SCALE);
     }];
 }
@@ -67,14 +61,13 @@
     [str addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"333333"] range:NSMakeRange(str1.length+str2.length+str3.length,str4.length)];
     NSLog(@"str===============%@",str);
     NSString *newstr = [str string];
-    
+    self.pinglunlab.font = [UIFont systemFontOfSize:14];
     self.pinglunlab.attributedText = str;
-    CGSize titleSize = [newstr boundingRectWithSize:CGSizeMake(DEVICE_WIDTH -64*WIDTH_SCALE-14*WIDTH_SCALE-10*WIDTH_SCALE, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil].size;
-    
+    self.pinglunlab.lineBreakMode = NSLineBreakByCharWrapping;
+    CGSize titleSize = [newstr boundingRectWithSize:CGSizeMake(DEVICE_WIDTH -64*WIDTH_SCALE-14*WIDTH_SCALE-16*WIDTH_SCALE, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil].size;
     [self.pinglunlab mas_makeConstraints:^(MASConstraintMaker *make) {
         make.height.mas_equalTo(titleSize.height);
     }];
-    self.pinglunlab.font = [UIFont systemFontOfSize:14];
     [self.pinglunlab sizeToFit];
     model.cellHeight = titleSize.height+16*HEIGHT_SCALE;
     [self layoutIfNeeded];
@@ -110,5 +103,6 @@
                           constrainedToSize:CGSizeMake(DEVICE_WIDTH -64*WIDTH_SCALE-14*WIDTH_SCALE-16*WIDTH_SCALE,MAXFLOAT)];
     return textSize.height;
 }
+
 
 @end

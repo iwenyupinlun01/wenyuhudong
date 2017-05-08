@@ -64,8 +64,6 @@ static NSString *myinfoidentfid1 = @"myidentfid1";
                            barMetrics:UIBarMetricsDefault];
     //此处使底部线条颜色为F5F5F5
     [navigationBar setShadowImage:[UIImage imageWithColor:[UIColor wjColorFloat:@"F5F5F5"]]];
-
-    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -118,7 +116,6 @@ static NSString *myinfoidentfid1 = @"myidentfid1";
         NSLog(@"infor-------%@",infor);
     }];
 }
-
 
 -(UITableView *)myinfotable
 {
@@ -322,7 +319,6 @@ static NSString *myinfoidentfid1 = @"myidentfid1";
             [MBManager hideAlert];
             [MBProgressHUD showSuccess:@"更改成功"];
     }];
-    
 }
 
 -(void)nameasd:(NSNotification *)notifocation

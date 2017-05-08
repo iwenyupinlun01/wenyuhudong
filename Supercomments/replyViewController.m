@@ -200,7 +200,7 @@ static NSString *replyidentfid = @"replyidentfid";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 248/2*HEIGHT_SCALE;
+    return 248/2*HEIGHT_SCALE-30*HEIGHT_SCALE;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section

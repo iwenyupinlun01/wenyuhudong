@@ -15,8 +15,9 @@
 #import "SureWebViewController.h"
 #import "loginViewController.h"
 #import <DZNEmptyDataSet/UIScrollView+EmptyDataSet.h>
-
 #import "UIImageView+RotateImgV.h"
+#import "LGSegment.h"
+#import "XSNoDataView.h"
 
 @interface newViewController ()<UITableViewDataSource,UITableViewDelegate,mycellVdelegate,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate>
 /** 用于加载下一页的参数(页码) */
@@ -35,6 +36,10 @@
 @property (nonatomic,strong) UIButton *xuanzuanbtn;
 @property (nonatomic,strong) NSMutableArray *textheiarr;
 @property (nonatomic,strong) newCell *cell;
+
+@property (nonatomic,strong) XSNoDataView *dataView;
+
+@property (nonatomic,strong) UIView *bgview;
 @end
 
 @implementation newViewController
@@ -57,16 +62,24 @@
     [self addHeader];
     // 3.2.上拉加载更多
     [self addFooter];
-    
-     self.insets = UIEdgeInsetsMake(0, 14, 0, 14);
+    self.insets = UIEdgeInsetsMake(0, 14, 0, 14);
     [self.view addSubview:self.newtable];
-    
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(kvcdianzan:) name:@"shifoudiandankvo" object:nil];
-    [self.view addSubview:self.xuanzuanbtn];
 
+    [self.view addSubview:self.xuanzuanbtn];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(kvcdianzan:) name:@"shifoudiandankvo" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(kvcpinglun:) name:@"pinglunkvo" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dataviewclick:) name:@"dataviewclick01" object:nil];
+    
 }
 
-
+-(void)dataviewclick:(NSNotification *)notifocation
+{
+    NSMutableArray *arr =  [notifocation object];
+    if (arr.count==0) {
+        
+        
+    }
+}
 
 #pragma mark - 刷新控件
 
@@ -130,23 +143,22 @@
             [self.dataarr addObject:self.nmodel];
             [self.imgarr addObject:self.nmodel.imgurlstr];
         }
-   
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.newtable.mj_header endRefreshing];
             [self.newtable reloadData];
             [self.xuanzuanbtn stopRotate];
         });
-        
     } fail:^(NSError *error) {
-        
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.newtable.mj_header endRefreshing];
             [self.xuanzuanbtn stopRotate];
             [MBProgressHUD showError:@"没有网络"];
-
+            
         });
         self.panduan404str = @"1";
     }];
+    
     
 }
 - (void)footerRefreshEndAction {
@@ -206,7 +218,7 @@
 {
     [super viewWillAppear:animated];
     self.newtable.frame = CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT-64);
-
+    
 }
 
 #pragma mark - getters
@@ -254,11 +266,62 @@
 {
     [_newtable setContentOffset:CGPointMake(0,0) animated:NO];
     
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.xuanzuanbtn rotate360DegreeWithImageView];
-        [self.newtable.mj_header beginRefreshing];
-    });
+    [CLNetworkingManager clearCaches];
+    [self.xuanzuanbtn rotate360DegreeWithImageView];
+    [self.newtable.mj_header beginRefreshing];
     
+    
+    [self.dataSource removeAllObjects];
+    [self.dataarr removeAllObjects];
+    [self.imgarr removeAllObjects];
+    [self.textheiarr removeAllObjects];
+    NSString *strurl = [NSString stringWithFormat:newVCload,@"1",@"1",[tokenstr tokenstrfrom]];
+    
+    
+    [AFManager getReqURL:strurl block:^(id infor) {
+        NSLog(@"infor=====%@",infor);
+        NSLog(@"str====%@",strurl);
+        NSArray *dit = [infor objectForKey:@"info"];
+        for (int i = 0; i<dit.count; i++) {
+            NSDictionary *dicarr = [dit objectAtIndex:i];
+            self.nmodel = [[newModel alloc] init];
+            self.nmodel.contentstr = dicarr[@"content"];
+            self.nmodel.timestr = dicarr[@"create_time"];
+            self.nmodel.imgurlstr = dicarr[@"images"];
+            self.nmodel.namestr = dicarr[@"name"];
+            self.nmodel.dianzanstr = [NSString stringWithFormat:@"%@",dicarr[@"support_num"]];
+            self.nmodel.pinglunstr = dicarr[@"reply_num"];
+            self.nmodel.newidstr = dicarr[@"id"];
+            self.nmodel.titlestr = dicarr[@"title"];
+            self.nmodel.fromstr =dicarr[@"support_count"];
+            self.nmodel.typestr = dicarr[@"type"];
+            self.nmodel.sifoudianzanstr = [NSString stringWithFormat:@"%@",dicarr[@"is_support"]];
+            self.nmodel.weburlstr = dicarr[@"url"];
+            self.nmodel.ishot = [NSString stringWithFormat:@"%@",dicarr[@"is_hot"]];
+            self.nmodel.platformstr = dicarr[@"platform"];
+            self.nmodel.small_imagesstrl = dicarr[@"small_images"];
+            self.nmodel.textheightstr = @"";
+            
+            [self.dataSource addObject:self.nmodel.contentstr];
+            [self.dataarr addObject:self.nmodel];
+            [self.imgarr addObject:self.nmodel.imgurlstr];
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.newtable.mj_header endRefreshing];
+            [self.newtable reloadData];
+            [self.xuanzuanbtn stopRotate];
+        });
+
+    } errorblock:^(NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.newtable.mj_header endRefreshing];
+            [self.xuanzuanbtn stopRotate];
+            [MBProgressHUD showError:@"没有网络"];
+            
+        });
+        self.panduan404str = @"1";
+    }];
 }
 
 #pragma mark -UITableViewDataSource&&UITableViewDelegate
@@ -302,6 +365,7 @@
 }
 
 //点赞
+
 -(void)myTabVClick1:(UITableViewCell *)cell
 {
     NSIndexPath *index = [self.newtable indexPathForCell:cell];
@@ -476,6 +540,16 @@
     [self.newtable reloadData];
 }
 
+-(void)kvcpinglun:(NSNotification *)notifocation
+{
+    NSDictionary *dic = [notifocation object];
+    NSLog(@"dianzanstr---------%@",dic);
+    NSInteger index = [[dic objectForKey:@"dianzanindex"] intValue];
+    self.nmodel = self.dataarr[index];
+    self.nmodel.pinglunstr = [dic objectForKey:@"pinglunstr"];
+    [self.newtable reloadData];
+}
+
 - (void)dealloc{
     //[super dealloc];
     // 移除当前对象监听的事件
@@ -483,10 +557,11 @@
     
 }
 
+
 #pragma mark - 加载失败
 
 - (UIImage *)imageForEmptyDataSet:(UIScrollView *)scrollView {
-    return [UIImage imageNamed:@"空的"];
+    return [UIImage imageNamed:@"加载失败-1"];
 }
 
 - (void)emptyDataSet:(UIScrollView *)scrollView didTapView:(UIView *)view
@@ -495,6 +570,7 @@
 }
 
 #pragma mark 用于将cell分割线补全
+
 -(void)viewDidLayoutSubviews {
     if ([self.newtable respondsToSelector:@selector(setSeparatorInset:)]) {
         [self.newtable setSeparatorInset:self.insets];
@@ -512,5 +588,6 @@
         [cell setSeparatorInset:self.insets];
     }
 }
+
 
 @end

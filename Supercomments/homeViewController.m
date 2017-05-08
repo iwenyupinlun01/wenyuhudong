@@ -31,6 +31,8 @@
 
 @property (nonatomic,strong) NSString *denglustr;
 
+@property (nonatomic,strong) UIView *pointview;
+
 @end
 
 @implementation homeViewController
@@ -57,6 +59,19 @@
 
 }
 
+
+-(UIView *)pointview
+{
+    if(!_pointview)
+    {
+        _pointview = [[UIView alloc] init];
+        
+    }
+    return _pointview;
+}
+
+
+
 //判断登陆是否过期
 
 -(BOOL)shijianjisuan
@@ -78,8 +93,7 @@
 -(void)islogin
 {
 
-    [CLNetworkingManager getNetworkRequestWithUrlString:[NSString stringWithFormat:loginbool,[tokenstr tokenstrfrom]] parameters:nil isCache:NO succeed:^(id data) {
-        
+    [CLNetworkingManager getNetworkRequestWithUrlString:[NSString stringWithFormat:loginbool,[tokenstr tokenstrfrom]] parameters:nil isCache:YES succeed:^(id data) {
         
         NSLog(@"infor=%@",data);
         if ([[data objectForKey:@"is_login"]intValue]!=1) {
@@ -134,14 +148,23 @@
     NSLog(@"%@",tokenstr2);
     
     if ([tokenstr tokenstrfrom].length!=0) {
-        [AFManager getReqURL:[NSString stringWithFormat:tongzhixianxishuliang,[tokenstr tokenstrfrom]] block:^(id infor) {
-            NSLog(@"info---------%@",infor);
+        
+        [CLNetworkingManager getNetworkRequestWithUrlString:[NSString stringWithFormat:tongzhixianxishuliang,[tokenstr tokenstrfrom]] parameters:nil isCache:YES succeed:^(id data) {
+            NSLog(@"info---------%@",data);
             NSString *inforstr = [[NSString alloc] init];
             NSString *system_inform = [[NSString alloc] init];
-            if ([[infor objectForKey:@"code"] intValue]==1) {
-                NSDictionary *dic = [infor objectForKey:@"info"];
+            if ([[data objectForKey:@"code"] intValue]==1) {
+                NSDictionary *dic = [data objectForKey:@"info"];
                 inforstr = [dic objectForKey:@"inform"];
                 system_inform = [dic objectForKey:@"system_inform"];
+                
+                
+                NSUserDefaults *sharedefat = [NSUserDefaults standardUserDefaults];
+                [sharedefat setObject:inforstr forKey:@"inforstr"];
+                [sharedefat setObject:system_inform forKey:@"system_inform"];
+                [sharedefat synchronize];
+                
+                
             }
             if ([inforstr isEqualToString:@"0"]&&[system_inform isEqualToString:@"0"]) {
                 [self.xiaohongdianview setHidden:YES];
@@ -151,8 +174,8 @@
                 [self.view addSubview:self.xiaohongdianview];
             }
             
-        } errorblock:^(NSError *error) {
-            [MBProgressHUD showSuccess:@"请检查网络"];
+        } fail:^(NSError *error) {
+            
         }];
 
     }else
@@ -230,14 +253,15 @@
     //初始化
     LGSegment *segment = [[LGSegment alloc]initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, LG_segmentH)];
     segment.delegate = self;
-    
     self.segment = segment;
+   // [self.segment.LGLayer setHidden:YES];
     [self.view addSubview:segment];
     [self.buttonList addObject:segment.buttonList];
     self.LGLayer = segment.LGLayer;
     
 }
 //加载ScrollView
+
 -(void)setContentScrollView {
     
     UIScrollView *sv = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 44, self.view.frame.size.width, DEVICE_HEIGHT-44)];

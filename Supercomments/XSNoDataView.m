@@ -12,8 +12,7 @@
 
 @interface XSNoDataView ()
 
-@property (nonatomic, strong, nullable) ButtonBlock block;
-@property (nonatomic, strong, nullable) UIButton *button;
+
 
 @end
 
@@ -25,19 +24,10 @@
     if (self) {
         
         UIImageView *imageView = [[UIImageView alloc] init];
-       // imageView.frame = CGRectMake(DEVICE_WIDTH*3/8, adoptValue(240), DEVICE_WIDTH / 4, DEVICE_HEIGHT / 4);
-        imageView.frame = CGRectMake(DEVICE_WIDTH*3/8, 240, DEVICE_WIDTH/4, DEVICE_HEIGHT/4);
-        [self addSubview:imageView];
+        imageView.frame = CGRectMake(DEVICE_WIDTH*2/8, 150, DEVICE_WIDTH/2, DEVICE_HEIGHT/4-50);
         
-        NSMutableArray *imgArray = [NSMutableArray array];
-        for (int i=0; i<3; i++) {
-            UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"netError%d.png",i]];
-            [imgArray addObject:image];
-        }
-        imageView.animationImages = imgArray;
-        imageView.animationDuration = 6*0.15;
-        imageView.animationRepeatCount = 0;
-        [imageView startAnimating];
+        [self addSubview:imageView];
+        imageView.image = [UIImage imageNamed:@"加载失败"];
         
         
         UILabel *label = [[UILabel alloc] init];
@@ -46,31 +36,23 @@
         label.text = @"亲,您的手机网络不太顺畅喔~";
         label.textAlignment = NSTextAlignmentCenter;
         label.numberOfLines = 0;
-        [self addSubview:label];
+//        [self addSubview:label];
         
-        UIButton *refreshBTN = [UIButton buttonWithType:UIButtonTypeCustom];
-        [refreshBTN setTitle:@"重新加载" forState:UIControlStateNormal];
-        [refreshBTN setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
-        refreshBTN.titleLabel.font = [UIFont systemFontOfSize:14];
-        refreshBTN.layer.masksToBounds = YES;
-        refreshBTN.layer.borderWidth = 1;
-        refreshBTN.layer.cornerRadius = 3;
-        refreshBTN.layer.borderColor = [UIColor lightGrayColor].CGColor;
-        refreshBTN.frame = CGRectMake(DEVICE_WIDTH/2-50, label.frame.origin.y+60, 100, 30);
-        [self addSubview:refreshBTN];
-        [refreshBTN addTarget:self action:@selector(buttonAction) forControlEvents:(UIControlEventTouchUpInside)];
+         //self.refreshBTN = [UIButton buttonWithType:UIButtonTypeCustom];
+        self.refreshBTN = [[UIButton alloc] init];
+        [self.refreshBTN setTitle:@"重新加载" forState:UIControlStateNormal];
+        [self.refreshBTN setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+        self.refreshBTN.titleLabel.font = [UIFont systemFontOfSize:14];
+        self.refreshBTN.layer.masksToBounds = YES;
+        self.refreshBTN.layer.borderWidth = 1;
+        self.refreshBTN.layer.cornerRadius = 3;
+        self.refreshBTN.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        self.refreshBTN.frame = CGRectMake(DEVICE_WIDTH/2-50, label.frame.origin.y+120, 100, 30);
+        [self addSubview:self.refreshBTN];
+
         
     }
     return self;
 }
 
-//实现block回调的方法
-- (void)addButtonAction:(ButtonBlock)block {
-    self.block = block;
-}
-- (void)buttonAction {
-    if (self.block) {
-        self.block(self);
-    }
-}
 @end

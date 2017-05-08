@@ -209,16 +209,12 @@
 
 -(void)WXLogin:(NSNotificationCenter *)center
 {
-    
-    
     NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
-    
     NSString *tokenkey = [userdefat objectForKey:@"access_token"];
     NSDictionary *dic = [userdefat objectForKey:@"userinfo"];
     NSString *nickname = [dic objectForKey:@"nickname"];
     NSString *path = [dic objectForKey:@"headimgurl"];
     NSString *openid = [dic objectForKey:@"openid"];
-    
     NSLog(@"openid---------%@",openid);
     NSDictionary *para = @{@"login_type":@"quickLogin",@"openid":openid,@"token_key":tokenkey,@"nickname":nickname,@"type":@"4",@"path":path};
     [CLNetworkingManager postNetworkRequestWithUrlString:denglu parameters:para isCache:NO succeed:^(id data) {
@@ -257,8 +253,6 @@
     [alert addAction:actionConfirm];
     [self presentViewController:alert animated:YES completion:nil];
 }
-
-
 
 
 @end

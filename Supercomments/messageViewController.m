@@ -94,16 +94,16 @@ static NSString *messageidentfid = @"messageidentfid";
         
     }else
     {
-        [AFManager getReqURL:[NSString stringWithFormat:tongzhixianxishuliang,[tokenstr tokenstrfrom]] block:^(id infor) {
-            NSLog(@"info---------%@",infor);
-            if ([[infor objectForKey:@"code"] intValue]==1) {
-                NSDictionary *dic = [infor objectForKey:@"info"];
+        
+        [CLNetworkingManager getNetworkRequestWithUrlString:[NSString stringWithFormat:tongzhixianxishuliang,[tokenstr tokenstrfrom]] parameters:nil isCache:YES succeed:^(id data) {
+            NSLog(@"info---------%@",data);
+            if ([[data objectForKey:@"code"] intValue]==1) {
+                NSDictionary *dic = [data objectForKey:@"info"];
                 NSString *infor = [dic objectForKey:@"inform"];
                 NSString *system_inform = [dic objectForKey:@"system_inform"];
                 _num01 = infor;
                 _num02 = system_inform;
             }
-            
             NSLog(@"num01-------%@",_num02);
             UILabel *lab = [self.messagetable viewWithTag:201];
             UILabel *lab2 = [self.messagetable viewWithTag:202];
@@ -122,7 +122,7 @@ static NSString *messageidentfid = @"messageidentfid";
                 {
                     lab2.text = _num02;
                 }
-
+                
             }
             else if (![_num01 isEqualToString:@"0"]&&[_num02 isEqualToString:@"0"])
             {
@@ -154,8 +154,7 @@ static NSString *messageidentfid = @"messageidentfid";
                 }
             }
             [self.messagetable reloadData];
-            
-        } errorblock:^(NSError *error) {
+        } fail:^(NSError *error) {
             
         }];
 

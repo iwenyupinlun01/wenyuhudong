@@ -57,6 +57,10 @@
     self.insets = UIEdgeInsetsMake(0, 14, 0, 14);
     [self.view addSubview:self.hottable];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(kvcdianzan:) name:@"shifoudiandankvo2" object:nil];
+    
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(kvcpinglun:) name:@"pinglunkvo2" object:nil];
+    
     [self.view addSubview:self.xuanzuanbtn];
 }
 
@@ -94,6 +98,7 @@
     
     NSString *strurl = [NSString stringWithFormat:newVCload,@"1",@"2",[tokenstr tokenstrfrom]];
     
+    
     [CLNetworkingManager getNetworkRequestWithUrlString:strurl parameters:nil isCache:YES succeed:^(id data) {
         NSLog(@"infor=====%@",data);
         NSLog(@"str====%@",strurl);
@@ -125,10 +130,11 @@
         [self.xuanzuanbtn stopRotate];
     } fail:^(NSError *error) {
         [self.hottable.mj_header endRefreshing];
-       // self.panduan404str = @"1";
+        // self.panduan404str = @"1";
         [MBProgressHUD showError:@"没有网络"];
         [self.xuanzuanbtn stopRotate];
     }];
+    
     
 }
 
@@ -224,10 +230,63 @@
 -(void)xuanzhuanbtnclick
 {
     [_hottable setContentOffset:CGPointMake(0,0) animated:NO];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.xuanzuanbtn rotate360DegreeWithImageView];
-        [self.hottable.mj_header beginRefreshing];
-    });
+    
+    [CLNetworkingManager clearCaches];
+    [self.xuanzuanbtn rotate360DegreeWithImageView];
+    [self.hottable.mj_header beginRefreshing];
+    
+    
+    [self.dataSource removeAllObjects];
+    [self.dataarr removeAllObjects];
+    [self.imgarr removeAllObjects];
+   // [self.textheiarr removeAllObjects];
+    NSString *strurl = [NSString stringWithFormat:newVCload,@"1",@"2",[tokenstr tokenstrfrom]];
+    
+    
+    [AFManager getReqURL:strurl block:^(id infor) {
+        NSLog(@"infor=====%@",infor);
+        NSLog(@"str====%@",strurl);
+        NSArray *dit = [infor objectForKey:@"info"];
+        for (int i = 0; i<dit.count; i++) {
+            NSDictionary *dicarr = [dit objectAtIndex:i];
+            self.hmodel = [[hotModel alloc] init];
+            self.hmodel.contentstr = dicarr[@"content"];
+            self.hmodel.timestr = dicarr[@"create_time"];
+            self.hmodel.imgurlstr = dicarr[@"images"];
+            self.hmodel.namestr = dicarr[@"name"];
+            self.hmodel.dianzanstr = [NSString stringWithFormat:@"%@",dicarr[@"support_num"]];
+            self.hmodel.pinglunstr = dicarr[@"reply_num"];
+            self.hmodel.newidstr = dicarr[@"id"];
+            self.hmodel.titlestr = dicarr[@"title"];
+            self.hmodel.fromstr =dicarr[@"support_count"];
+            self.hmodel.typestr = dicarr[@"type"];
+            self.hmodel.sifoudianzanstr = [NSString stringWithFormat:@"%@",dicarr[@"is_support"]];
+            self.hmodel.weburlstr = dicarr[@"url"];
+            self.hmodel.ishot = [NSString stringWithFormat:@"%@",dicarr[@"is_hot"]];
+            self.hmodel.platformstr = dicarr[@"platform"];
+            self.hmodel.small_imagesstrl = dicarr[@"small_images"];
+            self.hmodel.textheightstr = @"";
+            
+            [self.dataSource addObject:self.hmodel.contentstr];
+            [self.dataarr addObject:self.hmodel];
+            [self.imgarr addObject:self.hmodel.imgurlstr];
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.hottable.mj_header endRefreshing];
+            [self.hottable reloadData];
+            [self.xuanzuanbtn stopRotate];
+        });
+        
+    } errorblock:^(NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.hottable.mj_header endRefreshing];
+            [self.xuanzuanbtn stopRotate];
+            [MBProgressHUD showError:@"没有网络"];
+            
+        });
+        
+    }];
 }
 
 #pragma mark -UITableViewDataSource&&UITableViewDelegate
@@ -413,6 +472,7 @@
 }
 
 //跳转网页
+
 -(void)myTabVClick3:(UITableViewCell *)cell
 {
     NSIndexPath *index = [self.hottable indexPathForCell:cell];
@@ -432,7 +492,6 @@
 -(void)kvcdianzan:(NSNotification *)notifocation
 {
     NSDictionary *dic = [notifocation object];
-//    NSString *dianzanstr = (NSString *)[notifocation object];
     NSLog(@"dianzanstr---------%@",dic);
     NSInteger index = [[dic objectForKey:@"dianzanindex"] intValue];
     if (self.dataarr.count==0) {
@@ -451,6 +510,17 @@
     [self.hottable reloadData];
 }
 
+-(void)kvcpinglun:(NSNotification *)notifocation
+{
+    NSDictionary *dic = [notifocation object];
+    NSLog(@"dianzanstr---------%@",dic);
+    NSInteger index = [[dic objectForKey:@"dianzanindex"] intValue];
+    self.hmodel = self.dataarr[index];
+    self.hmodel.pinglunstr = [dic objectForKey:@"pinglunstr"];
+    [self.hottable reloadData];
+    
+}
+
 - (void)dealloc{
     //[super dealloc];
     // 移除当前对象监听的事件
@@ -458,12 +528,12 @@
     
 }
 
-
 #pragma mark - 加载失败
 
 - (UIImage *)imageForEmptyDataSet:(UIScrollView *)scrollView {
-    return [UIImage imageNamed:@"空的"];
+    return [UIImage imageNamed:@"加载失败-1"];
 }
+
 - (void)emptyDataSet:(UIScrollView *)scrollView didTapView:(UIView *)view
 {
     [self addHeader];

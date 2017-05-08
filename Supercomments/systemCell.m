@@ -43,6 +43,7 @@
         
         _contentLabel = [[UILabel alloc] init];
         _contentLabel.backgroundColor = [UIColor clearColor];
+        
         _contentLabel.font = [UIFont systemFontOfSize:QSTextFontSize];
         _contentLabel.textColor = [UIColor wjColorFloat:@"333333"];
     }

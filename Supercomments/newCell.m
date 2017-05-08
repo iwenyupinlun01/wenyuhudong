@@ -12,10 +12,11 @@
 #import "YYPhotoGroupView.h"
 #import "Timestr.h"
 #import "YYKit.h"
-
+#import "XWScanImage.h"
 @interface newCell()
 @property (nonatomic,strong) newModel *nmodel;
-
+@property (nonatomic, strong) UIImageView *bigImageView;// 大图视图
+@property (nonatomic, strong) UIView *bgView;// 阴影视图
 @end
 
 @implementation newCell
@@ -74,6 +75,7 @@
     [_tiview mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self).with.offset(14*WIDTH_SCALE);
         make.right.equalTo(self).with.offset(-14*WIDTH_SCALE);
+        make.height.mas_equalTo(20*HEIGHT_SCALE);
         make.top.equalTo(self.infoimg.mas_bottom).with.offset(2*HEIGHT_SCALE);
     }];
 }
@@ -273,20 +275,19 @@
             make.left.equalTo(self).with.offset(14*WIDTH_SCALE);
             make.height.mas_equalTo(16*HEIGHT_SCALE);
             make.width.mas_equalTo(24*WIDTH_SCALE);
-            make.top.equalTo(self.tiview.mas_bottom).with.offset(42*HEIGHT_SCALE);
+            make.top.equalTo(self.tiview.mas_bottom).with.offset(20*HEIGHT_SCALE);
         }];
         
         [_timelab mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.reimg.mas_right).with.offset(4*WIDTH_SCALE);
-            make.top.equalTo(self.tiview.mas_bottom).with.offset(40*HEIGHT_SCALE);
+            make.top.equalTo(self.tiview.mas_bottom).with.offset(18*HEIGHT_SCALE);
             make.height.mas_equalTo(20*HEIGHT_SCALE);
         }];
         
     }else
     {
-        
         [_timelab2 mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.tiview.mas_bottom).with.offset(40*HEIGHT_SCALE);
+            make.top.equalTo(self.tiview.mas_bottom).with.offset(18*HEIGHT_SCALE);
             make.left.equalTo(self).with.offset(14*WIDTH_SCALE);
             make.height.mas_equalTo(20*HEIGHT_SCALE);
         }];
@@ -306,19 +307,17 @@
     }
     
     [self.commbtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.tiview.mas_bottom).with.offset(42*HEIGHT_SCALE);
+        make.top.equalTo(self.tiview.mas_bottom).with.offset(20*HEIGHT_SCALE);
         make.right.equalTo(self).with.offset(-14*WIDTH_SCALE);
         make.height.mas_equalTo(20*HEIGHT_SCALE);
-        make.width.mas_equalTo(64*WIDTH_SCALE);
-        
+        make.width.mas_equalTo(60*WIDTH_SCALE);
         [self.commbtn.textlab mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.tiview.mas_bottom).with.offset(42*HEIGHT_SCALE);
+            make.top.equalTo(self.tiview.mas_bottom).with.offset(20*HEIGHT_SCALE);
             make.right.equalTo(self).with.offset(-14*WIDTH_SCALE);
             make.height.mas_equalTo(20*HEIGHT_SCALE);
-            
         }];
         [self.commbtn.leftimg mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.tiview.mas_bottom).with.offset(42*HEIGHT_SCALE);
+            make.top.equalTo(self.tiview.mas_bottom).with.offset(20*HEIGHT_SCALE);
             make.right.equalTo(self.commbtn.textlab.mas_left).with.offset(-4*WIDTH_SCALE);
             make.height.mas_equalTo(16*WIDTH_SCALE);
             make.width.mas_equalTo(16*WIDTH_SCALE);
@@ -326,20 +325,21 @@
         }];
     }];
     
+    
     [self.zbtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.tiview.mas_bottom).with.offset(42*HEIGHT_SCALE);
+        make.top.equalTo(self.tiview.mas_bottom).with.offset(20*HEIGHT_SCALE);
         make.right.equalTo(self.commbtn).with.offset(-60*WIDTH_SCALE);
         make.height.mas_equalTo(20*HEIGHT_SCALE);
         make.width.mas_equalTo(64*WIDTH_SCALE);
         
         [self.zbtn.zanlab mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.tiview.mas_bottom).with.offset(42*HEIGHT_SCALE);
-            make.right.equalTo(self.commbtn).with.offset(-60*WIDTH_SCALE);
+            make.top.equalTo(self.tiview.mas_bottom).with.offset(20*HEIGHT_SCALE);
+            make.right.equalTo(self.commbtn.leftimg.mas_left).with.offset(-30*WIDTH_SCALE);
             make.height.mas_equalTo(20*HEIGHT_SCALE);
             
         }];
         [self.zbtn.zanimg mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.tiview.mas_bottom).with.offset(42*HEIGHT_SCALE);
+            make.top.equalTo(self.tiview.mas_bottom).with.offset(20*HEIGHT_SCALE);
             make.right.equalTo(self.zbtn.zanlab.mas_left).with.offset(-4*WIDTH_SCALE);
             make.height.mas_equalTo(16*WIDTH_SCALE);
             make.width.mas_equalTo(16*WIDTH_SCALE);
@@ -371,7 +371,14 @@
         [view presentFromImageView:_infoimg
                        toContainer:toView
                           animated:YES completion:nil];
+    
+        
 }
+
+
+
+
+
 
 //按钮事件
 

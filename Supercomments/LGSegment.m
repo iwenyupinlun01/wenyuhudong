@@ -116,29 +116,21 @@
     CALayer *LGLayer = [[CALayer alloc]init];
     //LGLayer.backgroundColor = LG_BannerColor.CGColor;
     LGLayer.backgroundColor = [UIColor wjColorFloat:@"FFFFFF"].CGColor;
-    LGLayer.frame = CGRectMake(firstX, self.frame.size.height - 9, 7, 7);
+//    LGLayer.frame = CGRectMake(DEVICE_WIDTH/2, self.frame.size.height - 9, 7, 7);
     // 设定它的frame
     LGLayer.cornerRadius = 3.5;// 圆角处理
     [self.layer addSublayer:LGLayer]; // 增加到UIView的layer上面
     self.LGLayer = LGLayer;
-    
 }
 
 -(void)buttonClick:(id)sender {
     //获取被点击按钮
     UIButton *btn = (UIButton *)sender;
-    
     [btn setTitleColor:[UIColor wjColorFloat:@"FFFFFF"] forState:UIControlStateNormal];
-//    NSLog(@"%ld",btn.tag);
-    
     UIButton *bt1 = (UIButton *)[self viewWithTag:1];
     UIButton *bt2 = (UIButton *)[self viewWithTag:2];
-   // UIButton *bt3 = (UIButton *)[self viewWithTag:3];
-    
     CGFloat bannerX = btn.center.x;
-    
     [self bannerMoveTo:bannerX];
-    
     switch (btn.tag) {
         case 1:
             [self didSelectButton:bt1];
@@ -148,11 +140,6 @@
             [self didSelectButton:bt2];
             [self.delegate scrollToPage:1];
             break;
-//        case 3:
-//            [self didSelectButton:bt3];
-//            [self.delegate scrollToPage:2];
-//            break;
-            
         default:
             break;
     }
@@ -164,7 +151,7 @@
     
     UIButton *bt1 = (UIButton *)[self viewWithTag:1];
     UIButton *bt2 = (UIButton *)[self viewWithTag:2];
-    UIButton *bt3 = (UIButton *)[self viewWithTag:3];
+
     CGFloat bannerX = bt1.center.x;
     CGFloat offSet = offsetX;
     CGFloat addX = offSet/LG_ScreenW*(bt2.center.x - bt1.center.x);
@@ -178,9 +165,7 @@
     }else if (bannerX == bt2.center.x) {
         [self didSelectButton:bt2];
     }
-//    else if (bannerX == bt3.center.x){
-//        [self didSelectButton:bt3];
-//    }
+
     
 }
 
@@ -194,52 +179,37 @@
     animationGroup.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
     animationGroup.duration = 0.3;
     //设置代理
-    animationGroup.delegate = self;
+    //animationGroup.delegate = self;
     //1.3设置动画执行完毕后不删除动画
     animationGroup.removedOnCompletion=NO;
     //1.4设置保存动画的最新状态
     animationGroup.fillMode=kCAFillModeForwards;
-    
     //监听动画
     [animationGroup setValue:@"animationStep1" forKey:@"animationName"];
     //动画加入到changedLayer上
     [_LGLayer addAnimation:animationGroup forKey:nil];
 }
+
 //点击按钮后改变字体颜色
 -(void)didSelectButton:(UIButton*)Button {
-    
     UIButton *bt1 = (UIButton *)[self viewWithTag:1];
     UIButton *bt2 = (UIButton *)[self viewWithTag:2];
-    UIButton *bt3 = (UIButton *)[self viewWithTag:3];
-    
     UIButton *btn = Button;
-    
     switch (btn.tag) {
         case 1:
             [bt1 setTitleColor:[UIColor wjColorFloat:@"FFFFFF"] forState:UIControlStateNormal];
             bt1.titleLabel.font = [UIFont systemFontOfSize:18];
             [bt2 setTitleColor:[UIColor wjColorFloat:@"F5F5F5"] forState:UIControlStateNormal];
-             bt2.titleLabel.font = [UIFont systemFontOfSize:16];
-            [bt3 setTitleColor:[UIColor wjColorFloat:@"F5F5F5"] forState:UIControlStateNormal];
-             bt3.titleLabel.font = [UIFont systemFontOfSize:16];
+            bt2.titleLabel.font = [UIFont systemFontOfSize:16];
+            _LGLayer.frame = CGRectMake(DEVICE_WIDTH/2-33, self.frame.size.height - 9, 7, 7);
             break;
         case 2:
             [bt1 setTitleColor:[UIColor wjColorFloat:@"F5F5F5"] forState:UIControlStateNormal];
              bt1.titleLabel.font = [UIFont systemFontOfSize:16];
             [bt2 setTitleColor:[UIColor wjColorFloat:@"FFFFFF"] forState:UIControlStateNormal];
              bt2.titleLabel.font = [UIFont systemFontOfSize:18];
-            [bt3 setTitleColor:[UIColor wjColorFloat:@"F5F5F5"] forState:UIControlStateNormal];
-             bt3.titleLabel.font = [UIFont systemFontOfSize:18];
+            //_LGLayer.frame = CGRectMake(DEVICE_WIDTH/2+13, self.frame.size.height - 9, 7, 7);
             break;
-//        case 3:
-//            [bt1 setTitleColor:[UIColor wjColorFloat:@"F5F5F5"] forState:UIControlStateNormal];
-//             bt1.titleLabel.font = [UIFont systemFontOfSize:16];
-//            [bt2 setTitleColor:[UIColor wjColorFloat:@"F5F5F5"] forState:UIControlStateNormal];
-//             bt2.titleLabel.font = [UIFont systemFontOfSize:16];
-//            [bt3 setTitleColor:[UIColor wjColorFloat:@"FFFFFF"] forState:UIControlStateNormal];
-//             bt3.titleLabel.font = [UIFont systemFontOfSize:18];
-//            break;
-            
         default:
             break;
     }

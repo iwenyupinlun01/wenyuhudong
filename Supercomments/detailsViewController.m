@@ -52,6 +52,8 @@
 
 @property (nonatomic,strong) UIScrollView* scrollView;
 
+
+@property (nonatomic,strong) NSString *objidstr;
 @end
 
 
@@ -104,13 +106,10 @@ NSMutableArray * ymDataArray;
     self.detalisarr = [NSMutableArray array];
     self.headm.thumarray = [NSMutableArray array];
     
-    
     self.scrollView = [[UIScrollView alloc] init];
     [self.scrollView flashScrollIndicators];
     self.scrollView.directionalLockEnabled = YES;
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 1560)];
-    label.backgroundColor = [UIColor yellowColor];
-    label.text = @"学习scrolleview";
+    
 
     [self.view addSubview:self.maintable];
     [self.view addSubview:self.keyView];
@@ -119,7 +118,7 @@ NSMutableArray * ymDataArray;
     // 3.2.上拉加载更多
     [self addFooter];
     [self bgviewadd];
-
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -195,20 +194,18 @@ NSMutableArray * ymDataArray;
              self.headm.fromstr = [NSString stringWithFormat:@"%@%@%@",@"今日牛评老司机已赞",[dic objectForKey:@"support_count"],@"次"];
         }
         
-        
         self.headm.imgurlstr = [dic objectForKey:@"images"];
         self.headm.weburlstr = [dic objectForKey:@"url"];
-        self.headm.small_imgurlstr = [dic objectForKey:@"images"];
+        self.headm.small_imgurlstr = [dic objectForKey:@"small_images"];
         
         self.headm.objectidstr = [NSString stringWithFormat:@"%@",[dic objectForKey:@"id"]];
+        _objidstr = self.headm.objectidstr;
         self.headm.timestr = [Timestr datetime:[dic objectForKey:@"create_time"]];
         self.headm.shifoudianzanstr = [dic objectForKey:@"is_support"];
-        
         self.headview.namelab.text = self.headm.namestr;
         self.headview.timelab.text = self.headm.timestr;
         self.headview.fromlab.text = self.headm.fromstr;
         self.headview.numberlab.text = [NSString stringWithFormat:@"%@%@",[dic objectForKey:@"reply_num"],@"人评论"];
-        
         if ([[dic objectForKey:@"reply_num"] isEqualToString:@"0"]) {
             [self.headview.numberlab setHidden:YES];
             [self.headview.lineview setHidden:YES];
@@ -217,12 +214,10 @@ NSMutableArray * ymDataArray;
             [self.headview.numberlab setHidden:NO];
             [self.headview.lineview setHidden:NO];
         }
-        
         self.headview.dianzanbtn.zanlab.text = [NSString stringWithFormat:@"%@",[dic objectForKey:@"support_num"]];
         self.headview.combtn.textlab.text = [NSString stringWithFormat:@"%@",[dic objectForKey:@"reply_num"]];
         self.headview.contentlab.text = [dic objectForKey:@"content"];
         self.headview.timelab.text = self.headm.timestr;
-        
         NSString *str1 = @" 标题: ";
         NSString *str2 = [dic objectForKey:@"title"];
         NSMutableAttributedString *strbut = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@",str1,str2]];
@@ -257,6 +252,7 @@ NSMutableArray * ymDataArray;
         NSMutableArray *dtrarr = [NSMutableArray array];
         dtrarr = [dic objectForKey:@"all_comment"];
         self.sonCommentarr = [NSMutableArray array];
+        
         for (int i = 0; i<dtrarr.count; i++) {
             NSDictionary *dicarr = [dtrarr objectAtIndex:i];
             self.detailsmodel = [[detailcellmodel alloc] init];
@@ -344,21 +340,29 @@ NSMutableArray * ymDataArray;
     if(!_maintable)
     {
         _maintable = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT-64-58)];
-        //_maintable = [[UITableView alloc] initWithFrame:CGRectMake(0, -20, DEVICE_WIDTH, DEVICE_HEIGHT-64-58) style:UITableViewStyleGrouped];
+        
         _maintable.dataSource = self;
         _maintable.delegate = self;
         _maintable.tableHeaderView = self.scrollView;
         _maintable.backgroundColor = [UIColor whiteColor];
-        _maintable.emptyDataSetSource = self;
         _maintable.separatorStyle = NO;
-//        [_maintable setSeparatorColor:[UIColor wjColorFloat:@"F5F5F5"]];
-        _maintable.emptyDataSetDelegate = self;
         _maintable.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
         _maintable.rowHeight = UITableViewAutomaticDimension;
         _maintable.estimatedRowHeight = 200;
         [_maintable registerClass:[pinglunCell class] forCellReuseIdentifier:detailsidentfid];
     }
     return _maintable;
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    
+    CGFloat sectionHeaderHeight = 14;//设置你footer高度
+    if (scrollView.contentOffset.y<=sectionHeaderHeight&&scrollView.contentOffset.y>=0) {
+        scrollView.contentInset = UIEdgeInsetsMake(-scrollView.contentOffset.y, 0, 0, 0);
+    } else if (scrollView.contentOffset.y>=sectionHeaderHeight) {
+        scrollView.contentInset = UIEdgeInsetsMake(-sectionHeaderHeight, 0, 0, 0);
+    }
+    
 }
 
 -(keyboardView *)keyView
@@ -381,6 +385,8 @@ NSMutableArray * ymDataArray;
                                                      name:UIKeyboardWillHideNotification
                                                    object:nil];
         
+        
+     
         
         _keyView.textview.delegate = self;
         [_keyView.sendbtn addTarget:self action:@selector(sendbtnclick) forControlEvents:UIControlEventTouchUpInside];
@@ -445,7 +451,6 @@ NSMutableArray * ymDataArray;
     button.backgroundColor = [UIColor whiteColor];
     // 设置Image
     button.alpha = 0.1;
-    
     // 设置偏移量
     CGFloat imageOriginX = button.imageView.frame.origin.x;
     CGFloat imageWidth = button.imageView.frame.size.width;
@@ -465,6 +470,7 @@ NSMutableArray * ymDataArray;
     UIView *lineview = [[UIView alloc] initWithFrame:CGRectMake(59*WIDTH_SCALE, 13, DEVICE_WIDTH-64-14, 0.7)];
     lineview.backgroundColor = [UIColor wjColorFloat:@"F5F5F5"];
     [view addSubview:lineview];
+//    view.backgroundColor = [UIColor greenColor];
     return view;
 }
 
@@ -479,7 +485,10 @@ NSMutableArray * ymDataArray;
 {
     NSLog(@"分享");
     //1、创建分享参数
-    NSArray* imageArray = @[[UIImage imageNamed:@"牛评分享下载.jpg"]];
+    //NSArray* imageArray = @[[UIImage imageNamed:@"牛评分享下载.jpg"]];
+     NSString *urlstr = @"http://www.np.iwenyu.cn/Public/images/share.jpg";
+    
+     NSArray* imageArray = @[[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:urlstr]]]];
     
     //（注意：图片必须要在Xcode左边目录里面，名称必须要传正确，如果要分享网络图片，可以这样传iamge参数 images:@[@"http://mob.com/Assets/images/logo.png?v=20150320"]）
     if (imageArray) {
@@ -491,6 +500,7 @@ NSMutableArray * ymDataArray;
 //                                           type:SSDKContentTypeAuto];
         
         [shareParams SSDKSetupShareParamsByText:@"" images:imageArray url:[NSURL URLWithString:@""] title:@"" type:SSDKContentTypeImage];
+        
         
         //有的平台要客户端分享需要加此方法，例如微博
         [shareParams SSDKEnableUseClientShare];
@@ -567,18 +577,20 @@ NSMutableArray * ymDataArray;
                         [[NSNotificationCenter defaultCenter]postNotificationName:@"shifoudiandankvo2" object:dianzandic];
                     }
                     
-                
+                    
                     NSMutableArray *zongzhuanarr = [NSMutableArray array];
                     [zongzhuanarr addObject:[tokenstr nicknamestrfrom]];
                     [zongzhuanarr addObjectsFromArray:self.usernamearr];
                     self.usernamearr = zongzhuanarr;
                     NSLog(@"headmarr-----%@",self.usernamearr);
                     
-                    dispatch_async(dispatch_get_main_queue(), ^
-                    {
-                        // 更UI
-                        [self headfromcontentstr:self.headm.contactstr andimageurl:self.headm.imgurlstr andgoodarr:self.usernamearr];
-                    });
+                    [self headerRefreshEndAction];
+                    
+//                    dispatch_async(dispatch_get_main_queue(), ^
+//                    {
+//                        // 更UI
+//                        [self headfromcontentstr:self.headm.contactstr andimageurl:self.headm.imgurlstr andgoodarr:self.usernamearr];
+//                    });
                 }
                 else if ([codestr intValue]==0)
                 {
@@ -639,11 +651,14 @@ NSMutableArray * ymDataArray;
                     
                     [self.usernamearr removeObjectAtIndex:0];
                     
-                    dispatch_async(dispatch_get_main_queue(), ^
-                    {
-                        // 更UI
-                         [self headfromcontentstr:self.headm.contactstr andimageurl:self.headm.imgurlstr andgoodarr:self.usernamearr];
-                    });
+                    [self headerRefreshEndAction];
+
+
+//                    dispatch_async(dispatch_get_main_queue(), ^
+//                    {
+//                        // 更UI
+//                         [self headfromcontentstr:self.headm.contactstr andimageurl:self.headm.imgurlstr andgoodarr:self.usernamearr];
+//                    });
                   
                 }
                 else if ([codestr intValue]==0)
@@ -833,9 +848,11 @@ NSMutableArray * ymDataArray;
 #pragma mark - UITextViewDelegate
 
 //将要结束/退出编辑模式
+
 - (BOOL)textViewShouldEndEditing:(UITextView *)textView
 {
     NSLog(@"退出编辑模式");
+    
     return YES;
 }
 
@@ -852,16 +869,38 @@ NSMutableArray * ymDataArray;
         [self.keyView.textview resignFirstResponder];
         //三级评论
         if ([_fromkeyboard isEqualToString:@"cellpinglun"]) {
-            NSDictionary *para = @{@"token":[tokenstr tokenstrfrom],@"to_uid":self.keyView.touidstr,@"object_id":self.headm.objectidstr,@"content":self.keyView.textview.text,@"pid":self.keyView.pidstr};
             
-            [CLNetworkingManager postCacheRequestWithUrlString:pinglunhuifu parameters:para cacheTime:NO succeed:^(id data) {
-                NSLog(@"data-------%@",data);
+            
+            if ([tokenstr tokenstrfrom].length!=0&&self.keyView.touidstr.length!=0&&self.objidstr.length!=0&&self.keyView.pidstr.length!=0&&self.keyView.textview.text.length!=0) {
                 
-                [self headerRefreshEndAction];
+                NSDictionary *para = @{@"token":[tokenstr tokenstrfrom],@"to_uid":self.keyView.touidstr,@"object_id":self.objidstr,@"content":self.keyView.textview.text,@"pid":self.keyView.pidstr};
+                [CLNetworkingManager postCacheRequestWithUrlString:pinglunhuifu parameters:para cacheTime:NO succeed:^(id data) {
+                    NSLog(@"data-------%@",data);
+                    if ([[data objectForKey:@"code"] intValue]==1) {
+                        NSString *pinglunnum = [data objectForKey:@"comment_num"];
+                        self.headview.combtn.textlab.text = pinglunnum;
+                        
+                        [self headerRefreshEndAction];
+                        
+                        
+                        NSDictionary *dianzandic = @{@"dianzanindex":self.dianzanindex,@"pinglunstr":self.headview.combtn.textlab.text};
+                        if ([self.fromtypestr isEqualToString:@"newvc"]) {
+                            [[NSNotificationCenter defaultCenter]postNotificationName:@"pinglunkvo" object:dianzandic];
+                        }else
+                        {
+                            [[NSNotificationCenter defaultCenter]postNotificationName:@"pinglunkvo2" object:dianzandic];
+                        }
+                        
+                        [MBProgressHUD showSuccess:@"评论成功"];
+                    }
+                } fail:^(NSError *error) {
+                    [MBProgressHUD showSuccess:@"没有网络"];
+                }];
+
                 
-            } fail:^(NSError *error) {
-                
-            }];
+            }
+            
+            
             
             
         }else if([_fromkeyboard isEqualToString:@"section"])
@@ -872,31 +911,66 @@ NSMutableArray * ymDataArray;
             NSString *uidstr = self.detailsmodel.touidstr;
             
             
-            //网络请求
-            NSDictionary *para = @{@"token":[tokenstr tokenstrfrom],@"to_uid":uidstr,@"object_id":self.headm.objectidstr,@"content":self.keyView.textview.text,@"pid":pidstr};
+             if ([tokenstr tokenstrfrom].length!=0&&uidstr.length!=0&&self.objidstr.length!=0&&pidstr.length!=0&&self.keyView.textview.text.length!=0) {
+                 
+                 //网络请求
+                 NSDictionary *para = @{@"token":[tokenstr tokenstrfrom],@"to_uid":uidstr,@"object_id":self.objidstr,@"content":self.keyView.textview.text,@"pid":pidstr};
+                 
+                 [CLNetworkingManager postCacheRequestWithUrlString:pinglunhuifu parameters:para cacheTime:NO succeed:^(id data) {
+                     NSLog(@"data-------%@",data);
+                     if ([[data objectForKey:@"code"] intValue]==1) {
+                         NSString *pinglunnum = [data objectForKey:@"comment_num"];
+                         self.headview.combtn.textlab.text = pinglunnum;
+                         [self headerRefreshEndAction];
+                         
+                         [MBProgressHUD showSuccess:@"评论成功"];
+                         
+                         NSDictionary *dianzandic = @{@"dianzanindex":self.dianzanindex,@"pinglunstr":self.headview.combtn.textlab.text};
+                         if ([self.fromtypestr isEqualToString:@"newvc"]) {
+                             [[NSNotificationCenter defaultCenter]postNotificationName:@"pinglunkvo" object:dianzandic];
+                         }else
+                         {
+                             [[NSNotificationCenter defaultCenter]postNotificationName:@"pinglunkvo2" object:dianzandic];
+                         }
+                     }
+                     
+                 } fail:^(NSError *error) {
+                     [MBProgressHUD showSuccess:@"没有网络"];
+                 }];
+             }
             
-            [CLNetworkingManager postCacheRequestWithUrlString:pinglunhuifu parameters:para cacheTime:NO succeed:^(id data) {
-                NSLog(@"data-------%@",data);
-                [self headerRefreshEndAction];
-            } fail:^(NSError *error) {
-                
-            }];
         }
         else
         {
             //一级评论
             self.detailsmodel = [[detailcellmodel alloc] init];
-
-            //网络请求
-            NSDictionary *para = @{@"token":[tokenstr tokenstrfrom],@"to_uid":@"0",@"object_id":self.headm.objectidstr,@"content":self.keyView.textview.text,@"pid":@"0"};
             
-            [CLNetworkingManager postCacheRequestWithUrlString:pinglunhuifu parameters:para cacheTime:NO succeed:^(id data) {
-                NSLog(@"data-------%@",data);
-                [self headerRefreshEndAction];
-            } fail:^(NSError *error) {
+            if ([tokenstr tokenstrfrom].length!=0&&self.objidstr.length!=0&&self.keyView.textview.text.length!=0) {
+                //网络请求
+                NSDictionary *para = @{@"token":[tokenstr tokenstrfrom],@"to_uid":@"0",@"object_id":self.objidstr,@"content":self.keyView.textview.text,@"pid":@"0"};
                 
-            }];
-            
+                [CLNetworkingManager postCacheRequestWithUrlString:pinglunhuifu parameters:para cacheTime:NO succeed:^(id data) {
+                    NSLog(@"data-------%@",data);
+                    if ([[data objectForKey:@"code"] intValue]==1) {
+                        NSString *pinglunnum = [data objectForKey:@"comment_num"];
+                        self.headview.combtn.textlab.text = pinglunnum;
+                        [self headerRefreshEndAction];
+                        
+                        [MBProgressHUD showSuccess:@"评论成功"];
+                        NSDictionary *dianzandic = @{@"dianzanindex":self.dianzanindex,@"pinglunstr":self.headview.combtn.textlab.text};
+                        if ([self.fromtypestr isEqualToString:@"newvc"]) {
+                            [[NSNotificationCenter defaultCenter]postNotificationName:@"pinglunkvo" object:dianzandic];
+                        }else
+                        {
+                            [[NSNotificationCenter defaultCenter]postNotificationName:@"pinglunkvo2" object:dianzandic];
+                        }
+                    }
+                    
+                } fail:^(NSError *error) {
+                    [MBProgressHUD showSuccess:@"没有网络"];
+                }];
+                
+            }
         }
     }
     
@@ -919,17 +993,31 @@ NSMutableArray * ymDataArray;
         {
             //三级评论
             if ([_fromkeyboard isEqualToString:@"cellpinglun"]) {
-                NSDictionary *para = @{@"token":[tokenstr tokenstrfrom],@"to_uid":self.keyView.touidstr,@"object_id":self.headm.objectidstr,@"content":self.keyView.textview.text,@"pid":self.keyView.pidstr};
-                
-                [CLNetworkingManager postCacheRequestWithUrlString:pinglunhuifu parameters:para cacheTime:NO succeed:^(id data) {
-                    NSLog(@"data-------%@",data);
+                if ([tokenstr tokenstrfrom].length!=0&&self.keyView.touidstr.length!=0&&self.objidstr.length!=0&&self.keyView.pidstr.length!=0&&self.keyView.textview.text.length!=0) {
                     
-                    [self headerRefreshEndAction];
-                    
-                } fail:^(NSError *error) {
-                    
-                }];
-                
+                    NSDictionary *para = @{@"token":[tokenstr tokenstrfrom],@"to_uid":self.keyView.touidstr,@"object_id":self.objidstr,@"content":self.keyView.textview.text,@"pid":self.keyView.pidstr};
+                    [CLNetworkingManager postCacheRequestWithUrlString:pinglunhuifu parameters:para cacheTime:NO succeed:^(id data) {
+                        NSLog(@"data-------%@",data);
+                        if ([[data objectForKey:@"code"] intValue]==1) {
+                            NSString *pinglunnum = [data objectForKey:@"comment_num"];
+                            self.headview.combtn.textlab.text = pinglunnum;
+                            
+                            [self headerRefreshEndAction];
+                            
+                            NSDictionary *dianzandic = @{@"dianzanindex":self.dianzanindex,@"pinglunstr":self.headview.combtn.textlab.text};
+                            if ([self.fromtypestr isEqualToString:@"newvc"]) {
+                                [[NSNotificationCenter defaultCenter]postNotificationName:@"pinglunkvo" object:dianzandic];
+                            }else
+                            {
+                                [[NSNotificationCenter defaultCenter]postNotificationName:@"pinglunkvo2" object:dianzandic];
+                            }
+                            
+                            [MBProgressHUD showSuccess:@"评论成功"];
+                        }
+                    } fail:^(NSError *error) {
+                        [MBProgressHUD showSuccess:@"没有网络"];
+                    }];
+                }
                 
             }else if([_fromkeyboard isEqualToString:@"section"])
             {
@@ -938,32 +1026,65 @@ NSMutableArray * ymDataArray;
                 NSString *pidstr = self.detailsmodel.idstr;
                 NSString *uidstr = self.detailsmodel.touidstr;
                 
-                
-                //网络请求
-                NSDictionary *para = @{@"token":[tokenstr tokenstrfrom],@"to_uid":uidstr,@"object_id":self.headm.objectidstr,@"content":self.keyView.textview.text,@"pid":pidstr};
-                
-                [CLNetworkingManager postCacheRequestWithUrlString:pinglunhuifu parameters:para cacheTime:NO succeed:^(id data) {
-                    NSLog(@"data-------%@",data);
-                    [self headerRefreshEndAction];
-                } fail:^(NSError *error) {
+                if ([tokenstr tokenstrfrom].length!=0&&uidstr.length!=0&&self.objidstr.length!=0&&pidstr.length!=0&&self.keyView.textview.text.length!=0) {
                     
-                }];
+                    //网络请求
+                    NSDictionary *para = @{@"token":[tokenstr tokenstrfrom],@"to_uid":uidstr,@"object_id":self.objidstr,@"content":self.keyView.textview.text,@"pid":pidstr};
+                    
+                    [CLNetworkingManager postCacheRequestWithUrlString:pinglunhuifu parameters:para cacheTime:NO succeed:^(id data) {
+                        NSLog(@"data-------%@",data);
+                        if ([[data objectForKey:@"code"] intValue]==1) {
+                            NSString *pinglunnum = [data objectForKey:@"comment_num"];
+                            self.headview.combtn.textlab.text = pinglunnum;
+                            [self headerRefreshEndAction];
+                            
+                            [MBProgressHUD showSuccess:@"评论成功"];
+                            
+                            NSDictionary *dianzandic = @{@"dianzanindex":self.dianzanindex,@"pinglunstr":self.headview.combtn.textlab.text};
+                            if ([self.fromtypestr isEqualToString:@"newvc"]) {
+                                [[NSNotificationCenter defaultCenter]postNotificationName:@"pinglunkvo" object:dianzandic];
+                            }else
+                            {
+                                [[NSNotificationCenter defaultCenter]postNotificationName:@"pinglunkvo2" object:dianzandic];
+                            }
+                        }
+                        
+                    } fail:^(NSError *error) {
+                        [MBProgressHUD showSuccess:@"没有网络"];
+                    }];
+                }
+
+               
             }
             else
             {
                 //一级评论
                 self.detailsmodel = [[detailcellmodel alloc] init];
-                
-                //网络请求
-                NSDictionary *para = @{@"token":[tokenstr tokenstrfrom],@"to_uid":@"0",@"object_id":self.headm.objectidstr,@"content":self.keyView.textview.text,@"pid":@"0"};
-                
-                [CLNetworkingManager postCacheRequestWithUrlString:pinglunhuifu parameters:para cacheTime:NO succeed:^(id data) {
-                    NSLog(@"data-------%@",data);
-                    [self headerRefreshEndAction];
-                } fail:^(NSError *error) {
+                if ([tokenstr tokenstrfrom].length!=0&&self.objidstr.length!=0&&self.keyView.textview.text.length!=0) {
+                    //网络请求
+                    NSDictionary *para = @{@"token":[tokenstr tokenstrfrom],@"to_uid":@"0",@"object_id":self.objidstr,@"content":self.keyView.textview.text,@"pid":@"0"};
+                    [CLNetworkingManager postCacheRequestWithUrlString:pinglunhuifu parameters:para cacheTime:NO succeed:^(id data) {
+                        NSLog(@"data-------%@",data);
+                        if ([[data objectForKey:@"code"] intValue]==1) {
+                            NSString *pinglunnum = [data objectForKey:@"comment_num"];
+                            self.headview.combtn.textlab.text = pinglunnum;
+                            [self headerRefreshEndAction];
+                            
+                            [MBProgressHUD showSuccess:@"评论成功"];
+                            NSDictionary *dianzandic = @{@"dianzanindex":self.dianzanindex,@"pinglunstr":self.headview.combtn.textlab.text};
+                            if ([self.fromtypestr isEqualToString:@"newvc"]) {
+                                [[NSNotificationCenter defaultCenter]postNotificationName:@"pinglunkvo" object:dianzandic];
+                            }else
+                            {
+                                [[NSNotificationCenter defaultCenter]postNotificationName:@"pinglunkvo2" object:dianzandic];
+                            }
+                        }
+                        
+                    } fail:^(NSError *error) {
+                        [MBProgressHUD showSuccess:@"没有网络"];
+                    }];
                     
-                }];
-                
+                }
             }
  
         }
@@ -1086,11 +1207,7 @@ NSMutableArray * ymDataArray;
             CGSize textSize = [self.headview.contentlab setText:self.headview.contentlab.text lines:QSTextDefaultLines andLineSpacing:QSTextLineSpacing constrainedToSize:CGSizeMake(DEVICE_WIDTH - 28*WIDTH_SCALE,MAXFLOAT)];
             
             self.headview.contentlab.frame = CGRectMake(14*WIDTH_SCALE,  24*HEIGHT_SCALE+14*HEIGHT_SCALE, textSize.width, textSize.height);
-            
-            
             [self.headview.headimg sd_setImageWithURL:[NSURL URLWithString:self.headm.small_imgurlstr] placeholderImage:[UIImage imageNamed:@"默认图"]];
-            
-        
             [self.headview.headimg mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.top.equalTo(self.headview.contentlab.mas_bottom).with.offset(12*HEIGHT_SCALE);
                 make.left.equalTo(self.headview).with.offset(14*WIDTH_SCALE);
