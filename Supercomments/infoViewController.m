@@ -1,4 +1,4 @@
- //
+//
 //  infoViewController.m
 //  Supercomments
 //
@@ -14,6 +14,9 @@
 #import "setViewController.h"
 #import "myinfoViewController.h"
 
+
+
+
 @interface infoViewController ()<UITableViewDataSource,UITableViewDelegate,MBProgressHUDDelegate>
 @property (nonatomic,strong) UITableView *infotableview;
 @property (nonatomic,strong) NSArray *imgarr;
@@ -21,8 +24,6 @@
 @property (nonatomic,strong) headView *headview;
 @property (nonatomic,strong) infoCell *cell;
 @property (nonatomic, assign) UIEdgeInsets insets;
-@property (nonatomic,strong) NSString *inforstr;
-@property (nonatomic,strong) NSString *textstr;
 @end
 static NSString *infocellidentfid = @"infocellidentfid";
 
@@ -37,25 +38,30 @@ static NSString *infocellidentfid = @"infocellidentfid";
     self.title = @"个人中心";
     self.navigationController.interactivePopGestureRecognizer.delegate = (id)self;
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor wjColorFloat:@"333333"]}];
+    
     [self.navigationController.navigationBar setShadowImage:[UIImage new]];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
     self.infotableview.tableFooterView = [UIView new];
+    [self loaddatafromweb];
     self.insets = UIEdgeInsetsMake(0, 64, 0, 14);
-    
     [self.view addSubview:self.infotableview];
 }
-
 -(void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
     self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
-    [self loaddatafromweb];
+  
 }
 
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self loaddatafromweb];
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -72,40 +78,54 @@ static NSString *infocellidentfid = @"infocellidentfid";
         
     }else
     {
-        UILabel *namelab = [self.infotableview viewWithTag:1000];
+
         [CLNetworkingManager getNetworkRequestWithUrlString:[NSString stringWithFormat:tongzhixianxishuliang,[tokenstr tokenstrfrom]] parameters:nil isCache:YES succeed:^(id data) {
             NSLog(@"info---------%@",data);
-            self.inforstr = [[NSString alloc] init];
+            NSString *inforstr = [[NSString alloc] init];
             NSString *system_inform = [[NSString alloc] init];
             if ([[data objectForKey:@"code"] intValue]==1) {
                 NSDictionary *dic = [data objectForKey:@"info"];
-                self.inforstr = [dic objectForKey:@"inform"];
+                inforstr = [dic objectForKey:@"inform"];
                 system_inform = [dic objectForKey:@"system_inform"];
-               
-                
-                
-                NSUserDefaults *sharedefat = [NSUserDefaults standardUserDefaults];
-                [sharedefat setObject:self.inforstr forKey:@"inforstr"];
-                [sharedefat setObject:system_inform forKey:@"system_inform"];
-                [sharedefat synchronize];
-                
-                
-                
-                self.textstr = [NSString stringWithFormat:@"%d",[self.inforstr intValue]+[system_inform intValue]];
-                if ([self.textstr intValue]>99) {
-                    namelab.text = @"99+";
-                    [self.infotableview reloadData];
-                }else
-                {
-                    namelab.text = self.textstr;
-                    [self.infotableview reloadData];
-                }
-                
             }
             
+            UILabel *namelab = [self.infotableview viewWithTag:100];
+            if ([inforstr isEqualToString:@"0"]&&[system_inform isEqualToString:@"0"]) {
+                
+                namelab.alpha = 0;
+                NSString *textstr = [NSString stringWithFormat:@"%d",[inforstr intValue]+[system_inform intValue]];
+                if ([textstr intValue]>99) {
+                    namelab.text = @"99+";
+                }else
+                {
+                    namelab.text = textstr;
+                }
+                _cell.numlab.text = textstr;
+                [self.infotableview reloadData];
+            }
+            else
+            {
+                NSLog(@"提示操作");
+                namelab.alpha = 1;
+                NSString *textstr = [NSString stringWithFormat:@"%d",[inforstr intValue]+[system_inform intValue]];
+                
+                if ([textstr intValue]>99) {
+                    namelab.text = @"99+";
+                }else
+                {
+                    namelab.text = textstr;
+                }
+                // namelab.text = textstr;
+                _cell.numlab.text = textstr;
+                //[_cell addSubview:namelab];
+                [self.infotableview reloadData];
+            }
         } fail:^(NSError *error) {
             
         }];
+
+        
+        
     }
     
 }
@@ -170,23 +190,27 @@ static NSString *infocellidentfid = @"infocellidentfid";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     _cell = [tableView dequeueReusableCellWithIdentifier:infocellidentfid];
-    _cell = [[infoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:infocellidentfid];
+    if (!_cell) {
+        _cell = [[infoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:infocellidentfid];
+    }
     if (indexPath.row==0) {
         [_cell.contentView addSubview:_cell.numlab];
-        _cell.numlab.tag = 1000;
+        _cell.numlab.tag = 100;
         _cell.leftimg.frame = CGRectMake(14*WIDTH_SCALE, 18*HEIGHT_SCALE, 20*WIDTH_SCALE, 22*WIDTH_SCALE);
-       
+        
     }
     if (indexPath.row==1) {
-         _cell.leftimg.frame = CGRectMake(14*WIDTH_SCALE, 20*HEIGHT_SCALE, 21*WIDTH_SCALE, 21*WIDTH_SCALE);
+        _cell.leftimg.frame = CGRectMake(14*WIDTH_SCALE, 20*HEIGHT_SCALE, 21*WIDTH_SCALE, 21*WIDTH_SCALE);
     }
     if (indexPath.row==2) {
-         _cell.leftimg.frame = CGRectMake(14*WIDTH_SCALE, 20*HEIGHT_SCALE, 21*WIDTH_SCALE, 21*WIDTH_SCALE);
+        _cell.leftimg.frame = CGRectMake(14*WIDTH_SCALE, 20*HEIGHT_SCALE, 21*WIDTH_SCALE, 21*WIDTH_SCALE);
     }
+    //_cell.numlab.alpha = 0;
     [_cell setSeparatorInset:UIEdgeInsetsZero];
     _cell.leftimg.image = [UIImage imageNamed:self.imgarr[indexPath.row]];
     _cell.textlab.text = self.textarr[indexPath.row];
-    _cell.numlab.text = self.textstr;
+    //_cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
+    // _cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return _cell;
 }
 

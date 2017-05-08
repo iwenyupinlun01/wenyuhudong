@@ -75,8 +75,12 @@ static NSString *messageidentfid = @"messageidentfid";
     [super viewWillAppear:animated];
     self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
     [self loaddatafromweb];
-    
 }
 
 -(void)viewWillDisappear:(BOOL)animated
