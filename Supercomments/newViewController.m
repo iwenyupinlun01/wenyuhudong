@@ -109,13 +109,17 @@
 
 - (void)headerRefreshEndAction {
     
-    [self.dataSource removeAllObjects];
-    [self.dataarr removeAllObjects];
-    [self.imgarr removeAllObjects];
-    [self.textheiarr removeAllObjects];
+
     NSString *strurl = [NSString stringWithFormat:newVCload,@"1",@"1",[tokenstr tokenstrfrom]];
     
     [CLNetworkingManager getNetworkRequestWithUrlString:strurl parameters:nil isCache:YES succeed:^(id data) {
+        
+        
+        [self.dataSource removeAllObjects];
+        [self.dataarr removeAllObjects];
+        [self.imgarr removeAllObjects];
+        [self.textheiarr removeAllObjects];
+        
         NSLog(@"infor=====%@",data);
         NSLog(@"str====%@",strurl);
         NSArray *dit = [data objectForKey:@"info"];

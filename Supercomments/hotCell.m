@@ -331,7 +331,7 @@
     
     [self.zbtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.tiview.mas_bottom).with.offset(20*HEIGHT_SCALE);
-        make.right.equalTo(self.commbtn.leftimg.mas_left).with.offset(-60*WIDTH_SCALE);
+        make.right.equalTo(self.commbtn).with.offset(-40*WIDTH_SCALE);
         make.height.mas_equalTo(20*HEIGHT_SCALE);
         make.width.mas_equalTo(64*WIDTH_SCALE);
         
@@ -349,6 +349,7 @@
             
         }];
     }];
+
     
     NSString *str=model.timestr;//时间戳
     [Timestr datetime:str];

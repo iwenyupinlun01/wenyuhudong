@@ -15,6 +15,7 @@
 		531F944A1EBE3B2400769399 /* UILabel+textOfNumberLines.m in Sources */ = {isa = PBXBuildFile; fileRef = 531F94481EBE3B2400769399 /* UILabel+textOfNumberLines.m */; };
 		531F944E1EBE44F900769399 /* XSNoDataView.m in Sources */ = {isa = PBXBuildFile; fileRef = 531F944D1EBE44F900769399 /* XSNoDataView.m */; };
 		53314A4B1EA1DE35009773F0 /* YYPhotoGroupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 53314A4A1EA1DE35009773F0 /* YYPhotoGroupView.m */; };
+		53334DE11EC1BE7500B20979 /* NullSafe.m in Sources */ = {isa = PBXBuildFile; fileRef = 53334DE01EC1BE7500B20979 /* NullSafe.m */; };
 		53619E431E95EEDB007CC7AC /* headView.m in Sources */ = {isa = PBXBuildFile; fileRef = 53619E421E95EEDB007CC7AC /* headView.m */; };
 		53619E521E960164007CC7AC /* messageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 53619E511E960164007CC7AC /* messageViewController.m */; };
 		53619E551E9601A5007CC7AC /* feedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 53619E541E9601A5007CC7AC /* feedbackViewController.m */; };
@@ -141,6 +142,7 @@
 		531F944D1EBE44F900769399 /* XSNoDataView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XSNoDataView.m; sourceTree = "<group>"; };
 		53314A491EA1DE35009773F0 /* YYPhotoGroupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYPhotoGroupView.h; sourceTree = "<group>"; };
 		53314A4A1EA1DE35009773F0 /* YYPhotoGroupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYPhotoGroupView.m; sourceTree = "<group>"; };
+		53334DE01EC1BE7500B20979 /* NullSafe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NullSafe.m; sourceTree = "<group>"; };
 		53619E411E95EEDB007CC7AC /* headView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = headView.h; sourceTree = "<group>"; };
 		53619E421E95EEDB007CC7AC /* headView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = headView.m; sourceTree = "<group>"; };
 		53619E501E960164007CC7AC /* messageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = messageViewController.h; sourceTree = "<group>"; };
@@ -403,6 +405,14 @@
 				53314A4A1EA1DE35009773F0 /* YYPhotoGroupView.m */,
 			);
 			name = utlis;
+			sourceTree = "<group>";
+		};
+		53334DDF1EC1BE7500B20979 /* NullSafe */ = {
+			isa = PBXGroup;
+			children = (
+				53334DE01EC1BE7500B20979 /* NullSafe.m */,
+			);
+			path = NullSafe;
 			sourceTree = "<group>";
 		};
 		53619E441E96003F007CC7AC /* 消息通知 */ = {
@@ -732,6 +742,7 @@
 		53AEBE191E948A2500280F70 /* Supercomments */ = {
 			isa = PBXGroup;
 			children = (
+				53334DDF1EC1BE7500B20979 /* NullSafe */,
 				539550E31EA0C623001A268C /* utlis */,
 				5387A7B41EAB4F590057B518 /* webview */,
 				53AEBE4B1E9496A700280F70 /* home首页 */,
@@ -1339,6 +1350,7 @@
 				53619E5F1E96055E007CC7AC /* myinfoViewController.m in Sources */,
 				53AEBE6F1E94F80400280F70 /* loginViewController.m in Sources */,
 				53E587841EA7651D004CB302 /* detailcellmodel.m in Sources */,
+				53334DE11EC1BE7500B20979 /* NullSafe.m in Sources */,
 				531F944A1EBE3B2400769399 /* UILabel+textOfNumberLines.m in Sources */,
 				53AEBE491E94910700280F70 /* UIView+ViewController.m in Sources */,
 				5301DDA11EC0163A00A68CB6 /* hotCell.m in Sources */,

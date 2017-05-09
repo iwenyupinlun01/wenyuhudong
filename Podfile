@@ -19,5 +19,5 @@ pod 'YYKit'
 pod 'MJRefresh'
 pod 'DZNEmptyDataSet'
 pod 'CGCellContentViewManager', '1.0'
-
+pod 'UMengAnalytics' #标准SDK，含IDFA
 end

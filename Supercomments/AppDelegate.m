@@ -26,6 +26,8 @@
 #import "hDisplayView.h"
 
 #import "AFNetworking.h"
+//友盟统计
+#import "UMMobClick/MobClick.h"
 
 
 @interface AppDelegate ()<WXApiDelegate>
@@ -53,6 +55,13 @@
     navigationController.navigationBar.tintColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     self.typestr = @"0";
+    
+    
+    //友盟
+    UMConfigInstance.appKey = @"59117a7f4544cb6533000e47";
+    UMConfigInstance.channelId = @"App Store";
+    [MobClick startWithConfigure:UMConfigInstance];//配置以上参数后调用此方法初始化SDK！
+    
     
     //向微信注册应用。
 
