@@ -28,7 +28,8 @@
 #import "AFNetworking.h"
 //友盟统计
 #import "UMMobClick/MobClick.h"
-
+//bugly
+#import <Bugly/Bugly.h>
 
 @interface AppDelegate ()<WXApiDelegate>
 ///声明微信代理属性
@@ -62,6 +63,8 @@
     UMConfigInstance.channelId = @"App Store";
     [MobClick startWithConfigure:UMConfigInstance];//配置以上参数后调用此方法初始化SDK！
     
+    //Bugly
+    [Bugly startWithAppId:@"7de265060f"];
     
     //向微信注册应用。
 

@@ -14,6 +14,7 @@ PODS:
   - AFNetworking/Serialization (3.1.0)
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
+  - Bugly (2.4.7)
   - CGCellContentViewManager (1.0)
   - DZNEmptyDataSet (1.8.1)
   - Masonry (1.0.2)
@@ -34,6 +35,7 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking (~> 3.1.0)
+  - Bugly
   - CGCellContentViewManager (= 1.0)
   - DZNEmptyDataSet
   - Masonry
@@ -50,6 +52,7 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
+  Bugly: 2c256069145f550171907c5cb1c0f84ad291f6c1
   CGCellContentViewManager: 228d64065a1544cc505afc119127cad9396b1819
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
   Masonry: 7c429b56da9d4ee0bbb3ed77a5ea710d6a5df39e
@@ -63,6 +66,6 @@ SPEC CHECKSUMS:
   WechatOpenSDK: cbd332148eb792d444ed4eec94f421d98f2046ee
   YYKit: 7cda43304a8dc3696c449041e2cb3107b4e236e7
 
-PODFILE CHECKSUM: 0333e8c91d5c9b6e17a027af5ce464872a7abafb
+PODFILE CHECKSUM: 551bb207b5cabd385936afd8fca2a25c40597189
 
 COCOAPODS: 1.2.1

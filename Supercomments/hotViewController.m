@@ -238,16 +238,19 @@
     [self.xuanzuanbtn rotate360DegreeWithImageView];
     [self.hottable.mj_header beginRefreshing];
     
-    [self.dataSource removeAllObjects];
-    [self.dataarr removeAllObjects];
-    [self.imgarr removeAllObjects];
-   // [self.textheiarr removeAllObjects];
-    NSString *strurl = [NSString stringWithFormat:newVCload,@"1",@"2",[tokenstr tokenstrfrom]];
     
+   // [self.textheiarr removeAllObjects];
+    
+    NSString *strurl = [NSString stringWithFormat:newVCload,@"1",@"2",[tokenstr tokenstrfrom]];
     
     [AFManager getReqURL:strurl block:^(id infor) {
         NSLog(@"infor=====%@",infor);
         NSLog(@"str====%@",strurl);
+        
+        [self.dataSource removeAllObjects];
+        [self.dataarr removeAllObjects];
+        [self.imgarr removeAllObjects];
+        
         NSArray *dit = [infor objectForKey:@"info"];
         for (int i = 0; i<dit.count; i++) {
             NSDictionary *dicarr = [dit objectAtIndex:i];
