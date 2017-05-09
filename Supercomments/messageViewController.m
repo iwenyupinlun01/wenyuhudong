@@ -102,11 +102,18 @@ static NSString *messageidentfid = @"messageidentfid";
         [CLNetworkingManager getNetworkRequestWithUrlString:[NSString stringWithFormat:tongzhixianxishuliang,[tokenstr tokenstrfrom]] parameters:nil isCache:YES succeed:^(id data) {
             NSLog(@"info---------%@",data);
             if ([[data objectForKey:@"code"] intValue]==1) {
-                NSDictionary *dic = [data objectForKey:@"info"];
-                NSString *infor = [dic objectForKey:@"inform"];
-                NSString *system_inform = [dic objectForKey:@"system_inform"];
-                _num01 = infor;
-                _num02 = system_inform;
+                
+                if ([[data objectForKey:@"info"] isKindOfClass:[NSDictionary class]]) {
+                    NSLog(@"属于字典类型");
+                    NSDictionary *dic = [data objectForKey:@"info"];
+                    NSString *infor = [dic objectForKey:@"inform"];
+                    NSString *system_inform = [dic objectForKey:@"system_inform"];
+                    _num01 = infor;
+                    _num02 = system_inform;
+                }else
+                {
+                    NSLog(@"不属于字典类型");
+                }
             }
             NSLog(@"num01-------%@",_num02);
             UILabel *lab = [self.messagetable viewWithTag:201];
@@ -126,7 +133,6 @@ static NSString *messageidentfid = @"messageidentfid";
                 {
                     lab2.text = _num02;
                 }
-                
             }
             else if (![_num01 isEqualToString:@"0"]&&[_num02 isEqualToString:@"0"])
             {

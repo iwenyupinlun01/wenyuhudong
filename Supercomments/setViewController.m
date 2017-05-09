@@ -21,13 +21,10 @@
     CGRect rect = CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
     UIGraphicsBeginImageContext(rect.size);
     CGContextRef context = UIGraphicsGetCurrentContext();
-    
     CGContextSetFillColorWithColor(context, [color CGColor]);
     CGContextFillRect(context, rect);
-    
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    
     return image;
 }
 
@@ -64,7 +61,6 @@ static NSString *setidentfid3 = @"setidentfid3";
                            barMetrics:UIBarMetricsDefault];
     //此处使底部线条颜色为F5F5F5
     [navigationBar setShadowImage:[UIImage imageWithColor:[UIColor wjColorFloat:@"F5F5F5"]]];
-    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -74,13 +70,11 @@ static NSString *setidentfid3 = @"setidentfid3";
 
 
 -(void)viewWillAppear:(BOOL)animated{
-    
+    [super viewWillAppear:animated];
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
-//    self.gobackbtn.frame = CGRectMake(30*WIDTH_SCALE, DEVICE_HEIGHT/2-20*HEIGHT_SCALE, DEVICE_WIDTH-60*WIDTH_SCALE, 40*HEIGHT_SCALE);
 }
 
 -(void)viewWillDisappear:(BOOL)animated
-
 {
     [super viewWillDisappear:animated];
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
@@ -254,14 +248,11 @@ static NSString *setidentfid3 = @"setidentfid3";
             }else
             {
                 [MBProgressHUD showSuccess:@"系统繁忙，请您稍后重试"];
-
             }
             
         } fail:^(NSError *error) {
             
         }];
-       
-
     }];
     [control addAction:action0];
     [control addAction:action1];

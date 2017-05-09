@@ -57,7 +57,6 @@ static NSString *myinfoidentfid1 = @"myidentfid1";
     [self.view addSubview:self.myinfotable];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(nameasd:) name:@"usernamexiugai" object:nil];
     
-    
     UINavigationBar *navigationBar = self.navigationController.navigationBar;
     [navigationBar setBackgroundImage:[[UIImage alloc] init]
                        forBarPosition:UIBarPositionAny

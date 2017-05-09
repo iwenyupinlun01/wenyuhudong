@@ -47,9 +47,7 @@
 {
     [super viewWillAppear:animated];
     [self.navigationController.navigationBar setHidden:YES];
-    [self islogin];
-    //[self tokentihuanfrom];
-    [self loaddatafromweb];
+   
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -57,6 +55,13 @@
     [super viewWillDisappear:animated];
     [self.navigationController.navigationBar setHidden:NO];
 
+}
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self islogin];
+    //[self tokentihuanfrom];
+    [self loaddatafromweb];
 }
 
 
@@ -106,16 +111,15 @@
         }else
         {
             NSLog(@"已经登陆");
-            NSDictionary *dic = [data objectForKey:@"info"];
-            NSString *path = [dic objectForKey:@"headPath"];
-            NSString *namestr = [dic objectForKey:@"nickname"];
-            
-            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-            [defaults setObject:path forKey:@"pathurlstr"];
-            [defaults setObject:namestr forKey:@"namestr"];
-            [defaults synchronize];
-            
-            
+            if ([[data objectForKey:@"info"] isKindOfClass:[NSDictionary class]]) {
+                NSDictionary *dic = [data objectForKey:@"info"];
+                NSString *path = [dic objectForKey:@"headPath"];
+                NSString *namestr = [dic objectForKey:@"nickname"];
+                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                [defaults setObject:path forKey:@"pathurlstr"];
+                [defaults setObject:namestr forKey:@"namestr"];
+                [defaults synchronize];
+            }
             
             if ([self shijianjisuan]) {
                 //没有过期
@@ -149,22 +153,31 @@
     
     if ([tokenstr tokenstrfrom].length!=0) {
         
-        [CLNetworkingManager getNetworkRequestWithUrlString:[NSString stringWithFormat:tongzhixianxishuliang,[tokenstr tokenstrfrom]] parameters:nil isCache:YES succeed:^(id data) {
+        NSString *urlstr = [NSString stringWithFormat:tongzhixianxishuliang,[tokenstr tokenstrfrom]];
+        
+        [CLNetworkingManager getNetworkRequestWithUrlString:urlstr parameters:nil isCache:YES succeed:^(id data) {
             NSLog(@"info---------%@",data);
             NSString *inforstr = [[NSString alloc] init];
             NSString *system_inform = [[NSString alloc] init];
             if ([[data objectForKey:@"code"] intValue]==1) {
-                NSDictionary *dic = [data objectForKey:@"info"];
-                inforstr = [dic objectForKey:@"inform"];
-                system_inform = [dic objectForKey:@"system_inform"];
+
                 
-                
-                NSUserDefaults *sharedefat = [NSUserDefaults standardUserDefaults];
-                [sharedefat setObject:inforstr forKey:@"inforstr"];
-                [sharedefat setObject:system_inform forKey:@"system_inform"];
-                [sharedefat synchronize];
-                
-                
+                if ([[data objectForKey:@"info"] isKindOfClass:[NSDictionary class]]) {
+                    NSLog(@"属于字典类型");
+                    NSDictionary *dic = [data objectForKey:@"info"];
+                    inforstr = [dic objectForKey:@"inform"];
+                    system_inform = [dic objectForKey:@"system_inform"];
+                    NSUserDefaults *sharedefat = [NSUserDefaults standardUserDefaults];
+                    [sharedefat setObject:inforstr forKey:@"inforstr"];
+                    [sharedefat setObject:system_inform forKey:@"system_inform"];
+                    [sharedefat synchronize];
+                }else
+                {
+                    
+                    NSLog(@"不属于字典类型");
+                    
+                }
+              
             }
             if ([inforstr isEqualToString:@"0"]&&[system_inform isEqualToString:@"0"]) {
                 [self.xiaohongdianview setHidden:YES];
@@ -177,6 +190,8 @@
         } fail:^(NSError *error) {
             
         }];
+  
+        
 
     }else
     {

@@ -37,9 +37,10 @@
 +(void)getReqURL:(NSString*)str block:(void(^)(id infor))callBack errorblock:(void(^)(NSError *  error))errorBack
 {
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];// 启动状态栏网络请求指示
-    
+//    NSString *charactersToEscape = @"?!@#$^&%*+,:;='\"`<>()[]{}/\\| ";
+//    NSCharacterSet *allowedCharacters = [[NSCharacterSet characterSetWithCharactersInString:charactersToEscape] invertedSet];
+//    str = [str stringByAddingPercentEncodingWithAllowedCharacters:allowedCharacters];
     //str=[str stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    
     AFHTTPSessionManager*manager =[AFHTTPSessionManager manager];
     manager.requestSerializer=[AFHTTPRequestSerializer serializer];
     manager.responseSerializer.acceptableContentTypes=[NSSet setWithObjects:@"text/html",@"application/json", @"text/json", @"text/javascript", nil];
@@ -61,7 +62,9 @@
 {
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];// 启动状态栏网络请求指示
     //str=[str stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    
+//    NSString *charactersToEscape = @"?!@#$^&%*+,:;='\"`<>()[]{}/\\| ";
+//    NSCharacterSet *allowedCharacters = [[NSCharacterSet characterSetWithCharactersInString:charactersToEscape] invertedSet];
+//    str = [str stringByAddingPercentEncodingWithAllowedCharacters:allowedCharacters];
     AFHTTPSessionManager*manager =[AFHTTPSessionManager manager];
     
     manager.responseSerializer.acceptableContentTypes=[NSSet setWithObjects:@"text/html",@"application/json", @"text/json", @"text/javascript",@"text/plain",  nil];

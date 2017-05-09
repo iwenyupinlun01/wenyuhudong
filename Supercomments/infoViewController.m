@@ -84,9 +84,18 @@ static NSString *infocellidentfid = @"infocellidentfid";
             NSString *inforstr = [[NSString alloc] init];
             NSString *system_inform = [[NSString alloc] init];
             if ([[data objectForKey:@"code"] intValue]==1) {
-                NSDictionary *dic = [data objectForKey:@"info"];
-                inforstr = [dic objectForKey:@"inform"];
-                system_inform = [dic objectForKey:@"system_inform"];
+                
+                if ([[data objectForKey:@"info"] isKindOfClass:[NSDictionary class]]) {
+                    NSLog(@"属于字典类型");
+                    NSDictionary *dic = [data objectForKey:@"info"];
+                    inforstr = [dic objectForKey:@"inform"];
+                    system_inform = [dic objectForKey:@"system_inform"];
+                }else
+                {
+                    
+                    NSLog(@"不属于字典类型");
+                    
+                }
             }
             
             UILabel *namelab = [self.infotableview viewWithTag:100];

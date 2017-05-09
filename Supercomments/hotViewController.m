@@ -307,7 +307,12 @@
     cell = [[hotCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:hotidentfid];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.delegate = self;
-    [cell setcelldata:self.dataarr[indexPath.row]];
+    NSString *numstr = [NSString stringWithFormat:@"%lu",(unsigned long)self.dataarr.count];
+    if (![strisNull isNullToString:numstr]) {
+        [cell setcelldata:self.dataarr[indexPath.row]];
+    }
+    //[cell setcelldata:self.dataarr[indexPath.row]];
+    
     return cell;
 }
 

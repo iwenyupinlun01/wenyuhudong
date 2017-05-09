@@ -39,7 +39,7 @@
     [self.view addSubview:self.gobackbtn];
     [self.view addSubview:self.xieyiview];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(WXLogin:) name:WXLoginSuccess object:@"dengluchenggong"];
-    
+    [self weixinLogin];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -107,9 +107,9 @@
     {
         _loginbtn = [[UIButton alloc] init];
         _loginbtn.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"矩形-1"]];
-        [_loginbtn setTitle:@"微信登录" forState:normal];
+//        [_loginbtn setTitle:@"微信登录" forState:normal];
         [_loginbtn setTitleColor:[UIColor whiteColor] forState:normal];
-        [_loginbtn addTarget:self action:@selector(loginbtnclick) forControlEvents:UIControlEventTouchUpInside];
+//        [_loginbtn addTarget:self action:@selector(loginbtnclick) forControlEvents:UIControlEventTouchUpInside];
         _loginbtn.layer.masksToBounds = YES;
         _loginbtn.layer.cornerRadius = 20*HEIGHT_SCALE;
         
@@ -199,10 +199,13 @@
         SendAuthReq *req = [[SendAuthReq alloc]init];
         req.scope = WX_SCOPE;
         req.state = WX_STATE; //可省，不影响功能
-        
         [WXApi sendReq:req];
+        [_loginbtn setTitle:@"微信登录" forState:normal];
+        [self.loginbtn addTarget:self action:@selector(loginbtnclick) forControlEvents:UIControlEventTouchUpInside];
         
     }else{
+        [_loginbtn setTitle:@"访客模式" forState:normal];
+        
         [self noLoginAlertController];
     }
 }
