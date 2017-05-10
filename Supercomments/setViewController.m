@@ -228,11 +228,13 @@ static NSString *setidentfid3 = @"setidentfid3";
         [CLNetworkingManager postNetworkRequestWithUrlString:tuichudenglu parameters:@{@"token":[tokenstr tokenstrfrom]} isCache:NO succeed:^(id data) {
             NSLog(@"data===%@",data);
             if ([[data objectForKey:@"code"] intValue]==1) {
+                
                 NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                 [defaults removeObjectForKey:@"tokenuser"];
                 [defaults removeObjectForKey:@"access_token"];
                 [defaults removeObjectForKey:@"namestr"];
                 [defaults removeObjectForKey:@"pathurlstr"];
+                
                 [MBProgressHUD showSuccess:@"退出成功"];
                 homeViewController *viewCtl = self.navigationController.viewControllers[0];
                 [self.navigationController popToViewController:viewCtl animated:YES];

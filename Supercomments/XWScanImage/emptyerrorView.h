@@ -7,7 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+@protocol myviewdelegate <NSObject>
+-(void)myview:(UIView *)myview;
+
+@end
 
 @interface emptyerrorView : UIView
+
+@property (nonatomic,assign)id<myviewdelegate>delegate;
 
 @end

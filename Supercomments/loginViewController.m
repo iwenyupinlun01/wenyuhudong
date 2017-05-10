@@ -223,18 +223,21 @@
     [CLNetworkingManager postNetworkRequestWithUrlString:denglu parameters:para isCache:NO succeed:^(id data) {
         if ([[data objectForKey:@"code"] intValue]==1) {
             NSString *token = [data objectForKey:@"token"];
-            NSString *uid = [data objectForKey:@"uid"];
+            //NSString *uid = [data objectForKey:@"uid"];
             NSUserDefaults *userdefat = [NSUserDefaults standardUserDefaults];
             [userdefat setObject:token forKey:@"tokenuser"];
-            [userdefat setObject:uid forKey:@"uid"];
+            //[userdefat setObject:uid forKey:@"uid"];
             [userdefat setObject:[Timestr getNowTimestamp] forKey:@"denglushijian"];
             NSLog(@"tolen-------------%@",token);
             [userdefat synchronize];
+            NSString *hudstr = [data objectForKey:@"msg"];
+            [MBProgressHUD showSuccess:hudstr];
+            
             [self dismissViewControllerAnimated:YES completion:nil];
         }
         else
         {
-            [MBProgressHUD showSuccess:@"网络异常"];
+        [MBProgressHUD showSuccess:@"网络异常"];
         }
     } fail:^(NSError *error) {
         [MBProgressHUD showSuccess:@"状态异常，请稍后再试"];

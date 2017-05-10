@@ -60,10 +60,9 @@
 {
     [super viewDidAppear:animated];
     [self islogin];
-    //[self tokentihuanfrom];
+    [self tokentihuanfrom];
     [self loaddatafromweb];
 }
-
 
 -(UIView *)pointview
 {

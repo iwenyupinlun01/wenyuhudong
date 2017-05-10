@@ -18,8 +18,8 @@
 #import "UIImageView+RotateImgV.h"
 #import "LGSegment.h"
 #import "XSNoDataView.h"
-
-@interface newViewController ()<UITableViewDataSource,UITableViewDelegate,mycellVdelegate,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate>
+#import "emptyerrorView.h"
+@interface newViewController ()<UITableViewDataSource,UITableViewDelegate,mycellVdelegate,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate,myviewdelegate>
 /** 用于加载下一页的参数(页码) */
 {
     int pn;
@@ -36,10 +36,8 @@
 @property (nonatomic,strong) UIButton *xuanzuanbtn;
 @property (nonatomic,strong) NSMutableArray *textheiarr;
 @property (nonatomic,strong) newCell *cell;
-
 @property (nonatomic,strong) XSNoDataView *dataView;
-
-@property (nonatomic,strong) UIView *bgview;
+@property (nonatomic,strong) emptyerrorView *bgview;
 @end
 
 @implementation newViewController
@@ -64,21 +62,10 @@
     [self addFooter];
     self.insets = UIEdgeInsetsMake(0, 14, 0, 14);
     [self.view addSubview:self.newtable];
-
+    
     [self.view addSubview:self.xuanzuanbtn];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(kvcdianzan:) name:@"shifoudiandankvo" object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(kvcpinglun:) name:@"pinglunkvo" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dataviewclick:) name:@"dataviewclick01" object:nil];
-    
-}
-
--(void)dataviewclick:(NSNotification *)notifocation
-{
-    NSMutableArray *arr =  [notifocation object];
-    if (arr.count==0) {
-        
-        
-    }
 }
 
 #pragma mark - 刷新控件
@@ -109,11 +96,18 @@
 
 - (void)headerRefreshEndAction {
     
-
     NSString *strurl = [NSString stringWithFormat:newVCload,@"1",@"1",[tokenstr tokenstrfrom]];
     
+//    [ZBNetworkManager requestWithConfig:^(ZBURLRequest *request) {
+//        request.urlString=strurl;
+//        request.apiType=ZBRequestTypeDefault;//默认为default 缓存
+//    } success:^(id responseObj, apiType type) {
+//        
+//    } failed:^(NSError *error) {
+//        
+//    }];
+    
     [CLNetworkingManager getNetworkRequestWithUrlString:strurl parameters:nil isCache:YES succeed:^(id data) {
-        
         
         [self.dataSource removeAllObjects];
         [self.dataarr removeAllObjects];
@@ -160,9 +154,8 @@
             [MBProgressHUD showError:@"没有网络"];
             
         });
-        self.panduan404str = @"1";
+        [self checkNetworkStatus];
     }];
-    
     
 }
 - (void)footerRefreshEndAction {
@@ -208,9 +201,7 @@
             [MBProgressHUD showError:@"没有网络"];
         });
 
-            
     }];
-
 }
 
 - (void)didReceiveMemoryWarning {
@@ -324,7 +315,6 @@
             [MBProgressHUD showError:@"没有网络"];
             
         });
-        self.panduan404str = @"1";
     }];
 }
 
@@ -565,11 +555,10 @@
     
 }
 
-
 #pragma mark - 加载失败
 
 - (UIImage *)imageForEmptyDataSet:(UIScrollView *)scrollView {
-    return [UIImage imageNamed:@"加载失败-1"];
+    return [UIImage imageNamed:@"空的"];
 }
 
 - (void)emptyDataSet:(UIScrollView *)scrollView didTapView:(UIView *)view
@@ -596,6 +585,46 @@
         [cell setSeparatorInset:self.insets];
     }
 }
+
+#pragma mark - 404页面
+
+-(emptyerrorView *)bgview
+{
+    if(!_bgview)
+    {
+        _bgview = [[emptyerrorView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT-64)];
+        _bgview.delegate = self;
+        _bgview.backgroundColor = [UIColor whiteColor];
+    }
+    return _bgview;
+}
+
+-(void)myview:(UIView *)myview
+{
+    [self.bgview removeFromSuperview];
+    [self.newtable.mj_header beginRefreshing];
+}
+
+//网络监测
+
+- (void)checkNetworkStatus {
+    AFNetworkReachabilityManager *manager = [AFNetworkReachabilityManager sharedManager];
+    [manager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+        switch (status) {
+                //没有检测到网络
+            case AFNetworkReachabilityStatusNotReachable:
+                if (self.dataarr.count==0) {
+                    [self.view addSubview:self.bgview];
+                }
+                break;
+            default:
+                break;
+        }
+    }];
+    // 开始监测
+    [manager startMonitoring];
+}
+
 
 
 @end

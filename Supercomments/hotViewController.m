@@ -16,7 +16,8 @@
 #import "loginViewController.h"
 #import <DZNEmptyDataSet/UIScrollView+EmptyDataSet.h>
 #import "UIImageView+RotateImgV.h"
-@interface hotViewController ()<UITableViewDataSource,UITableViewDelegate,mycellVdelegate,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate>
+#import "emptyerrorView.h"
+@interface hotViewController ()<UITableViewDataSource,UITableViewDelegate,mycellVdelegate,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate,myviewdelegate>
 /** 用于加载下一页的参数(页码) */
 {
     int pn;
@@ -33,6 +34,7 @@
 @property (nonatomic, assign) UIEdgeInsets insets;
 
 @property (nonatomic,strong) UIButton *xuanzuanbtn;
+@property (nonatomic,strong) emptyerrorView *bgview;
 @end
 
 @implementation hotViewController
@@ -133,7 +135,7 @@
         [self.xuanzuanbtn stopRotate];
     } fail:^(NSError *error) {
         [self.hottable.mj_header endRefreshing];
-        // self.panduan404str = @"1";
+        [self checkNetworkStatus];
         [MBProgressHUD showError:@"没有网络"];
         [self.xuanzuanbtn stopRotate];
     }];
@@ -541,7 +543,7 @@
 #pragma mark - 加载失败
 
 - (UIImage *)imageForEmptyDataSet:(UIScrollView *)scrollView {
-    return [UIImage imageNamed:@"加载失败-1"];
+    return [UIImage imageNamed:@"空的"];
 }
 
 - (void)emptyDataSet:(UIScrollView *)scrollView didTapView:(UIView *)view
@@ -568,5 +570,43 @@
     }
 }
 
+#pragma mark - 404页面
+
+-(emptyerrorView *)bgview
+{
+    if(!_bgview)
+    {
+        _bgview = [[emptyerrorView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT-64)];
+        _bgview.delegate = self;
+        _bgview.backgroundColor = [UIColor whiteColor];
+    }
+    return _bgview;
+}
+
+-(void)myview:(UIView *)myview
+{
+    [self.bgview removeFromSuperview];
+    [self.hottable.mj_header beginRefreshing];
+}
+
+//网络监测
+
+- (void)checkNetworkStatus {
+    AFNetworkReachabilityManager *manager = [AFNetworkReachabilityManager sharedManager];
+    [manager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+        switch (status) {
+                //没有检测到网络
+            case AFNetworkReachabilityStatusNotReachable:
+                if (self.dataarr.count==0) {
+                    [self.view addSubview:self.bgview];
+                }
+                break;
+            default:
+                break;
+        }
+    }];
+    // 开始监测
+    [manager startMonitoring];
+}
 
 @end
