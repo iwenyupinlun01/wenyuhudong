@@ -96,56 +96,59 @@
 - (void)headerRefreshEndAction {
     
     NSString *strurl = [NSString stringWithFormat:newVCload,@"1",@"2",[tokenstr tokenstrfrom]];
-
-    __block NSString *netstr;
-    dispatch_group_t dispatchGroup = dispatch_group_create();
-    dispatch_group_enter(dispatchGroup);
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        NSLog(@"第一个请求完成");
-        AFNetworkReachabilityManager *manager = [AFNetworkReachabilityManager sharedManager];
-        [manager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
-            switch (status) {
-                    //没有检测到网络
-                case AFNetworkReachabilityStatusNotReachable:
-                    NSLog(@"没有完网络");
-                    netstr = @"404";
-                    
-                    break;
-                case AFNetworkReachabilityStatusReachableViaWWAN:
-                    NSLog(@"3g网络");
-                    netstr = @"3g";
-                    
-                    break;
-                case AFNetworkReachabilityStatusReachableViaWiFi:
-                    NSLog(@"wifi");
-                    netstr = @"wifi";
-                    break;
-                default:
-                    break;
-            }
-        }];
-        // 开始监测
-        [manager startMonitoring];
-        dispatch_group_leave(dispatchGroup);
-    });
-    
-    dispatch_group_enter(dispatchGroup);
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        NSLog(@"第二个请求完成");
-        [ZBNetworkManager requestWithConfig:^(ZBURLRequest *request) {
-            request.urlString=strurl;
-            if ([netstr isEqualToString:@"404"]) {
-                request.apiType = ZBRequestTypeDefault;
+    if (kIsNetwork)
+    {
+        [PPNetworkHelper GET:strurl parameters:nil success:^(id responseObject) {
+            [self.dataSource removeAllObjects];
+            [self.dataarr removeAllObjects];
+            [self.imgarr removeAllObjects];
+            NSArray *dit = [responseObject objectForKey:@"info"];
+            for (int i = 0; i<dit.count; i++) {
+                NSDictionary *dicarr = [dit objectAtIndex:i];
+                self.hmodel = [[hotModel alloc] init];
+                self.hmodel.contentstr = dicarr[@"content"];
+                self.hmodel.timestr = dicarr[@"create_time"];
+                self.hmodel.imgurlstr = dicarr[@"images"];
+                self.hmodel.namestr = dicarr[@"name"];
+                self.hmodel.dianzanstr = [NSString stringWithFormat:@"%@",dicarr[@"support_num"]];
+                self.hmodel.pinglunstr = dicarr[@"reply_num"];
+                self.hmodel.newidstr = dicarr[@"id"];
+                self.hmodel.titlestr = dicarr[@"title"];
+                self.hmodel.fromstr =dicarr[@"support_count"];
+                self.hmodel.typestr = dicarr[@"type"];
+                self.hmodel.sifoudianzanstr = [NSString stringWithFormat:@"%@",dicarr[@"is_support"]];
+                self.hmodel.weburlstr = dicarr[@"url"];
+                self.hmodel.ishot = [NSString stringWithFormat:@"%@",dicarr[@"is_hot"]];
+                self.hmodel.platformstr = dicarr[@"platform"];
+                self.hmodel.small_imagesstrl = dicarr[@"small_images"];
+                self.hmodel.textheightstr = @"";
                 
-            }else
-            {
-                request.apiType = ZBRequestTypeRefresh;
+                [self.dataSource addObject:self.hmodel.contentstr];
+                [self.dataarr addObject:self.hmodel];
+                [self.imgarr addObject:self.hmodel.imgurlstr];
             }
-        } success:^(id responseObj, apiType type) {
-            NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseObj options:NSJSONReadingMutableContainers error:nil];
-            NSLog(@"infor=====%@",dict);
-            NSLog(@"str====%@",strurl);
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.hottable.mj_header endRefreshing];
+                [self.hottable reloadData];
+                [self.xuanzuanbtn stopRotate];
+            });
+            
+        } failure:^(NSError *error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.hottable.mj_header endRefreshing];
+                [self.xuanzuanbtn stopRotate];
+                [MBProgressHUD showError:@"没有网络"];
+                
+            });
+            [self checkNetworkStatus];
+            
+        }];
+    }else
+    {
+        [PPNetworkHelper GET:strurl parameters:nil responseCache:^(id responseCache) {
+            NSDictionary *dict = responseCache;
+            NSLog(@"dict=======%@",dict);
             [self.dataSource removeAllObjects];
             [self.dataarr removeAllObjects];
             [self.imgarr removeAllObjects];
@@ -180,7 +183,10 @@
                 [self.hottable reloadData];
                 [self.xuanzuanbtn stopRotate];
             });
-        } failed:^(NSError *error) {
+            
+        } success:^(id responseObject) {
+            
+        } failure:^(NSError *error) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.hottable.mj_header endRefreshing];
                 [self.xuanzuanbtn stopRotate];
@@ -188,12 +194,7 @@
             });
             [self checkNetworkStatus];
         }];
-        
-        dispatch_group_leave(dispatchGroup);
-    });
-    dispatch_group_notify(dispatchGroup, dispatch_get_main_queue(), ^(){
-        NSLog(@"请求完成");
-    });
+    }
 }
 
 - (void)footerRefreshEndAction {

@@ -21,4 +21,5 @@ pod 'DZNEmptyDataSet'
 pod 'CGCellContentViewManager', '1.0'
 pod 'UMengAnalytics' #标准SDK，含IDFA
 pod 'Bugly'
+
 end
