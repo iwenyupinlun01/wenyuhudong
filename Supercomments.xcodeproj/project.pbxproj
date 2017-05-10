@@ -21,6 +21,8 @@
 		53334DF01EC2B76600B20979 /* ZBNetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 53334DE91EC2B76600B20979 /* ZBNetworkManager.m */; };
 		53334DF11EC2B76600B20979 /* ZBURLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 53334DEB1EC2B76600B20979 /* ZBURLRequest.m */; };
 		53334DF21EC2B76600B20979 /* ZBURLSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 53334DED1EC2B76600B20979 /* ZBURLSessionManager.m */; };
+		53334DF41EC2F02100B20979 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53334DF31EC2F02100B20979 /* SystemConfiguration.framework */; };
+		53334DF81EC2F04C00B20979 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 53334DF71EC2F04C00B20979 /* Reachability.m */; };
 		53619E431E95EEDB007CC7AC /* headView.m in Sources */ = {isa = PBXBuildFile; fileRef = 53619E421E95EEDB007CC7AC /* headView.m */; };
 		53619E521E960164007CC7AC /* messageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 53619E511E960164007CC7AC /* messageViewController.m */; };
 		53619E551E9601A5007CC7AC /* feedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 53619E541E9601A5007CC7AC /* feedbackViewController.m */; };
@@ -159,6 +161,9 @@
 		53334DEB1EC2B76600B20979 /* ZBURLRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZBURLRequest.m; sourceTree = "<group>"; };
 		53334DEC1EC2B76600B20979 /* ZBURLSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZBURLSessionManager.h; sourceTree = "<group>"; };
 		53334DED1EC2B76600B20979 /* ZBURLSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZBURLSessionManager.m; sourceTree = "<group>"; };
+		53334DF31EC2F02100B20979 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		53334DF61EC2F04C00B20979 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		53334DF71EC2F04C00B20979 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		53619E411E95EEDB007CC7AC /* headView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = headView.h; sourceTree = "<group>"; };
 		53619E421E95EEDB007CC7AC /* headView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = headView.m; sourceTree = "<group>"; };
 		53619E501E960164007CC7AC /* messageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = messageViewController.h; sourceTree = "<group>"; };
@@ -369,6 +374,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				53334DF41EC2F02100B20979 /* SystemConfiguration.framework in Frameworks */,
 				53F9CB811E9B544300C1F3A7 /* libsqlite3.tbd in Frameworks */,
 				53F9CB7F1E9B543900C1F3A7 /* ImageIO.framework in Frameworks */,
 				53F9CB7D1E9B542F00C1F3A7 /* JavaScriptCore.framework in Frameworks */,
@@ -447,6 +453,15 @@
 				53334DED1EC2B76600B20979 /* ZBURLSessionManager.m */,
 			);
 			path = ZBNetworking;
+			sourceTree = "<group>";
+		};
+		53334DF51EC2F04C00B20979 /* Reachability */ = {
+			isa = PBXGroup;
+			children = (
+				53334DF61EC2F04C00B20979 /* Reachability.h */,
+				53334DF71EC2F04C00B20979 /* Reachability.m */,
+			);
+			path = Reachability;
 			sourceTree = "<group>";
 		};
 		53619E441E96003F007CC7AC /* 消息通知 */ = {
@@ -776,6 +791,7 @@
 		53AEBE191E948A2500280F70 /* Supercomments */ = {
 			isa = PBXGroup;
 			children = (
+				53334DF51EC2F04C00B20979 /* Reachability */,
 				53334DE21EC2B76600B20979 /* ZBNetworking */,
 				53334DDF1EC1BE7500B20979 /* NullSafe */,
 				539550E31EA0C623001A268C /* utlis */,
@@ -1195,6 +1211,7 @@
 		EE0E1550650457102FEF271F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				53334DF31EC2F02100B20979 /* SystemConfiguration.framework */,
 				53F9CB801E9B544300C1F3A7 /* libsqlite3.tbd */,
 				53F9CB7E1E9B543900C1F3A7 /* ImageIO.framework */,
 				53F9CB7C1E9B542F00C1F3A7 /* JavaScriptCore.framework */,
@@ -1372,6 +1389,7 @@
 				538D53D01EAF09E800E2DCAF /* tokenstr.m in Sources */,
 				538D53E01EAF14BB00E2DCAF /* NSString+CLTools.m in Sources */,
 				53619E521E960164007CC7AC /* messageViewController.m in Sources */,
+				53334DF81EC2F04C00B20979 /* Reachability.m in Sources */,
 				53619ED11E988A01007CC7AC /* setbtn.m in Sources */,
 				53619EC01E976EBB007CC7AC /* UIColor+BgColor.m in Sources */,
 				53AEBE1F1E948A2500280F70 /* AppDelegate.m in Sources */,
@@ -1577,7 +1595,7 @@
 					"$(PROJECT_DIR)/Supercomments/ShareSDK/Support/PlatformSDK/SinaWeiboSDK",
 					"$(PROJECT_DIR)/Supercomments/ShareSDK/Support/PlatformSDK/WeChatSDK",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.wangjungang.Supercomments;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wangjungang.Supercomment;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -1612,7 +1630,7 @@
 					"$(PROJECT_DIR)/Supercomments/ShareSDK/Support/PlatformSDK/SinaWeiboSDK",
 					"$(PROJECT_DIR)/Supercomments/ShareSDK/Support/PlatformSDK/WeChatSDK",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.wangjungang.Supercomments;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wangjungang.Supercomment;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
 			};

@@ -64,6 +64,7 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(kvcpinglun:) name:@"pinglunkvo2" object:nil];
     
     [self.view addSubview:self.xuanzuanbtn];
+    [self checkNetworkStatus];
 }
 
 #pragma mark - 刷新控件
@@ -94,53 +95,105 @@
 
 - (void)headerRefreshEndAction {
     
-
-    
     NSString *strurl = [NSString stringWithFormat:newVCload,@"1",@"2",[tokenstr tokenstrfrom]];
+
+    __block NSString *netstr;
+    dispatch_group_t dispatchGroup = dispatch_group_create();
+    dispatch_group_enter(dispatchGroup);
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        NSLog(@"第一个请求完成");
+        AFNetworkReachabilityManager *manager = [AFNetworkReachabilityManager sharedManager];
+        [manager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+            switch (status) {
+                    //没有检测到网络
+                case AFNetworkReachabilityStatusNotReachable:
+                    NSLog(@"没有完网络");
+                    netstr = @"404";
+                    
+                    break;
+                case AFNetworkReachabilityStatusReachableViaWWAN:
+                    NSLog(@"3g网络");
+                    netstr = @"3g";
+                    
+                    break;
+                case AFNetworkReachabilityStatusReachableViaWiFi:
+                    NSLog(@"wifi");
+                    netstr = @"wifi";
+                    break;
+                default:
+                    break;
+            }
+        }];
+        // 开始监测
+        [manager startMonitoring];
+        dispatch_group_leave(dispatchGroup);
+    });
     
+    dispatch_group_enter(dispatchGroup);
     
-    [CLNetworkingManager getNetworkRequestWithUrlString:strurl parameters:nil isCache:YES succeed:^(id data) {
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        NSLog(@"第二个请求完成");
+        [ZBNetworkManager requestWithConfig:^(ZBURLRequest *request) {
+            request.urlString=strurl;
+            if ([netstr isEqualToString:@"404"]) {
+                request.apiType = ZBRequestTypeDefault;
+                
+            }else
+            {
+                request.apiType = ZBRequestTypeRefresh;
+            }
+        } success:^(id responseObj, apiType type) {
+            NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseObj options:NSJSONReadingMutableContainers error:nil];
+            NSLog(@"infor=====%@",dict);
+            NSLog(@"str====%@",strurl);
+            [self.dataSource removeAllObjects];
+            [self.dataarr removeAllObjects];
+            [self.imgarr removeAllObjects];
+            NSArray *dit = [dict objectForKey:@"info"];
+            for (int i = 0; i<dit.count; i++) {
+                NSDictionary *dicarr = [dit objectAtIndex:i];
+                self.hmodel = [[hotModel alloc] init];
+                self.hmodel.contentstr = dicarr[@"content"];
+                self.hmodel.timestr = dicarr[@"create_time"];
+                self.hmodel.imgurlstr = dicarr[@"images"];
+                self.hmodel.namestr = dicarr[@"name"];
+                self.hmodel.dianzanstr = [NSString stringWithFormat:@"%@",dicarr[@"support_num"]];
+                self.hmodel.pinglunstr = dicarr[@"reply_num"];
+                self.hmodel.newidstr = dicarr[@"id"];
+                self.hmodel.titlestr = dicarr[@"title"];
+                self.hmodel.fromstr =dicarr[@"support_count"];
+                self.hmodel.typestr = dicarr[@"type"];
+                self.hmodel.sifoudianzanstr = [NSString stringWithFormat:@"%@",dicarr[@"is_support"]];
+                self.hmodel.weburlstr = dicarr[@"url"];
+                self.hmodel.ishot = [NSString stringWithFormat:@"%@",dicarr[@"is_hot"]];
+                self.hmodel.platformstr = dicarr[@"platform"];
+                self.hmodel.small_imagesstrl = dicarr[@"small_images"];
+                self.hmodel.textheightstr = @"";
+                
+                [self.dataSource addObject:self.hmodel.contentstr];
+                [self.dataarr addObject:self.hmodel];
+                [self.imgarr addObject:self.hmodel.imgurlstr];
+            }
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.hottable.mj_header endRefreshing];
+                [self.hottable reloadData];
+                [self.xuanzuanbtn stopRotate];
+            });
+        } failed:^(NSError *error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.hottable.mj_header endRefreshing];
+                [self.xuanzuanbtn stopRotate];
+                [MBProgressHUD showError:@"没有网络"];
+            });
+            [self checkNetworkStatus];
+        }];
         
-        [self.dataSource removeAllObjects];
-        [self.dataarr removeAllObjects];
-        [self.imgarr removeAllObjects];
-        
-        NSLog(@"infor=====%@",data);
-        NSLog(@"str====%@",strurl);
-        NSArray *dit = [data objectForKey:@"info"];
-        for (int i = 0; i<dit.count; i++) {
-            NSDictionary *dicarr = [dit objectAtIndex:i];
-            self.hmodel = [[hotModel alloc] init];
-            self.hmodel.contentstr = dicarr[@"content"];
-            self.hmodel.timestr = dicarr[@"create_time"];
-            self.hmodel.imgurlstr = dicarr[@"images"];
-            self.hmodel.namestr = dicarr[@"name"];
-            self.hmodel.dianzanstr = dicarr[@"support_num"];
-            self.hmodel.pinglunstr = dicarr[@"reply_num"];
-            self.hmodel.newidstr = dicarr[@"id"];
-            self.hmodel.titlestr = dicarr[@"title"];
-            self.hmodel.fromstr =dicarr[@"support_count"];
-            self.hmodel.typestr = dicarr[@"type"];
-            self.hmodel.sifoudianzanstr = dicarr[@"is_support"];
-            self.hmodel.weburlstr = dicarr[@"url"];
-            self.hmodel.ishot = dicarr[@"is_hot"];
-            self.hmodel.platformstr = dicarr[@"platform"];
-            self.hmodel.small_imagesstrl = dicarr[@"small_images"];
-            [self.dataSource addObject:self.hmodel.contentstr];
-            [self.dataarr addObject:self.hmodel];
-            [self.imgarr addObject:self.hmodel.imgurlstr];
-        }
-        [self.hottable.mj_header endRefreshing];
-        [self.hottable reloadData];
-        [self.xuanzuanbtn stopRotate];
-    } fail:^(NSError *error) {
-        [self.hottable.mj_header endRefreshing];
-        [self checkNetworkStatus];
-        [MBProgressHUD showError:@"没有网络"];
-        [self.xuanzuanbtn stopRotate];
-    }];
-    
-    
+        dispatch_group_leave(dispatchGroup);
+    });
+    dispatch_group_notify(dispatchGroup, dispatch_get_main_queue(), ^(){
+        NSLog(@"请求完成");
+    });
 }
 
 - (void)footerRefreshEndAction {
@@ -234,66 +287,21 @@
 
 -(void)xuanzhuanbtnclick
 {
-    [_hottable setContentOffset:CGPointMake(0,0) animated:NO];
-    
-    [CLNetworkingManager clearCaches];
-    [self.xuanzuanbtn rotate360DegreeWithImageView];
-    [self.hottable.mj_header beginRefreshing];
-    
-    
-   // [self.textheiarr removeAllObjects];
-    
-    NSString *strurl = [NSString stringWithFormat:newVCload,@"1",@"2",[tokenstr tokenstrfrom]];
-    
-    [AFManager getReqURL:strurl block:^(id infor) {
-        NSLog(@"infor=====%@",infor);
-        NSLog(@"str====%@",strurl);
-        
-        [self.dataSource removeAllObjects];
-        [self.dataarr removeAllObjects];
-        [self.imgarr removeAllObjects];
-        
-        NSArray *dit = [infor objectForKey:@"info"];
-        for (int i = 0; i<dit.count; i++) {
-            NSDictionary *dicarr = [dit objectAtIndex:i];
-            self.hmodel = [[hotModel alloc] init];
-            self.hmodel.contentstr = dicarr[@"content"];
-            self.hmodel.timestr = dicarr[@"create_time"];
-            self.hmodel.imgurlstr = dicarr[@"images"];
-            self.hmodel.namestr = dicarr[@"name"];
-            self.hmodel.dianzanstr = [NSString stringWithFormat:@"%@",dicarr[@"support_num"]];
-            self.hmodel.pinglunstr = dicarr[@"reply_num"];
-            self.hmodel.newidstr = dicarr[@"id"];
-            self.hmodel.titlestr = dicarr[@"title"];
-            self.hmodel.fromstr =dicarr[@"support_count"];
-            self.hmodel.typestr = dicarr[@"type"];
-            self.hmodel.sifoudianzanstr = [NSString stringWithFormat:@"%@",dicarr[@"is_support"]];
-            self.hmodel.weburlstr = dicarr[@"url"];
-            self.hmodel.ishot = [NSString stringWithFormat:@"%@",dicarr[@"is_hot"]];
-            self.hmodel.platformstr = dicarr[@"platform"];
-            self.hmodel.small_imagesstrl = dicarr[@"small_images"];
-            self.hmodel.textheightstr = @"";
-            
-            [self.dataSource addObject:self.hmodel.contentstr];
-            [self.dataarr addObject:self.hmodel];
-            [self.imgarr addObject:self.hmodel.imgurlstr];
-        }
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.hottable.mj_header endRefreshing];
-            [self.hottable reloadData];
-            [self.xuanzuanbtn stopRotate];
-        });
-        
-    } errorblock:^(NSError *error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.hottable.mj_header endRefreshing];
-            [self.xuanzuanbtn stopRotate];
-            [MBProgressHUD showError:@"没有网络"];
-            
-        });
-        
-    }];
+    dispatch_group_t dispatchGroup = dispatch_group_create();
+    dispatch_group_enter(dispatchGroup);
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        NSLog(@"第一个请求完成");
+        [_hottable setContentOffset:CGPointMake(0,0) animated:NO];
+        //[self.hottable  scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+        dispatch_group_leave(dispatchGroup);
+    });
+    dispatch_group_enter(dispatchGroup);
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        NSLog(@"第二个请求完成");
+        [self.xuanzuanbtn rotate360DegreeWithImageView];
+        [self.hottable.mj_header beginRefreshing];
+        dispatch_group_leave(dispatchGroup);
+    });
 }
 
 #pragma mark -UITableViewDataSource&&UITableViewDelegate
@@ -542,14 +550,14 @@
 
 #pragma mark - 加载失败
 
-- (UIImage *)imageForEmptyDataSet:(UIScrollView *)scrollView {
-    return [UIImage imageNamed:@"空的"];
-}
-
-- (void)emptyDataSet:(UIScrollView *)scrollView didTapView:(UIView *)view
-{
-    [self addHeader];
-}
+//- (UIImage *)imageForEmptyDataSet:(UIScrollView *)scrollView {
+//    return [UIImage imageNamed:@"空的"];
+//}
+//
+//- (void)emptyDataSet:(UIScrollView *)scrollView didTapView:(UIView *)view
+//{
+//    [self addHeader];
+//}
 
 #pragma mark 用于将cell分割线补全
 -(void)viewDidLayoutSubviews {

@@ -24,6 +24,7 @@
         [self addSubview:self.namelab];
         [self addSubview:self.timelab];
         [self addSubview:self.contentlab];
+        [self addSubview:self.sendbtn];
     }
     return self;
 }
@@ -34,9 +35,8 @@
     self.picimg.frame = CGRectMake(14*WIDTH_SCALE, 14*HEIGHT_SCALE, 32*WIDTH_SCALE, 32*WIDTH_SCALE);
     self.namelab.frame = CGRectMake(14*WIDTH_SCALE+32*WIDTH_SCALE+14*WIDTH_SCALE, 14*HEIGHT_SCALE, 80*WIDTH_SCALE, 14*HEIGHT_SCALE);
     self.timelab.frame = CGRectMake(14*WIDTH_SCALE+32*WIDTH_SCALE+14*WIDTH_SCALE, 14*HEIGHT_SCALE+20*HEIGHT_SCALE, 80*WIDTH_SCALE, 11*HEIGHT_SCALE);
-    
+    self.sendbtn.frame = CGRectMake(0, 0, DEVICE_WIDTH, self.frame.size.height);
 }
-
 
 
 -(void)setcelldata:(detailcellmodel*)model
@@ -55,6 +55,18 @@
 }
 
 #pragma mark - getters
+
+
+-(UIButton *)sendbtn
+{
+    if(!_sendbtn)
+    {
+        _sendbtn = [[UIButton alloc] init];
+        
+    }
+    return _sendbtn;
+}
+
 
 
 -(UIImageView *)picimg

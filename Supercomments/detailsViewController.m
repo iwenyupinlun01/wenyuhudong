@@ -444,21 +444,21 @@ NSMutableArray * ymDataArray;
     self.secview.backgroundColor = [UIColor whiteColor];
     [self.secview setcelldata:self.detalisarr[section]];
     self.secview.layer.masksToBounds = YES;
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [button setFrame:CGRectMake(0, 0, self.view.frame.size.width, 64)];
-    [button setTag:section+1];
-    button.backgroundColor = [UIColor whiteColor];
+//    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+//    [button setFrame:CGRectMake(0, 0, self.view.frame.size.width, 64)];
+    [self.secview.sendbtn setTag:section+1];
+    self.secview.sendbtn.backgroundColor = [UIColor whiteColor];
     // 设置Image
-    button.alpha = 0.1;
+    self.secview.sendbtn.alpha = 0.1;
     // 设置偏移量
-    CGFloat imageOriginX = button.imageView.frame.origin.x;
-    CGFloat imageWidth = button.imageView.frame.size.width;
-    CGFloat titleOriginX = button.titleLabel.frame.origin.x;
-    [button setTitleEdgeInsets:UIEdgeInsetsMake(0, -titleOriginX+imageWidth + 20, 0, titleOriginX-imageWidth-20)];
-    button.imageEdgeInsets = UIEdgeInsetsMake(0, -imageOriginX + 10, 0, imageOriginX -  10);
+    CGFloat imageOriginX = self.secview.sendbtn.imageView.frame.origin.x;
+    CGFloat imageWidth = self.secview.sendbtn.imageView.frame.size.width;
+    CGFloat titleOriginX = self.secview.sendbtn.titleLabel.frame.origin.x;
+    [self.secview.sendbtn setTitleEdgeInsets:UIEdgeInsetsMake(0, -titleOriginX+imageWidth + 20, 0, titleOriginX-imageWidth-20)];
+    self.secview.sendbtn.imageEdgeInsets = UIEdgeInsetsMake(0, -imageOriginX + 10, 0, imageOriginX -  10);
     // 添加点击事件
-    [button addTarget:self action:@selector(buttonPress:) forControlEvents:UIControlEventTouchUpInside];
-    [_secview addSubview:button];
+    [self.secview.sendbtn addTarget:self action:@selector(buttonPress:) forControlEvents:UIControlEventTouchUpInside];
+    [_secview addSubview:self.secview.sendbtn];
     return _secview;
 }
 

@@ -20,7 +20,7 @@
 @property (nonatomic,strong) UILabel *timelab;
 @property (nonatomic,strong) UILabel *contentlab;
 
-
+@property (nonatomic,strong) UIButton *sendbtn;
 -(void)setcelldata:(detailcellmodel*)model;
 + (CGFloat)cellHeightWithText:(NSString *)text;
 @end

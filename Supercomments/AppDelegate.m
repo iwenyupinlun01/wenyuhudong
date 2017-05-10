@@ -67,7 +67,7 @@
     [Bugly startWithAppId:@"7de265060f"];
     
     //向微信注册应用。
-
+    
     [WXApi registerApp:@"wx133ee2b8bd5d3c7d"];
     
     [ShareSDK registerApp:@"1d0c68ab95d2c"
@@ -84,8 +84,8 @@
              case SSDKPlatformTypeWechat:
                  [ShareSDKConnector connectWeChat:[WXApi class]];
                  break;
-
-            default:
+                 
+             default:
                  break;
          }
          
@@ -94,41 +94,41 @@
           onConfiguration:^(SSDKPlatformType platformType, NSMutableDictionary *appInfo) {
               switch (platformType)
               {
-                    //腾讯微信权限类型authType:SSO + Web授权
+                      //腾讯微信权限类型authType:SSO + Web授权
                   case SSDKPlatformTypeWechat:
                       [appInfo SSDKSetupWeChatByAppId:@"wx133ee2b8bd5d3c7d"
                                             appSecret:@"a905fbeb82b080c8c643360a062f2531"];
                       break;
-                default:
+                  default:
                       break;
               }
           }];
     
-
-        /**
-         可以在这里进行一个判断的设置，如果是app第一次启动就加载启动页，如果不是，则直接进入首页
-         **/
-        if (![[NSUserDefaults standardUserDefaults] boolForKey:@"everLaunched"]) {
-            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"everLaunched"];
-            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstLaunch"];
-        }
-        else{
-            [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"firstLaunch"];
-        }
     
-        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"firstLaunch"]) {
-            // 这里判断是否第一次
+    /**
+     可以在这里进行一个判断的设置，如果是app第一次启动就加载启动页，如果不是，则直接进入首页
+     **/
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"everLaunched"]) {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"everLaunched"];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstLaunch"];
+    }
+    else{
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"firstLaunch"];
+    }
     
-            hDisplayView *hvc = [[hDisplayView alloc]initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT)];
-    
-            [self.window.rootViewController.view addSubview:hvc];
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"firstLaunch"]) {
+        // 这里判断是否第一次
+        
+        hDisplayView *hvc = [[hDisplayView alloc]initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT)];
+        
+        [self.window.rootViewController.view addSubview:hvc];
+        
+        [UIView animateWithDuration:0.25 animations:^{
+            hvc.frame = CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT);
             
-            [UIView animateWithDuration:0.25 animations:^{
-                hvc.frame = CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT);
-    
-            }];
-    
-        }
+        }];
+        
+    }
     // 启动图片延时: 2秒
     //[NSThread sleepForTimeInterval:2];
     if ([self.typestr isEqualToString:@"0"]) {
@@ -158,7 +158,7 @@
         NSString *code = aresp.code;
         [self getWeiXinOpenId:code];
         
-     
+        
     }
 }
 

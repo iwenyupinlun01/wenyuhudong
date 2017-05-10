@@ -184,7 +184,11 @@
 
 -(void)loginbtnclick
 {
-    [self weixinLogin];
+    //[self weixinLogin];
+    SendAuthReq *req = [[SendAuthReq alloc]init];
+    req.scope = WX_SCOPE;
+    req.state = WX_STATE; //可省，不影响功能
+    [WXApi sendReq:req];
 }
 
 -(void)gobackbtnclick
@@ -196,10 +200,7 @@
 
 -(void)weixinLogin{
     if([WXApi isWXAppInstalled]){
-        SendAuthReq *req = [[SendAuthReq alloc]init];
-        req.scope = WX_SCOPE;
-        req.state = WX_STATE; //可省，不影响功能
-        [WXApi sendReq:req];
+      
         [_loginbtn setTitle:@"微信登录" forState:normal];
         [self.loginbtn addTarget:self action:@selector(loginbtnclick) forControlEvents:UIControlEventTouchUpInside];
         

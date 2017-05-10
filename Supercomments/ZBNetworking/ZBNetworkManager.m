@@ -140,25 +140,24 @@
     [[ZBNetworkManager sharedInstance].AFmanager invalidateSessionCancelingTasks:cancelPendingTasks];
 }
 
-+ (NSInteger)startNetWorkMonitoring{
++ (NSInteger )startNetWorkMonitoring{
     [ZBNetworkManager sharedInstance].netStatus=[AFNetworkReachabilityManager sharedManager].networkReachabilityStatus;
-
     [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
       
          [ZBNetworkManager sharedInstance].netStatus=status;
         switch ( [ZBNetworkManager sharedInstance].netStatus)
         {
             case AFNetworkReachabilityStatusUnknown: // 未知网络
-                
+
                 break;
             case AFNetworkReachabilityStatusNotReachable: // 没有网络(断网)
-                
+
                 break;
             case AFNetworkReachabilityStatusReachableViaWWAN: // 手机自带网络
-                
+
                 break;
             case AFNetworkReachabilityStatusReachableViaWiFi: // WIFI
-                
+
                 break;
         }
     }];
