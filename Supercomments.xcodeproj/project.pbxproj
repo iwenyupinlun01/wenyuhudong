@@ -16,6 +16,11 @@
 		531F944E1EBE44F900769399 /* XSNoDataView.m in Sources */ = {isa = PBXBuildFile; fileRef = 531F944D1EBE44F900769399 /* XSNoDataView.m */; };
 		53314A4B1EA1DE35009773F0 /* YYPhotoGroupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 53314A4A1EA1DE35009773F0 /* YYPhotoGroupView.m */; };
 		53334DE11EC1BE7500B20979 /* NullSafe.m in Sources */ = {isa = PBXBuildFile; fileRef = 53334DE01EC1BE7500B20979 /* NullSafe.m */; };
+		53334DEE1EC2B76600B20979 /* NSFileManager+pathMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = 53334DE41EC2B76600B20979 /* NSFileManager+pathMethod.m */; };
+		53334DEF1EC2B76600B20979 /* ZBCacheManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 53334DE61EC2B76600B20979 /* ZBCacheManager.m */; };
+		53334DF01EC2B76600B20979 /* ZBNetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 53334DE91EC2B76600B20979 /* ZBNetworkManager.m */; };
+		53334DF11EC2B76600B20979 /* ZBURLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 53334DEB1EC2B76600B20979 /* ZBURLRequest.m */; };
+		53334DF21EC2B76600B20979 /* ZBURLSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 53334DED1EC2B76600B20979 /* ZBURLSessionManager.m */; };
 		53619E431E95EEDB007CC7AC /* headView.m in Sources */ = {isa = PBXBuildFile; fileRef = 53619E421E95EEDB007CC7AC /* headView.m */; };
 		53619E521E960164007CC7AC /* messageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 53619E511E960164007CC7AC /* messageViewController.m */; };
 		53619E551E9601A5007CC7AC /* feedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 53619E541E9601A5007CC7AC /* feedbackViewController.m */; };
@@ -143,6 +148,17 @@
 		53314A491EA1DE35009773F0 /* YYPhotoGroupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYPhotoGroupView.h; sourceTree = "<group>"; };
 		53314A4A1EA1DE35009773F0 /* YYPhotoGroupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYPhotoGroupView.m; sourceTree = "<group>"; };
 		53334DE01EC1BE7500B20979 /* NullSafe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NullSafe.m; sourceTree = "<group>"; };
+		53334DE31EC2B76600B20979 /* NSFileManager+pathMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+pathMethod.h"; sourceTree = "<group>"; };
+		53334DE41EC2B76600B20979 /* NSFileManager+pathMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+pathMethod.m"; sourceTree = "<group>"; };
+		53334DE51EC2B76600B20979 /* ZBCacheManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZBCacheManager.h; sourceTree = "<group>"; };
+		53334DE61EC2B76600B20979 /* ZBCacheManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZBCacheManager.m; sourceTree = "<group>"; };
+		53334DE71EC2B76600B20979 /* ZBNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZBNetworking.h; sourceTree = "<group>"; };
+		53334DE81EC2B76600B20979 /* ZBNetworkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZBNetworkManager.h; sourceTree = "<group>"; };
+		53334DE91EC2B76600B20979 /* ZBNetworkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZBNetworkManager.m; sourceTree = "<group>"; };
+		53334DEA1EC2B76600B20979 /* ZBURLRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZBURLRequest.h; sourceTree = "<group>"; };
+		53334DEB1EC2B76600B20979 /* ZBURLRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZBURLRequest.m; sourceTree = "<group>"; };
+		53334DEC1EC2B76600B20979 /* ZBURLSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZBURLSessionManager.h; sourceTree = "<group>"; };
+		53334DED1EC2B76600B20979 /* ZBURLSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZBURLSessionManager.m; sourceTree = "<group>"; };
 		53619E411E95EEDB007CC7AC /* headView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = headView.h; sourceTree = "<group>"; };
 		53619E421E95EEDB007CC7AC /* headView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = headView.m; sourceTree = "<group>"; };
 		53619E501E960164007CC7AC /* messageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = messageViewController.h; sourceTree = "<group>"; };
@@ -413,6 +429,24 @@
 				53334DE01EC1BE7500B20979 /* NullSafe.m */,
 			);
 			path = NullSafe;
+			sourceTree = "<group>";
+		};
+		53334DE21EC2B76600B20979 /* ZBNetworking */ = {
+			isa = PBXGroup;
+			children = (
+				53334DE31EC2B76600B20979 /* NSFileManager+pathMethod.h */,
+				53334DE41EC2B76600B20979 /* NSFileManager+pathMethod.m */,
+				53334DE51EC2B76600B20979 /* ZBCacheManager.h */,
+				53334DE61EC2B76600B20979 /* ZBCacheManager.m */,
+				53334DE71EC2B76600B20979 /* ZBNetworking.h */,
+				53334DE81EC2B76600B20979 /* ZBNetworkManager.h */,
+				53334DE91EC2B76600B20979 /* ZBNetworkManager.m */,
+				53334DEA1EC2B76600B20979 /* ZBURLRequest.h */,
+				53334DEB1EC2B76600B20979 /* ZBURLRequest.m */,
+				53334DEC1EC2B76600B20979 /* ZBURLSessionManager.h */,
+				53334DED1EC2B76600B20979 /* ZBURLSessionManager.m */,
+			);
+			path = ZBNetworking;
 			sourceTree = "<group>";
 		};
 		53619E441E96003F007CC7AC /* 消息通知 */ = {
@@ -742,6 +776,7 @@
 		53AEBE191E948A2500280F70 /* Supercomments */ = {
 			isa = PBXGroup;
 			children = (
+				53334DE21EC2B76600B20979 /* ZBNetworking */,
 				53334DDF1EC1BE7500B20979 /* NullSafe */,
 				539550E31EA0C623001A268C /* utlis */,
 				5387A7B41EAB4F590057B518 /* webview */,
@@ -1318,6 +1353,7 @@
 				53AEBE221E948A2500280F70 /* ViewController.m in Sources */,
 				5301DD9E1EC0162A00A68CB6 /* hotModel.m in Sources */,
 				53619E681E961CD2007CC7AC /* WJGtextView.m in Sources */,
+				53334DF21EC2B76600B20979 /* ZBURLSessionManager.m in Sources */,
 				53E5C0711EB08182008B1F22 /* xieyiScrollView.m in Sources */,
 				53FE161C1E9C89D000585111 /* sectionView.m in Sources */,
 				53E5C07B1EB1F8ED008B1F22 /* TimeInterval.m in Sources */,
@@ -1344,8 +1380,10 @@
 				539550E61EA0C638001A268C /* navViewController.m in Sources */,
 				53619E6B1E962093007CC7AC /* setCell.m in Sources */,
 				53AEBE461E94910700280F70 /* MLMSegmentManager.m in Sources */,
+				53334DF11EC2B76600B20979 /* ZBURLRequest.m in Sources */,
 				53619EC81E988649007CC7AC /* zanBtn.m in Sources */,
 				53E5C0751EB1D309008B1F22 /* xieyiViewController.m in Sources */,
+				53334DEE1EC2B76600B20979 /* NSFileManager+pathMethod.m in Sources */,
 				53AEBE6A1E94D96A00280F70 /* hotViewController.m in Sources */,
 				53619E5F1E96055E007CC7AC /* myinfoViewController.m in Sources */,
 				53AEBE6F1E94F80400280F70 /* loginViewController.m in Sources */,
@@ -1356,6 +1394,7 @@
 				5301DDA11EC0163A00A68CB6 /* hotCell.m in Sources */,
 				53AEBE451E94910700280F70 /* MLMSegmentHead.m in Sources */,
 				5301DDC81EC08AF800A68CB6 /* emptyerrorView.m in Sources */,
+				53334DF01EC2B76600B20979 /* ZBNetworkManager.m in Sources */,
 				53E5C0781EB1D802008B1F22 /* bannerLab.m in Sources */,
 				53E2944C1E9F72930034D4E7 /* XWScanImage.m in Sources */,
 				53619ED71E98B89D007CC7AC /* titleView.m in Sources */,
@@ -1368,6 +1407,7 @@
 				53AEBE471E94910700280F70 /* MLMSegmentScroll.m in Sources */,
 				53619E581E9601B1007CC7AC /* setViewController.m in Sources */,
 				539550E01EA0B508001A268C /* newModel.m in Sources */,
+				53334DEF1EC2B76600B20979 /* ZBCacheManager.m in Sources */,
 				53619EBB1E9765D3007CC7AC /* replyModel.m in Sources */,
 				53EC944A1E9DC1C400E03E07 /* hDisplayView.m in Sources */,
 				53619EB51E964A52007CC7AC /* replyCell.m in Sources */,

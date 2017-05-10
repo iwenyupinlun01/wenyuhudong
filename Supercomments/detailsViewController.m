@@ -197,7 +197,6 @@ NSMutableArray * ymDataArray;
         self.headm.imgurlstr = [dic objectForKey:@"images"];
         self.headm.weburlstr = [dic objectForKey:@"url"];
         self.headm.small_imgurlstr = [dic objectForKey:@"small_images"];
-        
         self.headm.objectidstr = [NSString stringWithFormat:@"%@",[dic objectForKey:@"id"]];
         _objidstr = self.headm.objectidstr;
         self.headm.timestr = [Timestr datetime:[dic objectForKey:@"create_time"]];
