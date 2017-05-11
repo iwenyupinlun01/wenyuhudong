@@ -47,7 +47,14 @@
     self.timelab.text = [Timestr datetime:model.timestr];
     self.contentlab.text = model.contstr;
     
-    [self.picimg sd_setImageWithURL:[NSURL URLWithString:model.imgurlstr] placeholderImage:[UIImage imageNamed:@"头像默认图"]];
+//    [self.picimg sd_setImageWithURL:[NSURL URLWithString:model.imgurlstr] placeholderImage:[UIImage imageNamed:@"头像默认图"]];
+    
+    [self.picimg sd_setRoundImageWithURL:[NSURL URLWithString:model.imgurlstr] cornerRadius:16*WIDTH_SCALE placeholderImage:[UIImage imageNamed:@"头像默认图"] options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+        
+    } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        
+    }];
+    
     CGSize textSize = [_contentlab setText:_contentlab.text lines:QSTextDefaultLines andLineSpacing:QSTextLineSpacing constrainedToSize:CGSizeMake(DEVICE_WIDTH - 94*WIDTH_SCALE-14*WIDTH_SCALE,MAXFLOAT)];
     self.contentlab.frame = CGRectMake(14*WIDTH_SCALE+32*WIDTH_SCALE+14*WIDTH_SCALE,  60*HEIGHT_SCALE, textSize.width, textSize.height);
     _hei = textSize.height;
@@ -55,7 +62,6 @@
 }
 
 #pragma mark - getters
-
 
 -(UIButton *)sendbtn
 {
@@ -74,8 +80,9 @@
     if(!_picimg)
     {
         _picimg = [[UIImageView alloc] init];
-        _picimg.layer.masksToBounds = YES;
-        _picimg.layer.cornerRadius = 16*WIDTH_SCALE;
+//        _picimg.layer.masksToBounds = YES;
+//        _picimg.layer.cornerRadius = 16*WIDTH_SCALE;
+
     }
     return _picimg;
 }

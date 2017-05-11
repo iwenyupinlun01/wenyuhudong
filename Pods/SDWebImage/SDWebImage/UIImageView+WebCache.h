@@ -212,4 +212,6 @@
 
 - (void)cancelCurrentImageLoad __deprecated_msg("Use `sd_cancelCurrentImageLoad`");
 
+- (void)sd_setRoundImageWithURL:(NSURL *)url cornerRadius:(CGFloat)cornerRadius placeholderImage:(UIImage *)placeholder options:(SDWebImageOptions)options progress:(SDWebImageDownloaderProgressBlock)progressBlock completed:(SDWebImageCompletionBlock)completedBlock ;
+
 @end

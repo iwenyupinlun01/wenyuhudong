@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "WXApi.h"
-#import <CoreData/CoreData.h>
+//#import <CoreData/CoreData.h>
 @interface AppDelegate : UIResponder <UIApplicationDelegate,WXApiDelegate>
 
 @property (strong, nonatomic) UIWindow *window;

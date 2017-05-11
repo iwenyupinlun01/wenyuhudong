@@ -278,4 +278,78 @@ static char TAG_ACTIVITY_SHOW;
     [self sd_setAnimationImagesWithURLs:arrayOfURLs];
 }
 
+#pragma mark - 圆角处理
+
+//添加在UIImageView+WebCache
+- (void)sd_setRoundImageWithURL:(NSURL *)url cornerRadius:(CGFloat)cornerRadius placeholderImage:(UIImage *)placeholder options:(SDWebImageOptions)options progress:(SDWebImageDownloaderProgressBlock)progressBlock completed:(SDWebImageCompletionBlock)completedBlock {
+    
+    [self sd_cancelCurrentImageLoad];
+    objc_setAssociatedObject(self, &imageURLKey, url, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    
+    if (!(options & SDWebImageDelayPlaceholder)) {
+        dispatch_main_async_safe(^{
+            self.image = [self imageWithRoundCorner:placeholder cornerRadius:cornerRadius size:placeholder.size];
+      
+        });
+    }
+    
+    if (url) {
+        
+        // check if activityView is enabled or not
+        if ([self showActivityIndicatorView]) {
+            [self addActivityIndicator];
+        }
+        
+        __weak __typeof(self)wself = self;
+        id <SDWebImageOperation> operation = [SDWebImageManager.sharedManager downloadImageWithURL:url options:options progress:progressBlock completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
+            [wself removeActivityIndicator];
+            if (!wself) return;
+            dispatch_main_sync_safe(^{
+                if (!wself) return;
+                if (image && (options & SDWebImageAvoidAutoSetImage) && completedBlock)
+                {
+                    completedBlock( [self imageWithRoundCorner:image cornerRadius:cornerRadius size:placeholder.size], error, cacheType, url);
+                    return;
+                }
+                else if (image) {
+                    wself.image = [self imageWithRoundCorner:image cornerRadius:cornerRadius size:placeholder.size];
+                    [wself setNeedsLayout];
+                } else {
+                    if ((options & SDWebImageDelayPlaceholder)) {
+                        wself.image = [self imageWithRoundCorner:placeholder cornerRadius:cornerRadius size:placeholder.size];
+                        
+                        [wself setNeedsLayout];
+                    }
+                }
+                if (completedBlock && finished) {
+                    //这时候读的是缓存里的，无需再剪裁
+                    completedBlock(image, error, cacheType, url);
+                }
+            });
+        }];
+        [self sd_setImageLoadOperation:operation forKey:@"UIImageViewImageLoad"];
+    } else {
+        dispatch_main_async_safe(^{
+            [self removeActivityIndicator];
+            if (completedBlock) {
+                NSError *error = [NSError errorWithDomain:SDWebImageErrorDomain code:-1 userInfo:@{NSLocalizedDescriptionKey : @"Trying to load a nil url"}];
+                completedBlock(nil, error, SDImageCacheTypeNone, url);
+            }
+        });
+    }
+}
+//剪裁方法
+- (UIImage *)imageWithRoundCorner:(UIImage *)sourceImage cornerRadius:(CGFloat)cornerRadius size:(CGSize)size{
+    CGFloat scale = [UIScreen mainScreen].scale;
+    UIGraphicsBeginImageContextWithOptions(size, NO, scale);
+    CGRect bounds = CGRectMake(0, 0, size.width, size.height);
+    
+    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:bounds cornerRadius:cornerRadius];
+    [path addClip];
+    [sourceImage drawInRect:bounds];
+    
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return image;
+}
 @end

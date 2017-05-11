@@ -103,6 +103,9 @@
         if ([[data objectForKey:@"is_login"]intValue]!=1) {
             NSLog(@"未登录");
             self.denglustr = @"";
+            
+          
+            
             [self.infobtn sd_setImageWithURL:[NSURL URLWithString:@""] forState:normal placeholderImage:[UIImage imageNamed:@"未登录"]];
             
             [self.xiaohongdianview removeFromSuperview];
