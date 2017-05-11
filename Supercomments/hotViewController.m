@@ -98,7 +98,9 @@
     NSString *strurl = [NSString stringWithFormat:newVCload,@"1",@"2",[tokenstr tokenstrfrom]];
     if (kIsNetwork)
     {
-        [PPNetworkHelper GET:strurl parameters:nil success:^(id responseObject) {
+        [PPNetworkHelper GET:strurl parameters:nil responseCache:^(id responseCache) {
+            
+        } success:^(id responseObject) {
             [self.dataSource removeAllObjects];
             [self.dataarr removeAllObjects];
             [self.imgarr removeAllObjects];
@@ -133,7 +135,7 @@
                 [self.hottable reloadData];
                 [self.xuanzuanbtn stopRotate];
             });
-            
+
         } failure:^(NSError *error) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.hottable.mj_header endRefreshing];
@@ -142,8 +144,8 @@
                 
             });
             [self checkNetworkStatus];
-            
         }];
+        
     }else
     {
         [PPNetworkHelper GET:strurl parameters:nil responseCache:^(id responseCache) {

@@ -106,7 +106,9 @@
     
      if (kIsNetwork)
      {
-         [PPNetworkHelper GET:strurl parameters:nil success:^(id responseObject) {
+         [PPNetworkHelper GET:strurl parameters:nil responseCache:^(id responseCache) {
+             
+         } success:^(id responseObject) {
              [self.dataSource removeAllObjects];
              [self.dataarr removeAllObjects];
              [self.imgarr removeAllObjects];
@@ -150,8 +152,9 @@
                  
              });
              [self checkNetworkStatus];
-
-        }];
+         }];
+         
+        
      }else
      {
          [PPNetworkHelper GET:strurl parameters:nil responseCache:^(id responseCache) {
