@@ -91,6 +91,13 @@
 		53AEBE6A1E94D96A00280F70 /* hotViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 53AEBE691E94D96A00280F70 /* hotViewController.m */; };
 		53AEBE6F1E94F80400280F70 /* loginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 53AEBE6E1E94F80400280F70 /* loginViewController.m */; };
 		53AEBE721E95014B00280F70 /* infoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 53AEBE711E95014B00280F70 /* infoCell.m */; };
+		53C309161EC58B57000C7A87 /* UITableView+HYBCacheHeight.m in Sources */ = {isa = PBXBuildFile; fileRef = 53C309131EC58B57000C7A87 /* UITableView+HYBCacheHeight.m */; };
+		53C309171EC58B57000C7A87 /* UITableViewCell+HYBMasonryAutoCellHeight.m in Sources */ = {isa = PBXBuildFile; fileRef = 53C309151EC58B57000C7A87 /* UITableViewCell+HYBMasonryAutoCellHeight.m */; };
+		53C309211EC58BA5000C7A87 /* HYBCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 53C3091A1EC58BA5000C7A87 /* HYBCommentCell.m */; };
+		53C309221EC58BA5000C7A87 /* HYBCommentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 53C3091C1EC58BA5000C7A87 /* HYBCommentModel.m */; };
+		53C309231EC58BA5000C7A87 /* HYBTestCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 53C3091E1EC58BA5000C7A87 /* HYBTestCell.m */; };
+		53C309241EC58BA5000C7A87 /* HYBTestModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 53C309201EC58BA5000C7A87 /* HYBTestModel.m */; };
+		53C309271EC58CB0000C7A87 /* xiangqingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 53C309261EC58CB0000C7A87 /* xiangqingViewController.m */; };
 		53C40EBE1EB8227F0052CEB9 /* NSObject+XWAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = 53C40EBD1EB8227F0052CEB9 /* NSObject+XWAdd.m */; };
 		53D48A831EA4D52F00E5ADA3 /* headModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 53D48A821EA4D52F00E5ADA3 /* headModel.m */; };
 		53DF54AC1EB9D10600AF6248 /* MBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 53DF54AB1EB9D10600AF6248 /* MBManager.m */; };
@@ -309,6 +316,20 @@
 		53AEBE6E1E94F80400280F70 /* loginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = loginViewController.m; sourceTree = "<group>"; };
 		53AEBE701E95014B00280F70 /* infoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = infoCell.h; sourceTree = "<group>"; };
 		53AEBE711E95014B00280F70 /* infoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = infoCell.m; sourceTree = "<group>"; };
+		53C309121EC58B57000C7A87 /* UITableView+HYBCacheHeight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+HYBCacheHeight.h"; sourceTree = "<group>"; };
+		53C309131EC58B57000C7A87 /* UITableView+HYBCacheHeight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+HYBCacheHeight.m"; sourceTree = "<group>"; };
+		53C309141EC58B57000C7A87 /* UITableViewCell+HYBMasonryAutoCellHeight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableViewCell+HYBMasonryAutoCellHeight.h"; sourceTree = "<group>"; };
+		53C309151EC58B57000C7A87 /* UITableViewCell+HYBMasonryAutoCellHeight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableViewCell+HYBMasonryAutoCellHeight.m"; sourceTree = "<group>"; };
+		53C309191EC58BA5000C7A87 /* HYBCommentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYBCommentCell.h; sourceTree = "<group>"; };
+		53C3091A1EC58BA5000C7A87 /* HYBCommentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HYBCommentCell.m; sourceTree = "<group>"; };
+		53C3091B1EC58BA5000C7A87 /* HYBCommentModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYBCommentModel.h; sourceTree = "<group>"; };
+		53C3091C1EC58BA5000C7A87 /* HYBCommentModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HYBCommentModel.m; sourceTree = "<group>"; };
+		53C3091D1EC58BA5000C7A87 /* HYBTestCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYBTestCell.h; sourceTree = "<group>"; };
+		53C3091E1EC58BA5000C7A87 /* HYBTestCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HYBTestCell.m; sourceTree = "<group>"; };
+		53C3091F1EC58BA5000C7A87 /* HYBTestModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYBTestModel.h; sourceTree = "<group>"; };
+		53C309201EC58BA5000C7A87 /* HYBTestModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HYBTestModel.m; sourceTree = "<group>"; };
+		53C309251EC58CB0000C7A87 /* xiangqingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xiangqingViewController.h; sourceTree = "<group>"; };
+		53C309261EC58CB0000C7A87 /* xiangqingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = xiangqingViewController.m; sourceTree = "<group>"; };
 		53C40EBC1EB8227F0052CEB9 /* NSObject+XWAdd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+XWAdd.h"; sourceTree = "<group>"; };
 		53C40EBD1EB8227F0052CEB9 /* NSObject+XWAdd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+XWAdd.m"; sourceTree = "<group>"; };
 		53D48A811EA4D52F00E5ADA3 /* headModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = headModel.h; sourceTree = "<group>"; };
@@ -628,6 +649,7 @@
 		53619ED81E98D252007CC7AC /* 详情 */ = {
 			isa = PBXGroup;
 			children = (
+				53C309181EC58BA5000C7A87 /* NEWView */,
 				53619EDB1E98D25C007CC7AC /* model */,
 				53619EDA1E98D25C007CC7AC /* view */,
 				53619ED91E98D25B007CC7AC /* controller */,
@@ -640,6 +662,8 @@
 			children = (
 				53619EDC1E98D283007CC7AC /* detailsViewController.h */,
 				53619EDD1E98D283007CC7AC /* detailsViewController.m */,
+				53C309251EC58CB0000C7A87 /* xiangqingViewController.h */,
+				53C309261EC58CB0000C7A87 /* xiangqingViewController.m */,
 			);
 			name = controller;
 			sourceTree = "<group>";
@@ -774,6 +798,7 @@
 		539550E31EA0C623001A268C /* utlis */ = {
 			isa = PBXGroup;
 			children = (
+				53C309111EC58B57000C7A87 /* viewmas */,
 				5380B2A21EC44AC00000CED2 /* AvoidCrash */,
 				53334DDF1EC1BE7500B20979 /* NullSafe */,
 				5380B28D1EC40BC50000CED2 /* UITableView+fl_category */,
@@ -1089,6 +1114,32 @@
 				53E5C0741EB1D309008B1F22 /* xieyiViewController.m */,
 			);
 			name = controller;
+			sourceTree = "<group>";
+		};
+		53C309111EC58B57000C7A87 /* viewmas */ = {
+			isa = PBXGroup;
+			children = (
+				53C309121EC58B57000C7A87 /* UITableView+HYBCacheHeight.h */,
+				53C309131EC58B57000C7A87 /* UITableView+HYBCacheHeight.m */,
+				53C309141EC58B57000C7A87 /* UITableViewCell+HYBMasonryAutoCellHeight.h */,
+				53C309151EC58B57000C7A87 /* UITableViewCell+HYBMasonryAutoCellHeight.m */,
+			);
+			path = viewmas;
+			sourceTree = "<group>";
+		};
+		53C309181EC58BA5000C7A87 /* NEWView */ = {
+			isa = PBXGroup;
+			children = (
+				53C309191EC58BA5000C7A87 /* HYBCommentCell.h */,
+				53C3091A1EC58BA5000C7A87 /* HYBCommentCell.m */,
+				53C3091B1EC58BA5000C7A87 /* HYBCommentModel.h */,
+				53C3091C1EC58BA5000C7A87 /* HYBCommentModel.m */,
+				53C3091D1EC58BA5000C7A87 /* HYBTestCell.h */,
+				53C3091E1EC58BA5000C7A87 /* HYBTestCell.m */,
+				53C3091F1EC58BA5000C7A87 /* HYBTestModel.h */,
+				53C309201EC58BA5000C7A87 /* HYBTestModel.m */,
+			);
+			path = NEWView;
 			sourceTree = "<group>";
 		};
 		53C40EBB1EB8227F0052CEB9 /* kvc */ = {
@@ -1421,6 +1472,7 @@
 				53619E681E961CD2007CC7AC /* WJGtextView.m in Sources */,
 				53E5C0711EB08182008B1F22 /* xieyiScrollView.m in Sources */,
 				53FE161C1E9C89D000585111 /* sectionView.m in Sources */,
+				53C309271EC58CB0000C7A87 /* xiangqingViewController.m in Sources */,
 				53E5C07B1EB1F8ED008B1F22 /* TimeInterval.m in Sources */,
 				5380B2BA1EC44AC00000CED2 /* NSDictionary+AvoidCrash.m in Sources */,
 				538D53DD1EAF14BB00E2DCAF /* CLNetworkingManager.m in Sources */,
@@ -1438,6 +1490,7 @@
 				531F94491EBE3B2400769399 /* HelpTool.m in Sources */,
 				53AEBE721E95014B00280F70 /* infoCell.m in Sources */,
 				538D53D01EAF09E800E2DCAF /* tokenstr.m in Sources */,
+				53C309241EC58BA5000C7A87 /* HYBTestModel.m in Sources */,
 				538D53E01EAF14BB00E2DCAF /* NSString+CLTools.m in Sources */,
 				53619E521E960164007CC7AC /* messageViewController.m in Sources */,
 				53619ED11E988A01007CC7AC /* setbtn.m in Sources */,
@@ -1445,9 +1498,11 @@
 				5380B2B71EC44AC00000CED2 /* AvoidCrash.m in Sources */,
 				53619EC01E976EBB007CC7AC /* UIColor+BgColor.m in Sources */,
 				53AEBE1F1E948A2500280F70 /* AppDelegate.m in Sources */,
+				53C309161EC58B57000C7A87 /* UITableView+HYBCacheHeight.m in Sources */,
 				53314A4B1EA1DE35009773F0 /* YYPhotoGroupView.m in Sources */,
 				53AEBE671E94D8A100280F70 /* newViewController.m in Sources */,
 				539550E61EA0C638001A268C /* navViewController.m in Sources */,
+				53C309211EC58BA5000C7A87 /* HYBCommentCell.m in Sources */,
 				5380B2901EC40BC50000CED2 /* UITableView+fl_category.m in Sources */,
 				53619E6B1E962093007CC7AC /* setCell.m in Sources */,
 				53AEBE461E94910700280F70 /* MLMSegmentManager.m in Sources */,
@@ -1463,6 +1518,7 @@
 				53AEBE491E94910700280F70 /* UIView+ViewController.m in Sources */,
 				5301DDA11EC0163A00A68CB6 /* hotCell.m in Sources */,
 				53AEBE451E94910700280F70 /* MLMSegmentHead.m in Sources */,
+				53C309171EC58B57000C7A87 /* UITableViewCell+HYBMasonryAutoCellHeight.m in Sources */,
 				5301DDC81EC08AF800A68CB6 /* emptyerrorView.m in Sources */,
 				53E5C0781EB1D802008B1F22 /* bannerLab.m in Sources */,
 				5380B2BB1EC44AC00000CED2 /* NSMutableArray+AvoidCrash.m in Sources */,
@@ -1472,6 +1528,7 @@
 				53619EC11E976EBB007CC7AC /* UILabel+MultipleLines.m in Sources */,
 				53619EA01E9634AE007CC7AC /* SZKCleanCache.m in Sources */,
 				53619EB21E964A45007CC7AC /* systemCell.m in Sources */,
+				53C309231EC58BA5000C7A87 /* HYBTestCell.m in Sources */,
 				531CF9761EBF5EF7009F5DFB /* setCell2.m in Sources */,
 				53AEBE381E948D6500280F70 /* UIColor+WJColor.m in Sources */,
 				53AEBE471E94910700280F70 /* MLMSegmentScroll.m in Sources */,
@@ -1485,6 +1542,7 @@
 				5387A7B71EAB4F720057B518 /* SureWebViewController.m in Sources */,
 				53619E6E1E962670007CC7AC /* aboutViewController.m in Sources */,
 				5387A7BA1EAB68900057B518 /* MBProgressHUD+XMG.m in Sources */,
+				53C309221EC58BA5000C7A87 /* HYBCommentModel.m in Sources */,
 				53619E621E9611F4007CC7AC /* myinfoCell0.m in Sources */,
 				53619E551E9601A5007CC7AC /* feedbackViewController.m in Sources */,
 				53619E431E95EEDB007CC7AC /* headView.m in Sources */,

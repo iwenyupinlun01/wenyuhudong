@@ -21,9 +21,9 @@
 #import <ShareSDKUI/ShareSDK+SSUI.h>
 #import "AppDelegate.h"
 #import "YYPhotoGroupView.h"
-
 #import <ShareSDK/ShareSDK.h>
 #import <ShareSDKConnector/ShareSDKConnector.h>
+
 
 @interface detailsViewController ()<UITableViewDataSource,UITableViewDelegate,UITextViewDelegate,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate,UIScrollViewDelegate>
 {

@@ -19,7 +19,7 @@
 #import "LGSegment.h"
 #import "XSNoDataView.h"
 #import "emptyerrorView.h"
-
+#import "xiangqingViewController.h"
 
 @interface newViewController ()<UITableViewDataSource,UITableViewDelegate,mycellVdelegate,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate,myviewdelegate>
 /** 用于加载下一页的参数(页码) */
@@ -358,15 +358,18 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    self.nmodel = [[newModel alloc] init];
-    self.nmodel = self.dataarr[indexPath.row];
-    NSString *str = self.nmodel.newidstr;
-    NSLog(@"str======%@",str);
-    detailsViewController *detailsvc = [[detailsViewController alloc] init];
-    detailsvc.detalisidstr = str;
-    detailsvc.dianzanindex = [NSString stringWithFormat:@"%ld",(long)indexPath.row];
-    detailsvc.fromtypestr = @"newvc";
-    [self.navigationController pushViewController:detailsvc animated:YES];
+//    self.nmodel = [[newModel alloc] init];
+//    self.nmodel = self.dataarr[indexPath.row];
+//    NSString *str = self.nmodel.newidstr;
+//    NSLog(@"str======%@",str);
+//    detailsViewController *detailsvc = [[detailsViewController alloc] init];
+//    detailsvc.detalisidstr = str;
+//    detailsvc.dianzanindex = [NSString stringWithFormat:@"%ld",(long)indexPath.row];
+//    detailsvc.fromtypestr = @"newvc";
+//    [self.navigationController pushViewController:detailsvc animated:YES];
+    
+    xiangqingViewController *xiangqingVC = [[xiangqingViewController alloc] init];
+    [self.navigationController pushViewController:xiangqingVC animated:YES];
 }
 
 //点赞
