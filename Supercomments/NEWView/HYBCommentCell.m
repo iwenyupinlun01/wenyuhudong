@@ -32,7 +32,7 @@
     [self.contentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
       make.edges.mas_equalTo(weakSelf.contentView);
     }];
-    
+    [self.contentLabel sizeToFit];
     self.hyb_lastViewInCell = self.contentLabel;
   }
   

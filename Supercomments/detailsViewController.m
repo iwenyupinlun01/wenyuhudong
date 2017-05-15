@@ -54,6 +54,8 @@
 
 
 @property (nonatomic,strong) NSString *objidstr;
+
+@property (nonatomic,assign) UIEdgeInsets insets;
 @end
 
 
@@ -110,7 +112,7 @@ NSMutableArray * ymDataArray;
     [self.scrollView flashScrollIndicators];
     self.scrollView.directionalLockEnabled = YES;
     
-    
+    self.insets = UIEdgeInsetsMake(0, DEVICE_WIDTH, 0, 0);
     [self.view addSubview:self.maintable];
     [self.view addSubview:self.keyView];
     // 3.1.下拉刷新
@@ -444,8 +446,6 @@ NSMutableArray * ymDataArray;
     self.secview.backgroundColor = [UIColor whiteColor];
     [self.secview setcelldata:self.detalisarr[section]];
     self.secview.layer.masksToBounds = YES;
-//    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-//    [button setFrame:CGRectMake(0, 0, self.view.frame.size.width, 64)];
     [self.secview.sendbtn setTag:section+1];
     self.secview.sendbtn.backgroundColor = [UIColor whiteColor];
     // 设置Image
@@ -1652,6 +1652,26 @@ NSMutableArray * ymDataArray;
             self.scrollView.contentSize = CGSizeMake(DEVICE_WIDTH, _headview.frame.size.height);
             [self.scrollView addSubview:_headview];
         }
+    }
+}
+
+#pragma mark 用于将cell分割线补全
+
+-(void)viewDidLayoutSubviews {
+    if ([self.maintable respondsToSelector:@selector(setSeparatorInset:)]) {
+        [self.maintable setSeparatorInset:self.insets];
+    }
+    if ([self.maintable respondsToSelector:@selector(setLayoutMargins:)])  {
+        [self.maintable setLayoutMargins:self.insets];
+    }
+}
+
+-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath*)indexPath{
+    if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
+        [cell setLayoutMargins:self.insets];
+    }
+    if ([cell respondsToSelector:@selector(setSeparatorInset:)]){
+        [cell setSeparatorInset:self.insets];
     }
 }
 

@@ -112,15 +112,14 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-  HYBCommentCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+  HYBCommentCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell222"];
   
-  if (!cell) {
-    cell = [[HYBCommentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Cell"];
-  }
+//  if (!cell) {
+    cell = [[HYBCommentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Cell222"];
+//  }
   
   HYBCommentModel *model = [self.testModel.commentModels objectAtIndex:indexPath.row];
   [cell configCellWithModel:model];
-  
   return cell;
 }
 
@@ -156,7 +155,6 @@
 //    self.testModel.shouldUpdateCache = YES;
 //    [self.delegate reloadCellHeightForModel:self.testModel atIndexPath:self.indexPath];
 //  }
-    
     
 }
 
