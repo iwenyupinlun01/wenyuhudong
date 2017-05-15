@@ -810,13 +810,8 @@
 				53DF54A91EB9D10600AF6248 /* MBManager */,
 				53C40EBB1EB8227F0052CEB9 /* kvc */,
 				53E5C0721EB083EE008B1F22 /* utlimodel */,
-				5387A7B81EAB68900057B518 /* MBProgressHUD+XMG.h */,
-				5387A7B91EAB68900057B518 /* MBProgressHUD+XMG.m */,
 				538D53D11EAF14BB00E2DCAF /* CLNetworking */,
 				539550E71EA0D9A1001A268C /* AFManager */,
-				539550E41EA0C638001A268C /* navViewController.h */,
-				539550E51EA0C638001A268C /* navViewController.m */,
-				539550EB1EA0D9CB001A268C /* wangHeader.h */,
 			);
 			name = utlis;
 			sourceTree = "<group>";
@@ -1174,6 +1169,9 @@
 		53E5C0721EB083EE008B1F22 /* utlimodel */ = {
 			isa = PBXGroup;
 			children = (
+				539550E41EA0C638001A268C /* navViewController.h */,
+				539550E51EA0C638001A268C /* navViewController.m */,
+				539550EB1EA0D9CB001A268C /* wangHeader.h */,
 				538D53C21EAEECD700E2DCAF /* strisNull.h */,
 				538D53C31EAEECD700E2DCAF /* strisNull.m */,
 				538D53CE1EAF09E800E2DCAF /* tokenstr.h */,
@@ -1182,6 +1180,8 @@
 				53E863D11EAE02B0001F6FD8 /* Timestr.m */,
 				53E5C0791EB1F8ED008B1F22 /* TimeInterval.h */,
 				53E5C07A1EB1F8ED008B1F22 /* TimeInterval.m */,
+				5387A7B81EAB68900057B518 /* MBProgressHUD+XMG.h */,
+				5387A7B91EAB68900057B518 /* MBProgressHUD+XMG.m */,
 			);
 			name = utlimodel;
 			sourceTree = "<group>";

@@ -95,6 +95,7 @@
 
 - (void)headerRefreshEndAction {
     
+    pn=1;
     NSString *strurl = [NSString stringWithFormat:newVCload,@"1",@"2",[tokenstr tokenstrfrom]];
     if (kIsNetwork)
     {

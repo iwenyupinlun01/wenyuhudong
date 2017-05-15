@@ -103,11 +103,17 @@
 - (void)headerRefreshEndAction {
     
     NSString *strurl = [NSString stringWithFormat:newVCload,@"1",@"1",[tokenstr tokenstrfrom]];
+    pn=1;
+    [self.dataSource removeAllObjects];
+    [self.dataarr removeAllObjects];
+    [self.imgarr removeAllObjects];
     
      if (kIsNetwork)
      {
          [PPNetworkHelper GET:strurl parameters:nil responseCache:^(id responseCache) {
-             
+             [self.dataSource removeAllObjects];
+             [self.dataarr removeAllObjects];
+             [self.imgarr removeAllObjects];
          } success:^(id responseObject) {
              [self.dataSource removeAllObjects];
              [self.dataarr removeAllObjects];
@@ -131,8 +137,6 @@
                  self.nmodel.ishot = [NSString stringWithFormat:@"%@",dicarr[@"is_hot"]];
                  self.nmodel.platformstr = dicarr[@"platform"];
                  self.nmodel.small_imagesstrl = dicarr[@"small_images"];
-                 self.nmodel.textheightstr = @"";
-                 
                  [self.dataSource addObject:self.nmodel.contentstr];
                  [self.dataarr addObject:self.nmodel];
                  [self.imgarr addObject:self.nmodel.imgurlstr];
@@ -182,8 +186,6 @@
                  self.nmodel.ishot = [NSString stringWithFormat:@"%@",dicarr[@"is_hot"]];
                  self.nmodel.platformstr = dicarr[@"platform"];
                  self.nmodel.small_imagesstrl = dicarr[@"small_images"];
-                 self.nmodel.textheightstr = @"";
-                 
                  [self.dataSource addObject:self.nmodel.contentstr];
                  [self.dataarr addObject:self.nmodel];
                  [self.imgarr addObject:self.nmodel.imgurlstr];
