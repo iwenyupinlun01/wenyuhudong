@@ -11,5 +11,7 @@
 @interface firstModel : NSObject
 @property (nonatomic,strong) NSString *contentstr;
 @property (nonatomic,strong) NSMutableArray *pinglunarr;
-
+@property (nonatomic,strong) NSString *imgurlstr;
+@property (nonatomic,strong) NSString *timestr;
+@property (nonatomic,strong) NSString *namestr;
 @end

@@ -9,12 +9,13 @@
 #import "firstCell.h"
 #import "firstModel.h"
 #import "secondCell.h"
-
+#import "Timestr.h"
 @interface firstCell()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,strong) firstModel *fmodel;
 @property (nonatomic,strong) NSMutableArray *dataarr;
 @property (nonatomic,strong) secondCell *cell;
+@property (nonatomic,assign) UIEdgeInsets insets;
 @end
 
 static NSString *secondidentfid = @"secondidentfid";
@@ -28,24 +29,51 @@ static NSString *secondidentfid = @"secondidentfid";
     if(self)
     {
         self.dataarr = [NSMutableArray array];
+        [self.contentView addSubview:self.iconimg];
+        [self.contentView addSubview:self.namelab];
+        [self.contentView addSubview:self.timelab];
         [self.contentView addSubview:self.contentlab];
         [self.contentView addSubview:self.texttable];
         [self setlayout];
+         self.insets = UIEdgeInsetsMake(0, DEVICE_WIDTH, 0, 0);
     }
     return self;
 }
 
 -(void)setlayout
 {
-    [self.contentlab mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self).with.offset(14*HEIGHT_SCALE);
+    [self.iconimg mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self).with.offset(16*HEIGHT_SCALE);
         make.left.equalTo(self).with.offset(14*WIDTH_SCALE);
+        make.height.mas_equalTo(32);
+        make.width.mas_equalTo(32);
+    }];
+    
+    [self.namelab mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self).with.offset(16*HEIGHT_SCALE);
+        make.left.equalTo(self.iconimg.mas_right).with.offset(14*WIDTH_SCALE);
+        make.width.mas_equalTo(120);
+        make.height.mas_equalTo(14);
+    }];
+    
+    
+    [self.timelab mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.namelab.mas_bottom).with.offset(6*HEIGHT_SCALE);
+        make.left.equalTo(self.iconimg.mas_right).with.offset(14*WIDTH_SCALE);
+        make.width.mas_equalTo(120);
+        
+    }];
+    
+    [self.contentlab mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.timelab.mas_bottom).with.offset(14*HEIGHT_SCALE);
+        //make.left.equalTo(self).with.offset(64*WIDTH_SCALE);
+        make.left.equalTo(self.namelab.mas_left);
         make.right.equalTo(self).with.offset(-14*WIDTH_SCALE);
     }];
     [self.texttable mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.contentlab.mas_bottom).with.offset(14*HEIGHT_SCALE);
-        make.left.equalTo(self).with.offset(14*WIDTH_SCALE);
-        make.right.equalTo(self).with.offset(-14*WIDTH_SCALE);
+        make.left.equalTo(self).with.offset(0);
+        make.right.equalTo(self).with.offset(0);
     }];
     
 }
@@ -59,7 +87,10 @@ static NSString *secondidentfid = @"secondidentfid";
     [self.contentlab setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     self.contentlab.lineBreakMode = NSLineBreakByWordWrapping;//换行方式
     self.contentlab.text = model.contentstr;
-    CGSize textsize= [model.contentstr boundingRectWithSize:CGSizeMake(DEVICE_WIDTH-28*WIDTH_SCALE, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil].size;
+    [self.iconimg sd_setImageWithURL:[NSURL URLWithString:model.imgurlstr] placeholderImage:[UIImage imageNamed:@"头像默认图"]];
+    self.namelab.text = model.namestr;
+    self.timelab.text = [Timestr datetime:model.timestr];
+    CGSize textsize= [model.contentstr boundingRectWithSize:CGSizeMake(DEVICE_WIDTH-14*WIDTH_SCALE-64*WIDTH_SCALE, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil].size;
     [self.contentlab sizeToFit];
     for (int i = 0; i<model.pinglunarr.count; i++) {
         NSDictionary *dit = [model.pinglunarr objectAtIndex:i];
@@ -67,7 +98,7 @@ static NSString *secondidentfid = @"secondidentfid";
     }
     [self layoutIfNeeded];
     CGFloat hei = textsize.height;
-    self.cellheight = hei+28+self.texttable.frame.size.height;
+    self.cellheight = hei+28*HEIGHT_SCALE+self.texttable.frame.size.height+30+28*HEIGHT_SCALE;
     [self.texttable reloadData];
     return self.cellheight;
 }
@@ -79,7 +110,7 @@ static NSString *secondidentfid = @"secondidentfid";
     if(!_contentlab)
     {
         _contentlab = [[UILabel alloc] init];
-        _contentlab.backgroundColor = [UIColor lightGrayColor];
+        _contentlab.textColor = [UIColor wjColorFloat:@"333333"];
     }
     return _contentlab;
 }
@@ -92,10 +123,44 @@ static NSString *secondidentfid = @"secondidentfid";
         _texttable.dataSource = self;
         _texttable.delegate = self;
         _texttable.scrollEnabled = NO;
-//        _texttable.rowHeight = UITableViewAutomaticDimension;
-//        _texttable.estimatedRowHeight = 50.0f;
+        
     }
     return _texttable;
+}
+
+-(UIImageView *)iconimg
+{
+    if(!_iconimg)
+    {
+        _iconimg = [[UIImageView alloc] init];
+        _iconimg.layer.masksToBounds = YES;
+        _iconimg.layer.cornerRadius = 16;
+    }
+    return _iconimg;
+}
+
+-(UILabel *)namelab
+{
+    if(!_namelab)
+    {
+        _namelab = [[UILabel alloc] init];
+        _namelab.font = [UIFont systemFontOfSize:14];
+        _namelab.textColor = [UIColor wjColorFloat:@"576b95"];
+    
+    }
+    return _namelab;
+}
+
+-(UILabel *)timelab
+{
+    if(!_timelab)
+    {
+        _timelab = [[UILabel alloc] init];
+        _timelab.textColor = [UIColor wjColorFloat:@"CDCDC7"];
+        _timelab.font = [UIFont systemFontOfSize:11];
+        [_timelab sizeToFit];
+    }
+    return _timelab;
 }
 
 #pragma mark - UITableViewDataSource&&UITableViewDelegate
@@ -104,22 +169,18 @@ static NSString *secondidentfid = @"secondidentfid";
 {
  
     NSDictionary *dic = [self.dataarr objectAtIndex:indexPath.row];
-    //NSString *contentstr = [dic objectForKey:@"content"];
-    
     NSString *str1 = [dic objectForKey:@"s_nickname"];
     NSString *str2 = @"回复";
     NSString *str3 = [dic objectForKey:@"s_to_nickname"];
     NSString *str4 = [NSString stringWithFormat:@"%@%@",@":",[dic objectForKey:@"content"]];
+    str4 = @"Runtime是想要做好iOS开发，或者说是真正的深刻的掌握OC这门语言所必需理解的东西";
+    
     NSString *str = [NSString stringWithFormat:@"%@%@%@%@",str1,str2,str3,str4];
     
     CGSize textsize= [str boundingRectWithSize:CGSizeMake(DEVICE_WIDTH-64*WIDTH_SCALE-14*WIDTH_SCALE, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil].size;
     
-  
-   // secondCell* cell = [[secondCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:secondidentfid];
-//    NSMutableAttributedString *newstr = cell.pinglunlab.attributedText;
     
     [self.texttable mas_makeConstraints:^(MASConstraintMaker *make) {
-       // make.height.mas_offset((cell.pinglunlab.frame.size.height+16)*self.dataarr.count);
         make.height.mas_equalTo((textsize.height+16)*self.dataarr.count);
     }];
     
@@ -143,6 +204,7 @@ static NSString *secondidentfid = @"secondidentfid";
     NSString *str2 = @"回复";
     NSString *str3 = [dic objectForKey:@"s_to_nickname"];
     NSString *str4 = [NSString stringWithFormat:@"%@%@",@":",[dic objectForKey:@"content"]];
+    str4 = @"Runtime是想要做好iOS开发，或者说是真正的深刻的掌握OC这门语言所必需理解的东西";
     NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@%@%@",str1,str2,str3,str4]];
     [str addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"576b95"] range:NSMakeRange(0,str1.length)];
     [str addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"333333"] range:NSMakeRange(str1.length,str2.length)];
@@ -151,8 +213,6 @@ static NSString *secondidentfid = @"secondidentfid";
     NSLog(@"str===============%@",str);
     cell.pinglunlab.attributedText = str;
     cell.pinglunlab.lineBreakMode = NSLineBreakByCharWrapping;
-    cell.backgroundColor = [UIColor greenColor];
-    cell.pinglunlab.backgroundColor = [UIColor lightGrayColor];
     cell.pinglunlab.preferredMaxLayoutWidth = (DEVICE_WIDTH-64*WIDTH_SCALE-14*WIDTH_SCALE);
     [cell.pinglunlab setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     [cell.pinglunlab sizeToFit];
@@ -164,6 +224,26 @@ static NSString *secondidentfid = @"secondidentfid";
 {
     NSDictionary *dic = self.dataarr[indexPath.row];
     [self.delegate myTabVClick:self datadic:dic];
+}
+
+#pragma mark 用于将cell分割线补全
+
+-(void)viewDidLayoutSubviews {
+    if ([self.texttable respondsToSelector:@selector(setSeparatorInset:)]) {
+        [self.texttable setSeparatorInset:self.insets];
+    }
+    if ([self.texttable respondsToSelector:@selector(setLayoutMargins:)])  {
+        [self.texttable setLayoutMargins:self.insets];
+    }
+}
+
+-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath*)indexPath{
+    if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
+        [cell setLayoutMargins:self.insets];
+    }
+    if ([cell respondsToSelector:@selector(setSeparatorInset:)]){
+        [cell setSeparatorInset:self.insets];
+    }
 }
 
 @end

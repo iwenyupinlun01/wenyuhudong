@@ -9,6 +9,7 @@
 #import "xiangqingViewController.h"
 #import "firstCell.h"
 #import "firstModel.h"
+#import "headSectionView.h"
 @interface xiangqingViewController () <UITableViewDelegate, UITableViewDataSource,mycellVdelegate>
 @property (nonatomic, strong) NSMutableArray *datasource;
 @property (nonatomic, strong) UITableView *tableView;
@@ -38,19 +39,26 @@ static NSString *xiangqingcell = @"xiagnqingcell";
     [self.view addSubview:self.tableView];
 }
 
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+
+}
+
 #pragma mark - getters
 
 -(UITableView *)tableView
 {
     if(!_tableView)
     {
-        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT-64)];
+        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT-64) style:UITableViewStyleGrouped];
         _tableView.dataSource = self;
         _tableView.delegate = self;
+        
     }
     return _tableView;
 }
-
 
 -(void)loaddataformweb
 {
@@ -63,6 +71,9 @@ static NSString *xiangqingcell = @"xiagnqingcell";
             firstModel *fmodel = [[firstModel alloc] init];
             fmodel.contentstr = [dit objectForKey:@"content"];
             fmodel.pinglunarr = [dit objectForKey:@"sonComment"];
+            fmodel.namestr = [dit objectForKey:@"p_nickname"];
+            fmodel.timestr = [dit objectForKey:@"ctime"];
+            fmodel.imgurlstr = [dit objectForKey:@"headImg"];
             [self.datasource addObject:fmodel];
         }
         [self.tableView reloadData];
@@ -102,7 +113,27 @@ static NSString *xiangqingcell = @"xiagnqingcell";
     NSLog(@"dic=======%@",dic);
 }
 
+//- (nullable UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+//{
+//    headSectionView *view = [[headSectionView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, 800)];
+//    view.backgroundColor = [UIColor redColor];
+//    return view;
+//}
 
+//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+//{
+//    return 800;
+//}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 0.01f;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSLog(@"index");
+}
 
 #pragma mark - 实现方法
 

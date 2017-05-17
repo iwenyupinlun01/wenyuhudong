@@ -17,6 +17,10 @@
 @interface firstCell : UITableViewCell
 @property (nonatomic,strong) UILabel *contentlab;
 @property (nonatomic,strong) UITableView *texttable;
+@property (nonatomic,strong) UIImageView *iconimg;
+@property (nonatomic,strong) UILabel *namelab;
+@property (nonatomic,strong) UILabel *timelab;
+
 -(CGFloat )setcelldata:(firstModel *)model;
 
 @property (nonatomic,assign) CGFloat cellheight;

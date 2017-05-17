@@ -46,9 +46,7 @@
 
     self.timelab.text = [Timestr datetime:model.timestr];
     self.contentlab.text = model.contstr;
-    
-//    [self.picimg sd_setImageWithURL:[NSURL URLWithString:model.imgurlstr] placeholderImage:[UIImage imageNamed:@"头像默认图"]];
-    
+
     [self.picimg sd_setRoundImageWithURL:[NSURL URLWithString:model.imgurlstr] cornerRadius:16*WIDTH_SCALE placeholderImage:[UIImage imageNamed:@"头像默认图"] options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
         
     } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
@@ -80,8 +78,7 @@
     if(!_picimg)
     {
         _picimg = [[UIImageView alloc] init];
-//        _picimg.layer.masksToBounds = YES;
-//        _picimg.layer.cornerRadius = 16*WIDTH_SCALE;
+
 
     }
     return _picimg;

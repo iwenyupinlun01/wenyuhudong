@@ -8,7 +8,9 @@
 
 #import "secondCell.h"
 
-
+@interface secondCell()
+@property (nonatomic,strong) UIView *bgview;
+@end
 
 
 @implementation secondCell
@@ -18,6 +20,7 @@
     self =  [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if(self)
     {
+        [self.contentView addSubview:self.bgview];
         [self.contentView addSubview:self.pinglunlab];
         [self setuplayout];
     }
@@ -27,9 +30,8 @@
 -(void)layoutSubviews
 {
     [super layoutSubviews];
-    
+    self.bgview.frame = CGRectMake(61*WIDTH_SCALE, 0, DEVICE_WIDTH-64*WIDTH_SCALE-14*WIDTH_SCALE, self.frame.size.height);
 }
-
 
 -(void)setuplayout
 {
@@ -37,10 +39,8 @@
         make.top.equalTo(self).with.offset(8*HEIGHT_SCALE);
         make.left.equalTo(self).with.offset(64*WIDTH_SCALE);
         make.right.equalTo(self).with.offset(-14*WIDTH_SCALE);
-        //make.bottom.equalTo(self).with.offset(-8*HEIGHT_SCALE);
     }];
 }
-
 
 #pragma mark - getters
 
@@ -53,6 +53,17 @@
     }
     return _pinglunlab;
 }
+
+-(UIView *)bgview
+{
+    if(!_bgview)
+    {
+        _bgview = [[UIView alloc] init];
+        _bgview.backgroundColor = [UIColor wjColorFloat:@"F5F5F5"];
+    }
+    return _bgview;
+}
+
 
 
 
