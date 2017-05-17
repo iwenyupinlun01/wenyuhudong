@@ -207,14 +207,10 @@
     self.tiview.titlelab.attributedText = strbut;
     self.timelab.text = [Timestr datetime:model.timestr];
     self.timelab2.text = [Timestr datetime:model.timestr];
-    
-   //self.timelab2.text = [self timeStrChangeWithFormatterStr:model.timestr];
-    
     self.contentlab.numberOfLines = 0;
     self.contentlab.lineBreakMode = NSLineBreakByTruncatingTail;
     self.contentlab.text = model.contentstr;
     [self.contentlab setText:model.contentstr lines:4 andLineSpacing:4 constrainedToSize:CGSizeMake(DEVICE_WIDTH-28*WIDTH_SCALE, 0)];
-   
     [self.contentlab sizeToFit];
     self.texthei = self.contentlab.frame.size.height;
     
@@ -379,54 +375,6 @@
         
 }
 
--(NSString *)timeStrChangeWithFormatterStr:(NSString *)severTimeStr
-{
-    // 获取当前时时间戳 1466386762.345715 十位整数 6位小数
-    NSTimeInterval currentTime = [[NSDate date] timeIntervalSince1970];
-    // 创建歌曲时间戳(后台返回的时间 一般是13位数字)
-   // NSTimeInterval createTime = self.model.tracks.list[row].createdAt/1000;
-    NSTimeInterval createTime = [severTimeStr intValue];
-    // 时间差
-    NSTimeInterval time = currentTime - createTime;
-    // 秒转小时
-    NSInteger hours = time/3600;
-    
-    if (hours<24) {
-        return [NSString stringWithFormat:@"%ld小时前",hours];
-    }
-    //秒转天数
-    NSInteger days = time/3600/24;
-    NSInteger minutes = time/60;
-    
-    
-    if (days<3&&days>=2) {
-        return @"前天";
-    }
-    if (days<2&&days>=1) {
-        return @"昨天";
-    }
-    if (days<30) {
-        return @"time";
-    }
-    if (days<1&&hours<1) {
-        return [NSString stringWithFormat:@"%ld分钟前",minutes];
-    }else
-    {
-        return @"刚刚";
-    }
-    
-////    if (days < 30) {
-////        return [NSString stringWithFormat:@"%ld天前",days];
-////    }
-//    //秒转月
-//    NSInteger months = time/3600/24/30;
-//    if (months < 12) {
-//        return [NSString stringWithFormat:@"%ld月前",months];
-//    }
-//    //秒转年
-//    NSInteger years = time/3600/24/30/12;
-//    return [NSString stringWithFormat:@"%ld年前",years];
-}
 
 
 

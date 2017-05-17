@@ -61,6 +61,9 @@
 		5380B2C01EC44AC00000CED2 /* NSString+AvoidCrash.m in Sources */ = {isa = PBXBuildFile; fileRef = 5380B2B61EC44AC00000CED2 /* NSString+AvoidCrash.m */; };
 		5387A7B71EAB4F720057B518 /* SureWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5387A7B61EAB4F720057B518 /* SureWebViewController.m */; };
 		5387A7BA1EAB68900057B518 /* MBProgressHUD+XMG.m in Sources */ = {isa = PBXBuildFile; fileRef = 5387A7B91EAB68900057B518 /* MBProgressHUD+XMG.m */; };
+		5387EF1B1ECAF35800F3C5A0 /* firstCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5387EF1A1ECAF35800F3C5A0 /* firstCell.m */; };
+		5387EF1E1ECAF36500F3C5A0 /* secondCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5387EF1D1ECAF36500F3C5A0 /* secondCell.m */; };
+		5387EF211ECAF3DC00F3C5A0 /* firstModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5387EF201ECAF3DC00F3C5A0 /* firstModel.m */; };
 		538D53C41EAEECD700E2DCAF /* strisNull.m in Sources */ = {isa = PBXBuildFile; fileRef = 538D53C31EAEECD700E2DCAF /* strisNull.m */; };
 		538D53D01EAF09E800E2DCAF /* tokenstr.m in Sources */ = {isa = PBXBuildFile; fileRef = 538D53CF1EAF09E800E2DCAF /* tokenstr.m */; };
 		538D53DD1EAF14BB00E2DCAF /* CLNetworkingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 538D53D51EAF14BB00E2DCAF /* CLNetworkingManager.m */; };
@@ -93,10 +96,6 @@
 		53AEBE721E95014B00280F70 /* infoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 53AEBE711E95014B00280F70 /* infoCell.m */; };
 		53C309161EC58B57000C7A87 /* UITableView+HYBCacheHeight.m in Sources */ = {isa = PBXBuildFile; fileRef = 53C309131EC58B57000C7A87 /* UITableView+HYBCacheHeight.m */; };
 		53C309171EC58B57000C7A87 /* UITableViewCell+HYBMasonryAutoCellHeight.m in Sources */ = {isa = PBXBuildFile; fileRef = 53C309151EC58B57000C7A87 /* UITableViewCell+HYBMasonryAutoCellHeight.m */; };
-		53C309211EC58BA5000C7A87 /* HYBCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 53C3091A1EC58BA5000C7A87 /* HYBCommentCell.m */; };
-		53C309221EC58BA5000C7A87 /* HYBCommentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 53C3091C1EC58BA5000C7A87 /* HYBCommentModel.m */; };
-		53C309231EC58BA5000C7A87 /* HYBTestCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 53C3091E1EC58BA5000C7A87 /* HYBTestCell.m */; };
-		53C309241EC58BA5000C7A87 /* HYBTestModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 53C309201EC58BA5000C7A87 /* HYBTestModel.m */; };
 		53C309271EC58CB0000C7A87 /* xiangqingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 53C309261EC58CB0000C7A87 /* xiangqingViewController.m */; };
 		53C40EBE1EB8227F0052CEB9 /* NSObject+XWAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = 53C40EBD1EB8227F0052CEB9 /* NSObject+XWAdd.m */; };
 		53D48A831EA4D52F00E5ADA3 /* headModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 53D48A821EA4D52F00E5ADA3 /* headModel.m */; };
@@ -252,6 +251,12 @@
 		5387A7B61EAB4F720057B518 /* SureWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SureWebViewController.m; sourceTree = "<group>"; };
 		5387A7B81EAB68900057B518 /* MBProgressHUD+XMG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD+XMG.h"; sourceTree = "<group>"; };
 		5387A7B91EAB68900057B518 /* MBProgressHUD+XMG.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MBProgressHUD+XMG.m"; sourceTree = "<group>"; };
+		5387EF191ECAF35800F3C5A0 /* firstCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = firstCell.h; sourceTree = "<group>"; };
+		5387EF1A1ECAF35800F3C5A0 /* firstCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = firstCell.m; sourceTree = "<group>"; };
+		5387EF1C1ECAF36500F3C5A0 /* secondCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = secondCell.h; sourceTree = "<group>"; };
+		5387EF1D1ECAF36500F3C5A0 /* secondCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = secondCell.m; sourceTree = "<group>"; };
+		5387EF1F1ECAF3DC00F3C5A0 /* firstModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = firstModel.h; sourceTree = "<group>"; };
+		5387EF201ECAF3DC00F3C5A0 /* firstModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = firstModel.m; sourceTree = "<group>"; };
 		538D53C21EAEECD700E2DCAF /* strisNull.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = strisNull.h; sourceTree = "<group>"; };
 		538D53C31EAEECD700E2DCAF /* strisNull.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = strisNull.m; sourceTree = "<group>"; };
 		538D53CE1EAF09E800E2DCAF /* tokenstr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tokenstr.h; sourceTree = "<group>"; };
@@ -320,14 +325,6 @@
 		53C309131EC58B57000C7A87 /* UITableView+HYBCacheHeight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+HYBCacheHeight.m"; sourceTree = "<group>"; };
 		53C309141EC58B57000C7A87 /* UITableViewCell+HYBMasonryAutoCellHeight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableViewCell+HYBMasonryAutoCellHeight.h"; sourceTree = "<group>"; };
 		53C309151EC58B57000C7A87 /* UITableViewCell+HYBMasonryAutoCellHeight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableViewCell+HYBMasonryAutoCellHeight.m"; sourceTree = "<group>"; };
-		53C309191EC58BA5000C7A87 /* HYBCommentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYBCommentCell.h; sourceTree = "<group>"; };
-		53C3091A1EC58BA5000C7A87 /* HYBCommentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HYBCommentCell.m; sourceTree = "<group>"; };
-		53C3091B1EC58BA5000C7A87 /* HYBCommentModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYBCommentModel.h; sourceTree = "<group>"; };
-		53C3091C1EC58BA5000C7A87 /* HYBCommentModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HYBCommentModel.m; sourceTree = "<group>"; };
-		53C3091D1EC58BA5000C7A87 /* HYBTestCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYBTestCell.h; sourceTree = "<group>"; };
-		53C3091E1EC58BA5000C7A87 /* HYBTestCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HYBTestCell.m; sourceTree = "<group>"; };
-		53C3091F1EC58BA5000C7A87 /* HYBTestModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYBTestModel.h; sourceTree = "<group>"; };
-		53C309201EC58BA5000C7A87 /* HYBTestModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HYBTestModel.m; sourceTree = "<group>"; };
 		53C309251EC58CB0000C7A87 /* xiangqingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xiangqingViewController.h; sourceTree = "<group>"; };
 		53C309261EC58CB0000C7A87 /* xiangqingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = xiangqingViewController.m; sourceTree = "<group>"; };
 		53C40EBC1EB8227F0052CEB9 /* NSObject+XWAdd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+XWAdd.h"; sourceTree = "<group>"; };
@@ -649,7 +646,7 @@
 		53619ED81E98D252007CC7AC /* 详情 */ = {
 			isa = PBXGroup;
 			children = (
-				53C309181EC58BA5000C7A87 /* NEWView */,
+				5387EF181ECAF34000F3C5A0 /* newView */,
 				53619EDB1E98D25C007CC7AC /* model */,
 				53619EDA1E98D25C007CC7AC /* view */,
 				53619ED91E98D25B007CC7AC /* controller */,
@@ -761,6 +758,19 @@
 				5387A7B61EAB4F720057B518 /* SureWebViewController.m */,
 			);
 			name = webview;
+			sourceTree = "<group>";
+		};
+		5387EF181ECAF34000F3C5A0 /* newView */ = {
+			isa = PBXGroup;
+			children = (
+				5387EF191ECAF35800F3C5A0 /* firstCell.h */,
+				5387EF1A1ECAF35800F3C5A0 /* firstCell.m */,
+				5387EF1C1ECAF36500F3C5A0 /* secondCell.h */,
+				5387EF1D1ECAF36500F3C5A0 /* secondCell.m */,
+				5387EF1F1ECAF3DC00F3C5A0 /* firstModel.h */,
+				5387EF201ECAF3DC00F3C5A0 /* firstModel.m */,
+			);
+			name = newView;
 			sourceTree = "<group>";
 		};
 		538D53D11EAF14BB00E2DCAF /* CLNetworking */ = {
@@ -1122,21 +1132,6 @@
 			path = viewmas;
 			sourceTree = "<group>";
 		};
-		53C309181EC58BA5000C7A87 /* NEWView */ = {
-			isa = PBXGroup;
-			children = (
-				53C309191EC58BA5000C7A87 /* HYBCommentCell.h */,
-				53C3091A1EC58BA5000C7A87 /* HYBCommentCell.m */,
-				53C3091B1EC58BA5000C7A87 /* HYBCommentModel.h */,
-				53C3091C1EC58BA5000C7A87 /* HYBCommentModel.m */,
-				53C3091D1EC58BA5000C7A87 /* HYBTestCell.h */,
-				53C3091E1EC58BA5000C7A87 /* HYBTestCell.m */,
-				53C3091F1EC58BA5000C7A87 /* HYBTestModel.h */,
-				53C309201EC58BA5000C7A87 /* HYBTestModel.m */,
-			);
-			path = NEWView;
-			sourceTree = "<group>";
-		};
 		53C40EBB1EB8227F0052CEB9 /* kvc */ = {
 			isa = PBXGroup;
 			children = (
@@ -1485,12 +1480,12 @@
 				53E863D21EAE02B0001F6FD8 /* Timestr.m in Sources */,
 				53AEBE5C1E94CDBD00280F70 /* infoViewController.m in Sources */,
 				538D53DF1EAF14BB00E2DCAF /* NSString+Cache.m in Sources */,
+				5387EF1B1ECAF35800F3C5A0 /* firstCell.m in Sources */,
 				5380B2651EC35F170000CED2 /* PPNetworkHelper.m in Sources */,
 				53619EAC1E964925007CC7AC /* systemViewController.m in Sources */,
 				531F94491EBE3B2400769399 /* HelpTool.m in Sources */,
 				53AEBE721E95014B00280F70 /* infoCell.m in Sources */,
 				538D53D01EAF09E800E2DCAF /* tokenstr.m in Sources */,
-				53C309241EC58BA5000C7A87 /* HYBTestModel.m in Sources */,
 				538D53E01EAF14BB00E2DCAF /* NSString+CLTools.m in Sources */,
 				53619E521E960164007CC7AC /* messageViewController.m in Sources */,
 				53619ED11E988A01007CC7AC /* setbtn.m in Sources */,
@@ -1502,7 +1497,6 @@
 				53314A4B1EA1DE35009773F0 /* YYPhotoGroupView.m in Sources */,
 				53AEBE671E94D8A100280F70 /* newViewController.m in Sources */,
 				539550E61EA0C638001A268C /* navViewController.m in Sources */,
-				53C309211EC58BA5000C7A87 /* HYBCommentCell.m in Sources */,
 				5380B2901EC40BC50000CED2 /* UITableView+fl_category.m in Sources */,
 				53619E6B1E962093007CC7AC /* setCell.m in Sources */,
 				53AEBE461E94910700280F70 /* MLMSegmentManager.m in Sources */,
@@ -1515,6 +1509,7 @@
 				53E587841EA7651D004CB302 /* detailcellmodel.m in Sources */,
 				53334DE11EC1BE7500B20979 /* NullSafe.m in Sources */,
 				531F944A1EBE3B2400769399 /* UILabel+textOfNumberLines.m in Sources */,
+				5387EF1E1ECAF36500F3C5A0 /* secondCell.m in Sources */,
 				53AEBE491E94910700280F70 /* UIView+ViewController.m in Sources */,
 				5301DDA11EC0163A00A68CB6 /* hotCell.m in Sources */,
 				53AEBE451E94910700280F70 /* MLMSegmentHead.m in Sources */,
@@ -1528,7 +1523,6 @@
 				53619EC11E976EBB007CC7AC /* UILabel+MultipleLines.m in Sources */,
 				53619EA01E9634AE007CC7AC /* SZKCleanCache.m in Sources */,
 				53619EB21E964A45007CC7AC /* systemCell.m in Sources */,
-				53C309231EC58BA5000C7A87 /* HYBTestCell.m in Sources */,
 				531CF9761EBF5EF7009F5DFB /* setCell2.m in Sources */,
 				53AEBE381E948D6500280F70 /* UIColor+WJColor.m in Sources */,
 				53AEBE471E94910700280F70 /* MLMSegmentScroll.m in Sources */,
@@ -1540,9 +1534,9 @@
 				53619EB51E964A52007CC7AC /* replyCell.m in Sources */,
 				53619ED41E988B6C007CC7AC /* commentsBtn.m in Sources */,
 				5387A7B71EAB4F720057B518 /* SureWebViewController.m in Sources */,
+				5387EF211ECAF3DC00F3C5A0 /* firstModel.m in Sources */,
 				53619E6E1E962670007CC7AC /* aboutViewController.m in Sources */,
 				5387A7BA1EAB68900057B518 /* MBProgressHUD+XMG.m in Sources */,
-				53C309221EC58BA5000C7A87 /* HYBCommentModel.m in Sources */,
 				53619E621E9611F4007CC7AC /* myinfoCell0.m in Sources */,
 				53619E551E9601A5007CC7AC /* feedbackViewController.m in Sources */,
 				53619E431E95EEDB007CC7AC /* headView.m in Sources */,

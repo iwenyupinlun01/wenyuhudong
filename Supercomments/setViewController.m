@@ -201,7 +201,7 @@ static NSString *setidentfid3 = @"setidentfid3";
     }
     if (indexPath.row==1) {
                 
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"itms-apps://itunes.apple.com/app/1227372692"] options:@{} completionHandler:nil];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"itms-apps://itunes.apple.com/app/id1227372692"] options:@{} completionHandler:nil];
     }
     if (indexPath.row==2) {
         aboutViewController *aboutvc = [[aboutViewController alloc] init];
