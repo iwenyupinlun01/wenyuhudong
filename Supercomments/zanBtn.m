@@ -28,8 +28,7 @@
 -(void)layoutSubviews
 {
     [super layoutSubviews];
-//    self.zanimg.frame = CGRectMake(5*WIDTH_SCALE, 2*HEIGHT_SCALE, 16*WIDTH_SCALE, 16*WIDTH_SCALE);
-//    self.zanlab.frame = CGRectMake(16*WIDTH_SCALE, 2*HEIGHT_SCALE, 25*WIDTH_SCALE, 20*HEIGHT_SCALE);
+
 }
 
 
@@ -50,7 +49,7 @@
     if(!_zanlab)
     {
         _zanlab = [[UILabel alloc] init];
-        //_zanlab.textColor = [UIColor wjColorFloat:@"C7C7CD"];
+
         _zanlab.textAlignment = NSTextAlignmentRight;
         _zanlab.font = [UIFont systemFontOfSize:13*FX];
         

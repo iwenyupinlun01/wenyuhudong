@@ -205,10 +205,11 @@
     NSString *pnstr = [NSString stringWithFormat:@"%d",pn];
     NSString *strurl = [NSString stringWithFormat:newVCload,pnstr,@"2",[tokenstr tokenstrfrom]];
     
-    [CLNetworkingManager getNetworkRequestWithUrlString:strurl parameters:nil isCache:YES succeed:^(id data) {
-        NSLog(@"infor=====%@",data);
+    
+    [PPNetworkHelper GET:strurl parameters:nil success:^(id responseObject) {
+        NSLog(@"infor=====%@",responseObject);
         NSLog(@"str====%@",strurl);
-        NSArray *dit = [data objectForKey:@"info"];
+        NSArray *dit = [responseObject objectForKey:@"info"];
         for (int i = 0; i<dit.count; i++) {
             NSDictionary *dicarr = [dit objectAtIndex:i];
             self.hmodel = [[hotModel alloc] init];
@@ -233,12 +234,15 @@
         }
         [self.hottable.mj_footer endRefreshing];
         [self.hottable reloadData];
-        
-    } fail:^(NSError *error) {
+
+    } failure:^(NSError *error) {
         [self.hottable.mj_footer endRefreshing];
-       // self.panduan404str = @"1";
+        // self.panduan404str = @"1";
         [MBProgressHUD showError:@"没有网络"];
+
     }];
+    
+
     
 }
 

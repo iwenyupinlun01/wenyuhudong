@@ -216,10 +216,12 @@
     NSString *pnstr = [NSString stringWithFormat:@"%d",pn];
     NSString *strurl = [NSString stringWithFormat:newVCload,pnstr,@"1",[tokenstr tokenstrfrom]];
     
-    [CLNetworkingManager getNetworkRequestWithUrlString:strurl parameters:nil isCache:YES succeed:^(id data) {
-        NSLog(@"infor=====%@",data);
+    [PPNetworkHelper GET:strurl parameters:nil responseCache:^(id responseCache) {
+        
+    } success:^(id responseObject) {
+        NSLog(@"infor=====%@",responseObject);
         NSLog(@"str====%@",strurl);
-        NSArray *dit = [data objectForKey:@"info"];
+        NSArray *dit = [responseObject objectForKey:@"info"];
         for (int i = 0; i<dit.count; i++) {
             NSDictionary *dicarr = [dit objectAtIndex:i];
             self.nmodel = [[newModel alloc] init];
@@ -245,14 +247,20 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.newtable.mj_footer endRefreshing];
             [self.newtable reloadData];
-
+            
         });
-        
-        } fail:^(NSError *error) {
+
+    } failure:^(NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.newtable.mj_footer endRefreshing];
             [MBProgressHUD showError:@"没有网络"];
         });
+    }];
+    
+    [CLNetworkingManager getNetworkRequestWithUrlString:strurl parameters:nil isCache:YES succeed:^(id data) {
+        
+        } fail:^(NSError *error) {
+       
 
     }];
 }
@@ -371,7 +379,14 @@
 //    [self.navigationController pushViewController:detailsvc animated:YES];
     
     xiangqingViewController *xiangqingVC = [[xiangqingViewController alloc] init];
+    self.nmodel = [[newModel alloc] init];
+    self.nmodel = self.dataarr[indexPath.row];
+    NSString *str = self.nmodel.newidstr;
+    xiangqingVC.detalisidstr = str;
+    xiangqingVC.dianzanindex = [NSString stringWithFormat:@"%ld",(long)indexPath.row];
+    xiangqingVC.fromtypestr = @"newc";
     [self.navigationController pushViewController:xiangqingVC animated:YES];
+    
 }
 
 //点赞
