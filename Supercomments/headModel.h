@@ -21,7 +21,8 @@
 @property (nonatomic,strong) NSString *shifoudianzanstr;
 @property (nonatomic,strong) NSString *objectidstr;
 
-
+@property (nonatomic,strong) NSString *idstr;
+@property (nonatomic,strong) NSString *touidstr;
 
 @property (nonatomic,strong) NSMutableArray *thumarray;
 @end

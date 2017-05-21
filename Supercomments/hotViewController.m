@@ -17,6 +17,7 @@
 #import <DZNEmptyDataSet/UIScrollView+EmptyDataSet.h>
 #import "UIImageView+RotateImgV.h"
 #import "emptyerrorView.h"
+#import "xiangqingViewController.h"
 @interface hotViewController ()<UITableViewDataSource,UITableViewDelegate,mycellVdelegate,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate,myviewdelegate>
 /** 用于加载下一页的参数(页码) */
 {
@@ -350,11 +351,14 @@
     self.hmodel = self.dataarr[indexPath.row];
     NSString *str = self.hmodel.newidstr;
     NSLog(@"str======%@",str);
-    detailsViewController *detailsvc = [[detailsViewController alloc] init];
+   // detailsViewController *detailsvc = [[detailsViewController alloc] init];
+    xiangqingViewController *detailsvc = [[xiangqingViewController alloc] init];
     detailsvc.detalisidstr = str;
     detailsvc.fromtypestr = @"hotvc";
     detailsvc.dianzanindex = [NSString stringWithFormat:@"%ld",(long)indexPath.row];
     [self.navigationController pushViewController:detailsvc animated:YES];
+    
+    
 }
 
 //点赞

@@ -39,6 +39,7 @@
 @property (nonatomic,strong) newCell *cell;
 @property (nonatomic,strong) XSNoDataView *dataView;
 @property (nonatomic,strong) emptyerrorView *bgview;
+
 @end
 
 @implementation newViewController
@@ -71,6 +72,10 @@
 //    [self checkNetworkStatus];
     
 }
+
+
+
+
 
 
 
@@ -384,7 +389,7 @@
     NSString *str = self.nmodel.newidstr;
     xiangqingVC.detalisidstr = str;
     xiangqingVC.dianzanindex = [NSString stringWithFormat:@"%ld",(long)indexPath.row];
-    xiangqingVC.fromtypestr = @"newc";
+    xiangqingVC.fromtypestr = @"newvc";
     [self.navigationController pushViewController:xiangqingVC animated:YES];
     
 }

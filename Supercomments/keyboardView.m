@@ -24,6 +24,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         //self.backgroundColor = [UIColor greenColor];
+        [self addSubview:self.bgview];
         [self addSubview:self.textview];
         [self addSubview:self.sendbtn];
         [self addSubview:self.toplineview];
@@ -97,9 +98,9 @@
     if(!_bgview)
     {
         _bgview = [[UIView alloc] init];
-        _bgview = [[UIView alloc]initWithFrame:self.bounds];
-        _bgview.backgroundColor = [UIColor colorWithWhite:0.142 alpha:1.000];
-        _bgview.alpha = 0.4f;
+        _bgview = [[UIView alloc]initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, 58)];
+        _bgview.backgroundColor = [UIColor whiteColor];
+        
     }
     return _bgview;
 }

@@ -11,6 +11,7 @@
 #import "replyModel.h"
 #import <DZNEmptyDataSet/UIScrollView+EmptyDataSet.h>
 #import "detailsViewController.h"
+#import "xiangqingViewController.h"
 @interface replyViewController ()<UITableViewDelegate,UITableViewDataSource,myTabVdelegate,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate>
 {
     int pn;
@@ -91,7 +92,7 @@ static NSString *replyidentfid = @"replyidentfid";
 - (void)headerRefreshEndAction
 {
     [self.replyarr removeAllObjects];
-
+    pn=1;
     
     [AFManager getReqURL:[NSString stringWithFormat:xiaoxitongzhijk,[tokenstr tokenstrfrom],@"1"] block:^(id infor) {
         NSLog(@"infor------------%@",infor);
@@ -267,7 +268,8 @@ static NSString *replyidentfid = @"replyidentfid";
 {
     self.rmodel = self.replyarr[indexPath.row];
     NSString *idstr = self.rmodel.obj_id;
-    detailsViewController *detalsVC = [[detailsViewController alloc] init];
+   // detailsViewController *detalsVC = [[detailsViewController alloc] init];
+    xiangqingViewController *detalsVC = [[xiangqingViewController alloc] init];
     detalsVC.detalisidstr = idstr;
     [self.navigationController pushViewController:detalsVC animated:YES];
     NSLog(@"%ld",(long)indexPath.row);

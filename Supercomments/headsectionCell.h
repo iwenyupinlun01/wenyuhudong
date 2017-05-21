@@ -13,6 +13,16 @@
 #import "thumbView.h"
 @class headViewModel;
 
+
+@protocol myheadViewdelegate <NSObject>
+
+-(void)myTabheadClick1:(UITableViewCell *)cell;
+-(void)myTabheadClick2:(UITableViewCell *)cell;
+-(void)myTabheadClick3:(UITableViewCell *)cell;
+-(void)myTabheadClick4:(UITableViewCell *)cell;
+
+@end
+
 @interface headsectionCell : UITableViewCell
 @property (nonatomic,strong) UILabel *namelab;
 @property (nonatomic,strong) UILabel *fromlab;
@@ -27,5 +37,8 @@
 @property (nonatomic,strong) UILabel *thumlabel;
 
 @property (nonatomic,strong) UIView *lineview;
--(void)setdata:(headViewModel *)model;
+-(CGFloat )setdata:(NSDictionary *)dic userarr:(NSMutableArray *)userarr;
+
+@property(assign,nonatomic)id<myheadViewdelegate>delegate;
+
 @end

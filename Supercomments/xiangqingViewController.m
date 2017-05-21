@@ -22,9 +22,10 @@
 #import "keyboardView.h"
 #import "headsectionCell.h"
 #import "headModel.h"
-@interface xiangqingViewController () <UITableViewDelegate, UITableViewDataSource,mycellVdelegate,UITextViewDelegate>
+@interface xiangqingViewController () <UITableViewDelegate, UITableViewDataSource,mycellVdelegate,UITextViewDelegate,myheadViewdelegate>
 {
     CGFloat headheight;
+    int pn;
 }
 @property (nonatomic, strong) NSMutableArray *datasource;
 @property (nonatomic, strong) UITableView *tableView;
@@ -36,8 +37,16 @@
 @property (nonatomic, strong) NSString *headimgstr;
 
 @property (nonatomic, strong) headModel *hmodel;
+@property (nonatomic, strong) NSDictionary *headdic;
 
 @property (nonatomic,strong) keyboardView *keyView;
+@property (nonatomic,strong) NSString *fromkeyboard;
+
+@property (nonatomic,strong) NSString *namestr;
+@property (nonatomic,strong) UIControl * overView;
+
+@property (nonatomic,strong) UIView *bgview;
+@property (nonatomic,assign) UIEdgeInsets insets;
 @end
 
 @implementation UIImage (ColorImage)
@@ -78,6 +87,8 @@ static NSString *headsectioncell = @"headsectioncell";
    
     //此处使底部线条颜色为F5F5F5
     [navigationBar setShadowImage:[UIImage imageWithColor:[UIColor wjColorFloat:@"F5F5F5"]]];
+    pn=1;
+    self.insets = UIEdgeInsetsMake(0, 64, 0, 14);
     
     self.datasource = [NSMutableArray array];
     // 3.1.下拉刷新
@@ -85,6 +96,9 @@ static NSString *headsectioncell = @"headsectioncell";
     // 3.2.上拉加载更多
     [self addFooter];
     [self.view addSubview:self.tableView];
+    [self.view addSubview:self.keyView];
+
+    [self bgviewadd];
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -127,87 +141,64 @@ static NSString *headsectioncell = @"headsectioncell";
 }
 
 
-
 -(void)footerRefreshEndAction
 {
-    
+    pn ++;
+    NSString *pnstr = [NSString stringWithFormat:@"%d",pn];
+    NSString *strurl = [NSString stringWithFormat:xiangqin,self.detalisidstr,pnstr,[tokenstr tokenstrfrom]];
+    [AFManager getReqURL:strurl block:^(id infor) {
+        NSLog(@"info=---------------------%@",infor);
+        NSDictionary *infodit =  [infor objectForKey:@"info"];
+        //cell部分
+       
+        //评论部分
+        NSArray *dicarr = [infodit objectForKey:@"all_comment"];
+        for (int i = 0; i<dicarr.count; i++) {
+            NSDictionary *dit = [dicarr objectAtIndex:i];
+            firstModel *fmodel = [[firstModel alloc] init];
+            fmodel.contentstr = [dit objectForKey:@"content"];
+            fmodel.pinglunarr = [dit objectForKey:@"sonComment"];
+            fmodel.namestr = [dit objectForKey:@"p_nickname"];
+            fmodel.timestr = [dit objectForKey:@"ctime"];
+            fmodel.imgurlstr = [dit objectForKey:@"headImg"];
+            fmodel.idstr = [dit objectForKey:@"id"];
+            fmodel.toidstr = [dit objectForKey:@"uid"];
+            [self.datasource addObject:fmodel];
+        }
+        [self.tableView.mj_footer endRefreshing];
+        [self.tableView reloadData];
+        
+
+    } errorblock:^(NSError *error) {
+        [self.tableView.mj_footer endRefreshing];
+        [MBProgressHUD showSuccess:@"没有网络"];
+    }];
+
 }
 
 -(void)headerRefreshEndAction
 {
-    NSString *urlstr = @"http://np.iwenyu.cn/forum/index/detail.html?id=918&page=1&token=f054925590e54922f592f3b232924e70";
-    //NSString *urlstr = [NSString stringWithFormat:xiangqin,self.detalisidstr,@"1",[tokenstr tokenstrfrom]];
-    
+    NSString *urlstr = [NSString stringWithFormat:xiangqin,self.detalisidstr,@"1",[tokenstr tokenstrfrom]];
     [self.datasource removeAllObjects];
-    
+    pn=1;
     [AFManager getReqURL:urlstr block:^(id infor) {
         NSDictionary *infodit = [infor objectForKey:@"info"];
         
         self.hmodel = [[headModel alloc] init];
+        self.hmodel.namestr = [infodit objectForKey:@"name"];
+        self.hmodel.timestr = [infodit objectForKey:@"create_time"];
         
+        self.headdic = infodit;
         
         
         NSString *namestr = [infodit objectForKey:@"name"];
-        NSString *timestr = [infodit objectForKey:@"create_time"];
-        NSString *contentstr = [infodit objectForKey:@"content"];
-        NSString *type = [infodit objectForKey:@"type"];
-        NSString *platformstr = [infodit objectForKey:@"platform"];
-        NSString *support_countstr = [infodit objectForKey:@"support_count"];
-
+        self.namestr = namestr;
+        
         self.headimgstr = [infodit objectForKey:@"images"];
         self.weburlstr = [infodit objectForKey:@"url"];
-        
-        NSString *small_imagestr = [infodit objectForKey:@"small_images"];
         _shifoudianzanstr = [infodit objectForKey:@"is_support"];
         
-        self.headView = [[headsectionCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:headsectioncell];
-        
-        if ([type isEqualToString:@"1"]) {
-            self.headView.fromlab.text = [NSString stringWithFormat:@"%@%@%@",@"腾讯老司机已赞",support_countstr,@"次"];
-        }
-        else if ([type isEqualToString:@"2"]) {
-            self.headView.fromlab.text = [NSString stringWithFormat:@"%@%@%@",@"网易老司机已赞",support_countstr,@"次"];
-        }
-        else if ([type isEqualToString:@"5"]) {
-            self.headView.fromlab.text = [NSString stringWithFormat:@"%@%@%@%@",platformstr,@"已赞",support_countstr,@"次"];
-        }
-        else{
-            self.headView.fromlab.text = [NSString stringWithFormat:@"%@%@%@",@"今日牛评老司机已赞",support_countstr,@"次"];
-        }
-        
-        self.headView.dianzanbtn.zanlab.text = [NSString stringWithFormat:@"%@",[infodit objectForKey:@"support_num"]];
-        self.headView.combtn.textlab.text = [NSString stringWithFormat:@"%@",[infodit objectForKey:@"reply_num"]];
-        
-        if ([_shifoudianzanstr isEqualToString:@"0"]) {
-            self.headView.dianzanbtn.zanimg.image = [UIImage imageNamed:@"点赞-"];
-            self.headView.dianzanbtn.zanlab.textColor = [UIColor wjColorFloat:@"C7C7CD"];
-        }else
-        {
-            self.headView.dianzanbtn.zanimg.image = [UIImage imageNamed:@"点赞-拷贝"];
-            self.headView.dianzanbtn.zanlab.textColor = [UIColor wjColorFloat:@"FF4444"];
-        }
-
-        self.headView.namelab.text = namestr;
-        self.headView.timelab.text = [Timestr datetime:timestr];
-        self.objidstr = [NSString stringWithFormat:@"%@",[infodit objectForKey:@"id"]];;
-        self.headView.namelab.backgroundColor = [UIColor redColor];
-        NSString *str1 = @" 标题: ";
-        NSString *str2 = [infodit objectForKey:@"title"];
-        NSMutableAttributedString *strbut = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@",str1,str2]];
-        [strbut addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"333333"] range:NSMakeRange(0, str1.length)];
-        [strbut addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"576B95"] range:NSMakeRange(str1.length, str2.length)];
-        self.headView.title.titlelab.attributedText = strbut;
-        self.headView.contentlab.text = contentstr;
-        self.headView.numberlab.text = [NSString stringWithFormat:@"%@%@",[infodit objectForKey:@"reply_num"],@"人评论"];
-        
-        if ([[infodit objectForKey:@"reply_num"] isEqualToString:@"0"]) {
-            [self.headView.numberlab setHidden:YES];
-            [self.headView.lineview setHidden:YES];
-        }else
-        {
-            [self.headView.numberlab setHidden:NO];
-            [self.headView.lineview setHidden:NO];
-        }
+        self.usernamearr = [NSMutableArray array];
         
         NSMutableArray * thumarray = [NSMutableArray array];
         thumarray = [infodit objectForKey:@"bookmark_user"];
@@ -217,8 +208,6 @@ static NSString *headsectioncell = @"headsectioncell";
             NSString *usernamestr = [bookdic objectForKey:@"user_nickname"];
             [self.usernamearr addObject:usernamestr];
         }
-        
-        [self headfromcontentstr:contentstr andimageurl:small_imagestr andgoodarr:self.usernamearr];
         
         //评论部分
         NSArray *dicarr = [infodit objectForKey:@"all_comment"];
@@ -230,12 +219,14 @@ static NSString *headsectioncell = @"headsectioncell";
             fmodel.namestr = [dit objectForKey:@"p_nickname"];
             fmodel.timestr = [dit objectForKey:@"ctime"];
             fmodel.imgurlstr = [dit objectForKey:@"headImg"];
+            fmodel.idstr = [dit objectForKey:@"id"];
+            fmodel.toidstr = [dit objectForKey:@"uid"];
             [self.datasource addObject:fmodel];
         }
         [self.tableView.mj_header endRefreshing];
         [self.tableView reloadData];
     } errorblock:^(NSError *error) {
-        [MBProgressHUD showSuccess:@""];
+        [MBProgressHUD showSuccess:@"没有网络"];
         [self.tableView.mj_header endRefreshing];
     }];
     
@@ -247,13 +238,35 @@ static NSString *headsectioncell = @"headsectioncell";
 {
     if(!_tableView)
     {
-        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT-64) style:UITableViewStylePlain];
+        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT-64-58) style:UITableViewStylePlain];
         _tableView.dataSource = self;
         _tableView.delegate = self;
-        
+        _tableView.separatorColor = [UIColor wjColorFloat:@"F5F5F5"];
     }
     return _tableView;
 }
+-(UIControl *)overView
+{
+    if(!_overView)
+    {
+        _overView = [[UIControl alloc] initWithFrame:[UIScreen mainScreen].bounds];
+        _overView.backgroundColor=[UIColor colorWithWhite:0.6 alpha:0.3];
+        [_overView addTarget:self action:@selector(dismiss) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _overView;
+}
+
+-(NSDictionary *)headdic
+{
+    if(!_headdic)
+    {
+        _headdic = [NSDictionary dictionary];
+        
+    }
+    return _headdic;
+}
+
+
 
 -(NSMutableArray *)usernamearr
 {
@@ -299,17 +312,333 @@ static NSString *headsectioncell = @"headsectioncell";
     return _keyView;
 }
 
+#pragma mark - 输入框方法
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+
+//当键盘出现或改变时调用
+
+- (void)keyboardWillShow:(NSNotification *)aNotification
+{
+    //获取键盘的高度
+    NSDictionary *userInfo = [aNotification userInfo];
+    NSValue *aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
+    CGRect keyboardRect = [aValue CGRectValue];
+    int height = keyboardRect.size.height;
+    [UIView animateWithDuration:[aNotification.userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue] animations:^{
+        self.keyView.transform=CGAffineTransformMakeTranslation(0, -height);
+        self.bgview.alpha = 0.6;
+        self.bgview.frame = CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT-44-14-height);
+        self.bgview.hidden = NO;
+    } completion:^(BOOL finished) {
+        
+    }];
+}
+
+//当键退出时调用
+
+- (void)keyboardWillHide:(NSNotification *)aNotification
+{
+    [UIView animateWithDuration:[aNotification.userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue] animations:^{
+        //self.bgview.alpha = 0.0;
+        self.keyView.transform=CGAffineTransformIdentity;
+        self.bgview.hidden = YES;
+        self.bgview.frame = CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT);
+        self.bgview.alpha = 1;
+    } completion:^(BOOL finished) {
+
+        self.keyView.textview.text=@"";
+        _fromkeyboard = @"";
+        _keyView.textview.customPlaceholder = @"写评论";
+        
+    }];
+}
+
+- (void)textViewDidChange:(UITextView *)textView
+{
+    if (textView.text.length==0) {
+        [self.keyView.sendbtn setTitleColor:[UIColor  wjColorFloat:@"C7C7CD"] forState:normal];
+        
+    }else
+    {
+        [self.keyView.sendbtn setTitleColor:[UIColor wjColorFloat:@"576b95"] forState:normal];
+        
+    }
+}
+
+- (void)textViewDidBeginEditing:(UITextView *)textView
+{
+    _keyView.textview.customPlaceholder = [NSString stringWithFormat:@"%@%@",@"评论@",self.namestr];
+}
+
+-(void)bgviewadd
+{
+    //添加屏幕的蒙罩
+    self.bgview = [[UIView alloc]initWithFrame:self.view.frame];
+    self.bgview.backgroundColor = [UIColor blackColor];
+    self.bgview.alpha = 0.0;
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(backgroundTapped:)];
+    [self.bgview addGestureRecognizer:tap];
     
-    CGFloat sectionHeaderHeight = headheight;//设置你footer高度
-    if (scrollView.contentOffset.y<=sectionHeaderHeight&&scrollView.contentOffset.y>=0) {
-        scrollView.contentInset = UIEdgeInsetsMake(-scrollView.contentOffset.y, 0, 0, 0);
-    } else if (scrollView.contentOffset.y>=sectionHeaderHeight) {
-        scrollView.contentInset = UIEdgeInsetsMake(-sectionHeaderHeight, 0, 0, 0);
+    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    [delegate.window addSubview:self.bgview];
+    
+}
+
+-(void)backgroundTapped:(UIGestureRecognizer *)tgp
+{
+    [self.keyView.textview resignFirstResponder];
+    NSLog(@"空白处");
+}
+
+#pragma mark - UITextViewDelegate
+
+//将要结束/退出编辑模式
+
+- (BOOL)textViewShouldEndEditing:(UITextView *)textView
+{
+    NSLog(@"退出编辑模式");
+    
+    return YES;
+}
+
+//发送按钮
+
+-(void)sendbtnclick
+{
+    if ([self isNullToString:self.keyView.textview.text])
+    {
+        [self.keyView.textview resignFirstResponder];
+    }
+    else
+    {
+        [self.keyView.textview resignFirstResponder];
+        //三级评论
+        if ([_fromkeyboard isEqualToString:@"cellpinglun"]) {
+            
+            
+            if ([tokenstr tokenstrfrom].length!=0&&self.keyView.touidstr.length!=0&&self.objidstr.length!=0&&self.keyView.pidstr.length!=0&&self.keyView.textview.text.length!=0) {
+                
+                NSDictionary *para = @{@"token":[tokenstr tokenstrfrom],@"to_uid":self.keyView.touidstr,@"object_id":self.objidstr,@"content":self.keyView.textview.text,@"pid":self.keyView.pidstr};
+                [CLNetworkingManager postCacheRequestWithUrlString:pinglunhuifu parameters:para cacheTime:NO succeed:^(id data) {
+                    NSLog(@"data-------%@",data);
+                    if ([[data objectForKey:@"code"] intValue]==1) {
+                        NSString *pinglunnum = [data objectForKey:@"comment_num"];
+                        //self.headview.combtn.textlab.text = pinglunnum;
+                        
+                        [self headerRefreshEndAction];
+                        
+                        
+                        NSDictionary *dianzandic = @{@"dianzanindex":self.dianzanindex,@"pinglunstr":pinglunnum};
+                        if ([self.fromtypestr isEqualToString:@"newvc"]) {
+                            [[NSNotificationCenter defaultCenter]postNotificationName:@"pinglunkvo" object:dianzandic];
+                        }else
+                        {
+                            [[NSNotificationCenter defaultCenter]postNotificationName:@"pinglunkvo2" object:dianzandic];
+                        }
+                        
+                        [MBProgressHUD showSuccess:@"评论成功"];
+                    }
+                } fail:^(NSError *error) {
+                    [MBProgressHUD showSuccess:@"没有网络"];
+                }];
+                
+                
+            }
+            
+            
+            
+            
+        }else if([_fromkeyboard isEqualToString:@"section"])
+        {
+            //二级评论
+            
+            firstModel *fmodel  = self.datasource[self.keyView.secindex];
+            NSString *pidstr = fmodel.idstr;
+            NSString *uidstr = fmodel.toidstr;
+            
+            
+            if ([tokenstr tokenstrfrom].length!=0&&uidstr.length!=0&&self.objidstr.length!=0&&pidstr.length!=0&&self.keyView.textview.text.length!=0) {
+                
+                //网络请求
+                NSDictionary *para = @{@"token":[tokenstr tokenstrfrom],@"to_uid":uidstr,@"object_id":self.objidstr,@"content":self.keyView.textview.text,@"pid":pidstr};
+                
+                [CLNetworkingManager postCacheRequestWithUrlString:pinglunhuifu parameters:para cacheTime:NO succeed:^(id data) {
+                    NSLog(@"data-------%@",data);
+                    if ([[data objectForKey:@"code"] intValue]==1) {
+                        NSString *pinglunnum = [data objectForKey:@"comment_num"];
+                        //self.headview.combtn.textlab.text = pinglunnum;
+                        [self headerRefreshEndAction];
+                        
+                        [MBProgressHUD showSuccess:@"评论成功"];
+                        
+                        NSDictionary *dianzandic = @{@"dianzanindex":self.dianzanindex,@"pinglunstr":pinglunnum};
+                        if ([self.fromtypestr isEqualToString:@"newvc"]) {
+                            [[NSNotificationCenter defaultCenter]postNotificationName:@"pinglunkvo" object:dianzandic];
+                        }else
+                        {
+                            [[NSNotificationCenter defaultCenter]postNotificationName:@"pinglunkvo2" object:dianzandic];
+                        }
+                    }
+                    
+                } fail:^(NSError *error) {
+                    [MBProgressHUD showSuccess:@"没有网络"];
+                }];
+            }
+            
+        }
+        else
+        {
+            //一级评论
+           // self.detailsmodel = [[detailcellmodel alloc] init];
+            
+            if ([tokenstr tokenstrfrom].length!=0&&self.objidstr.length!=0&&self.keyView.textview.text.length!=0) {
+                //网络请求
+                NSDictionary *para = @{@"token":[tokenstr tokenstrfrom],@"to_uid":@"0",@"object_id":self.objidstr,@"content":self.keyView.textview.text,@"pid":@"0"};
+                
+                [CLNetworkingManager postCacheRequestWithUrlString:pinglunhuifu parameters:para cacheTime:NO succeed:^(id data) {
+                    NSLog(@"data-------%@",data);
+                    if ([[data objectForKey:@"code"] intValue]==1) {
+                        NSString *pinglunnum = [data objectForKey:@"comment_num"];
+                        //self.headview.combtn.textlab.text = pinglunnum;
+                        [self headerRefreshEndAction];
+                        
+                        [MBProgressHUD showSuccess:@"评论成功"];
+                        NSDictionary *dianzandic = @{@"dianzanindex":self.dianzanindex,@"pinglunstr":pinglunnum};
+                        if ([self.fromtypestr isEqualToString:@"newvc"]) {
+                            [[NSNotificationCenter defaultCenter]postNotificationName:@"pinglunkvo" object:dianzandic];
+                        }else
+                        {
+                            [[NSNotificationCenter defaultCenter]postNotificationName:@"pinglunkvo2" object:dianzandic];
+                        }
+                    }
+                    
+                } fail:^(NSError *error) {
+                    [MBProgressHUD showSuccess:@"没有网络"];
+                }];
+                
+            }
+        }
     }
     
 }
+
+//响应return
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
+    if ([text isEqualToString:@"\n"])
+    {           //判断输入的字是否是回车，即按下return
+        //在这里做你响应return键的代码
+        NSLog(@"return");
+        [textView resignFirstResponder];
+        
+        if ([self isNullToString:textView.text])
+        {
+            [textView resignFirstResponder];
+        }
+        else
+        {
+            //三级评论
+            if ([_fromkeyboard isEqualToString:@"cellpinglun"]) {
+                if ([tokenstr tokenstrfrom].length!=0&&self.keyView.touidstr.length!=0&&self.objidstr.length!=0&&self.keyView.pidstr.length!=0&&self.keyView.textview.text.length!=0) {
+                    
+                    NSDictionary *para = @{@"token":[tokenstr tokenstrfrom],@"to_uid":self.keyView.touidstr,@"object_id":self.objidstr,@"content":self.keyView.textview.text,@"pid":self.keyView.pidstr};
+                    [CLNetworkingManager postCacheRequestWithUrlString:pinglunhuifu parameters:para cacheTime:NO succeed:^(id data) {
+                        NSLog(@"data-------%@",data);
+                        if ([[data objectForKey:@"code"] intValue]==1) {
+                            NSString *pinglunnum = [data objectForKey:@"comment_num"];
+                            //self.headview.combtn.textlab.text = pinglunnum;
+                            
+                            [self headerRefreshEndAction];
+                            
+                            NSDictionary *dianzandic = @{@"dianzanindex":self.dianzanindex,@"pinglunstr":pinglunnum};
+                            if ([self.fromtypestr isEqualToString:@"newvc"]) {
+                                [[NSNotificationCenter defaultCenter]postNotificationName:@"pinglunkvo" object:dianzandic];
+                            }else
+                            {
+                                [[NSNotificationCenter defaultCenter]postNotificationName:@"pinglunkvo2" object:dianzandic];
+                            }
+                            
+                            [MBProgressHUD showSuccess:@"评论成功"];
+                        }
+                    } fail:^(NSError *error) {
+                        [MBProgressHUD showSuccess:@"没有网络"];
+                    }];
+                }
+                
+            }else if([_fromkeyboard isEqualToString:@"section"])
+            {
+                //二级评论
+                firstModel *fmodel  = self.datasource[self.keyView.secindex];
+                NSString *pidstr = fmodel.idstr;
+                NSString *uidstr = fmodel.toidstr;
+                
+                if ([tokenstr tokenstrfrom].length!=0&&uidstr.length!=0&&self.objidstr.length!=0&&pidstr.length!=0&&self.keyView.textview.text.length!=0) {
+                    
+                    //网络请求
+                    NSDictionary *para = @{@"token":[tokenstr tokenstrfrom],@"to_uid":uidstr,@"object_id":self.objidstr,@"content":self.keyView.textview.text,@"pid":pidstr};
+                    
+                    [CLNetworkingManager postCacheRequestWithUrlString:pinglunhuifu parameters:para cacheTime:NO succeed:^(id data) {
+                        NSLog(@"data-------%@",data);
+                        if ([[data objectForKey:@"code"] intValue]==1) {
+                            NSString *pinglunnum = [data objectForKey:@"comment_num"];
+//                            self.headview.combtn.textlab.text = pinglunnum;
+                            [self headerRefreshEndAction];
+                            
+                            [MBProgressHUD showSuccess:@"评论成功"];
+                            
+                            NSDictionary *dianzandic = @{@"dianzanindex":self.dianzanindex,@"pinglunstr":pinglunnum};
+                            if ([self.fromtypestr isEqualToString:@"newvc"]) {
+                                [[NSNotificationCenter defaultCenter]postNotificationName:@"pinglunkvo" object:dianzandic];
+                            }else
+                            {
+                                [[NSNotificationCenter defaultCenter]postNotificationName:@"pinglunkvo2" object:dianzandic];
+                            }
+                        }
+                        
+                    } fail:^(NSError *error) {
+                        [MBProgressHUD showSuccess:@"没有网络"];
+                    }];
+                }
+                
+                
+            }
+            else
+            {
+                //一级评论
+                //self.hmodel = [[detailcellmodel alloc] init];
+                if ([tokenstr tokenstrfrom].length!=0&&self.objidstr.length!=0&&self.keyView.textview.text.length!=0) {
+                    //网络请求
+                    NSDictionary *para = @{@"token":[tokenstr tokenstrfrom],@"to_uid":@"0",@"object_id":self.objidstr,@"content":self.keyView.textview.text,@"pid":@"0"};
+                    [CLNetworkingManager postCacheRequestWithUrlString:pinglunhuifu parameters:para cacheTime:NO succeed:^(id data) {
+                        NSLog(@"data-------%@",data);
+                        if ([[data objectForKey:@"code"] intValue]==1) {
+                            NSString *pinglunnum = [data objectForKey:@"comment_num"];
+//                            self.headview.combtn.textlab.text = pinglunnum;
+                            [self headerRefreshEndAction];
+                            
+                            [MBProgressHUD showSuccess:@"评论成功"];
+                            NSDictionary *dianzandic = @{@"dianzanindex":self.dianzanindex,@"pinglunstr":pinglunnum};
+                            if ([self.fromtypestr isEqualToString:@"newvc"]) {
+                                [[NSNotificationCenter defaultCenter]postNotificationName:@"pinglunkvo" object:dianzandic];
+                            }else
+                            {
+                                [[NSNotificationCenter defaultCenter]postNotificationName:@"pinglunkvo2" object:dianzandic];
+                            }
+                        }
+                        
+                    } fail:^(NSError *error) {
+                        [MBProgressHUD showSuccess:@"没有网络"];
+                    }];
+                    
+                }
+            }
+            
+        }
+        return NO; //这里返回NO，就代表return键值失效，即页面上按下return，不会出现换行，如果为yes，则输入页面会换行
+    }
+    return YES;
+}
+
 
 #pragma mark -UITableViewDataSource&&UITableViewDelegate
 
@@ -333,8 +662,10 @@ static NSString *headsectioncell = @"headsectioncell";
     if (indexPath.section==0) {
         _headView = [tableView dequeueReusableCellWithIdentifier:headsectioncell];
         _headView = [[headsectionCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:headsectioncell];
+        _headView.delegate = self;
+   
         _headView.selectionStyle = UITableViewCellSelectionStyleNone;
-     
+        [_headView setdata:self.headdic userarr:self.usernamearr];
         return _headView;
     }else
     {
@@ -342,6 +673,7 @@ static NSString *headsectioncell = @"headsectioncell";
         cell = [[firstCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:xiangqingcell];
         [cell setcelldata:self.datasource[indexPath.row]];
         cell.delegate = self;
+        //[cell setSeparatorInset:UIEdgeInsetsZero];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
     }
@@ -351,7 +683,9 @@ static NSString *headsectioncell = @"headsectioncell";
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section==0) {
-        return headheight;
+        headsectionCell *cell = [[headsectionCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:headsectioncell];
+
+        return [cell setdata:self.headdic userarr:self.usernamearr];
     }else
     {
         firstCell * cell = [[firstCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:xiangqingcell];
@@ -364,6 +698,27 @@ static NSString *headsectioncell = @"headsectioncell";
 -(void)myTabVClick:(UITableViewCell *)cell datadic:(NSDictionary *)dic
 {
     NSLog(@"dic=======%@",dic);
+    if ([tokenstr tokenstrfrom].length==0) {
+        NSLog(@"请登陆");
+        loginViewController *logvc = [[loginViewController alloc] init];
+        logvc.jinru = @"jinru";
+        [self presentViewController:logvc animated:YES completion:^{
+            
+        }];
+    }
+    else
+    {
+        self.fromkeyboard = @"cellpinglun";
+        [self.keyView.textview becomeFirstResponder];
+        
+        self.keyView.nickname = [dic objectForKey:@"s_nickname"];
+        self.keyView.tonickname = [dic objectForKey:@"s_to_nickname"];
+        self.keyView.pidstr = [dic objectForKey:@"pid"];
+        self.keyView.touidstr = [dic objectForKey:@"uid"];
+        _keyView.textview.customPlaceholder = [NSString stringWithFormat:@"%@%@",@"回复@",self.keyView.nickname];
+        
+    }
+
 }
 
 
@@ -374,17 +729,188 @@ static NSString *headsectioncell = @"headsectioncell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"index");
+    if (indexPath.section==1) {
+        
+        if ([tokenstr tokenstrfrom].length==0) {
+            NSLog(@"请登陆");
+            loginViewController *logvc = [[loginViewController alloc] init];
+            logvc.jinru = @"jinru";
+            [self presentViewController:logvc animated:YES completion:^{
+                
+            }];
+        }
+        else
+        {
+            [self.keyView.textview becomeFirstResponder];
+            self.fromkeyboard = @"section";
+            self.keyView.secindex = indexPath.row;
+            
+            firstModel *fmodel =self.datasource[self.keyView.secindex];
+            NSString *tonickname = fmodel.namestr;
+            _keyView.textview.customPlaceholder = [NSString stringWithFormat:@"%@%@",@"回复@",tonickname];
+        }
+
+    }
 }
 
-#pragma mark - 实现方法
-
--(void)backAction
+-(void)myTabheadClick1:(UITableViewCell *)cell
 {
-    [self.navigationController popViewControllerAnimated:YES];
-}
+    NSLog(@"点赞");
+    if ([_shifoudianzanstr isEqualToString:@"0"]) {
+        
+        if ([tokenstr tokenstrfrom].length==0) {
+            NSLog(@"请登陆");
+            loginViewController *loginvc = [[loginViewController alloc] init];
+            loginvc.jinru = @"jinru";
+            [self presentViewController:loginvc animated:YES completion:nil];
+        }else
+        {
+            //点赞
+            
+            NSDictionary *reqdic = @{@"token":[tokenstr tokenstrfrom],@"object_id":self.detalisidstr,@"status":@"1",@"type":@"1"};
+            [AFManager postReqURL:qudianzan reqBody:reqdic block:^(id infor) {
+                NSLog(@"infor=====%@",infor);
+                NSString *codestr = [infor objectForKey:@"code"];
+                if ([codestr intValue]==1) {
+                    self.headView.dianzanbtn.zanimg.image = [UIImage imageNamed:@"点赞-拷贝"];
+                    self.headView.dianzanbtn.zanlab.textColor = [UIColor wjColorFloat:@"FF4444"];
+                    [MBProgressHUD showSuccess:@"点赞+1"];
+                    NSLog(@"成功");
+                    
+                    NSDictionary *dic = [infor objectForKey:@"info"];
+                    
+                    NSString *dianzannumtext = [NSString stringWithFormat:@"%@",[dic objectForKey:@"spportNum"]];
+                    
+                    _shifoudianzanstr = @"1";
+                    
+                    NSDictionary *dianzandic = @{@"dianzanindex":self.dianzanindex,@"diansanstr":self.shifoudianzanstr,@"dianzannum":dianzannumtext};
 
--(void)shareclick
+                    if ([self.fromtypestr isEqualToString:@"newvc"]) {
+                        [[NSNotificationCenter defaultCenter]postNotificationName:@"shifoudiandankvo" object:dianzandic];
+                    }else
+                    {
+                        [[NSNotificationCenter defaultCenter]postNotificationName:@"shifoudiandankvo2" object:dianzandic];
+                    }
+                    
+                    
+
+                    
+                    [self headerRefreshEndAction];
+                    
+                }
+                else if ([codestr intValue]==0)
+                {
+                    [MBProgressHUD showSuccess:@"token错误"];
+                    NSLog(@"token错误");
+                }
+                else if ([codestr intValue]==4)
+                {
+                    [MBProgressHUD showSuccess:@"抱歉您的账户被暂时限制了，无法进行此操作"];
+                    NSLog(@"抱歉您的账户被暂时限制了，无法进行此操作");
+                }else if ([codestr intValue]==2100)
+                {
+                    [MBProgressHUD showSuccess:@"该牛评不存在或者被冻结"];
+                    NSLog(@"该牛评不存在或者被冻结");
+                }
+                else
+                {
+                    [MBProgressHUD showSuccess:@"系统繁忙，请稍后再试"];
+                    NSLog(@"系统繁忙，请稍后再试");
+                }
+                
+            }];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.tableView reloadData];
+            });
+        }
+        
+    }else
+    {
+        if ([tokenstr tokenstrfrom].length==0) {
+            NSLog(@"请登陆");
+            loginViewController *loginvc = [[loginViewController alloc] init];
+            loginvc.jinru = @"jinru";
+            [self presentViewController:loginvc animated:YES completion:nil];
+        }else
+        {
+            //取消点赞
+            NSDictionary *reqdic = @{@"token":[tokenstr tokenstrfrom],@"object_id":self.detalisidstr,@"status":@"0",@"type":@"1"};
+            
+            [CLNetworkingManager postNetworkRequestWithUrlString:qudianzan parameters:reqdic isCache:NO succeed:^(id data) {
+                NSLog(@"data===%@",data);
+                NSString *codestr = [data objectForKey:@"code"];
+                if ([codestr intValue]==1) {
+                    self.shifoudianzanstr = @"0";
+                    NSDictionary *dic = [data objectForKey:@"info"];
+                    NSString *dianzannumtext = [NSString stringWithFormat:@"%@",[dic objectForKey:@"spportNum"]];
+                    NSDictionary *dianzandic = @{@"dianzanindex":self.dianzanindex,@"diansanstr":self.shifoudianzanstr,@"dianzannum":dianzannumtext};
+                    if ([self.fromtypestr isEqualToString:@"newvc"]) {
+                        [[NSNotificationCenter defaultCenter]postNotificationName:@"shifoudiandankvo" object:dianzandic];
+                    }else
+                    {
+                        [[NSNotificationCenter defaultCenter]postNotificationName:@"shifoudiandankvo2" object:dianzandic];
+                    }
+                    self.headView.dianzanbtn.zanimg.image = [UIImage imageNamed:@"点赞-"];
+                    self.headView.dianzanbtn.zanlab.textColor = [UIColor wjColorFloat:@"C7C7CD"];
+                    [MBProgressHUD showSuccess:@"取消点赞"];
+                    NSLog(@"成功");
+                    
+                    [self headerRefreshEndAction];
+                    
+                }
+                else if ([codestr intValue]==0)
+                {
+                    [MBProgressHUD showSuccess:@"token错误"];
+                    NSLog(@"token错误");
+                }
+                else if ([codestr intValue]==4)
+                {
+                    [MBProgressHUD showSuccess:@"抱歉您的账户被暂时限制了，无法进行此操作"];
+                    NSLog(@"抱歉您的账户被暂时限制了，无法进行此操作");
+                }else if ([codestr intValue]==2100)
+                {
+                    [MBProgressHUD showSuccess:@"该牛评不存在或者被冻结"];
+                    NSLog(@"该牛评不存在或者被冻结");
+                }
+                else
+                {
+                    [MBProgressHUD showSuccess:@"系统繁忙，请稍后再试"];
+                    NSLog(@"系统繁忙，请稍后再试");
+                }
+                
+            } fail:^(NSError *error) {
+                [MBProgressHUD showSuccess:@"没有网络"];
+            }];
+            
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^
+                       {
+                           [self.tableView reloadData];
+                       });
+    }
+
+}
+-(void)myTabheadClick2:(UITableViewCell *)cell
+{
+    NSLog(@"评论");
+    if ([tokenstr tokenstrfrom].length==0) {
+        NSLog(@"请登陆");
+        loginViewController *logvc = [[loginViewController alloc] init];
+        logvc.jinru = @"jinru";
+        [self presentViewController:logvc animated:YES completion:^{
+            
+        }];
+    }
+    else
+    {
+        self.fromkeyboard = @"zhupinglun";
+        _keyView.textview.customPlaceholder = [NSString stringWithFormat:@"%@%@",@"评论@", self.namestr];
+        [self.keyView.textview becomeFirstResponder];
+    }
+    
+}
+-(void)myTabheadClick3:(UITableViewCell *)cell
 {
     NSLog(@"分享");
     //1、创建分享参数
@@ -439,656 +965,60 @@ static NSString *headsectioncell = @"headsectioncell";
                        }
                    }
          ];}
+
 }
-
-
--(void)dianzanclick
+-(void)myTabheadClick4:(UITableViewCell *)cell
 {
-    NSLog(@"点赞");
-    
-    if ([_shifoudianzanstr isEqualToString:@"0"]) {
-        
-        if ([tokenstr tokenstrfrom].length==0) {
-            NSLog(@"请登陆");
-            loginViewController *loginvc = [[loginViewController alloc] init];
-            loginvc.jinru = @"jinru";
-            [self presentViewController:loginvc animated:YES completion:nil];
-        }else
-        {
-            //点赞
-            
-            NSDictionary *reqdic = @{@"token":[tokenstr tokenstrfrom],@"object_id":self.detalisidstr,@"status":@"1",@"type":@"1"};
-            [AFManager postReqURL:qudianzan reqBody:reqdic block:^(id infor) {
-                NSLog(@"infor=====%@",infor);
-                NSString *codestr = [infor objectForKey:@"code"];
-                if ([codestr intValue]==1) {
-                    self.headView.dianzanbtn.zanimg.image = [UIImage imageNamed:@"点赞-拷贝"];
-                    self.headView.dianzanbtn.zanlab.textColor = [UIColor wjColorFloat:@"FF4444"];
-                    [MBProgressHUD showSuccess:@"点赞+1"];
-                    NSLog(@"成功");
-                    
-                    NSDictionary *dic = [infor objectForKey:@"info"];
-                    self.headView.dianzanbtn.zanlab.text = [NSString stringWithFormat:@"%@",[dic objectForKey:@"spportNum"]];
-                    
-                    _shifoudianzanstr = @"1";
-                    NSDictionary *dianzandic = @{@"dianzanindex":self.dianzanindex,@"diansanstr":self.shifoudianzanstr,@"dianzannum":self.headView.dianzanbtn.zanlab.text};
-                    
-                    if ([self.fromtypestr isEqualToString:@"newvc"]) {
-                        [[NSNotificationCenter defaultCenter]postNotificationName:@"shifoudiandankvo" object:dianzandic];
-                    }else
-                    {
-                        [[NSNotificationCenter defaultCenter]postNotificationName:@"shifoudiandankvo2" object:dianzandic];
-                    }
-                    
-                    
-                    NSMutableArray *zongzhuanarr = [NSMutableArray array];
-                    [zongzhuanarr addObject:[tokenstr nicknamestrfrom]];
-                    [zongzhuanarr addObjectsFromArray:self.usernamearr];
-                    self.usernamearr = zongzhuanarr;
-                    NSLog(@"headmarr-----%@",self.usernamearr);
-                    
-                    [self headerRefreshEndAction];
-
-                }
-                else if ([codestr intValue]==0)
-                {
-                    [MBProgressHUD showSuccess:@"token错误"];
-                    NSLog(@"token错误");
-                }
-                else if ([codestr intValue]==4)
-                {
-                    [MBProgressHUD showSuccess:@"抱歉您的账户被暂时限制了，无法进行此操作"];
-                    NSLog(@"抱歉您的账户被暂时限制了，无法进行此操作");
-                }else if ([codestr intValue]==2100)
-                {
-                    [MBProgressHUD showSuccess:@"该牛评不存在或者被冻结"];
-                    NSLog(@"该牛评不存在或者被冻结");
-                }
-                else
-                {
-                    [MBProgressHUD showSuccess:@"系统繁忙，请稍后再试"];
-                    NSLog(@"系统繁忙，请稍后再试");
-                }
-                
-            }];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.tableView reloadData];
-            });
-        }
-        
-    }else
-    {
-        if ([tokenstr tokenstrfrom].length==0) {
-            NSLog(@"请登陆");
-            loginViewController *loginvc = [[loginViewController alloc] init];
-            loginvc.jinru = @"jinru";
-            [self presentViewController:loginvc animated:YES completion:nil];
-        }else
-        {
-            //取消点赞
-            NSDictionary *reqdic = @{@"token":[tokenstr tokenstrfrom],@"object_id":self.detalisidstr,@"status":@"0",@"type":@"1"};
-            
-            [CLNetworkingManager postNetworkRequestWithUrlString:qudianzan parameters:reqdic isCache:NO succeed:^(id data) {
-                NSLog(@"data===%@",data);
-                NSString *codestr = [data objectForKey:@"code"];
-                if ([codestr intValue]==1) {
-                    self.shifoudianzanstr = @"0";
-                    NSDictionary *dic = [data objectForKey:@"info"];
-                    self.headView.dianzanbtn.zanlab.text = [NSString stringWithFormat:@"%@",[dic objectForKey:@"spportNum"]];
-                    NSDictionary *dianzandic = @{@"dianzanindex":self.dianzanindex,@"diansanstr":self.shifoudianzanstr,@"dianzannum":self.headView.dianzanbtn.zanlab.text};
-                    if ([self.fromtypestr isEqualToString:@"newvc"]) {
-                        [[NSNotificationCenter defaultCenter]postNotificationName:@"shifoudiandankvo" object:dianzandic];
-                    }else
-                    {
-                        [[NSNotificationCenter defaultCenter]postNotificationName:@"shifoudiandankvo2" object:dianzandic];
-                    }
-                    self.headView.dianzanbtn.zanimg.image = [UIImage imageNamed:@"点赞-"];
-                    self.headView.dianzanbtn.zanlab.textColor = [UIColor wjColorFloat:@"C7C7CD"];
-                    [MBProgressHUD showSuccess:@"取消点赞"];
-                    NSLog(@"成功");
-                    
-                    [self.usernamearr removeObjectAtIndex:0];
-                    
-                    [self headerRefreshEndAction];
-
-                    
-                }
-                else if ([codestr intValue]==0)
-                {
-                    [MBProgressHUD showSuccess:@"token错误"];
-                    NSLog(@"token错误");
-                }
-                else if ([codestr intValue]==4)
-                {
-                    [MBProgressHUD showSuccess:@"抱歉您的账户被暂时限制了，无法进行此操作"];
-                    NSLog(@"抱歉您的账户被暂时限制了，无法进行此操作");
-                }else if ([codestr intValue]==2100)
-                {
-                    [MBProgressHUD showSuccess:@"该牛评不存在或者被冻结"];
-                    NSLog(@"该牛评不存在或者被冻结");
-                }
-                else
-                {
-                    [MBProgressHUD showSuccess:@"系统繁忙，请稍后再试"];
-                    NSLog(@"系统繁忙，请稍后再试");
-                }
-                
-            } fail:^(NSError *error) {
-                [MBProgressHUD showSuccess:@"没有网络"];
-            }];
-            
-        }
-        
-        dispatch_async(dispatch_get_main_queue(), ^
-                       {
-                           [self.tableView reloadData];
-                       });
-    }
-    
-}
-
-#pragma mark - 地址跳转方法
-
--(void)webimagego
-{
+    NSLog(@"title");
     NSString *urlstr = self.weburlstr;
     NSLog(@"urlstr-------%@",urlstr);
     SureWebViewController *surevc = [[SureWebViewController alloc]init];
     surevc.url = urlstr;
     surevc.canDownRefresh = YES;
     [self.navigationController pushViewController:surevc animated:YES];
-    
 }
+#pragma mark - 实现方法
 
-#pragma mark - 图片放大方法
-
-- (void)tapAction2{
-    YYPhotoGroupItem *item = [YYPhotoGroupItem new];
-    item.thumbView         = self.headView.headimg;
-    
-    item.largeImageURL     = [NSURL URLWithString:self.headimgstr];
-    YYPhotoGroupView *view = [[YYPhotoGroupView alloc] initWithGroupItems:@[item]];
-    UIView *toView         = [UIApplication sharedApplication].keyWindow.rootViewController.view;
-    [view presentFromImageView:self.headView.headimg
-                   toContainer:toView
-                      animated:YES completion:nil];
-    
-}
-
-#pragma mark - headfrom
-
--(void)headfromcontentstr:(NSString *)content andimageurl:(NSString *)urlstr andgoodarr:(NSArray *)thumarr
+-(void)backAction
 {
-    self.headView.namelab.text = @"text";
-    
-    if (thumarr.count<=12) {
-        NSString *goodTotalString2 = [thumarr componentsJoinedByString:@", "];
-        NSString *goodTotalString = [NSString stringWithFormat:@"%@%@%lu%@",goodTotalString2,@" ",(unsigned long)thumarr.count,@"人已赞"];
-        NSMutableAttributedString *newGoodString = [[NSMutableAttributedString alloc] initWithString:goodTotalString];
-        [newGoodString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:14] range:NSMakeRange(0, goodTotalString.length)];
-        //设置行距 实际开发中间距为0太丑了，根据项目需求自己把握
-        NSMutableParagraphStyle *paragraphstyle = [[NSMutableParagraphStyle alloc] init];
-        paragraphstyle.lineSpacing = 3;
-        [newGoodString addAttribute:NSParagraphStyleAttributeName value:paragraphstyle range:NSMakeRange(0, goodTotalString.length)];
-        // 添加图片
-        NSTextAttachment *attch = [[NSTextAttachment alloc] init];
-        // 图片
-        attch.image = [UIImage imageNamed:@"详情页点赞-提示"];
-        // 设置图片大小
-        attch.bounds = CGRectMake(0, 0, 14*WIDTH_SCALE, 14*WIDTH_SCALE);
-        // 创建带有图片的富文本
-        NSAttributedString *string = [NSAttributedString attributedStringWithAttachment:attch];
-        [newGoodString insertAttributedString:string atIndex:0];
-        
-        NSMutableAttributedString
-        * attStr = [[NSMutableAttributedString alloc]initWithString:@" "];
-        [newGoodString insertAttributedString:attStr atIndex:1];
-        
-        self.headView.thumlabel.attributedText = newGoodString;
-        self.headView.thumlabel.numberOfLines = 0;
-        //设置UILable自适
-        self.headView.thumlabel.lineBreakMode = NSLineBreakByCharWrapping;
-        [self.headView.thumlabel sizeToFit];
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+
+
+
+#pragma mark - 判断字符串为空
+
+- (BOOL )isNullToString:(id)string
+{
+    if ([string isEqual:@"NULL"] || [string isKindOfClass:[NSNull class]] || [string isEqual:[NSNull null]] || [string isEqual:NULL] || [[string class] isSubclassOfClass:[NSNull class]] || string == nil || string == NULL || [string isKindOfClass:[NSNull class]] || [[string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length]==0 || [string isEqualToString:@"<null>"] || [string isEqualToString:@"(null)"])
+    {
+        return YES;
         
     }else
     {
-        NSArray *smallArray = [thumarr subarrayWithRange:NSMakeRange(0, 12)];
-        NSString *goodTotalString2 = [smallArray componentsJoinedByString:@", "];
-        NSString *goodTotalString = [NSString stringWithFormat:@"%@%@%@%lu%@",goodTotalString2,@"等",@" ",(unsigned long)thumarr.count,@"人已赞"];
-        NSMutableAttributedString *newGoodString = [[NSMutableAttributedString alloc] initWithString:goodTotalString];
-        [newGoodString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:14] range:NSMakeRange(0, goodTotalString.length)];
-        //设置行距 实际开发中间距为0太丑了，根据项目需求自己把握
-        NSMutableParagraphStyle *paragraphstyle = [[NSMutableParagraphStyle alloc] init];
-        paragraphstyle.lineSpacing = 3;
-        [newGoodString addAttribute:NSParagraphStyleAttributeName value:paragraphstyle range:NSMakeRange(0, goodTotalString.length)];
-        // 添加图片
-        NSTextAttachment *attch = [[NSTextAttachment alloc] init];
-        // 图片
-        attch.image = [UIImage imageNamed:@"详情页点赞-提示"];
-        // 设置图片大小
-        attch.bounds = CGRectMake(0, 0, 14*WIDTH_SCALE, 14*WIDTH_SCALE);
-        // 创建带有图片的富文本
-        NSAttributedString *string = [NSAttributedString attributedStringWithAttachment:attch];
-        [newGoodString insertAttributedString:string atIndex:0];
-        NSMutableAttributedString
-        * attStr = [[NSMutableAttributedString alloc]initWithString:@" "];
-        [newGoodString insertAttributedString:attStr atIndex:1];
-        self.headView.thumlabel.attributedText = newGoodString;
-        self.headView.thumlabel.numberOfLines = 0;
-        //设置UILable自适
-        self.headView.thumlabel.lineBreakMode = NSLineBreakByCharWrapping;
-        [self.headView.thumlabel sizeToFit];
         
+        return NO;
     }
-    
-    if (thumarr.count==0) {
-        [self.headView.thumlabel setHidden:YES];
-        
-        if (content.length!=0&&urlstr.length!=0) {
-            CGSize textSize = [self.headView.contentlab setText:self.headView.contentlab.text lines:QSTextDefaultLines andLineSpacing:QSTextLineSpacing constrainedToSize:CGSizeMake(DEVICE_WIDTH - 28*WIDTH_SCALE,MAXFLOAT)];
-            
-            self.headView.contentlab.frame = CGRectMake(14*WIDTH_SCALE,  24*HEIGHT_SCALE+14*HEIGHT_SCALE, textSize.width, textSize.height);
-            [self.headView.headimg sd_setImageWithURL:[NSURL URLWithString:urlstr] placeholderImage:[UIImage imageNamed:@"默认图"]];
-            [self.headView.headimg mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(self.headView.contentlab.mas_bottom).with.offset(12*HEIGHT_SCALE);
-                make.left.equalTo(self.headView).with.offset(14*WIDTH_SCALE);
-                make.right.equalTo(self.headView).with.offset(-14*WIDTH_SCALE);
-                make.height.mas_equalTo(192*HEIGHT_SCALE);
-            }];
-            [self.headView.title mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.equalTo(self.headView).with.offset(14*WIDTH_SCALE);
-                make.right.equalTo(self.headView).with.offset(-14*WIDTH_SCALE);
-                make.top.equalTo(self.headView.headimg.mas_bottom).with.offset(2*HEIGHT_SCALE);
-                make.height.mas_equalTo(20*HEIGHT_SCALE);
-            }];
-            [self.headView.timelab mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.equalTo(self.headView).with.offset(14*WIDTH_SCALE);
-                make.top.equalTo(self.headView.title).with.offset(45*HEIGHT_SCALE);
-            }];
-            
-            
-            [self.headView.thumlabel mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.equalTo(self.headView).with.offset(14*WIDTH_SCALE);
-                make.right.equalTo(self.headView).with.offset(-14*WIDTH_SCALE);
-                make.top.equalTo(self.headView.timelab).with.offset(33*HEIGHT_SCALE);
-            }];
-            [self.headView.sharebtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.right.equalTo(self.headView).with.offset(-14*WIDTH_SCALE);
-                make.top.equalTo(self.headView.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
-            }];
-            [self.headView.combtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.right.equalTo(self.headView).with.offset(-70*WIDTH_SCALE);
-                make.top.equalTo(self.headView.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
-                [self.headView.combtn.textlab mas_makeConstraints:^(MASConstraintMaker *make) {
-                    make.top.equalTo(self.headView.title).with.offset(45*HEIGHT_SCALE);
-                    make.right.equalTo(self.headView.sharebtn).with.offset(-40*WIDTH_SCALE);
-                    make.height.mas_equalTo(20*HEIGHT_SCALE);
-                }];
-                [self.headView.combtn.leftimg mas_makeConstraints:^(MASConstraintMaker *make) {
-                    make.top.equalTo(self.headView.title).with.offset(45*HEIGHT_SCALE);
-                    make.right.equalTo(self.headView.combtn.textlab.mas_left).with.offset(-4*WIDTH_SCALE);
-                    make.height.mas_equalTo(16*WIDTH_SCALE);
-                    make.width.mas_equalTo(16*WIDTH_SCALE);
-                }];
-                
-            }];
-            [self.headView.dianzanbtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.right.equalTo(self.headView.combtn).with.offset(-50*WIDTH_SCALE);
-                make.top.equalTo(self.headView.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
-                make.width.mas_equalTo(64*WIDTH_SCALE);
-                [self.headView.dianzanbtn.zanlab mas_makeConstraints:^(MASConstraintMaker *make) {
-                    make.top.equalTo(self.headView.title).with.offset(45*HEIGHT_SCALE);
-                    make.right.equalTo(self.headView.combtn.leftimg).with.offset(-40*WIDTH_SCALE);
-                    make.height.mas_equalTo(20*HEIGHT_SCALE);
-                }];
-                [self.headView.dianzanbtn.zanimg mas_makeConstraints:^(MASConstraintMaker *make) {
-                    make.top.equalTo(self.headView.title).with.offset(45*HEIGHT_SCALE);
-                    make.right.equalTo(self.headView.dianzanbtn.zanlab.mas_left).with.offset(-4*WIDTH_SCALE);
-                    make.height.mas_equalTo(16*WIDTH_SCALE);
-                    make.width.mas_equalTo(16*WIDTH_SCALE);
-                }];
-            }];
-            
-            _headView.frame = CGRectMake(0, 0, DEVICE_WIDTH, textSize.height+340*HEIGHT_SCALE);
-            headheight = _headView.frame.size.height;
-            
-        }
-        else if (content.length==0&&urlstr.length!=0)
-        {
-            [self.headView.headimg sd_setImageWithURL:[NSURL URLWithString:urlstr] placeholderImage:[UIImage imageNamed:@"默认图"]];
-            [self.headView.headimg mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(self.headView.namelab.mas_bottom).with.offset(14*HEIGHT_SCALE);
-                make.left.equalTo(self.headView).with.offset(14*WIDTH_SCALE);
-                make.right.equalTo(self.headView).with.offset(-14*WIDTH_SCALE);
-                make.height.mas_equalTo(192*HEIGHT_SCALE);
-            }];
-            [self.headView.title mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.equalTo(self.headView).with.offset(14*WIDTH_SCALE);
-                make.right.equalTo(self.headView).with.offset(-14*WIDTH_SCALE);
-                make.top.equalTo(self.headView.headimg.mas_bottom).with.offset(2*HEIGHT_SCALE);
-                make.height.mas_equalTo(20*HEIGHT_SCALE);
-            }];
-            [self.headView.timelab mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.equalTo(self.headView).with.offset(14*WIDTH_SCALE);
-                make.top.equalTo(self.headView.title).with.offset(45*HEIGHT_SCALE);
-            }];
-            [self.headView.sharebtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.right.equalTo(self.headView).with.offset(-14*WIDTH_SCALE);
-                make.top.equalTo(self.headView.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
-            }];
-            [self.headView.combtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.right.equalTo(self.headView).with.offset(-70*WIDTH_SCALE);
-                make.top.equalTo(self.headView.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
-                [self.headView.combtn.textlab mas_makeConstraints:^(MASConstraintMaker *make) {
-                    make.top.equalTo(self.headView.title).with.offset(45*HEIGHT_SCALE);
-                    make.right.equalTo(self.headView.sharebtn).with.offset(-40*WIDTH_SCALE);
-                    make.height.mas_equalTo(20*HEIGHT_SCALE);
-                }];
-                [self.headView.combtn.leftimg mas_makeConstraints:^(MASConstraintMaker *make) {
-                    make.top.equalTo(self.headView.title).with.offset(45*HEIGHT_SCALE);
-                    make.right.equalTo(self.headView.combtn.textlab.mas_left).with.offset(-4*WIDTH_SCALE);
-                    make.height.mas_equalTo(16*WIDTH_SCALE);
-                    make.width.mas_equalTo(16*WIDTH_SCALE);
-                }];
-                
-            }];
-            [self.headView.dianzanbtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.right.equalTo(self.headView.combtn).with.offset(-50*WIDTH_SCALE);
-                make.top.equalTo(self.headView.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
-                make.width.mas_equalTo(64*WIDTH_SCALE);
-                [self.headView.dianzanbtn.zanlab mas_makeConstraints:^(MASConstraintMaker *make) {
-                    make.top.equalTo(self.headView.title).with.offset(45*HEIGHT_SCALE);
-                    make.right.equalTo(self.headView.combtn.leftimg).with.offset(-40*WIDTH_SCALE);
-                    make.height.mas_equalTo(20*HEIGHT_SCALE);
-                }];
-                [self.headView.dianzanbtn.zanimg mas_makeConstraints:^(MASConstraintMaker *make) {
-                    make.top.equalTo(self.headView.title).with.offset(45*HEIGHT_SCALE);
-                    make.right.equalTo(self.headView.dianzanbtn.zanlab.mas_left).with.offset(-4*WIDTH_SCALE);
-                    make.height.mas_equalTo(16*WIDTH_SCALE);
-                    make.width.mas_equalTo(16*WIDTH_SCALE);
-                }];
-            }];
-            
-            _headView.frame = CGRectMake(0, 0, DEVICE_WIDTH, 380*HEIGHT_SCALE);
-            headheight = _headView.frame.size.height;
+}
+#pragma mark 用于将cell分割线补全
 
-        }else
-        {
-            
-            CGSize textSize = [self.headView.contentlab setText:self.headView.contentlab.text lines:QSTextDefaultLines andLineSpacing:QSTextLineSpacing constrainedToSize:CGSizeMake(DEVICE_WIDTH - 28*WIDTH_SCALE,MAXFLOAT)];
-            self.headView.contentlab.frame = CGRectMake(14*WIDTH_SCALE,  24*HEIGHT_SCALE+14*HEIGHT_SCALE, textSize.width, textSize.height);
-            
-            [self.headView.title mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.equalTo(self.headView).with.offset(14*WIDTH_SCALE);
-                make.right.equalTo(self.headView).with.offset(-14*WIDTH_SCALE);
-                make.top.equalTo(self.headView.contentlab.mas_bottom).with.offset(2*HEIGHT_SCALE);
-                make.height.mas_equalTo(20*HEIGHT_SCALE);
-            }];
-            [self.headView.timelab mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.equalTo(self.headView).with.offset(14*WIDTH_SCALE);
-                make.top.equalTo(self.headView.title).with.offset(45*HEIGHT_SCALE);
-            }];
-            
-            [self.headView.thumlabel mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.equalTo(self.headView).with.offset(14*WIDTH_SCALE);
-                make.right.equalTo(self.headView).with.offset(-14*WIDTH_SCALE);
-                make.top.equalTo(self.headView.timelab).with.offset(33*HEIGHT_SCALE);
-                
-            }];
-            [self.headView.sharebtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.right.equalTo(self.headView).with.offset(-14*WIDTH_SCALE);
-                make.top.equalTo(self.headView.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
-            }];
-            [self.headView.combtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.right.equalTo(self.headView).with.offset(-70*WIDTH_SCALE);
-                make.top.equalTo(self.headView.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
-                [self.headView.combtn.textlab mas_makeConstraints:^(MASConstraintMaker *make) {
-                    make.top.equalTo(self.headView.title).with.offset(45*HEIGHT_SCALE);
-                    make.right.equalTo(self.headView.sharebtn).with.offset(-40*WIDTH_SCALE);
-                    make.height.mas_equalTo(20*HEIGHT_SCALE);
-                }];
-                [self.headView.combtn.leftimg mas_makeConstraints:^(MASConstraintMaker *make) {
-                    make.top.equalTo(self.headView.title).with.offset(45*HEIGHT_SCALE);
-                    make.right.equalTo(self.headView.combtn.textlab.mas_left).with.offset(-4*WIDTH_SCALE);
-                    make.height.mas_equalTo(16*WIDTH_SCALE);
-                    make.width.mas_equalTo(16*WIDTH_SCALE);
-                }];
-                
-            }];
-            [self.headView.dianzanbtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.right.equalTo(self.headView.combtn).with.offset(-50*WIDTH_SCALE);
-                make.top.equalTo(self.headView.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
-                make.width.mas_equalTo(64*WIDTH_SCALE);
-                [self.headView.dianzanbtn.zanlab mas_makeConstraints:^(MASConstraintMaker *make) {
-                    make.top.equalTo(self.headView.title).with.offset(45*HEIGHT_SCALE);
-                    make.right.equalTo(self.headView.combtn.leftimg).with.offset(-40*WIDTH_SCALE);
-                    make.height.mas_equalTo(20*HEIGHT_SCALE);
-                }];
-                [self.headView.dianzanbtn.zanimg mas_makeConstraints:^(MASConstraintMaker *make) {
-                    make.top.equalTo(self.headView.title).with.offset(45*HEIGHT_SCALE);
-                    make.right.equalTo(self.headView.dianzanbtn.zanlab.mas_left).with.offset(-4*WIDTH_SCALE);
-                    make.height.mas_equalTo(16*WIDTH_SCALE);
-                    make.width.mas_equalTo(16*WIDTH_SCALE);
-                }];
-            }];
-            
-            _headView.frame = CGRectMake(0, 0, DEVICE_WIDTH, textSize.height+160*HEIGHT_SCALE);
-            headheight = _headView.frame.size.height;
+-(void)viewDidLayoutSubviews {
+    if ([self.tableView respondsToSelector:@selector(setSeparatorInset:)]) {
+        [self.tableView setSeparatorInset:self.insets];
     }
-        
-    }else
-    {
-        [self.headView.thumlabel setHidden:NO];
-        if (content.length!=0&&urlstr.length!=0) {
-            CGSize textSize = [self.headView.contentlab setText:self.headView.contentlab.text lines:QSTextDefaultLines andLineSpacing:QSTextLineSpacing constrainedToSize:CGSizeMake(DEVICE_WIDTH - 28*WIDTH_SCALE,MAXFLOAT)];
-            CGSize textsize2= [self.headView.thumlabel.text boundingRectWithSize:CGSizeMake(DEVICE_WIDTH-28*WIDTH_SCALE, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil].size;
-            
-            self.headView.contentlab.frame = CGRectMake(14*WIDTH_SCALE,  24*HEIGHT_SCALE+14*HEIGHT_SCALE, textSize.width, textSize.height);
-            
-            [self.headView.headimg sd_setImageWithURL:[NSURL URLWithString:urlstr] placeholderImage:[UIImage imageNamed:@"默认图"]];
-            
-            [self.headView.headimg mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.equalTo(self.headView).with.offset(14*WIDTH_SCALE);
-                make.right.equalTo(self.headView).with.offset(-14*WIDTH_SCALE);
-                make.top.equalTo(self.headView.contentlab.mas_bottom).with.offset(12*HEIGHT_SCALE);
-                make.height.mas_equalTo(192*WIDTH_SCALE);
-            }];
-            
-            [self.headView.title mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.equalTo(self.headView).with.offset(14*WIDTH_SCALE);
-                make.right.equalTo(self.headView).with.offset(-14*WIDTH_SCALE);
-                make.top.equalTo(self.headView.headimg.mas_bottom).with.offset(2*HEIGHT_SCALE);
-                make.height.mas_equalTo(20*HEIGHT_SCALE);
-            }];
-            
-            [self.headView.timelab mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.equalTo(self.headView).with.offset(14*WIDTH_SCALE);
-                make.top.equalTo(self.headView.title).with.offset(45*HEIGHT_SCALE);
-                
-            }];
-            
-            [self.headView.thumlabel mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.equalTo(self.headView).with.offset(14*WIDTH_SCALE);
-                make.right.equalTo(self.headView).with.offset(-14*WIDTH_SCALE);
-                make.top.equalTo(self.headView.timelab).with.offset(33*HEIGHT_SCALE);
-            }];
-            
-            [self.headView.sharebtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.right.equalTo(self.headView).with.offset(-14*WIDTH_SCALE);
-                make.top.equalTo(self.headView.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
-            }];
-            
-            [self.headView.combtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.right.equalTo(self.headView).with.offset(-70*WIDTH_SCALE);
-                make.top.equalTo(self.headView.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
-                [self.headView.combtn.textlab mas_makeConstraints:^(MASConstraintMaker *make) {
-                    make.top.equalTo(self.headView.title).with.offset(45*HEIGHT_SCALE);
-                    make.right.equalTo(self.headView.sharebtn).with.offset(-40*WIDTH_SCALE);
-                    make.height.mas_equalTo(20*HEIGHT_SCALE);
-                }];
-                [self.headView.combtn.leftimg mas_makeConstraints:^(MASConstraintMaker *make) {
-                    make.top.equalTo(self.headView.title).with.offset(45*HEIGHT_SCALE);
-                    make.right.equalTo(self.headView.combtn.textlab.mas_left).with.offset(-4*WIDTH_SCALE);
-                    make.height.mas_equalTo(16*WIDTH_SCALE);
-                    make.width.mas_equalTo(16*WIDTH_SCALE);
-                }];
-                
-            }];
-            [self.headView.dianzanbtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.right.equalTo(self.headView.combtn).with.offset(-50*WIDTH_SCALE);
-                make.top.equalTo(self.headView.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
-                make.width.mas_equalTo(64*WIDTH_SCALE);
-                [self.headView.dianzanbtn.zanlab mas_makeConstraints:^(MASConstraintMaker *make) {
-                    make.top.equalTo(self.headView.title).with.offset(45*HEIGHT_SCALE);
-                    make.right.equalTo(self.headView.combtn.leftimg).with.offset(-40*WIDTH_SCALE);
-                    make.height.mas_equalTo(20*HEIGHT_SCALE);
-                }];
-                [self.headView.dianzanbtn.zanimg mas_makeConstraints:^(MASConstraintMaker *make) {
-                    make.top.equalTo(self.headView.title).with.offset(45*HEIGHT_SCALE);
-                    make.right.equalTo(self.headView.dianzanbtn.zanlab.mas_left).with.offset(-4*WIDTH_SCALE);
-                    make.height.mas_equalTo(16*WIDTH_SCALE);
-                    make.width.mas_equalTo(16*WIDTH_SCALE);
-                }];
-            }];
-            
-            _headView.frame = CGRectMake(0, 0, DEVICE_WIDTH, textSize.height+380*HEIGHT_SCALE+textsize2.height);
-            headheight = _headView.frame.size.height;
-
-        }
-        else if (content.length==0&&urlstr.length!=0)
-        {
-            CGSize textsize2= [self.headView.thumlabel.text boundingRectWithSize:CGSizeMake(DEVICE_WIDTH-28*WIDTH_SCALE, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil].size;
-            
-            [self.headView.headimg sd_setImageWithURL:[NSURL URLWithString:urlstr] placeholderImage:[UIImage imageNamed:@"默认图"]];
-            
-            [self.headView.headimg mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.equalTo(self.headView).with.offset(14*WIDTH_SCALE);
-                make.right.equalTo(self.headView).with.offset(-14*WIDTH_SCALE);
-                make.top.equalTo(self.headView.namelab.mas_bottom).with.offset(12*HEIGHT_SCALE);
-                make.height.mas_equalTo(192*WIDTH_SCALE);
-            }];
-            
-            [self.headView.title mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.equalTo(self.headView).with.offset(14*WIDTH_SCALE);
-                make.right.equalTo(self.headView).with.offset(-14*WIDTH_SCALE);
-                make.top.equalTo(self.headView.headimg.mas_bottom).with.offset(2*HEIGHT_SCALE);
-                make.height.mas_equalTo(20*HEIGHT_SCALE);
-            }];
-            
-            [self.headView.timelab mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.equalTo(self.headView).with.offset(14*WIDTH_SCALE);
-                make.top.equalTo(self.headView.title).with.offset(45*HEIGHT_SCALE);
-                
-            }];
-            
-            [self.headView.thumlabel mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.equalTo(self.headView).with.offset(14*WIDTH_SCALE);
-                make.right.equalTo(self.headView).with.offset(-14*WIDTH_SCALE);
-                make.top.equalTo(self.headView.timelab).with.offset(33*HEIGHT_SCALE);
-                
-            }];
-            [self.headView.sharebtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.right.equalTo(self.headView).with.offset(-14*WIDTH_SCALE);
-                make.top.equalTo(self.headView.title).with.offset(42*HEIGHT_SCALE);
-            }];
-            [self.headView.combtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.right.equalTo(self.headView).with.offset(-70*WIDTH_SCALE);
-                make.top.equalTo(self.headView.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
-                [self.headView.combtn.textlab mas_makeConstraints:^(MASConstraintMaker *make) {
-                    make.top.equalTo(self.headView.title).with.offset(45*HEIGHT_SCALE);
-                    make.right.equalTo(self.headView.sharebtn).with.offset(-40*WIDTH_SCALE);
-                    make.height.mas_equalTo(20*HEIGHT_SCALE);
-                }];
-                [self.headView.combtn.leftimg mas_makeConstraints:^(MASConstraintMaker *make) {
-                    make.top.equalTo(self.headView.title).with.offset(45*HEIGHT_SCALE);
-                    make.right.equalTo(self.headView.combtn.textlab.mas_left).with.offset(-4*WIDTH_SCALE);
-                    make.height.mas_equalTo(16*WIDTH_SCALE);
-                    make.width.mas_equalTo(16*WIDTH_SCALE);
-                }];
-                
-            }];
-            [self.headView.dianzanbtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.right.equalTo(self.headView.combtn).with.offset(-50*WIDTH_SCALE);
-                make.top.equalTo(self.headView.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
-                make.width.mas_equalTo(64*WIDTH_SCALE);
-                [self.headView.dianzanbtn.zanlab mas_makeConstraints:^(MASConstraintMaker *make) {
-                    make.top.equalTo(self.headView.title).with.offset(45*HEIGHT_SCALE);
-                    make.right.equalTo(self.headView.combtn.leftimg).with.offset(-40*WIDTH_SCALE);
-                    make.height.mas_equalTo(20*HEIGHT_SCALE);
-                    
-                }];
-                [self.headView.dianzanbtn.zanimg mas_makeConstraints:^(MASConstraintMaker *make) {
-                    make.top.equalTo(self.headView.title).with.offset(45*HEIGHT_SCALE);
-                    make.right.equalTo(self.headView.dianzanbtn.zanlab.mas_left).with.offset(-4*WIDTH_SCALE);
-                    make.height.mas_equalTo(16*WIDTH_SCALE);
-                    make.width.mas_equalTo(16*WIDTH_SCALE);
-                }];
-            }];
-            _headView.frame = CGRectMake(0, 0, DEVICE_WIDTH, 400*HEIGHT_SCALE+textsize2.height);
-            headheight = _headView.frame.size.height;
-            
-        }else
-        {
-            CGSize textSize = [self.headView.contentlab setText:self.headView.contentlab.text lines:QSTextDefaultLines andLineSpacing:QSTextLineSpacing constrainedToSize:CGSizeMake(DEVICE_WIDTH - 28*WIDTH_SCALE,MAXFLOAT)];
-            CGSize textsize2= [self.headView.thumlabel.text boundingRectWithSize:CGSizeMake(DEVICE_WIDTH-28*WIDTH_SCALE, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil].size;
-            self.headView.contentlab.frame = CGRectMake(14*WIDTH_SCALE,  24*HEIGHT_SCALE+14*HEIGHT_SCALE, textSize.width, textSize.height);
-            [self.headView.title mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.equalTo(self.headView).with.offset(14*WIDTH_SCALE);
-                make.right.equalTo(self.headView).with.offset(-14*WIDTH_SCALE);
-                make.height.mas_equalTo(20*HEIGHT_SCALE);
-                make.top.equalTo(self.headView.contentlab.mas_bottom).with.offset(2*HEIGHT_SCALE);
-            }];
-            [self.headView.timelab mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.equalTo(self.headView).with.offset(14*WIDTH_SCALE);
-                make.top.equalTo(self.headView.title).with.offset(45*HEIGHT_SCALE);
-            }];
-            [self.headView.thumlabel mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.equalTo(self.headView).with.offset(14*WIDTH_SCALE);
-                make.right.equalTo(self.headView).with.offset(-14*WIDTH_SCALE);
-                make.top.equalTo(self.headView.timelab).with.offset(33*HEIGHT_SCALE);
-            }];
-            [self.headView.sharebtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.right.equalTo(self.headView).with.offset(-14*WIDTH_SCALE);
-                make.top.equalTo(self.headView.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
-            }];
-            [self.headView.combtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.right.equalTo(self.headView).with.offset(-70*WIDTH_SCALE);
-                make.top.equalTo(self.headView.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
-                [self.headView.combtn.textlab mas_makeConstraints:^(MASConstraintMaker *make) {
-                    make.top.equalTo(self.headView.title).with.offset(45*HEIGHT_SCALE);
-                    make.right.equalTo(self.headView.sharebtn).with.offset(-40*WIDTH_SCALE);
-                    make.height.mas_equalTo(20*HEIGHT_SCALE);
-                }];
-                [self.headView.combtn.leftimg mas_makeConstraints:^(MASConstraintMaker *make) {
-                    make.top.equalTo(self.headView.title).with.offset(45*HEIGHT_SCALE);
-                    make.right.equalTo(self.headView.combtn.textlab.mas_left).with.offset(-4*WIDTH_SCALE);
-                    make.height.mas_equalTo(16*WIDTH_SCALE);
-                    make.width.mas_equalTo(16*WIDTH_SCALE);
-                }];
-                
-            }];
-            [self.headView.dianzanbtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.right.equalTo(self.headView.combtn).with.offset(-50*WIDTH_SCALE);
-                make.top.equalTo(self.headView.title).with.offset(22*HEIGHT_SCALE+20*HEIGHT_SCALE);
-                make.width.mas_equalTo(64*WIDTH_SCALE);
-                [self.headView.dianzanbtn.zanlab mas_makeConstraints:^(MASConstraintMaker *make) {
-                    make.top.equalTo(self.headView.title).with.offset(45*HEIGHT_SCALE);
-                    make.right.equalTo(self.headView.combtn.leftimg).with.offset(-40*WIDTH_SCALE);
-                    make.height.mas_equalTo(20*HEIGHT_SCALE);
-                }];
-                [self.headView.dianzanbtn.zanimg mas_makeConstraints:^(MASConstraintMaker *make) {
-                    make.top.equalTo(self.headView.title).with.offset(45*HEIGHT_SCALE);
-                    make.right.equalTo(self.headView.dianzanbtn.zanlab.mas_left).with.offset(-4*WIDTH_SCALE);
-                    make.height.mas_equalTo(16*WIDTH_SCALE);
-                    make.width.mas_equalTo(16*WIDTH_SCALE);
-                }];
-            }];
-            _headView.frame = CGRectMake(0, 0, DEVICE_WIDTH, textSize.height+180*HEIGHT_SCALE+textsize2.height);
-            headheight = _headView.frame.size.height;
-            
-        }
+    if ([self.tableView respondsToSelector:@selector(setLayoutMargins:)])  {
+        [self.tableView setLayoutMargins:self.insets];
     }
 }
 
+-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath*)indexPath{
+    if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
+        [cell setLayoutMargins:self.insets];
+    }
+    if ([cell respondsToSelector:@selector(setSeparatorInset:)]){
+        [cell setSeparatorInset:self.insets];
+    }
+}
 
 @end

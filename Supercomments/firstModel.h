@@ -14,4 +14,6 @@
 @property (nonatomic,strong) NSString *imgurlstr;
 @property (nonatomic,strong) NSString *timestr;
 @property (nonatomic,strong) NSString *namestr;
+@property (nonatomic,strong) NSString *idstr;
+@property (nonatomic,strong) NSString *toidstr;
 @end

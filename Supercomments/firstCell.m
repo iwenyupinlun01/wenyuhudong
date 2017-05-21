@@ -173,7 +173,6 @@ static NSString *secondidentfid = @"secondidentfid";
     NSString *str2 = @"回复";
     NSString *str3 = [dic objectForKey:@"s_to_nickname"];
     NSString *str4 = [NSString stringWithFormat:@"%@%@",@":",[dic objectForKey:@"content"]];
-    str4 = @"Runtime是想要做好iOS开发，或者说是真正的深刻的掌握OC这门语言所必需理解的东西";
     
     NSString *str = [NSString stringWithFormat:@"%@%@%@%@",str1,str2,str3,str4];
     
@@ -204,7 +203,7 @@ static NSString *secondidentfid = @"secondidentfid";
     NSString *str2 = @"回复";
     NSString *str3 = [dic objectForKey:@"s_to_nickname"];
     NSString *str4 = [NSString stringWithFormat:@"%@%@",@":",[dic objectForKey:@"content"]];
-    str4 = @"Runtime是想要做好iOS开发，或者说是真正的深刻的掌握OC这门语言所必需理解的东西";
+
     NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@%@%@",str1,str2,str3,str4]];
     [str addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"576b95"] range:NSMakeRange(0,str1.length)];
     [str addAttribute:NSForegroundColorAttributeName value:[UIColor wjColorFloat:@"333333"] range:NSMakeRange(str1.length,str2.length)];
