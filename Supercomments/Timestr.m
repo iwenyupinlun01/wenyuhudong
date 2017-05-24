@@ -12,6 +12,24 @@
 //时间计算
 +(NSString *)datetime:(NSString *)datestr
 {
+    NSDate *newsDate = [NSDate dateWithTimeIntervalSince1970:[datestr intValue]];
+    NSString *backstr = @"";
+    NSString *dateContent;
+    NSTimeInterval secondsPerDay = 24 * 60 * 60;
+    NSDate *today=[[NSDate alloc] init];
+    NSDate *yearsterDay =  [[NSDate alloc] initWithTimeIntervalSinceNow:-secondsPerDay];
+    NSDate *qianToday =  [[NSDate alloc] initWithTimeIntervalSinceNow:-2*secondsPerDay];
+    
+    //假设这是你要比较的date：NSDate *yourDate = ……
+    //日历
+    NSCalendar* calendar = [NSCalendar currentCalendar];
+    unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit;
+    
+    NSDateComponents* comp1 = [calendar components:unitFlags fromDate:newsDate];
+    NSDateComponents* comp2 = [calendar components:unitFlags fromDate:yearsterDay];
+    NSDateComponents* comp3 = [calendar components:unitFlags fromDate:qianToday];
+    NSDateComponents* comp4 = [calendar components:unitFlags fromDate:today];
+    
     NSString*  format = @"YYYY-MM-dd HH:mm:ss";
     NSInteger timeinter = [datestr intValue];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -32,38 +50,25 @@
     //计算时间间隔（单位是秒）
     NSTimeInterval time = [date timeIntervalSinceDate:date1];
     //计算天数、时、分、秒
-    int days = ((int)time)/(3600*24);
+    
     int hours = ((int)time)%(3600*24)/3600;
     int minutes = ((int)time)%(3600*24)%3600/60;
-    int seconds = ((int)time)%(3600*24)%3600%60;
-    NSString *fanhuistr = [[NSString alloc] init];
-    if (days>=365) {
-        fanhuistr = modeltimestr;
-    }
-    if(days<365)
-    {
-        //M月M日
-        //实例化一个NSDateFormatter对象
+    
+    
+    
+    
+    if (comp1.year<comp2.year) {
+        NSLog(@"去年");
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         //设定时间格式,这里可以设置成自己需要的格式
-        [dateFormatter setDateFormat:@"MM-dd"];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
         //用[NSDate date]可以获取系统当前时间
         NSString *currentDateStr = [dateFormatter stringFromDate:date1];
-        fanhuistr = currentDateStr;
+        
+        backstr = currentDateStr;
     }
-    if (days<3&&days>=2)
-    {
-        //前天
-        //实例化一个NSDateFormatter对象
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        //设定时间格式,这里可以设置成自己需要的格式
-        [dateFormatter setDateFormat:@"HH:mm"];
-        //用[NSDate date]可以获取系统当前时间
-        NSString *currentDateStr = [dateFormatter stringFromDate:date1];
-        fanhuistr = [NSString stringWithFormat:@"%@%@",@"前天",currentDateStr];
-    }
-    if (days<2&&days>=1)
-    {
+    else if ( comp1.year == comp2.year && comp1.month == comp2.month && comp1.day == comp2.day) {
+        dateContent = @"昨天";
         //昨天
         //实例化一个NSDateFormatter对象
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -71,21 +76,53 @@
         [dateFormatter setDateFormat:@"HH:mm"];
         //用[NSDate date]可以获取系统当前时间
         NSString *currentDateStr = [dateFormatter stringFromDate:date1];
-        fanhuistr = [NSString stringWithFormat:@"%@%@",@"昨天",currentDateStr];
+        backstr = [NSString stringWithFormat:@"%@%@",@"昨天",currentDateStr];
     }
-    if (days<1&&hours>=1)
+    else if (comp1.year == comp3.year && comp1.month == comp3.month && comp1.day == comp3.day)
     {
-        fanhuistr = [NSString stringWithFormat:@"%d%@%@",hours,@"小时",@"前"];
+        dateContent = @"前天";
+        //前天
+        //实例化一个NSDateFormatter对象
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        //设定时间格式,这里可以设置成自己需要的格式
+        [dateFormatter setDateFormat:@"HH:mm"];
+        //用[NSDate date]可以获取系统当前时间
+        NSString *currentDateStr = [dateFormatter stringFromDate:date1];
+        backstr = [NSString stringWithFormat:@"%@%@",@"前天",currentDateStr];
+        
     }
-    if(days<1&&hours<1&&minutes>=1)
+    else if (comp1.year == comp4.year && comp1.month == comp4.month && comp1.day == comp4.day)
     {
-        fanhuistr = [NSString stringWithFormat:@"%d%@%@",minutes,@"分钟",@"前"];
+        if (hours>1) {
+            NSString *str = [NSString stringWithFormat:@"%d%@%@",hours,@"小时",@"前"];
+            NSLog(@"ste------%@",str);
+            backstr = str;
+        }else if(hours<1&&minutes>=1)
+        {
+            NSString *str = [NSString stringWithFormat:@"%d%@%@",minutes,@"分钟",@"前"];
+            NSLog(@"str = %@",str);
+            backstr = str;
+        }else
+        {
+            NSLog(@"刚刚");
+            backstr = @"刚刚";
+        }
     }
-    if(days<1&&hours<1&&minutes<1)
+    else
     {
-        fanhuistr = @"刚刚";
+        //返回0说明该日期不是今天、昨天、前天
+        
+        dateContent = @"0";
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        //设定时间格式,这里可以设置成自己需要的格式
+        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+        //用[NSDate date]可以获取系统当前时间
+        NSString *currentDateStr = [dateFormatter stringFromDate:date1];
+        
+        backstr = currentDateStr;
     }
-    return fanhuistr;
+    return backstr;
+    
     
 }
 
@@ -112,17 +149,11 @@
     
     NSDate *datenow = [NSDate date];//现在时间
     
-    
-    
     NSLog(@"设备当前的时间:%@",[formatter stringFromDate:datenow]);
     
     //时间转时间戳的方法:
     
-    
-    
     NSInteger timeSp = [[NSNumber numberWithDouble:[datenow timeIntervalSince1970]] integerValue];
-    
-    
     
     NSLog(@"设备当前的时间戳:%ld",(long)timeSp); //时间戳的值
     

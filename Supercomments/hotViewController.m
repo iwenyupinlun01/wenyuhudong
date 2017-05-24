@@ -18,6 +18,9 @@
 #import "UIImageView+RotateImgV.h"
 #import "emptyerrorView.h"
 #import "xiangqingViewController.h"
+//友盟统计
+#import "UMMobClick/MobClick.h"
+
 @interface hotViewController ()<UITableViewDataSource,UITableViewDelegate,mycellVdelegate,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate,myviewdelegate>
 /** 用于加载下一页的参数(页码) */
 {
@@ -516,6 +519,7 @@
     SureWebViewController *surevc = [[SureWebViewController alloc]init];
     surevc.url = urlstr;
     surevc.canDownRefresh = YES;
+    [MobClick event:@"urlwebgoto"];
     [self.navigationController pushViewController:surevc animated:YES];
 }
 

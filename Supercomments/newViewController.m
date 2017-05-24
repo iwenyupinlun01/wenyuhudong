@@ -20,6 +20,8 @@
 #import "XSNoDataView.h"
 #import "emptyerrorView.h"
 #import "xiangqingViewController.h"
+//友盟统计
+#import "UMMobClick/MobClick.h"
 
 @interface newViewController ()<UITableViewDataSource,UITableViewDelegate,mycellVdelegate,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate,myviewdelegate>
 /** 用于加载下一页的参数(页码) */
@@ -373,24 +375,24 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    self.nmodel = [[newModel alloc] init];
-//    self.nmodel = self.dataarr[indexPath.row];
-//    NSString *str = self.nmodel.newidstr;
-//    NSLog(@"str======%@",str);
-//    detailsViewController *detailsvc = [[detailsViewController alloc] init];
-//    detailsvc.detalisidstr = str;
-//    detailsvc.dianzanindex = [NSString stringWithFormat:@"%ld",(long)indexPath.row];
-//    detailsvc.fromtypestr = @"newvc";
-//    [self.navigationController pushViewController:detailsvc animated:YES];
-    
-    xiangqingViewController *xiangqingVC = [[xiangqingViewController alloc] init];
     self.nmodel = [[newModel alloc] init];
     self.nmodel = self.dataarr[indexPath.row];
     NSString *str = self.nmodel.newidstr;
-    xiangqingVC.detalisidstr = str;
-    xiangqingVC.dianzanindex = [NSString stringWithFormat:@"%ld",(long)indexPath.row];
-    xiangqingVC.fromtypestr = @"newvc";
-    [self.navigationController pushViewController:xiangqingVC animated:YES];
+    NSLog(@"str======%@",str);
+    xiangqingViewController *detailsvc = [[xiangqingViewController alloc] init];
+    detailsvc.detalisidstr = str;
+    detailsvc.dianzanindex = [NSString stringWithFormat:@"%ld",(long)indexPath.row];
+    detailsvc.fromtypestr = @"newvc";
+    [self.navigationController pushViewController:detailsvc animated:YES];
+    
+//    xiangqingViewController *xiangqingVC = [[xiangqingViewController alloc] init];
+//    self.nmodel = [[newModel alloc] init];
+//    self.nmodel = self.dataarr[indexPath.row];
+//    NSString *str = self.nmodel.newidstr;
+//    xiangqingVC.detalisidstr = str;
+//    xiangqingVC.dianzanindex = [NSString stringWithFormat:@"%ld",(long)indexPath.row];
+//    xiangqingVC.fromtypestr = @"newvc";
+//    [self.navigationController pushViewController:xiangqingVC animated:YES];
     
 }
 
@@ -543,6 +545,7 @@
     SureWebViewController *surevc = [[SureWebViewController alloc]init];
     surevc.url = urlstr;
     surevc.canDownRefresh = YES;
+    [MobClick event:@"urlwebgoto"];
     [self.navigationController pushViewController:surevc animated:YES];
 }
 

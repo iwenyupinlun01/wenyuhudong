@@ -22,6 +22,9 @@
 #import "keyboardView.h"
 #import "headsectionCell.h"
 #import "headModel.h"
+//友盟统计
+#import "UMMobClick/MobClick.h"
+
 @interface xiangqingViewController () <UITableViewDelegate, UITableViewDataSource,mycellVdelegate,UITextViewDelegate,myheadViewdelegate>
 {
     CGFloat headheight;
@@ -663,7 +666,7 @@ static NSString *headsectioncell = @"headsectioncell";
         _headView = [tableView dequeueReusableCellWithIdentifier:headsectioncell];
         _headView = [[headsectionCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:headsectioncell];
         _headView.delegate = self;
-   
+
         _headView.selectionStyle = UITableViewCellSelectionStyleNone;
         [_headView setdata:self.headdic userarr:self.usernamearr];
         return _headView;
@@ -673,7 +676,6 @@ static NSString *headsectioncell = @"headsectioncell";
         cell = [[firstCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:xiangqingcell];
         [cell setcelldata:self.datasource[indexPath.row]];
         cell.delegate = self;
-        //[cell setSeparatorInset:UIEdgeInsetsZero];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
     }
@@ -967,6 +969,7 @@ static NSString *headsectioncell = @"headsectioncell";
          ];}
 
 }
+
 -(void)myTabheadClick4:(UITableViewCell *)cell
 {
     NSLog(@"title");
@@ -975,8 +978,10 @@ static NSString *headsectioncell = @"headsectioncell";
     SureWebViewController *surevc = [[SureWebViewController alloc]init];
     surevc.url = urlstr;
     surevc.canDownRefresh = YES;
+    [MobClick event:@"urlwebgoto"];
     [self.navigationController pushViewController:surevc animated:YES];
 }
+
 #pragma mark - 实现方法
 
 -(void)backAction
@@ -1001,6 +1006,7 @@ static NSString *headsectioncell = @"headsectioncell";
         return NO;
     }
 }
+
 #pragma mark 用于将cell分割线补全
 
 -(void)viewDidLayoutSubviews {
