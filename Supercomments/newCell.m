@@ -230,7 +230,7 @@
     {
         [self.infoimg sd_setImageWithURL:[NSURL URLWithString:model.small_imagesstrl] placeholderImage:[UIImage imageNamed:@"默认图"]];
         [self.infoimg mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.namelab.mas_bottom).with.offset(12*HEIGHT_SCALE);
+            make.top.equalTo(self.namelab.mas_bottom).with.offset(9*HEIGHT_SCALE);
         }];
         [self.tiview mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.infoimg.mas_bottom).with.offset(2*HEIGHT_SCALE);
@@ -374,8 +374,6 @@
     
         
 }
-
-
 
 
 //按钮事件

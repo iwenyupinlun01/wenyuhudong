@@ -114,9 +114,7 @@
         
     }
 
-    
     self.headimgstr = [dic objectForKey:@"images"];
-    
     self.namelab.text = [dic objectForKey:@"name"];
     NSString *typestr = [dic objectForKey:@"type"];
     NSString *platformstr = [dic objectForKey:@"platform"];
@@ -160,17 +158,17 @@
         }
     }
     
-    
-    
-    
     NSString *reply_num = [dic objectForKey:@"reply_num"];
+    if ([reply_num isEqualToString:@"0"]) {
+        [self.lineview setHidden:YES];
+        [self.numberlab setHidden:YES];
+    }
+    
     if (reply_num.length!=0) {
         self.numberlab.text = [NSString stringWithFormat:@"%@%@",[dic objectForKey:@"reply_num"],@"人评论"];
     }
     
     [self.headimg sd_setImageWithURL:[NSURL URLWithString:small_imageurlstr] placeholderImage:[UIImage imageNamed:@"默认图"]];
-    
-    
     
     NSString *str1 = @" 标题: ";
     NSString *str2 = [dic objectForKey:@"title"];
@@ -186,8 +184,8 @@
     
     
     if (userarr.count==0) {
-        [self.thumlabel setHidden:YES];
         
+        [self.thumlabel setHidden:YES];
         if (contentstr.length!=0&&small_imageurlstr.length!=0) {
 
             
@@ -271,8 +269,6 @@
             }];
             
             headheight = textSize.height+340*HEIGHT_SCALE;
-            
-            
            
         }
         else if (contentstr.length==0&&small_imageurlstr.length!=0)
@@ -416,6 +412,7 @@
         
     }else
     {
+
         [self.thumlabel setHidden:NO];
         if (contentstr.length!=0&&small_imageurlstr.length!=0) {
             

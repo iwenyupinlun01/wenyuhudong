@@ -100,7 +100,9 @@ static NSString *headsectioncell = @"headsectioncell";
     [self addFooter];
     [self.view addSubview:self.tableView];
     [self.view addSubview:self.keyView];
+   
 
+    
     [self bgviewadd];
 }
 
@@ -342,7 +344,7 @@ static NSString *headsectioncell = @"headsectioncell";
 - (void)keyboardWillHide:(NSNotification *)aNotification
 {
     [UIView animateWithDuration:[aNotification.userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue] animations:^{
-        //self.bgview.alpha = 0.0;
+   
         self.keyView.transform=CGAffineTransformIdentity;
         self.bgview.hidden = YES;
         self.bgview.frame = CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT);
@@ -426,8 +428,7 @@ static NSString *headsectioncell = @"headsectioncell";
                     NSLog(@"data-------%@",data);
                     if ([[data objectForKey:@"code"] intValue]==1) {
                         NSString *pinglunnum = [data objectForKey:@"comment_num"];
-                        //self.headview.combtn.textlab.text = pinglunnum;
-                        
+                      
                         [self headerRefreshEndAction];
                         
                         
@@ -469,7 +470,7 @@ static NSString *headsectioncell = @"headsectioncell";
                     NSLog(@"data-------%@",data);
                     if ([[data objectForKey:@"code"] intValue]==1) {
                         NSString *pinglunnum = [data objectForKey:@"comment_num"];
-                        //self.headview.combtn.textlab.text = pinglunnum;
+                       
                         [self headerRefreshEndAction];
                         
                         [MBProgressHUD showSuccess:@"评论成功"];
@@ -502,7 +503,6 @@ static NSString *headsectioncell = @"headsectioncell";
                     NSLog(@"data-------%@",data);
                     if ([[data objectForKey:@"code"] intValue]==1) {
                         NSString *pinglunnum = [data objectForKey:@"comment_num"];
-                        //self.headview.combtn.textlab.text = pinglunnum;
                         [self headerRefreshEndAction];
                         
                         [MBProgressHUD showSuccess:@"评论成功"];
@@ -549,7 +549,7 @@ static NSString *headsectioncell = @"headsectioncell";
                         NSLog(@"data-------%@",data);
                         if ([[data objectForKey:@"code"] intValue]==1) {
                             NSString *pinglunnum = [data objectForKey:@"comment_num"];
-                            //self.headview.combtn.textlab.text = pinglunnum;
+
                             
                             [self headerRefreshEndAction];
                             
@@ -584,7 +584,7 @@ static NSString *headsectioncell = @"headsectioncell";
                         NSLog(@"data-------%@",data);
                         if ([[data objectForKey:@"code"] intValue]==1) {
                             NSString *pinglunnum = [data objectForKey:@"comment_num"];
-//                            self.headview.combtn.textlab.text = pinglunnum;
+
                             [self headerRefreshEndAction];
                             
                             [MBProgressHUD showSuccess:@"评论成功"];
@@ -616,7 +616,7 @@ static NSString *headsectioncell = @"headsectioncell";
                         NSLog(@"data-------%@",data);
                         if ([[data objectForKey:@"code"] intValue]==1) {
                             NSString *pinglunnum = [data objectForKey:@"comment_num"];
-//                            self.headview.combtn.textlab.text = pinglunnum;
+
                             [self headerRefreshEndAction];
                             
                             [MBProgressHUD showSuccess:@"评论成功"];
@@ -647,7 +647,12 @@ static NSString *headsectioncell = @"headsectioncell";
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    if (self.datasource.count==0) {
+        return 1;
+    }else
+    {
+        return 2;
+    }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -666,9 +671,9 @@ static NSString *headsectioncell = @"headsectioncell";
         _headView = [tableView dequeueReusableCellWithIdentifier:headsectioncell];
         _headView = [[headsectionCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:headsectioncell];
         _headView.delegate = self;
-
         _headView.selectionStyle = UITableViewCellSelectionStyleNone;
         [_headView setdata:self.headdic userarr:self.usernamearr];
+
         return _headView;
     }else
     {
@@ -682,11 +687,15 @@ static NSString *headsectioncell = @"headsectioncell";
     return nil;
 }
 
+-(void)shareclick
+{
+    NSLog(@"分享");
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section==0) {
         headsectionCell *cell = [[headsectionCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:headsectioncell];
-
         return [cell setdata:self.headdic userarr:self.usernamearr];
     }else
     {
@@ -988,9 +997,6 @@ static NSString *headsectioncell = @"headsectioncell";
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
-
-
-
 
 #pragma mark - 判断字符串为空
 

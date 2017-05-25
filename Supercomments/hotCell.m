@@ -220,20 +220,18 @@
     [self.contentlab mas_makeConstraints:^(MASConstraintMaker *make) {
         make.height.mas_equalTo(self.texthei);
     }];
-    
     if (model.contentstr.length!=0&&model.imgurlstr.length!=0) {
         [self.infoimg sd_setImageWithURL:[NSURL URLWithString:model.small_imagesstrl] placeholderImage:[UIImage imageNamed:@"默认图"]];
         
         [self.contentlab mas_makeConstraints:^(MASConstraintMaker *make) {
             make.height.mas_equalTo(self.texthei);
         }];
-        
         imghei = 194*HEIGHT_SCALE;
     }else if (model.contentstr.length==0&&model.imgurlstr.length!=0)
     {
         [self.infoimg sd_setImageWithURL:[NSURL URLWithString:model.small_imagesstrl] placeholderImage:[UIImage imageNamed:@"默认图"]];
         [self.infoimg mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.namelab.mas_bottom).with.offset(12*HEIGHT_SCALE);
+            make.top.equalTo(self.namelab.mas_bottom).with.offset(9*HEIGHT_SCALE);
         }];
         [self.tiview mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.infoimg.mas_bottom).with.offset(2*HEIGHT_SCALE);
