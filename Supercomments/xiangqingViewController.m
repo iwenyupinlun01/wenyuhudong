@@ -195,7 +195,8 @@ static NSString *headsectioncell = @"headsectioncell";
         
         self.headdic = infodit;
         
-        
+        _objidstr = [NSString stringWithFormat:@"%@",[infodit objectForKey:@"id"]];
+  
         NSString *namestr = [infodit objectForKey:@"name"];
         self.namestr = namestr;
         
@@ -719,7 +720,7 @@ static NSString *headsectioncell = @"headsectioncell";
     }
     else
     {
-        self.fromkeyboard = @"cellpinglun";
+        _fromkeyboard = @"cellpinglun";
         [self.keyView.textview becomeFirstResponder];
         
         self.keyView.nickname = [dic objectForKey:@"s_nickname"];
@@ -753,7 +754,7 @@ static NSString *headsectioncell = @"headsectioncell";
         else
         {
             [self.keyView.textview becomeFirstResponder];
-            self.fromkeyboard = @"section";
+            _fromkeyboard = @"section";
             self.keyView.secindex = indexPath.row;
             
             firstModel *fmodel =self.datasource[self.keyView.secindex];
@@ -896,9 +897,9 @@ static NSString *headsectioncell = @"headsectioncell";
         }
         
         dispatch_async(dispatch_get_main_queue(), ^
-                       {
-                           [self.tableView reloadData];
-                       });
+        {
+            [self.tableView reloadData];
+        });
     }
 
 }
@@ -919,8 +920,8 @@ static NSString *headsectioncell = @"headsectioncell";
         _keyView.textview.customPlaceholder = [NSString stringWithFormat:@"%@%@",@"评论@", self.namestr];
         [self.keyView.textview becomeFirstResponder];
     }
-    
 }
+
 -(void)myTabheadClick3:(UITableViewCell *)cell
 {
     NSLog(@"分享");
