@@ -93,7 +93,7 @@
     }
     else if (comp1.year == comp4.year && comp1.month == comp4.month && comp1.day == comp4.day)
     {
-        if (hours>1) {
+        if (hours>=1){
             NSString *str = [NSString stringWithFormat:@"%d%@%@",hours,@"小时",@"前"];
             NSLog(@"ste------%@",str);
             backstr = str;

@@ -195,7 +195,8 @@
             [self.contentlab setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
             self.contentlab.lineBreakMode = NSLineBreakByWordWrapping;//换行方式
             self.contentlab.text = contentstr;
-            CGSize textSize= [contentstr boundingRectWithSize:CGSizeMake(DEVICE_WIDTH-28*WIDTH_SCALE, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:17]} context:nil].size;
+            //CGSize textSize= [contentstr boundingRectWithSize:CGSizeMake(DEVICE_WIDTH-28*WIDTH_SCALE, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:17]} context:nil].size;
+               [self.contentlab setText:contentstr lines:0 andLineSpacing:4 constrainedToSize:CGSizeMake(DEVICE_WIDTH-28*WIDTH_SCALE, 0)];
             [self.contentlab sizeToFit];
             
             
@@ -203,7 +204,7 @@
                 make.top.equalTo(self).with.offset(38*HEIGHT_SCALE);
                 make.left.equalTo(self).with.offset(14*WIDTH_SCALE);
                 make.right.equalTo(self).with.offset(-14*WIDTH_SCALE);
-                make.height.mas_equalTo(textSize.height);
+                make.height.mas_equalTo(self.contentlab.frame.size.height);
             }];
 
             
@@ -268,11 +269,14 @@
                 }];
             }];
             
-            headheight = textSize.height+340*HEIGHT_SCALE;
+            headheight = self.contentlab.frame.size.height+340*HEIGHT_SCALE;
            
         }
         else if (contentstr.length==0&&small_imageurlstr.length!=0)
         {
+            
+            
+            
             [self.headimg sd_setImageWithURL:[NSURL URLWithString:small_imageurlstr] placeholderImage:[UIImage imageNamed:@"默认图"]];
             [self.headimg mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.top.equalTo(self.namelab.mas_bottom).with.offset(14*HEIGHT_SCALE);
@@ -332,22 +336,28 @@
             
         }else
         {
-            
+            self.contentlab.text = contentstr;
             self.contentlab.numberOfLines = 0;
             self.contentlab.font = [UIFont systemFontOfSize:17];
             self.contentlab.preferredMaxLayoutWidth = (DEVICE_WIDTH - 14*2*WIDTH_SCALE);
             [self.contentlab setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
             self.contentlab.lineBreakMode = NSLineBreakByWordWrapping;//换行方式
-            self.contentlab.text = contentstr;
-            CGSize textSize= [contentstr boundingRectWithSize:CGSizeMake(DEVICE_WIDTH-28*WIDTH_SCALE, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:17]} context:nil].size;
+//            CGSize textSize= [contentstr boundingRectWithSize:CGSizeMake(DEVICE_WIDTH-28*WIDTH_SCALE, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:17]} context:nil].size;
+            [self.contentlab setText:contentstr lines:0 andLineSpacing:4 constrainedToSize:CGSizeMake(DEVICE_WIDTH-28*WIDTH_SCALE, 0)];
             [self.contentlab sizeToFit];
+            
+            
+         
+        
+            
+        
             
             
             [self.contentlab mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.top.equalTo(self).with.offset(38*HEIGHT_SCALE);
                 make.left.equalTo(self).with.offset(14*WIDTH_SCALE);
                 make.right.equalTo(self).with.offset(-14*WIDTH_SCALE);
-                make.height.mas_equalTo(textSize.height);
+                make.height.mas_equalTo(self.contentlab.frame.size.height);
             }];
 
             
@@ -405,7 +415,7 @@
                 }];
             }];
             
-            headheight = textSize.height+160*HEIGHT_SCALE;
+            headheight = self.contentlab.frame.size.height+160*HEIGHT_SCALE;
             
             
         }
@@ -422,7 +432,8 @@
             [self.contentlab setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
             self.contentlab.lineBreakMode = NSLineBreakByWordWrapping;//换行方式
             self.contentlab.text = contentstr;
-             CGSize textSize= [contentstr boundingRectWithSize:CGSizeMake(DEVICE_WIDTH-28*WIDTH_SCALE, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:17]} context:nil].size;
+            [self.contentlab setText:contentstr lines:0 andLineSpacing:4 constrainedToSize:CGSizeMake(DEVICE_WIDTH-28*WIDTH_SCALE, 0)];
+            //CGSize textSize= [contentstr boundingRectWithSize:CGSizeMake(DEVICE_WIDTH-28*WIDTH_SCALE, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:17]} context:nil].size;
             [self.contentlab sizeToFit];
             
             CGSize textsize2= [self.thumlabel.text boundingRectWithSize:CGSizeMake(DEVICE_WIDTH-28*WIDTH_SCALE, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil].size;
@@ -433,7 +444,7 @@
                 make.top.equalTo(self).with.offset(38*HEIGHT_SCALE);
                 make.left.equalTo(self).with.offset(14*WIDTH_SCALE);
                 make.right.equalTo(self).with.offset(-14*WIDTH_SCALE);
-                make.height.mas_equalTo(textSize.height);
+                make.height.mas_equalTo(self.contentlab.frame.size.height);
             }];
 
             
@@ -503,7 +514,7 @@
                 }];
             }];
             
-            headheight = textSize.height+380*HEIGHT_SCALE+textsize2.height;
+            headheight = self.contentlab.frame.size.height+380*HEIGHT_SCALE+textsize2.height;
             
             
         }
@@ -581,15 +592,19 @@
            
         }else
         {
-
+       
+            self.contentlab.text = contentstr;
             self.contentlab.numberOfLines = 0;
             self.contentlab.font = [UIFont systemFontOfSize:17];
             self.contentlab.preferredMaxLayoutWidth = (DEVICE_WIDTH - 14*2*WIDTH_SCALE);
             [self.contentlab setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
-            self.contentlab.lineBreakMode = NSLineBreakByWordWrapping;//换行方式
-            self.contentlab.text = contentstr;
-            CGSize textSize= [contentstr boundingRectWithSize:CGSizeMake(DEVICE_WIDTH-28*WIDTH_SCALE, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:17]} context:nil].size;
+            
+            self.contentlab.lineBreakMode = NSLineBreakByTruncatingTail;//换行方式
+            //CGSize textSize= [contentstr boundingRectWithSize:CGSizeMake(DEVICE_WIDTH-28*WIDTH_SCALE, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:17]} context:nil].size;
+            [self.contentlab setText:contentstr lines:0 andLineSpacing:4 constrainedToSize:CGSizeMake(DEVICE_WIDTH-28*WIDTH_SCALE, 0)];
+            
             [self.contentlab sizeToFit];
+            
             
             CGSize textsize2= [self.thumlabel.text boundingRectWithSize:CGSizeMake(DEVICE_WIDTH-28*WIDTH_SCALE, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil].size;
             
@@ -598,7 +613,7 @@
                 make.top.equalTo(self).with.offset(38*HEIGHT_SCALE);
                 make.left.equalTo(self).with.offset(14*WIDTH_SCALE);
                 make.right.equalTo(self).with.offset(-14*WIDTH_SCALE);
-                make.height.mas_equalTo(textSize.height);
+                make.height.mas_equalTo(self.contentlab.frame.size.height);
             }];
 
             
@@ -654,7 +669,7 @@
                 }];
             }];
             
-            headheight = textSize.height+180*HEIGHT_SCALE+textsize2.height;
+            headheight = self.contentlab.frame.size.height+180*HEIGHT_SCALE+textsize2.height;
             
           
         }
