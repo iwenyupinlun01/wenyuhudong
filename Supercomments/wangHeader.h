@@ -26,11 +26,9 @@
 #define WXLoginSuccess                   @"WXLoginSuccess"
 
 
-
 //#define newVCload  @"http://np.iwenyu.cn/forum/index/index.html?page=%@&type=%@&token=%@"
 
 #define newVCload  @"http://"IPAddress"/forum/index/index.html?page=%@&type=%@&token=%@"
-
 
 #define loginbool @"http://"IPAddress"/forum/index/userInfo.html?token=%@"
 

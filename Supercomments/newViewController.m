@@ -70,16 +70,10 @@
     [self.view addSubview:self.xuanzuanbtn];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(kvcdianzan:) name:@"shifoudiandankvo" object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(kvcpinglun:) name:@"pinglunkvo" object:nil];
-
+    
 //    [self checkNetworkStatus];
     
 }
-
-
-
-
-
-
 
 #pragma mark - 刷新控件
 

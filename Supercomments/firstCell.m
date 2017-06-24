@@ -66,7 +66,6 @@ static NSString *secondidentfid = @"secondidentfid";
     
     [self.contentlab mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.timelab.mas_bottom).with.offset(14*HEIGHT_SCALE);
-//        make.left.equalTo(self).with.offset(64*WIDTH_SCALE);
         make.left.equalTo(self.namelab.mas_left);
         make.right.equalTo(self).with.offset(-14*WIDTH_SCALE);
     }];

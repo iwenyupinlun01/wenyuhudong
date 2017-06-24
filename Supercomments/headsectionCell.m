@@ -195,7 +195,7 @@
             [self.contentlab setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
             self.contentlab.lineBreakMode = NSLineBreakByWordWrapping;//换行方式
             self.contentlab.text = contentstr;
-            //CGSize textSize= [contentstr boundingRectWithSize:CGSizeMake(DEVICE_WIDTH-28*WIDTH_SCALE, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:17]} context:nil].size;
+      
                [self.contentlab setText:contentstr lines:0 andLineSpacing:4 constrainedToSize:CGSizeMake(DEVICE_WIDTH-28*WIDTH_SCALE, 0)];
             [self.contentlab sizeToFit];
             
@@ -342,7 +342,7 @@
             self.contentlab.preferredMaxLayoutWidth = (DEVICE_WIDTH - 14*2*WIDTH_SCALE);
             [self.contentlab setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
             self.contentlab.lineBreakMode = NSLineBreakByWordWrapping;//换行方式
-//            CGSize textSize= [contentstr boundingRectWithSize:CGSizeMake(DEVICE_WIDTH-28*WIDTH_SCALE, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:17]} context:nil].size;
+
             [self.contentlab setText:contentstr lines:0 andLineSpacing:4 constrainedToSize:CGSizeMake(DEVICE_WIDTH-28*WIDTH_SCALE, 0)];
             [self.contentlab sizeToFit];
             
